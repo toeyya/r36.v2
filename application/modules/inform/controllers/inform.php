@@ -371,5 +371,8 @@ class Inform extends R36_Controller
 		}
 		redirect('inform/index_dead');
 	}
+	function show_table_vaccine($id=FALSE,$hospitalcode=FALSE){
+		
+	}
 }
 ?>
