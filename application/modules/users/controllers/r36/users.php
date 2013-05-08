@@ -10,21 +10,7 @@ class Users extends R36_Controller
 		$this->load->model('inform/vaccine_model','vaccine');
 		$this->user->primary_key("uid");
 	}
-	function index()
-	{// หน้าแรก
-			$data['rs']=$this->user->get_row("uid",$this->session->userdata('R36_UID'));	
-			 $data['chk']="";
-			 if($this->session->userdata('schedule')=="yes"){				 					
-				 if($this->session->userdata('R36_LEVEL')=='00' || $this->session->userdata('R36_LEVEL')=='02' || $this->session->userdata('R36_LEVEL')=='03' || $this->session->userdata('R36_LEVEL')=='05')
-				 {### ผู้ดูแลระบบระดับกรม, ผู้ดูแลระดับจังหวัด, ผู้ดูแลระดับตำบล, staff	 	 ###
-				 	$data['chk']="show_popup";
-				 }	
-			 }
-			$this->template->build('r36/user_index',$data);
-		
-	}
-
-	function search($show="search",$id=FALSE)
+	function index($show="search",$id=FALSE)
 	{
 		//$this->db->debug=TRUE;
 				$wh="uid <> '' ";
@@ -51,7 +37,7 @@ class Users extends R36_Controller
 					$data['pagination']=$this->user->pagination();			
 					}else{$data['result']=array();$data['pagination']="";}		
 					$this->template->append_metadata(js_checkbox('r36'));
-					$this->template->build('r36/user_list',$data);					
+					$this->template->build('r36/user_index',$data);					
 	}
 	function form($id=FALSE,$profile=FALSE)
 	{
