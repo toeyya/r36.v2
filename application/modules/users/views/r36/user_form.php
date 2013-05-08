@@ -45,7 +45,7 @@ var ref1,ref2,ref3;
 		}							
 	});
 	$.validator.setDefaults({
-		submitHandler: function() {document.form1.submit();}
+		submitHandler: function(){document.form1.submit();}
 	});	
 	$("#form1").validate({
 		 groups: {
