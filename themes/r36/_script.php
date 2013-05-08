@@ -27,7 +27,7 @@
 
 <script>
 $(function(){  
-      $('.datepicker').datepick({format: 'Y-m-d', showOn: 'both', buttonImageOnly: true, buttonImage: 'js/jquery.datepick/calendar.gif'
+      $('.datepicker').datepick({format: 'Y-m-d', showOn: 'both', buttonImageOnly: true, buttonImage: 'media/js/jquery.datepick/calendar.gif'
       },$.datepick.regional['th']);  		
 });
 </script>

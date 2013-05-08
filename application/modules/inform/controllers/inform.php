@@ -13,7 +13,8 @@ class Inform extends R36_Controller
 		
 	}
 	function index()
-	{	
+	{
+		//$this->db->debug=true;	
 		if($this->session->userdata('R36_LEVEL')=="05"){				
 				 $_GET['hospitalcode']=$this->session->userdata('R36_HOSPITAL');
 				 $rs=$this->hospital->get_row("hospital_code",$_GET['hospitalcode']);
@@ -21,7 +22,7 @@ class Inform extends R36_Controller
 				 $_GET['hospital_amphur_id'] = $rs['hospital_amphur_id'];
 				 $_GET['hospital_district_id'] = $rs['hospital_district_id'];		
 		}	
-		if(!empty($_GET['btn_submit']))
+		if(empty($_GET['btn_submit']))
 		{// กดค้นหา					
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
@@ -106,42 +107,38 @@ class Inform extends R36_Controller
 		
 	}
 
-	function addnew($hospitalprovince=FALSE,$hospitalamphur=FALSE,$hospital=FALSE,$in_out=FALSE,$historyid=FALSE)
-	{// กรณีกรอกข้อมูล hn ครั้งแรก
-		$data['process']="addnew";
-		$data['rs']=$this->history->get_row("historyid",$historyid);		
-		$data['rs']['hn']=@$_GET['hn'];	
-		$data['value_disabled']='';
-		$data['rs']['idcard']=$_GET['idcard'];
-		$data['rs']['statusid']=@$_GET['statusid'];
-		$data['rs']['hospitalprovince']=!empty($_GET['hospital_province_id']);
-		$data['rs']['hospitalamphur']=!empty($_GET['hospital_amphur_id']);
-		$data['rs']['hospitaldistrict'] = !empty($_GET['hospital_district_id']);
-		$data['rs']['hospitalcode'] = !empty($_GET['hospitalcode']);
-		if($data['rs']){
-			$data['cardW0']=substr(@$data['rs']['idcard'],0,1);
-			$data['cardW1']=substr(@$data['rs']['idcard'],1,4);
-			$data['cardW2']=substr(@$data['rs']['idcard'],5,5);
-			$data['cardW3']=substr(@$data['rs']['idcard'],10,2);
-			$data['cardW4']=substr(@$data['rs']['idcard'],12,13);		
-			
-			if($data['rs']['idcard']){
-				$data['value_disabled']=' disabled="disabled"';
-			}	
+	function addnew()
+	{//กรอกข้อมูลการสัมผัสโรค
+		$idcard=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
+		$historyid=$this->db->GetOne("select historyid from n_history where idcard= ? ",$idcard);
+		if(!empty($historyid)){
+			$hn_no=$this->db->GetOne('SELECT max(hn_no)+1 as cnt from n_information where information_historyid= ? ',$historyid);
+			$h=$this->history->get_row("historyid",$historyid);
+			$data=array('rs'=>array('firstname'=>$h['firstname'],'surname' => $h['surname'],'age' =>$h['age'],'gender' => $h['gender']
+													   ,'marryname' => $h['marryname'],'nationalityname'=>$h['nationalityname'],'othernationalityname' => $h['othernationalityname']
+													   ,'nohome' =>$h['nohome'],'moo' =>$h['moo'],'villege' =>$h['villege'],'soi' =>$h['soi'],'road'=>$h['road']
+													   ,'provinceid' =>$h['provinceid'],'amphurid'=>$h['amphurid'],'districtid'=>$h['districtid'],'hn_no'=>$hn_no)) ;
+													   	
 		}else{
-			
-
-			$data['rs']['historyid']=$historyid;
-			$data['cardW0']=substr(@$_GET['idcard'],0,1);
-			$data['cardW1']=substr(@$_GET['idcard'],1,4);
-			$data['cardW2']=substr(@$_GET['idcard'],5,5);
-			$data['cardW3']=substr(@$_GET['idcard'],10,2);
-			$data['cardW4']=substr(@$_GET['idcard'],12,13);	
-			$data['value_disabled']='';		
-		}
-
-		$data['in_out']=$in_out;	
-	
+			$data['rs']['hn_no']=1;
+		}	
+		
+		$data['rs']['hn']=$_GET['hn'];	
+		$data['rs']['idcard']=$idcard;
+		$data['rs']['statusid']=$_GET['statusid'];
+		$data['rs']['hospitalprovince']=$_GET['hospital_province_id'];
+		$data['rs']['hospitalamphur']=$_GET['hospital_amphur_id'];
+		$data['rs']['hospitaldistrict'] = $_GET['hospital_district_id'];
+		$data['rs']['hospitalcode'] = $_GET['hospitalcode'];		
+		$data['cardW0']=$_GET['cardW0'];
+		$data['cardW1']=$_GET['cardW1'];
+		$data['cardW2']=$_GET['cardW2'];
+		$data['cardW3']=$_GET['cardW3'];
+		$data['cardW4']=$_GET['cardW4'];
+		$data['in_out']=$_GET['in_out'];		
+		$data['value_disabled']='';	
+		$data['process']="";
+		//var_dump($data);	
 		$this->template->build('inform_form',$data);
 	}
 

@@ -424,13 +424,9 @@ $('select[name=prefix_name]').click(disableChkage);
                 <th align="center" >
 				จังหวัด<span class="alertred">*</span>								
 					<? $wh="";
-					if($process=='addnew'){
-						if($this->session->userdata('R36_PROVINCE')!='' && $this->session->userdata('R36_LEVEL')=='02'){
-							$wh="AND province_id='".$this->session->userdata('R36_PROVINCE')."'";
-						}else if(@$rs['hospital_province_id']!=''){
-							$wh="AND province_id='".@$rs['hospital_province_id']."'";
-						}	
-					}			
+						 if(!empty($rs['hospitalprovince'])){
+							$wh="AND province_id='".$rs['hospitalprovince']."'";
+						}									
 						$class='class="input_box_patient " id="hospitalprovince" disabled="disabled"';
 						echo form_dropdown('hospitalprovince',get_option('province_id','province_name','n_province WHERE province_id<>""'.$wh.' ORDER BY province_name ASC'),@$rs['hospitalprovince'],$class,'-โปรดเลือก-');
 					?>
@@ -440,13 +436,13 @@ $('select[name=prefix_name]').click(disableChkage);
 						$class='class="input_box_patient " id="hospitalamphur" disabled="disabled"';
 						$whamp="";	
 							
-							if(@$rs['hospital_amphur_id']){
-									$whamp="AND amphur_id ='".@$rs['hospital_amphur_id']."' 
-													   AND province_id='".@$rs['hospital_province_id']."' ";
+							if(!empty($rs['hospitalamphur'])){
+									$whamp="AND amphur_id ='".$rs['hospitalamphur']."' 
+													   AND province_id='".$rs['hospitalprovince']."' ";
 							}
 							if($process=='vaccine'){
-								if(@$rs['hospitalprovince']!=''){
-									$whamp=" AND province_id = '".@$rs['hospitalprovince']."'";
+								if(!empty($rs['hospitalprovince'])){
+									$whamp=" AND province_id = '".$rs['hospitalprovince']."'";
 								}
 							}
 							if($whamp!=''){																							
@@ -457,36 +453,36 @@ $('select[name=prefix_name]').click(disableChkage);
 			<?php 
 				$class='class="input_box_patient" id="hospitaldistrict" disabled="disabled" ';
 				$whdistrict="";
-					if(@$rs['hospital_district_id']){
-							$whdistrict="AND amphur_id ='".@$rs['hospital_amphur_id']."' 
-											   AND province_id='".@$rs['hospital_province_id']."' 
-											   AND district_id='".@$rs['hospital_district_id']."'";
+					if(!empty($rs['hospitaldistrict'])){
+							$whdistrict="AND amphur_id ='".$rs['hospitalamphur']."' 
+											   AND province_id='".$rs['hospitalprovince']."' 
+											   AND district_id='".$rs['hospitaldistrict']."'";
 					}
 					if($process=='vaccine'){
-						if(@$rs['hospitalprovince']!=''){
-							$whdistrict=" AND province_id = '".@$rs['hospitalprovince']."'";
+						if(!empty($rs['hospitalprovince'])){
+							$whdistrict=" AND province_id = '".$rs['hospitalprovince']."'";
 						}
 					}
 				if($whdistrict!=""){
-					echo form_dropdown('hospitaldistrict',get_option('district_id','district_name',"n_district WHERE district_id<>'' $whdistrict ORDER BY district_name ASC"),@$rs['hospital_district_id'],$class,'-โปรดเลือก-');
+					echo form_dropdown('hospitaldistrict',get_option('district_id','district_name',"n_district WHERE district_id<>'' $whdistrict ORDER BY district_name ASC"),@$rs['hospitaldistrict'],$class,'-โปรดเลือก-');
 				}
 			?>									
 					
 				 โรงพยาบาล<span class="alertred">*</span>
 						<?php
 								$whhospital="";
-									if(@$rs['hospital_code']){
-										$whhospital="AND hospital_code ='".$rs['hospital_code']."'";
+									if(!empty($rs['hospitalcode'])){
+										$whhospital="AND hospital_code ='".$rs['hospitalcode']."'";
 									}
 								 if($process=='vaccine'){
-									 if(@$rs['hospitalamphur']){
-											$whhospital="AND hospital_province_id='".@$rs['hospitalprovince']."' AND hospital_amphur_id ='".@$rs['hospitalamphur']."'  ";
+									 if(!empty($rs['hospitalamphur'])){
+											$whhospital="AND hospital_province_id='".$rs['hospitalprovince']."' AND hospital_amphur_id ='".$rs['hospitalamphur']."'  ";
 									}									
 								}
 								if($whhospital!=''){
 									$where=" WHERE hospital_id<>'' ".$whhospital." ORDER BY hospital_name ASC";	
 									$class='class="input_box_patient " disabled="disabled"';																		
-									echo form_dropdown('hospital',get_option('hospital_code','hospital_name'," n_hospital_1 ".$where),@$rs['hospitalcode'],$class,'-โปรดเลือก-');
+									echo form_dropdown('hospital',get_option('hospital_code','hospital_name'," n_hospital_1 ".$where),$rs['hospitalcode'],$class,'-โปรดเลือก-');
 								}
 						?>
 			    </th>
@@ -496,20 +492,8 @@ $('select[name=prefix_name]').click(disableChkage);
 				<div align="center">
 					HN <span class="alertred">*</span> &nbsp;
 					<?php $hn=(isset($hn))?$hn:@$rs['hn']; ?>
-					<input name="hn_s" type="text" class="input_box_patient " value="<?php echo $hn ?>" size="20" readonly=""> - 
-					<?php 
-						if(@$rs['hn_no']){
-							$hn_no=@$rs['hn_no'];
-						}else{
-							$process="addnew";
-						}
-						if($process=="addnew")
-						{													
-							$hn_num=$this->db->GetOne("select count(id) as cnt from  n_information where information_historyid ='".@$rs['historyid']."'");													
-							if($hn_num['cnt']!=0){$hn_no=$hn_num['cnt']+1;}else{$hn_no=1;}
-						}
-					?>
-					<input type="text" name="hn_no" size="2"  readonly=""  value="<?php echo $hn_no; ?>" class="input_box_patient nowidth " onKeyPress="return NumberOnly();" style="text-align:center" 
+					<input name="hn_s" type="text" class="input_box_patient " value="<?php echo $rs['hn'] ?>" size="20" readonly=""> - 					
+					<input type="text" name="hn_no" size="2"  readonly=""  value="<?php echo $rs['hn_no']; ?>" class="input_box_patient nowidth " onKeyPress="return NumberOnly();" style="text-align:center" 
 					<?php echo (@$rs['id'])? '':'readonly'; ?> <?php if($process=='vaccine'){echo 'disabled';} ?>>
 					<input name="hospitalprovince" type="hidden"value="<?php echo @$rs['hospitalprovince']?>" >
 					<input name="hospitalamphur" type="hidden"value="<?php echo @$rs['hospitalamphur']?>" >
@@ -548,12 +532,10 @@ $('select[name=prefix_name]').click(disableChkage);
 						<input name="cardW4" id="cardW4" type="text" class="input_box_patient nowidth" size="1" maxlength="1"  value="<?php echo @$cardW4?>"  
 						onKeyPress="return NumberOnly();" onKeyUp="if(this.value.length==1){FChkCardID(this.form);}" <?php echo $value_disabled?>/>				
 					</span>&nbsp;&nbsp;
-					 
-					<?php if($process=='addnew'){ ?>				
-						<a href="javascript:void(0)" name="chkidcard" title="ตรวจสอบ" class="Submit" <?php echo $value_disabled ?>>ตรวจสอบ</a>
-					<?php }else if($process==''){ ?>						
-						<button name="editidcard" id="editidcard" title="กดเพื่อแก้ไขรหัสในกรณีกรอกผิด" class="btn_press"></button>
-					<?php } ?>
+					 					
+					<!-- กรณีข้อมูลเดิมไม่สมบูรณ์ จะทำให้บรรทึกไม่ผ่าน -->
+					<button name="editidcard" id="editidcard" title="กดเพื่อแก้ไขรหัสในกรณีกรอกผิด" class="btn_press"></button>
+			
 				</th>
               </tr>
             </table>	
@@ -1812,7 +1794,7 @@ $('select[name=prefix_name]').click(disableChkage);
                                 <td colspan="3" align="center">
 									<table  id="meanstr"  class="tbvaccine"<? if(@$rs['means']=='3' || @$rs['means']==''){ print "style='display:none'";}?>>
 										  	<tr>
-												<th>ครั้งที่</th>
+												<th>ครั้งที่ </th>
 												<th>วันที่ฉีด</th>
 												<th>ชื่อวัคซีน</th>
 												<th>เลขที่วัคซีน</th>
@@ -1822,8 +1804,8 @@ $('select[name=prefix_name]').click(disableChkage);
 												<th>สถานที่</th>
 												
 										  </tr>
-										  <? 
-										$result=$this->db->Execute("select * from n_vaccine where information_id='".@$rs['id']."' ORDER BY vaccine_id ASC");
+										  <? 										
+										 $result=$this->db->Execute("select * from n_vaccine where information_id='".@$rs['id']."' ORDER BY vaccine_id ASC");																	
 										$key=4;
 										$vaccine_id=array('','','','','');
 										$vaccine_date=array('','','','','');
@@ -1834,7 +1816,9 @@ $('select[name=prefix_name]').click(disableChkage);
 										$byname=array('','','','','');
 										$byplace=array('','','','','');
 										if($process=='vaccine'){
-											$hospital_name=$this->db->GetOne("select hospital_name from n_hospital_1 where hospital_code='".@$rs['hospitalcode']."' ");
+											if(!empty($rs['hospitalcode'])){
+												$hospital_name=$this->db->GetOne("select hospital_name from n_hospital_1 where hospital_code='".$rs['hospitalcode']."' ");
+											}									
 										}else if($process=='addnew' || $process=='' ||$process="view"){
 											$hospital_name=$this->session->userdata('R36_HOSPITAL_NAME');										
 										}
@@ -1894,6 +1878,7 @@ $('select[name=prefix_name]').click(disableChkage);
 										  }
 										  ?>
 									</table>
+								
 								</td>
                                 </tr>
                               <tr id="after_symptom_vaccine">

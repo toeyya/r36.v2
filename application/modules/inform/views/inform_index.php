@@ -60,10 +60,9 @@ var province_id,amphur_id,district_id;
 			//return false;	
 		})
 		
-		 $.validator.setDefaults({submitHandler: function() {//document.form1.submit(); 
-		 	} });
+		 $.validator.setDefaults({submitHandler: function() {document.form1.submit(); }});
 		 $('#form1').validate({
-		 	 debug:true,
+		 	 debug:false,
 		 	 onkeyup: false,onfocusout: false,
 		 	  groups: {
     				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
@@ -154,8 +153,7 @@ var province_id,amphur_id,district_id;
 							$whamphur="";
 							 if(@$_GET['hospital_province_id']){
 									$whamphur="AND province_id ='".@$_GET['hospital_province_id']."'";
-								 	$amphur_id="amphur_id <>'' ";	
-								 										
+								 	$amphur_id="amphur_id <>'' ";									 										
 							 }else{
 							 	 	$amphur_id="amphur_id ='' ";
 							 }
@@ -279,63 +277,42 @@ var province_id,amphur_id,district_id;
 	<button class="btn_add" type="submit" name="btn_add"></button>
 </div>
 </form>
-	  <table class="tb_search_Rabies1" >			  			
+
+ <table class="tb_search_Rabies1" >			  			
+          <tr> 
+            <th>ลำดับ</th>
+            <th>โค้ดโรงพยาบาล/HN</th>
+            <th>บัตรประชาชน/  บัตร passport</th>
+            <th>ชื่อ-นามสกุล</th>
+            <th>โรงพยาบาล</th>
+            <th>ปิดเคส(จำนวนวัคซีน)</th>
+            <th>การกระทำ</th>
+          </tr>                     	
+			<?php
+			if(!empty($result)):
+			$i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 10)-10)+1:1;
+			 foreach($result as $key =>$rec): ?>
               <tr> 
-                <th>ลำดับ</th>
-                <th>โค้ดโรงพยาบาล/HN</th>
-                <th>บัตรประชาชน/  บัตร passport</th>
-                <th>ชื่อ-นามสกุล</th>
-                <th>โรงพยาบาล</th>
-                <th>ปิดเคส(จำนวนวัคซีน)</th>
-                <th>การกระทำ</th>
-              </tr>
-            
-            <?php if(@$result){ ?>
-            	
-				<?php
-				  $page = (isset($_GET['page']))? $_GET['page']:1;
-  				  $i=(isset($_GET['page']))? (($_GET['page'] -1)* 20)+1:1;
-				 foreach($result as $key =>$rec): ?>
-	              <tr> 
-	                <td align="center"><?php echo $i++?></td>
-	                <td><?php echo $rec['hospitalcode'].'/'.$rec['hn'].'-'.$rec['hn_no'];?></td>
-	                <td><?php echo $rec['idcard'] ?></td>
-					<td><?php echo $rec['firstname'].' '.$rec['surname'];?></td>
-					<td><?php echo $rec['hospital_name']?></td>
-	                <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
-                <td>	
-                		<a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" target="_blank" class="btn_view"></a> 			
-					<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
-						<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>" target="top" class="btn_edit" ></a>
-						<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
-					<?php }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){
-												if($this->session->userdata('R36_FROMEDIT')=='Y'){ ?>
-														<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" target="_top" class="btn_edit">แก้ไข</a>
-								<?php	}
-							}  ?>
-				
-	              </tr>            
-				  <?php endforeach; ?>
-				  <?php if(!empty($historyid)): ?>
-				  <tr>
-				  	<td colspan="7">			  		
-				  		<a href="inform/addnew/<?php echo $hospitalprovince?>/<?php echo $hisamp?>/<?php echo $hospital ?>/<?php echo  $in_out;?>/<?php echo $historyid; ?>?hn=<?php echo $hn; ?>" target="_top" >เพิ่ม</a>			  		
-				  	</td>
-				  </tr>
-				  <?php endif; ?>
-			  <?php }else{?>
-			  			<?php if(!empty($_GET['ok'])): ?>			  	
-		              <tr> 
-		              			<td colspan="7" align="center"> -- ไม่พบข้อมูล --		              			
-		              			<?php if($this->session->userdata('R36_LEVEL')=="05"){ ?>
-		              				<?php if($_GET['hn'] || $_GET['idcard']){ ?>
-		              			<p><input type="button" name="addNew"   value="เพิ่มข้อมูล" class="Submit"></td></p>
-		              				<?php }
-											} 
-									?>
-		              </tr>	      
-		              <?php endif; ?>          	
-			  <?php }?>			  
-            </table>	
-			<?php echo !empty($pagination) ?>
+                <td align="center"><?php //echo $i++?></td>
+                <td><?php echo $rec['hospitalcode'].'/'.$rec['hn'].'-'.$rec['hn_no'];?></td>
+                <td><?php echo $rec['idcard'] ?></td>
+				<td><?php echo $rec['firstname'].' '.$rec['surname'];?></td>
+				<td><?php echo $rec['hospital_name']?></td>
+                <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
+            <td>	
+            		<a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" target="_blank" class="btn_view"></a> 			
+				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
+					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>" target="top" class="btn_edit" ></a>
+					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
+				<?php }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){
+											if($this->session->userdata('R36_FROMEDIT')=='Y'){ ?>
+													<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" target="_top" class="btn_edit">แก้ไข</a>
+							<?php	}
+						}  ?>
+				</td>
+              </tr>            
+			  <?php endforeach; ?>
+			 <?php endif; ?>			    
+</table>	
+<?php echo !empty($pagination) ?>
 
