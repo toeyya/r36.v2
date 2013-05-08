@@ -57,9 +57,9 @@ select.styled-select,select.input_box_patient{
 	/*color: #e31788; */
 	font-size: inherit; overflow: hidden; -webkit-appearance: button; padding-top: 2px;  padding-bottom: 2px;  text-overflow: ellipsis;  white-space: nowrap;}
 .box_calendar{float:left; border:1px solid #cecece; width:100px; margin-left:15px; height:20px;}
-.btn_submit{display:block; width:88px; height:26px; background-image: url(../images/btn_submit_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
+input[type="submit"],.btn_submit{display:block; width:88px; height:26px; background-image: url(../images/btn_submit_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
 .btn_submit:hover{background-image: url(../images/btn_submit_hot.png); background-position:no-repeat;}
-.btn_cancel{display:block; width:88px; height:26px; background-image: url(../images/btn_cancel_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
+input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; background-image: url(../images/btn_cancel_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
 .btn_cancel:hover{background-image: url(../images/btn_cancel_hot.png); background-position:no-repeat;}
 .btn_save{display:block; width:88px; height:26px; background-image: url(../images/btn_save_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
 .btn_save:hover{background-image: url(../images/btn_save_hot.png); background-position:no-repeat;}
