@@ -20,7 +20,7 @@ class Users extends R36_Controller
 				 	$data['chk']="show_popup";
 				 }	
 			 }
-			$this->template->build('user_index',$data);
+			$this->template->build('r36/user_index',$data);
 		
 	}
 
@@ -50,8 +50,8 @@ class Users extends R36_Controller
 					$data['result']=$this->user->get($sql);
 					$data['pagination']=$this->user->pagination();			
 					}else{$data['result']=array();$data['pagination']="";}		
-					$this->template->append_metadata(js_checkbox());
-					$this->template->build('user_list',$data);					
+					$this->template->append_metadata(js_checkbox('r36'));
+					$this->template->build('r36/user_list',$data);					
 	}
 	function form($id=FALSE,$profile=FALSE)
 	{
@@ -73,7 +73,7 @@ class Users extends R36_Controller
 																				")
 																->get_row($id);	
 			$data['title']=($profile)? "ประวัติส่วนตัว":"ข้อมูลผู้ใช้ระบบ (แก้ไข/เพิ่ม)";
-			$this->template->build('user_form',$data);					
+			$this->template->build('r36/user_form',$data);					
 	}
 	function save()
 	{

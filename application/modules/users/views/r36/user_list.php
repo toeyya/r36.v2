@@ -60,7 +60,7 @@ var ref1,ref2,ref3;
 </script>
 <div id="title">ค้นหาข้อมูลผู้ใช้ระบบ</div>
 <div id="search">
-<form name="form1"  action="user/search"  method="get" >
+<form name="form1"  action="users/r36/users/search"  method="get" >
 <table width="70%"class="tb_patient1">
   <tr>
     <th width="96" height="20"  >ชื่อ/นามสกุล/อีเมล์/username :</th>
@@ -195,7 +195,7 @@ var ref1,ref2,ref3;
 		<?php foreach($result as $item): ?>
 		<tr class="tr_rule_Rabies1">
 				<!--<<td  align="center"><nput name="chk_del[]" type="checkbox" value="<?php echo $item['uid']?>"  class="chk_del"/></td>-->
-				<td><input type="checkbox" name="status" value="<?php echo $item['uid'] ?>" <?php echo ($item['status']=="approve")?'checked="checked"':'' ?>  /></td>
+				<td><input type="checkbox"  class="list_check" name="status" value="<?php echo $item['uid'] ?>" <?php echo ($item['status']=="approve")?'checked="checked"':'' ?>  /></td>
 				<td><?php echo $item['username'];?></a></td>
 				<td><?php echo $item['userfirstname'];?></td>
 				<td><?php echo $item['usersurname'];?></td>
@@ -203,8 +203,8 @@ var ref1,ref2,ref3;
 				<td><?php echo  $item['hospital_name']?></td>
 				<td><?php //echo $item['amphur_name']?></td>
 				<td><?php //echo  ($item['userposition']=="02") ? $item['province_name1'] :$item['province_name2']?></td>
-				<td><a href="user/form/<?php echo $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn_edit"></a>
-						 <a href="user/delete/<?php echo $item['uid'] ?>" alt="ลบข้อมูลผู้ใช้"   class="btn_delete"></a>
+				<td><a href="users/r36/users/form/<?php echo $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn_edit"></a>
+						 <a href="users/r36/users/delete/<?php echo $item['uid'] ?>" alt="ลบข้อมูลผู้ใช้"   class="btn_delete"></a>
 				</td>
 		</tr>
 		<?php endforeach; ?>
