@@ -50,7 +50,7 @@ var ref1,ref2,ref3;
 	$("#form1").validate({
 		 groups: {
     			groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
-    			,checks:"form_add form_edit form_del"
+    		   ,checks:"form_add form_edit form_del"
   		},		
 		rules:{
 				telephone:{required:true,number:true, rangelength: [6, 9]}
@@ -66,13 +66,13 @@ var ref1,ref2,ref3;
 		 			}		 		
 		 		}			 					
 				,userfirstname:"required",usersurname:"required"
-				,userprovince:{ required: {depends: function(element) {return $('#userposition00:checked').val() =='02' }}}
-				,userprovince2:{required:{depends:function(element){return $('#userposition01:checked').val()=="03"}}}
-				,useramphur:{required:{depends:function(element){return $('#userposition02:checked').val()=="03"}}}
-				,h_province:{required:{depends:function(element){return $('#userposition03:checked').val()=="05";}}}
-				,h_amphur:{required:{depends:function(element){return $('#userposition04:checked').val()=="05";}}}
-				,h_district:{required:{depends:function(element){return $('#userposition05:checked').val()=="05";}}}
-				,hospital:{required:{depends:function(element){return $('#userposition06:checked').val()=="05";}}}
+				,userprovince:{ required: {depends: function(element) {return $('input[name=userposition]:checked').val() =='02' }}}
+				,userprovince2:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="03"}}}
+				,useramphur:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="03"}}}
+				,h_province:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="05";}}}
+				,h_amphur:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="05";}}}
+				,h_district:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="05";}}}
+				,hospital:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="05";}}}
 				,usermail:{
 					required:true,email:true,
 					remote:{url:'<?php echo base_url() ?>users/r36/users/check_email',data:{uid:function(){return $('#uid').val()}}}					
@@ -169,35 +169,37 @@ var ref1,ref2,ref3;
     <td>
     	 <ul class="sublist">
 	           <li>
-		           	<input name="userposition" id="userpostion00" type="radio"  value="00" <? if(@$rs['userposition']=='00'){echo"checked= 'checked'";}?> />
+		           	<input name="userposition"  type="radio"  value="00" <? if(@$rs['userposition']=='00'){echo"checked= 'checked'";}?> />
 		          	<span>ผู้ดูแลระบบระดับกรม(สำนักโรคติดต่อทั่วไป)</span>
 	          	</li>
 	          	<li>
-	           		<input name="userposition"   id="userpostion01" type="radio" value="01"   <? if(@$rs['userposition']=='01'){echo 'checked';}?> />
+	           		<input name="userposition"   type="radio" value="01"   <? if(@$rs['userposition']=='01'){echo 'checked';}?> />
 					<span>ผู้ดูแลระบบระดับเขต</span>
 				</li>
 				<li>
-	              <input name="userposition"  id="userpostion02" type="radio" value="02" <? if(@$rs['userposition']=='02'){echo 'checked';}?> />
+	              <input name="userposition"  type="radio" value="02" <? if(@$rs['userposition']=='02'){echo 'checked';}?> />
 				 <span>ผู้ดูแลระบบระดับจังหวัด</span>
 			 	</li>      
         	<li id="pv_level02" style="display:<? if(@$rs['level_code']!='02'){?>none<? }?>">          
 	             จังหวัด <span class="alertred">*</span><?php echo form_dropdown('userprovince',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince'],' class="styled-select" id="userprovince"','-โปรดเลือก-'); ?>             
         	</li>
         	<li>
-              <input name="userposition" id="userpostion03" type="radio" value="03"  <? if(@$rs['userposition']=='03'){echo 'checked';}?> />
+              <input name="userposition"  type="radio" value="03"  <? if(@$rs['userposition']=='03'){echo 'checked';}?> />
          	  <span>ผู้ดูแลระบบระดับอำเภอ</span>
          	</li>
   			<li  id="Chk_level03" style="display:<? if(@$rs['level_code']!='03' ){?>none<? }?>">
 		        <ul  class="sublist">
-		        		<li> จังหวัด <span class="alertred">*</span><?php echo form_dropdown('userprovince2',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince2'],' class="styled-select" id="userprovince2"','-โปรดเลือก-'); ?></li>
-		        		<li>อำเภอ <span class="alertred">*</span><?php echo form_dropdown('useramphur',get_option('amp_pro_id','amphur_name','n_amphur order by amphur_name asc'),@$rs['useramphur'],' class="styled-select" id="useramphur"','-โปรดเลือก-'); ?></li>
+		        		<li> จังหวัด <span class="alertred">*</span>
+		        		<?php echo form_dropdown('userprovince2',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince2'],' class="styled-select" id="userprovince2"','-โปรดเลือก-'); ?></li>
+		        		<li>อำเภอ <span class="alertred">*</span>
+		        			<?php echo form_dropdown('useramphur',get_option('amp_pro_id','amphur_name','n_amphur order by amphur_name asc'),@$rs['useramphur'],' class="styled-select" id="useramphur"','-โปรดเลือก-'); ?></li>
 		        		<li><input type="checkbox" name="form_add"  id="form_add03" class="require_one" value="Y" <? if(@$rs['form_add']=='Y'){echo 'checked';}?> /><span> กรอกแบบฟอร์ม ร.36</span></li>
 						<li><input type="checkbox" name="form_edit"  id="form_edit03" class="require_one" value="Y" <? if(@$rs['form_edit']=='Y'){echo 'checked';}?>  /><span>แก้ไขแบบฟอร์ม ร.36 </span></li>
 			           <li><input type="checkbox" name="form_del"    id="form_del03"  class="require_one" value="Y"  <? if(@$rs['form_del']=='Y'){echo 'checked';}?> /><span>ลบแบบฟอร์ม ร.36 </span></li>
 		         </ul>
          	</li>
         <li>
-            <input name="userposition" id="userpostion04" type="radio" value="04"  <? if(@$rs['userposition']=='04'){echo 'checked';}?> />         
+            <input name="userposition"  type="radio" value="04"  <? if(@$rs['userposition']=='04'){echo 'checked';}?> />         
           	<span>ผู้ดูแลระบบระดับตำบล</span>
         </li>
   			<li  id="Chk_level04" style="display:<? if(@$rs['level_code']!='04' ){?>none<? }?>">
@@ -211,7 +213,7 @@ var ref1,ref2,ref3;
 		         </ul>
          	</li>
 		<li>
-              <input name="userposition" id="userpostion05"  type="radio" value="05"  <? if(@$rs['userposition']=='05'){echo 'checked';}?> />
+              <input name="userposition"  type="radio" value="05"  <? if(@$rs['userposition']=='05'){echo 'checked';}?> />
           		<span>Staff</span>
         </li>
         <li id="Chk_level05" style="display:<? if(@$rs['level_code']!='05' ){echo 'none'; }?>">
@@ -222,7 +224,7 @@ var ref1,ref2,ref3;
 	          </ul>
           </li>
           <li>
-              <input name="userposition"  id="userpostion06" type="radio" value="06" <? if(empty($rs['userposition'])){echo 'checked';}?>    <? if(@$rs['userposition']=='06'){echo 'checked';}?> />
+              <input name="userposition"  type="radio" value="06" <? if(empty($rs['userposition'])){echo 'checked';}?>    <? if(@$rs['userposition']=='06'){echo 'checked';}?> />
           		<span>ผู้ใช้ระบบทั่วไป</span>
           </li>
           </td> 

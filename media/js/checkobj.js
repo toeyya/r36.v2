@@ -254,33 +254,34 @@ if (win_ie_ver >= 5.5) {
 function ChkShow(){
 	var userposition=$('input[name=userposition]:checked').val()
 	if(userposition=='00'){
-		 $ ('#pv_level02,#Chk_level03,#Chk_level05,#hospital_level05').css('display','none'); 
+		 $ ('#pv_level02,#Chk_level03,#Chk_level05,#hospital_level05,#Chk_level04').css('display','none'); 
 		 $("#userprovince option[value=''],#h_province option[value=''],#h_amphur option[value=''],#hospital option[value=''],#h_district option[value='']").attr('selected', 'selected');
 		 $('#form_add03,#form_edit03,#form_del03').attr('checked',false);		 $('#form_add05,#form_edit05,#form_del05').attr('checked',false);
 
 	}else if(userposition=='01'){
-		  $('#pv_level02,#Chk_level03,#Chk_level05,#hospital_level05').css('display','none'); 
+		  $('#pv_level02,#Chk_level03,#Chk_level05,#Chk_level04,#hospital_level05').css('display','none'); 
 		  $("#userprovince option[value=''],#h_province option[value=''],#h_amphur option[value=''],#hospital option[value=''],#h_district option[value='']").attr('selected','selected');		  	  
 		  $('#form_add03,#form_edit03,#form_del03').attr('checked',false);
 		  $('#form_add05,#form_edit05,#form_del05').attr('checked',false);
 	}else if(userposition=='02'){
 		 $('#pv_level02').css('display',''); 
-		 $ ('#Chk_level03','#Chk_level05','#hospital_level05').css('display','none');
+		 $ ('#Chk_level03,#Chk_level05,#Chk_level04,#hospital_level05').css('display','none');
 	 	 $("#h_province option[value=''],#h_amphur option[value=''],#hospital option[value=''],#h_district option[value='']").attr('selected','selected');		  
 		 $('#form_add03,#form_edit03,#form_del03').attr('checked',false);
 		 $('#form_add05,#form_edit05,#form_del05').attr('checked',false);
 	}else if(userposition=='03'){
-		$('#pv_level02,#Chk_level05').css('display','none'); 		
+		$('#pv_level02,#Chk_level05,#Chk_level04').css('display','none'); 		
 		$('#Chk_level03,#hospital_level05').css('display','');	
 		$("#userprovince option[value=''],#h_province option[value=''],#h_amphur option[value=''],#hospital option[value=''],#h_district option[value='']").attr('selected','selected');					
 		$('#form_add05,#form_edit05,#form_del05').attr('checked',false);
 	}else if(userposition=='04'){
-		$('#pv_level02,#Chk_level03,#Chk_level05,#hospital_level05').css('display','none'); 	  
+		$('#pv_level02,#Chk_level03,#Chk_level05,#hospital_level05').css('display','none');
+		$('#Chk_level04,#hospital_level05').css('display','');		  
 		$("#userprovince option[value=''],#h_province option[value=''],#h_amphur option[value=''],#hospital option[value=''],#h_district option[value='']").attr('selected','selected');
 		$('#form_add03,#form_edit03,#form_del03').attr('checked',false);
 		$('#form_add05,#form_edit05,#form_del05').attr('checked',false);			  
 	}else if(userposition=='05'){
-		$('#pv_level02,#Chk_level03').css('display','none'); 
+		$('#pv_level02,#Chk_level03,#Chk_level04').css('display','none'); 
 		$('#Chk_level05,#hospital_level05').css('display',''); 
 		$("#userprovince option[value=''],#h_province option[value=''],#h_amphur option[value=''],#hospital option[value=''],#h_district option[value='']").attr('selected','selected');
 		$('#form_add03,#form_edit03,#form_del03').attr('checked',false);
