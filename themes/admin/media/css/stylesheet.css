@@ -1,0 +1,268 @@
+/********************************      Basic Structure      ********************************/
+
+html {
+				height: 100%;
+    			min-height: 100%;
+                font-size: 100%;
+                height: 100%;
+                margin-bottom: 1px; /* Always show a scrollbar to avoid jumping when the scrollbar appears  */
+              	 
+                }
+
+body {
+				height: 100%;
+    			min-height: 100%;
+               	font-family:Tahoma,Verdana,Arial,Helvetica,sans-serif;
+                color: #363636;     
+                font-size: 13px;
+             
+                }
+
+
+/********************************      Link styling      ********************************/
+a           { color: #0080ff; text-decoration: none; }
+a:hover     { color: #0080ff; text-decoration:underline; }
+a:active    { color: #0080ff; }
+a:focus     { outline: 1px; }
+
+/********************************      Login Page styling      ********************************/
+#login{width:360px; position:absolute; top:30%; left:50%; margin:0 0 0 -180px;}
+#login h1{margin:0;}
+#login .box{	padding:10px;background:#fff;border:1px solid #CCC;}
+#login table.form input[type=text],#login table.form input[type=password]{width:238px;}
+#login table,#login table th,#login table td{border:none;}
+#header{
+	background:#333;
+	background: url("../images/user_navigation.png") repeat-x scroll center bottom #323232;
+	padding:12px 0;
+	color:#fff;
+	/*border-bottom:solid 2px #7F7F7F;*/
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	z-index:1000;
+}
+#header #site-info, #header #login-info{
+	padding:2px 0;
+}
+#header #site-info{
+	float:left;
+	padding-left:10px;
+}
+#header #site-info a{font-weight:bold;}
+#header #login-info{
+	float:right;
+	display:inline;
+	padding-right:20px;
+}
+#header:after{
+	clear:both;
+}
+
+#container{
+	height: 100%;
+    min-height: 100%;
+	width:100%;
+
+}
+#container h1{padding:10px;background:#0080c0;color:#fff;font-size:16px;}
+/********************************      Menu styling      ********************************/
+#menu{position:absolute;width:230px;top:0;bottom:0; background:#EEEEEC;}
+
+ul.menu {padding:45px 0 0 0; line-height:20px;}
+ul.menu li, ul.menu li span.header a{margin:0;color:#fff;background-color:#EEEEEC;}
+ul.menu li a:link, ul.menu li a:visited{padding:8px 10px;text-decoration:none;color:#fff;display:block;background: url("../images/menu_bg.png") repeat-x scroll 0 0;}
+ul.menu li:hover > a{background: url("../images/menu_bg_over.png") repeat-x scroll 0 0 #0F3854;}
+/*ul.menu li.active,ul.menu li.active a{background:#ccc;}*/
+
+ul.menu li.sub ul{margin:0 0px 0 10px;}
+ul.menu li.sub ul li a{margin:0;background:#ddd;color:#fff;background-color:#F1F6F9;border-bottom:0px solid #f3f4f2;border-top:0px solid #f4f4f4;background: url("../images/menu2_bg.png") repeat-x scroll 0 0 #1c699d;}
+ul.menu li.sub ul li:hover > a{background: url("../images/menu2_bg_over.png") repeat-x scroll 0 0 #0F3854;}
+
+ul.menu li.sub ul li ul li a{margin:0;color:#777;background: url("../images/menu3_bg.png") repeat-x scroll 0 0 #1c699d;border-bottom:1px solid #d3d3d3;}
+ul.menu li.sub ul li ul li:hover > a{background: url("../images/menu3_bg_over.png") repeat-x scroll 0 0 #0F3854;border-bottom:1px solid #a8b9ce;}
+
+#content{margin:0 0 0 231px;padding:45px 10px 0 10px;}
+#content h1{margin:0 0 15px;padding:10px;background:#0080c0;color:#fff;font-size:16px;background: url("../images/maintitle.png") repeat-x scroll center top #2C5687;}
+#content h1 a{color:#FFF;}
+
+.search{padding:5px;background:#FFFEEE; margin:-10px 0 15px 0; border:solid 1px #CEC980; text-align:center;}
+
+.avatar{padding:2px; border:solid 1px #CCC; background:#EEE;}
+
+.lang a.active{text-decoration:underline;}
+
+#gallery-list td,#weblinks-list td{
+	vertical-align:middle;
+}
+
+#gallery-list img,#gallery_form img,#weblinks-list img,#weblink-form img{
+max-height:60px;
+max-width:90px;
+}
+
+/* custome event */
+.e-blue, .e-blue a {
+	border-style: solid; 
+	border-color: #36c; 
+	background-color: #36c; 
+	color: #fff;
+} 
+.e-blue a:hover {
+	background:#0080ff;
+}
+
+.e-red, .e-red a {
+	border-style: solid; 
+	border-color: #b42d05; 
+	background-color: #b42d05; 
+	color: #fff;
+} 
+.e-red a:hover {
+	background:#db3606;
+}
+
+.e-green, .e-green a {
+	border-style: solid; 
+	border-color: #008000;
+	background-color: #008000; 
+	color: #fff;
+} 
+.e-green a:hover {
+	background:#009f00;
+}
+
+.e-violet, .e-violet a {
+	border-style: solid; 
+	border-color: #6666ff;
+	background-color: #6666ff; 
+	color: #fff;
+} 
+.e-violet a:hover {
+	background:#8080ff;
+}
+.flag{display:block; float:left; width:24px; height:24px; overflow:hidden; text-indent:1000%; padding:0 3px; margin:0 0 0 5px; }
+.flag.th{background:url(../images/th.png) center center no-repeat;}
+.flag.en{background:url(../images/en.png) center center no-repeat;}
+.flag.active{background-color:#0080C0;}
+.trlang{ border:0;border-bottom:solid 3px #0080C0;}
+table.form .trlang td, .form .trlang th{padding:0; border:0;}
+
+/*
+*  Caution Bar - jQuery plugin
+*
+*  Copyright (c) 2009-2010 Sikarin Engkased
+*
+*  Licensed under the MIT license:
+*  http://www.opensource.org/licenses/mit-license.php
+*  
+*  Version: 0.1
+*
+*  Project home:
+*  http://www.jax.in.th/
+*/
+
+/*************** Cautions ***************/
+
+.caution {
+                position: relative;
+                padding: 0;
+                border: 1px solid;
+                background-position: 10px 11px !important;
+                background-repeat: no-repeat !important;
+                font-size: 13px;
+				-moz-border-radius: 6px;
+                -webkit-border-radius: 6px;
+				border-radius: 6px;
+				display:inline-block;
+				cursor:pointer;
+                }
+                
+
+.caution.attention {
+                background: #fffbcc url('../images/exclamation.png') 10px 11px no-repeat;
+                border-color: #e6db55;
+                color: #666452;
+                }
+
+.caution.information {
+                background: #dbe3ff url('../images/information.png');
+                border-color: #a2b4ee;
+                color: #585b66;
+                }
+
+.caution.success{
+                background: #d5ffce url('../images/tick_circle.png');
+                border-color: #9adf8f;
+                color: #556652;
+                }
+
+.caution.error{
+                background: #ffcece url('../images/cross_circle.png');
+                border-color: #df8f8f;
+                color: #665252;
+                }
+
+.caution .box {
+                font-style:normal;
+                padding: 10px 10px 10px 36px;
+                line-height: 1.5em;
+                }
+.caution .comment{display:none;}
+.caution .close {
+                color:#990000;
+                font-size:9px;
+                position:absolute;
+                right:5px;
+                top:5px;
+                }
+#dashboard table.form{width:100%; margin:0 0 10px;}
+#dashboard table.form th{text-align:left; border-bottom:1px dashed #CCC;}
+#dashboard table.form td{text-align:right;  border-bottom:1px dashed #CCC;}
+#dashboard{padding:0 0 10px;}
+label.error{color:#900; margin:0 0 0 5px;}
+.add_option{padding:5px 0; display:none;}
+.edit_option{padding:5px 0; display:none;}
+
+.poll-bar {
+    background: none repeat scroll 0 0 #DDDDDD;
+}
+.poll-foreground {
+    background: none repeat scroll 0 0 #FDB8EE;
+    height: 10px;
+}
+.poll-percent {
+    text-align: right;
+}
+.poll-text {
+    text-align: center;
+}
+.poll-result {
+    margin: 5px 0 0;
+}
+.poll-sum {
+    padding: 5px 0 0;
+    text-align: center;
+}
+table.form2{width:100%;}
+table.form2 th {
+    border-color: #CCCCCC #CCCCCC #CCCCCC #6BA7D3;
+    border-style: solid;
+    border-width: 1px 0 1px 2px;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 5px;
+    text-align: left;
+    width: 30%;
+}
+table.form2 td {
+    border: 1px solid #CCCCCC;
+    color: #595959;
+    height: 35px;
+    line-height: 20px;
+    padding: 5px;
+    vertical-align: middle;
+    width: 70%;
+}
