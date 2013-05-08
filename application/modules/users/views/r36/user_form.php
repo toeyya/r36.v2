@@ -36,27 +36,27 @@ var ref1,ref2,ref3;
 		if(userposition=="03"  || userposition=="04" || userposition=="05"){		
 			$.validator.addMethod('require_one', function(value) {
 			    return $('input[name=userposition]:checked').closest('li').next().find('.require_one:checked').size() > 0;
-			}, 'กรุณาระบุอย่างน้อยหนึ่งค่ะ');		
-			var checkboxes = $('.require_one');
-			checkbox_names = $.map(checkboxes, function(e, i) {
-			    return $(e).attr("name")
-			}).join(" ");		
+			}, 'กรุณาระบุอย่างน้อยหนึ่งค่ะ');	
+			$('input[name=userposition]:checked').closest('li').next().find('.require_one').rules("add",{require_one: true});					
+		}else{
+			$('input[name=form_add]').rules("remove", "require_one");
+			$('input[name=form_edit]').rules("remove", "require_one");
+			$('input[name=form_del]').rules("remove", "require_one");
 		}							
+	});
+	$.validator.setDefaults({
+		submitHandler: function() {document.form1.submit();}
 	});	
 	$("#form1").validate({
-		 debug:true,
 		 groups: {
-    			groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4",
-    			checks:"form_add form_edit form_del"
+    			groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
+    			,checks:"form_add form_edit form_del"
   		},		
 		rules:{
-				form_add:{require_one:true},
-				form_edit:{require_one:true},
-				form_del:{require_one:true},
-				telephone:{required:true,number:true, rangelength: [6, 9]},
-				mobile:{required:true,number:true, rangelength: [9, 10]},
-	 			cardW0:{ required: true, number:true},cardW1:{ required: true, number:true},cardW2:{ required: true, number:true},cardW3:{ required: true, number:true},
-		 		cardW4:{ required: true, number:true,		
+				telephone:{required:true,number:true, rangelength: [6, 9]}
+				,mobile:{required:true,number:true, rangelength: [9, 10]}
+	 			,cardW0:{ required: true, number:true},cardW1:{ required: true, number:true},cardW2:{ required: true, number:true},cardW3:{ required: true, number:true}
+		 		,cardW4:{ required: true, number:true,		
 		 			remote:{
 		 				url:'<?php echo base_url(); ?>inform/chk_idcard',
 				        data: {
@@ -64,8 +64,8 @@ var ref1,ref2,ref3;
 				          digit_last:function(){return $('#cardW4').val(); }
 				        }
 		 			}		 		
-		 		}, 			 					
-				userfirstname:"required",usersurname:"required"
+		 		}			 					
+				,userfirstname:"required",usersurname:"required"
 				,userprovince:{ required: {depends: function(element) {return $('#userposition00:checked').val() =='02' }}}
 				,userprovince2:{required:{depends:function(element){return $('#userposition01:checked').val()=="03"}}}
 				,useramphur:{required:{depends:function(element){return $('#userposition02:checked').val()=="03"}}}
@@ -76,41 +76,32 @@ var ref1,ref2,ref3;
 				,usermail:{
 					required:true,email:true,
 					remote:{url:'<?php echo base_url() ?>users/r36/users/check_email',data:{uid:function(){return $('#uid').val()}}}					
-				},
-				userpassword:"required",
-				repassword:{required:true, equalTo: "#userpassword"},
-				username:{
+				}
+				,userpassword:"required"
+				,repassword:{required:true, equalTo: "#userpassword"}
+				,username:{
 					required:true,
 					remote:{url :"<?php echo base_url() ?>users/r36/users/check_username",data:{uid:function(){return $("#uid").val()}}}
 				}			
 		},
 		messages:{
-			   telephone:{
-			   		required:"กรุณาระบุค่ะ",
-			   		number:"กรุณาระบุเฉพาะตัวเลขค่ะ",
-			   		rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้นค่ะ"
-			   },
-			   mobile:{
-			   		required:"กรุณาระบุค่ะ",
-			   		number:"กรุณาระบุเฉพาะตัวเลขค่ะ",
-			   		rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้นค่ะ"			   	
-			   },
-				cardW0:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 		cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 		cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 		cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 		cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}	
+			    telephone:{required:"กรุณาระบุค่ะ",number:"กรุณาระบุเฉพาะตัวเลขค่ะ",rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้นค่ะ"}
+			    ,mobile:{required:"กรุณาระบุค่ะ",number:"กรุณาระบุเฉพาะตัวเลขค่ะ",rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้นค่ะ"}
+				,cardW0:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
+		 		,cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
+		 		,cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
+		 		,cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
+		 		,cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}	
 				,userfirstname:" กรุณาระบุด้วยค่ะ",usersurname:" กรุณาระบุด้วยค่ะ"
 				,userprovince:" กรุณาระบุด้วยค่ะ",useramphur:" กรุณาระบุด้วยค่ะ",userdistrict:" กรุณาระบุด้วยค่ะ"
 				,userprovince2:" กรุณาระบุด้วยค่ะ"
 				,usermail:{required:" กรุณาระบุด้วยค่ะ",email:" ระบุไม่ถูกต้องค่ะ"}
-				,h_province:" กรุณาระบุด้วยค่ะ",h_amphur:" กรุณาระบุด้วยค่ะ",h_district:"กรุณาระบุด้วยค่ะ",hospital:" กรุณาระบุด้วยค่ะ",
-				userpassword:" กรุณาระบุด้วยค่ะ",
-				repassword:{required:" กรุณาระบุด้วยค่ะ",equalTo: " ระบุ password ไม่ถูกต้องค่ะ"},
-				username:{required:" กรุณาระบุด้วยค่ะ",remote:" ชื่อ Username ซ้ำ กรุณาตรวจสอบ"}
+				,h_province:" กรุณาระบุด้วยค่ะ",h_amphur:" กรุณาระบุด้วยค่ะ",h_district:"กรุณาระบุด้วยค่ะ",hospital:" กรุณาระบุด้วยค่ะ"
+				,userpassword:" กรุณาระบุด้วยค่ะ"
+				,repassword:{required:" กรุณาระบุด้วยค่ะ",equalTo: " ระบุ password ไม่ถูกต้องค่ะ"}
+				,username:{required:" กรุณาระบุด้วยค่ะ",remote:" ชื่อ Username ซ้ำ กรุณาตรวจสอบ"}
 		},
-		errorPlacement: function(error, element){	
-						    
+		errorPlacement: function(error, element){							    
         		 if (element.attr("name") == "cardW0"  || element.attr("name") == "cardW1" 	|| element.attr('name') == "cardW2" || element.attr('name')=="cardW3" || element.attr('name')=="cardW4") error.insertAfter("#cardW4");
         		 else if(element.attr("name")=="form_add" || element.attr("name")=="form_edit" || element.attr('name')=="form_del") $("input[name=form_del]").closest("li").append(error);
         		 else error.insertAfter(element);
@@ -136,7 +127,7 @@ var ref1,ref2,ref3;
 });// document
 </script>
 <div id="title"><?php echo $title; ?></div>
-<form name="form1" id="form1" action="user/save" enctype="multipart/form-data" method="post" >
+<form name="form1" id="form1" action="users/r36/users/save" enctype="multipart/form-data" method="post" >
 <input name="uid" id="uid" type="hidden" value="<?php echo @$rs['uid']?>" />			
 <table  class="tbform">
   <tr>
@@ -158,7 +149,7 @@ var ref1,ref2,ref3;
   </tr>
   <tr>
     <th>อีเมล์ <span class="alertred">*</span></th>
-    <td><input name="usermail" type="text" class="input_box_patient " id="usermail" value="<?php echo @$rs['usermail'];?>" size="30"></td>
+    <td><input name="usermail" type="text" class="input_box_patient " id="usermail" value="<?php echo @$rs['usermail'];?>" size="50" style="width:230px"></td>
   </tr>
   <tr>
   	<th>เบอร์ออฟฟิต <span class="alertred">*</span></th>
@@ -311,5 +302,5 @@ var ref1,ref2,ref3;
         </td>
   </tr>
 </table>
- <div class="btn_inline"><ul><li><button class="btn_save" type="submit"></button></li><li><button class="btn_cancel"></button></li></ul></div>   
+ <div class="btn_inline"><ul><li><button class="btn_save" name="btn_save" type="submit"></button></li><li><button class="btn_cancel" name="btn_cancel"></button></li></ul></div>   
 </form>

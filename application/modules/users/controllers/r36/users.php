@@ -64,14 +64,19 @@ class Users extends R36_Controller
 	function save()
 	{
 		if($_POST){
-			$this->user->save();
+			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];		
+			$this->user->save($_POST);
+			set_notify('success',SAVE_DATA_COMPLETE);
 		}
-		set_notify('success',SAVE_DATA_COMPLETE);
+		redirect('users/r36/users');
 	}
 	
-	function delete(){	
-		$this->db->Execute("DELETE FROM n_user WHERE uid in(".$_GET['id'].")");			
-		
+	function delete(){
+		if(!empty($_GET['id'])){
+			$this->db->Execute("DELETE FROM n_user WHERE uid in(".$_GET['id'].")");
+			set_notify('success',SAVE_DATA_COMPLETE);		
+		}
+		redirect('users/r36/users');	
 	}
 	function popup(){
 			$this->template->set_layout('blank');		
