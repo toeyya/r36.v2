@@ -10,8 +10,8 @@
 												<th>สถานที่</th>
 												
 										  </tr>
-										  <? 		$this->db->debug=TRUE;								
-										 $result=$this->db->Execute("select * from n_vaccine where information_id='".@$rs['id']."' ORDER BY vaccine_id ASC");																	
+										  <? 							
+										$result=(!empty($rs['id'])) ? $this->db->Execute("select * from n_vaccine where information_id='".$rs['id']."' ORDER BY vaccine_id ASC"):"";																	
 										$key=4;
 										$vaccine_id=array('','','','','');
 										$vaccine_date=array('','','','','');
