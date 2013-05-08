@@ -1,0 +1,193 @@
+/* menutop */
+#topmenu { float:left;font-size:14px;padding-left:8px; position:relative;background:url(../images/topmenu_tb_bg.png);
+					margin-top:7px;}
+#topmenu ul {clear:left; float:left; list-style:none; margin:0; padding:0;  text-align:center; height:35px;}
+#topmenu ul li { display:block; float:left; list-style:none; margin:0; padding-top:4px;font-weight:bold;}
+#topmenu-left{background:url(../images/topmenu_tb_left.png) no-repeat; width:14px;height:35px;float:left;margin-top:7px;margin-left:10px;}
+#topmenu-right{background:url(../images/topmenu_tb_right.png) no-repeat; width:14px;height:35px;float:left;margin-top:7px;}
+.line_topmenu1 { height:17px; border-right:3px solid #e31788;width:125px;}
+.line_topmenu1 a {width:125px;display:inline-block; padding:5px 0px; color:#737272; text-decoration:none;}
+.line_topmenu1 a:hover {display:inline-block;color:#e00360; background:url(../images/bghover1_topmenu.png) no-repeat; background-position: 0px 3px ;}
+
+.line_topmenu3 { height:17px; border-right:3px solid #e31788;width:141px;}
+.line_topmenu3 a {width:141px;display:inline-block; padding:5px 0px; color:#737272; text-decoration:none;}
+.line_topmenu3 a:hover { color:#e00360;  background:url(../images/bghover3_topmenu.png) no-repeat; background-position: 0px 3px;}
+
+.line_topmenu4 { height:17px; border-right:3px solid #e31788;width:120px;}
+.line_topmenu4 a {width:109px;display:block; padding:5px 0px; color:#737272; text-decoration:none;}
+.line_topmenu4 a:hover { color:#e00360;  background:url(../images/bghover4_topmenu.png) no-repeat; background-position: 0px 3px ;}
+
+.line_topmenu9 { height:17px;}
+.line_topmenu9 a {display:block; padding:5px 0px; width:86px; color:#737272; text-decoration:none;}
+.line_topmenu9 a:hover {display:block; color:#e00360; background:url(../images/bghover1_topmenu.png) no-repeat; background-position: 0px 3px ;}
+
+
+			/**************************** Submenu ผู้ใช้ระบบ ****************************/
+
+			.line_topmenu1 > ul > li { float: left; margin-left: 15px; position: relative;}
+			.line_topmenu1 > ul > li > a {display:block; padding:5px 0px; width:86px; color:#737272; text-decoration:none;}
+			/**************************** Submenu กรอกแบบฟอร์ม********************/
+			.line_topmenu4 > ul > li { float: left; margin-left: 15px; position: relative;}
+			.line_topmenu4 > ul > li > a {display:block; padding:5px 0px; width:220px; color:#737272; text-decoration:none;}
+
+
+			#toplevel > ul > li > ul.submenu4 { opacity: 0; visibility:hidden; padding: 7px 0 15px 10px; background-color: rgb(227,23,136); text-align:left; 
+			/*position: absolute; top: 55px;left: 404px;*/
+			margin-top:4px;
+			margin-left:-18px;
+			width: 184px; height:auto;		
+			-webkit-transition: all .3s .1s;
+			   -moz-transition: all .3s .1s;
+				 -o-transition: all .3s .1s;
+					transition: all .3s .1s;
+			-webkit-border-radius: 5px;
+			   -moz-border-radius: 5px;
+					border-radius: 5px;
+			-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+			   -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+					box-shadow: 0px 1px 3px rgba(0,0,0,.4);}
+
+			#toplevel > ul > li:hover > ul.submenu4 { opacity: 1;  top: 47px; visibility: visible;}
+			#toplevel > ul > li > ul.submenu4:before{content: ''; 
+				border-color: transparent transparent rgb(227,23,136) transparent; border-style: solid; 
+				 border-width: 10px; 				
+				 display: inline-block;
+				 margin-top:-27px;
+				 margin-bottom:10px;
+				 margin-left:70px;
+				 z-index:9;
+				 }
+			#toplevel > ul ul.submenu4 > li { position: relative;}
+
+			#toplevel ul ul.submenu4 a{color:white; font-size: 13px;  padding: 2px 2px;  display: block; background:tranparent; width: 220px;
+			-webkit-transition: background-color .1s;
+			   -moz-transition: background-color .1s;
+				 -o-transition: background-color .1s;
+					transition: background-color .1s;}
+
+			#toplevel ul ul.submenu4 a:hover {color:white; text-decoration:underline; background-image:none;}
+
+
+			/**************************** Submenu ข้อมูลสถานพยาบาล********************/
+
+			.line_topmenu3 > ul > li { float: left; margin-left: 15px; position: relative;}
+			.line_topmenu3 > ul > li > a {display:block; padding:5px 0px; width:150px; color:#737272; text-decoration:none;}
+
+			#toplevel > ul > li > ul.submenu5 { opacity: 0; visibility:hidden; padding: 7px 0 25px 10px; background-color: rgb(227,23,136); text-align: left; 
+				margin-top:4px;
+				margin-left:-15px;
+				width: 162px; height:auto;
+			-webkit-transition: all .3s .1s;
+			   -moz-transition: all .3s .1s;
+				 -o-transition: all .3s .1s;
+					transition: all .3s .1s;
+			-webkit-border-radius: 5px;
+			   -moz-border-radius: 5px;
+					border-radius: 5px;
+			-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+			   -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+					box-shadow: 0px 1px 3px rgba(0,0,0,.4);}
+
+			#toplevel > ul > li:hover > ul.submenu5 { opacity: 1;  top: 47px; visibility: visible;z-index:10}
+			#toplevel > ul > li > ul.submenu5:before{content: ''; 
+				border-color: transparent transparent rgb(227,23,136) transparent; border-style: solid;  border-width: 10px; 
+				display: inline-block;
+				 margin-top:-27px;
+				 margin-bottom:10px;
+				 margin-left:64px;}
+			#toplevel > ul ul.submenu5 > li { position: relative;}
+
+			#toplevel ul ul.submenu5 a{color:white; font-size: 13px;  padding: 2px 2px;  display: block; background:tranparent;
+			-webkit-transition: background-color .1s;
+			   -moz-transition: background-color .1s;
+				 -o-transition: background-color .1s;
+					transition: background-color .1s;}
+
+			#toplevel ul ul.submenu5 a:hover {color:white; text-decoration:underline; background-image:none;}
+
+
+
+			#toplevel > ul > li > ul.submenu8 { opacity: 0; visibility:hidden; padding: 7px 0 25px 10px; background-color: rgb(227,23,136); text-align: left; 
+			margin-top:4px;
+			margin-left:-18px;
+			width: 190px; height:auto;
+			-webkit-transition: all .3s .1s;
+			   -moz-transition: all .3s .1s;
+				 -o-transition: all .3s .1s;
+					transition: all .3s .1s;
+			-webkit-border-radius: 5px;
+			   -moz-border-radius: 5px;
+					border-radius: 5px;
+			-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+			   -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+					box-shadow: 0px 1px 3px rgba(0,0,0,.4);}
+
+			#toplevel > ul > li:hover > ul.submenu8 { opacity: 1;  top: 47px; visibility: visible;z-index:10;}
+			#toplevel > ul > li > ul.submenu8:before{content: ''; 
+				border-color: transparent transparent rgb(227,23,136) transparent; border-style: solid;  border-width: 10px;
+				display: inline-block;
+				 margin-top:-27px;
+				 margin-bottom:10px;
+				 margin-left:64px;}
+			#toplevel > ul ul.submenu8 > li { position: relative;}
+
+			#toplevel ul ul.submenu8 a{color:white; font-size: 13px;  padding: 2px 2px;  display: block; background:tranparent;
+			width:358px;
+			-webkit-transition: background-color .1s;
+			   -moz-transition: background-color .1s;
+				 -o-transition: background-color .1s;
+					transition: background-color .1s;}
+
+			#toplevel ul ul.submenu8 a:hover {color:white; text-decoration:underline; background-image:none;}
+
+			#toplevel > ul > li > ul >li >ul.submenu8-1 { opacity: 0; visibility:hidden; padding: 7px 0 25px 10px; background-color: rgb(227,23,136); text-align: left; position: absolute; top: 55px;
+				left: 178px; width: 358px; height:auto;
+			-webkit-transition: all .3s .1s;
+			   -moz-transition: all .3s .1s;
+				 -o-transition: all .3s .1s;
+					transition: all .3s .1s;
+			-webkit-border-radius: 5px;
+			   -moz-border-radius: 5px;
+					border-radius: 5px;
+			-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+			   -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+					box-shadow: 0px 1px 3px rgba(0,0,0,.4);}
+			#toplevel > ul > li > ul >li:hover>ul.submenu8-1{ opacity: 1;  top: 5px; visibility: visible;z-index:100;}
+			#toplevel > ul ul.submenu8  ul.submenu8-1 > li { position: relative;width:180px;}
+			/**************************** Submenu help********************/
+
+			.line_topmenu9 > ul > li { float: left; margin-left: 15px; position: relative;}
+			.line_topmenu9 > ul > li > a {display:block; padding:5px 0px; width:100%; color:#737272; text-decoration:none;}
+			
+
+			#toplevel > ul > li > ul.submenu9 { opacity: 0; visibility:hidden; padding: 7px 0 25px 10px; background-color: rgb(227,23,136); text-align: left; 
+			margin-top:4px;
+			margin-left:-18px;			
+			width: 256px; height:auto;
+			-webkit-transition: all .3s .1s;
+			   -moz-transition: all .3s .1s;
+				 -o-transition: all .3s .1s;
+					transition: all .3s .1s;
+			-webkit-border-radius: 5px;
+			   -moz-border-radius: 5px;
+					border-radius: 5px;
+			-webkit-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+			   -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
+					box-shadow: 0px 1px 3px rgba(0,0,0,.4);}
+
+			#toplevel > ul > li:hover > ul.submenu9 { opacity: 1;  top: 47px; visibility: visible;z-index:10;}
+			#toplevel > ul > li > ul.submenu9:before{content: '';
+				border-color: transparent transparent rgb(227,23,136) transparent; border-style: solid;  border-width: 10px; 
+				display: inline-block;
+				 margin-top:-27px;
+				 margin-bottom:10px;
+				 margin-left:64px;}
+			#toplevel > ul ul.submenu9 > li { position: relative;}
+
+			#toplevel ul ul.submenu9 a{color:white; font-size: 13px;  padding: 2px 2px;  display: block; background:tranparent;
+			-webkit-transition: background-color .1s;
+			   -moz-transition: background-color .1s;
+				 -o-transition: background-color .1s;
+					transition: background-color .1s;}
+
+			#toplevel ul ul.submenu9 a:hover {color:white; text-decoration:underline; background-image:none;}
