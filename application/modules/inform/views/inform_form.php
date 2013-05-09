@@ -97,40 +97,16 @@ function  disableChkage(){
 }
 
 $(document).ready(function(){
-	/*$( "#accordion" ).accordion({
-            heightStyle: "content"
-        });*/
+	/*$( "#accordion" ).accordion({heightStyle: "content" });*/
      $('#multiAccordion').multiAccordion({
             heightStyle: "content"
         });
-	$.datepick.regional['th'] = {
-		clearText: 'ลบ', clearStatus: '',
-		closeText: 'ปิด', closeStatus: '',
-		prevText: '&laquo;&nbsp;ย้อน', prevStatus: '',
-		prevBigText: '&#x3c;&#x3c;', prevBigStatus: '',
-		nextText: 'ถัดไป&nbsp;&raquo;', nextStatus: '',
-		nextBigText: '&#x3e;&#x3e;', nextBigStatus: '',
-		currentText: 'วันนี้', currentStatus: '',
-		monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
-		monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
-		monthStatus: '', yearStatus: '',
-		weekHeader: 'Sm', weekStatus: '',
-		dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
-		dayNamesShort: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-		dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
-		dayStatus: 'DD', dateStatus: 'D, M d',
-		dateFormat: 'yy/mm/dd', firstDay: 0,
-		initStatus: '', isRTL: false,
-		beforeShow: calculateShow,
-		onClose: calculateClose,
-		showMonthAfterYear: false, yearSuffix: ''};		
-		$.datepick.setDefaults($.datepick.regional['th']);			
 
 var process='<?php echo $process ?>';
 if(process=='view'){
 	$('#form1').find('input,select').attr('disabled','disabled');
 }
-$('.datepicker').datepick({format: 'Y-m-d', showOn: 'both', buttonImageOnly: true, buttonImage: 'js/jquery/jquery.datepick/calendar.gif' },$.datepick.regional['th']);  
+
 $('input[name=means]').change(show_hide_clear_means);		
 $('input[name=chkage]').attr('disabled',true);
 $('select[name=prefix_name]').change(disableChkage);
@@ -283,7 +259,7 @@ $('select[name=prefix_name]').click(disableChkage);
 				}//vaccine		
 			}	//submitHandler			
 	  });// validator.setDefaults		
-	$('#headanimal').click(function(){ $("#headanimalplace").valid();	}); 
+	$('#headanimal').click(function(){ $("#headanimalplace").valid();}); 
 	$('#putdrug').click(function(){$('input[name=putdrugdetail]').valid();});
 	$('#historyprotect').click(function(){ $('input[name=historyprotectdetail]').valid();});
 	$('#washbefore').click(function(){$('input[name=washbeforedetail]').valid();});
@@ -303,9 +279,7 @@ $('select[name=prefix_name]').click(disableChkage);
 			statusanimal:"required",historyvacine:"required",historyprotect:"required",use_rig:"required",means:"required",placetouch:"required"	,
 			headanimalplace:{required: "#headanimal:checked" },putdrugdetail:{required: "#putdrug:checked"},
 			historyprotectdetail:{required:'#historyprotect:checked'},washbeforedetail:{required:'#washbefore:checked'},
-			causedetail:{required:'#reasonbite:checked'},causetext:{required:'#causedetail_other:checked'},
-		
-			
+			causedetail:{required:'#reasonbite:checked'},causetext:{required:'#causedetail_other:checked'},					
 		},
 		messages:{
 			firstname:"ระบุชื่อ",surname:"ระบุนามสกุล",
@@ -401,7 +375,15 @@ $('select[name=prefix_name]').click(disableChkage);
 			$(this).addClass('checkvaccine-check').next().remove();			
 			$('<img src="media/images/checkmark.png" width="16px" height="16px;" class="check">').insertAfter($(this));			
 		}
-	})
+	});
+	$('#checkall').toggle(
+		function(){
+			$('.checkorder').attr('checked','checked');
+		},
+		function(){
+			$('.checkorder').removeAttr('checked');
+		}
+	)
 });
 
 </script>
@@ -1805,6 +1787,7 @@ $('select[name=prefix_name]').click(disableChkage);
                                 <td colspan="3" align="center">
 									<table  id="meanstr"  class="tbvaccine"<? if(@$rs['means']=='3' || @$rs['means']==''){ print "style='display:none'";}?>>
 										  	<tr>
+										  		<th width="1%"><a href="javascript:void();" name="checkall" id="checkall">ทั้งหมด</a></th>
 												<th>ครั้งที่ </th>
 												<th>วันที่ฉีด</th>
 												<th>ชื่อวัคซีน</th>
@@ -1855,6 +1838,7 @@ $('select[name=prefix_name]').click(disableChkage);
 												echo form_hidden('vaccine_id',$vaccine_id[$i]);
 										  ?>
 										  <tr>
+										  		<td><input type="checkbox" name="check_order[<?php echo $i ?>]" id="check_order[<?php echo $i ?>]" value="1" class="checkorder"></td>
 												<td><?php echo $i+1;?></td>
 												<td>
 													<input name="vaccine_date[<?php echo $i?>]" type="text" size="10" class="input_box_patient auto datepicker" id="vaccine_date[<?php echo $i?>]" readonly="" value="<?php echo $vaccine_date[$i];?>"

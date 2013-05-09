@@ -3,6 +3,7 @@
 function login($username=FALSE,$password=FALSE,$remember=FALSE) 
 {
 	$CI =& get_instance();
+	
 	if($username=='' && $password=='' && $remember=="1")
 	{	
 		$CI->session->set_userdata('nologin','nologin');
@@ -13,7 +14,6 @@ function login($username=FALSE,$password=FALSE,$remember=FALSE)
 				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
 				WHERE n_user.username= ?  AND n_user.userpassword= ? ";
 	$rs = $CI->db->GetRow($sql,array($username,$password));		
-	
 	if($rs)
 	{
 		$CI->session->set_userdata('R36_UID',$rs['uid']);

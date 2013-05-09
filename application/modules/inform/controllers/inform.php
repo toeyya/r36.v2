@@ -13,8 +13,7 @@ class Inform extends R36_Controller
 		
 	}
 	function index()
-	{
-		//$this->db->debug=true;	
+	{		
 		if($this->session->userdata('R36_LEVEL')=="05"){				
 				 $_GET['hospitalcode']=$this->session->userdata('R36_HOSPITAL');
 				 $rs=$this->hospital->get_row("hospital_code",$_GET['hospitalcode']);
@@ -22,7 +21,7 @@ class Inform extends R36_Controller
 				 $_GET['hospital_amphur_id'] = $rs['hospital_amphur_id'];
 				 $_GET['hospital_district_id'] = $rs['hospital_district_id'];		
 		}	
-		if(empty($_GET['btn_submit']))
+		if(isset($_GET['btn_submit']))
 		{// กดค้นหา					
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
@@ -99,8 +98,7 @@ class Inform extends R36_Controller
 			$data['idcard']=(!empty($_GET['idcard']))?@$_GET['idcard']:'';
 			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';		
 			$this->template->build('inform_index',$data);
-		}else{
-			
+		}else{			
 			$this->template->build('inform_index');
 		}
 	
