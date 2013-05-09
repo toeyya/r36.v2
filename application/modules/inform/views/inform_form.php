@@ -379,11 +379,21 @@ $('select[name=prefix_name]').click(disableChkage);
 	$('#checkall').toggle(
 		function(){
 			$('.checkorder').attr('checked','checked');
+			$('.byplace').children().val($('select[name=hospital] option:selected').text());
 		},
 		function(){
 			$('.checkorder').removeAttr('checked');
+			$('.byplace').children().val('');
 		}
 	)
+	$('.checkorder').click(function(){
+		if($(this).is(':checked')){
+			$(this).closest("td").siblings('.byplace').children().val($('select[name=hospital] option:selected').text());
+		}else{
+			$(this).closest("td").siblings('.byplace').children().val('');
+		}
+		
+	})
 });
 
 </script>
@@ -1795,8 +1805,7 @@ $('select[name=prefix_name]').click(disableChkage);
 												<th>ขนาด(c.c)</th>
 												<th>จำนวนจุดที่ฉีด</th>
 												<th>ชื่อผู้ฉีด</th>
-												<th>สถานที่</th>
-												
+												<th>สถานที่</th>												
 										  </tr>
 										  <? 						
 											$result=(!empty($rs['id'])) ? $this->db->Execute("select * from n_vaccine where information_id='".$rs['id']."' ORDER BY vaccine_id ASC"):"";																																		
@@ -1866,8 +1875,8 @@ $('select[name=prefix_name]').click(disableChkage);
 												<td>
 													<input name="byname[<?php echo $i?>]" type="text" class="checkvaccine" id="byname[<?php echo $i?>]" value="<?php echo $byname[$i]?>" size="10"  <? if($byname[$i]!='' && $process=='vaccine'){echo 'disabled';} ?>>
 												</td>
-												<td >
-													<input name="byplace[<?php echo $i?>]" type="text" readonly="readonly" id="byplace[<?php echo $i?>]" value="<?php echo (!empty($rs['id'])) ? $hospital_name :$byplace[$i];?>" size="20" <? if($byplace[$i]!="" && $process=='vaccine'){echo 'disabled';} ?>></td>
+												<td class="byplace">
+													<input name="byplace[<?php echo $i?>]" type="text"  readonly="readonly" id="byplace[<?php echo $i?>]" value="<?php echo $byplace[$i] ?>" size="20" <? if($byplace[$i]!="" && $process=='vaccine'){echo 'disabled';} ?>></td>
 										  </tr>
 										  <?  
 										  }
