@@ -390,10 +390,20 @@ $('select[name=prefix_name]').click(disableChkage);
 	$('#editidcard').colorbox({iframe:true, innerWidth:500, innerHeight:425,href:'inform/chk_idcard_edit?historyid='+$('input[name=historyid]').val()});
 
 	if($('input[name=idcard]').val()!=""){
-		$('#cardW0,#cardW1,#cardW2,#cardW3,#cardW4').attr('disabled',true)
+		$('#cardW0,#cardW1,#cardW2,#cardW3,#cardW4').attr('disabled',true)	
 	}
-
+	$('.checkvaccine').blur(function(){
+		$(this).removeClass('checkvaccine-cross').removeClass('checkvaccine-check');	
+		if($(this).val()==null || $(this).val()=='' || $(this).val()=='undefined'){					
+			$(this).addClass('checkvaccine-cross').next().remove();	
+			$('<img src="media/images/crossmark.png" width="16px" height="16px;" class="cross">').insertAfter($(this));
+		}else{
+			$(this).addClass('checkvaccine-check').next().remove();			
+			$('<img src="media/images/checkmark.png" width="16px" height="16px;" class="check">').insertAfter($(this));			
+		}
+	})
 });
+
 </script>
 
 
@@ -533,8 +543,8 @@ $('select[name=prefix_name]').click(disableChkage);
 						onKeyPress="return NumberOnly();" onKeyUp="if(this.value.length==1){FChkCardID(this.form);}" <?php echo $value_disabled?>/>				
 					</span>&nbsp;&nbsp;
 					 					
-					<!-- กรณีข้อมูลเดิมไม่สมบูรณ์ จะทำให้บรรทึกไม่ผ่าน -->
-					<button name="editidcard" id="editidcard" title="กดเพื่อแก้ไขรหัสในกรณีกรอกผิด" class="btn_press"></button>
+					<!-- กรณีข้อมูลเดิมไม่สมบูรณ์ จะทำให้บรรทึกไม่ผ่าน 
+					<button name="editidcard" id="editidcard" title="กดเพื่อแก้ไขรหัสในกรณีกรอกผิด" class="btn_press"></button>-->
 			
 				</th>
               </tr>
@@ -1777,6 +1787,7 @@ $('select[name=prefix_name]').click(disableChkage);
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td valign="top">
+                    	<!-- n_vaccine -->
 						<table width="100%" border="0" cellspacing="0" cellpadding="0">
 						  <tr>
 							<td width="15%" valign="top">การฉีดวัคซีนโดยวิธี <span class="alertred">*</span></td>
@@ -1859,20 +1870,20 @@ $('select[name=prefix_name]').click(disableChkage);
 												  </select> 
 												</td>
 												<td>
-													<input name="vaccine_no[<?php echo $i?>]" type="text" id="vaccine_no[<?php echo $i?>]" size="10" value="<?php echo $vaccine_no[$i]?>" <? if($vaccine_no[$i]!="" && $process=="vaccine"){echo 'disabled';} ?> >											
+													<input name="vaccine_no[<?php echo $i?>]"  class="checkvaccine"  type="text" id="vaccine_no[<?php echo $i?>]" size="10" value="<?php echo $vaccine_no[$i]?>" <? if($vaccine_no[$i]!="" && $process=="vaccine"){echo 'disabled';} ?> >											
 												</td>													
 												<td>
-													<input name="vaccine_cc[<?php echo $i?>]" type="text" id="vaccine_cc[<?php echo $i?>]"  value="<?php echo $vaccine_cc[$i]?>" size="3" maxlength="10" <? if($vaccine_cc[$i]!="" && $process=='vaccine'){echo 'disabled';} ?>>												
+													<input name="vaccine_cc[<?php echo $i?>]" class="checkvaccine"  type="text" id="vaccine_cc[<?php echo $i?>]"  value="<?php echo $vaccine_cc[$i]?>" size="3" maxlength="10" <? if($vaccine_cc[$i]!="" && $process=='vaccine'){echo 'disabled';} ?>>												
 												</td>
 												<td>											
-													<input type="text" name="vaccine_point[<?php echo $i?>]" size="2" id="vaccine_point[<?php echo $i?>]"  maxlength="1" value="<?php echo $vaccine_point[$i];?>" 
+													<input type="text" name="vaccine_point[<?php echo $i?>]" class="checkvaccine"   size="2" id="vaccine_point[<?php echo $i?>]"  maxlength="1" value="<?php echo $vaccine_point[$i];?>" 
 													<? if($vaccine_point[$i]!="" && $process=="vaccine"){echo 'disabled';} ?> />
 												</td>
 												<td>
-													<input name="byname[<?php echo $i?>]" type="text" id="byname[<?php echo $i?>]" value="<?php echo $byname[$i]?>" size="10"  <? if($byname[$i]!='' && $process=='vaccine'){echo 'disabled';} ?>>
+													<input name="byname[<?php echo $i?>]" type="text" class="checkvaccine" id="byname[<?php echo $i?>]" value="<?php echo $byname[$i]?>" size="10"  <? if($byname[$i]!='' && $process=='vaccine'){echo 'disabled';} ?>>
 												</td>
 												<td >
-													<input name="byplace[<?php echo $i?>]" type="text" id="byplace[<?php echo $i?>]" value="<?php echo $byplace[$i];?>" size="20" <? if($byplace[$i]!="" && $process=='vaccine'){echo 'disabled';} ?>></td>
+													<input name="byplace[<?php echo $i?>]" type="text" readonly="readonly" id="byplace[<?php echo $i?>]" value="<?php echo (!empty($rs['id'])) ? $hospital_name :$byplace[$i];?>" size="20" <? if($byplace[$i]!="" && $process=='vaccine'){echo 'disabled';} ?>></td>
 										  </tr>
 										  <?  
 										  }

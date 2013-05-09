@@ -3,12 +3,10 @@
 function login($username=FALSE,$password=FALSE,$remember=FALSE) 
 {
 	$CI =& get_instance();
-	//$CI->db->debug=TRUE;
-	/***  no login ***/
 	if($username=='' && $password=='' && $remember=="1")
 	{	
 		$CI->session->set_userdata('nologin','nologin');
-		return TRUE;
+		return true;
 	}
 
 	$sql="SELECT * FROM n_user 
@@ -42,15 +40,17 @@ function login($username=FALSE,$password=FALSE,$remember=FALSE)
 				$CI->session->set_userdata('R36_HOSPITAL_DISTRICT',$rec_hospital['hospital_district_id']);
 			}
 			
-		return TRUE;
+		return true;
 	}
 	else
 	{				
-		return FALSE;
+		return false;
 	}
+	return false;
 }
 
 function admin_login($username=FALSE,$password=FALSE){
+	// ผู้ดูแลระบบระดับกรม	
 	$CI =& get_instance();	
 	$sql="SELECT * FROM n_user	 WHERE  userposition='00' and   n_user.username= ?  AND n_user.userpassword= ? ";
 	$rs = $CI->db->GetRow($sql,array($username,$password));	

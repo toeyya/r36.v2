@@ -201,3 +201,6 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 .partial.title{
 	margin-left:20px;font-weight:bold;font-size:13px;width:auto;
 }
+.checkvaccine-cross{border:1px solid #ED0202;margin-right:3px;}
+.checkvaccine-check{border:'';margin-right:3px;}
+

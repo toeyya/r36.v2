@@ -117,7 +117,8 @@ class Inform extends R36_Controller
 			$data=array('rs'=>array('firstname'=>$h['firstname'],'surname' => $h['surname'],'age' =>$h['age'],'gender' => $h['gender']
 													   ,'marryname' => $h['marryname'],'nationalityname'=>$h['nationalityname'],'othernationalityname' => $h['othernationalityname']
 													   ,'nohome' =>$h['nohome'],'moo' =>$h['moo'],'villege' =>$h['villege'],'soi' =>$h['soi'],'road'=>$h['road']
-													   ,'provinceid' =>$h['provinceid'],'amphurid'=>$h['amphurid'],'districtid'=>$h['districtid'],'hn_no'=>$hn_no)) ;
+													   ,'provinceid' =>$h['provinceid'],'amphurid'=>$h['amphurid'],'districtid'=>$h['districtid'],'hn_no'=>$hn_no
+													   ,'telephone' => $h['telephone'])) ;
 													   	
 		}else{
 			$data['rs']['hn_no']=1;
