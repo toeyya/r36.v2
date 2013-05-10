@@ -1,5 +1,5 @@
 <?php
-class Amphur extends R36_Controller
+class Amphur extends Admin_Controller
 {
 	function __construct()
 	{

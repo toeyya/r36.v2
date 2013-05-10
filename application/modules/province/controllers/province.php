@@ -1,5 +1,5 @@
 <?php
-class Province extends R36_Controller
+class Province extends Admin_Controller
 {
 	function __construct()
 	{

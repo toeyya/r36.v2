@@ -1,5 +1,5 @@
 <?php
-class Hospital extends R36_Controller
+class Hospital extends Admin_Controller
 {
 	function __construct()
 	{

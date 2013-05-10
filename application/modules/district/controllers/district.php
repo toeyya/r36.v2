@@ -1,5 +1,5 @@
 <?php
-class District extends R36_Controller
+class District extends Admin_Controller
 {
 	function __construct()
 	{

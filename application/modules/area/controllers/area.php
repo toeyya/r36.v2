@@ -1,5 +1,5 @@
 <?php
-class Area extends R36_Controller
+class Area extends Admin_Controller
 {
 	function __construct()
 	{
