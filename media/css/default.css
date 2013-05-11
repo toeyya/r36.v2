@@ -27,7 +27,7 @@ em		{color:#999;font-size:12px;}
     color: #252525;
     font-size: 12px;
 	font-weight:normal;
-    background-image: url(images/btn_bg.gif);
+    background-image: url(../images/btn_bg.gif);
     background-repeat: repeat-x;
     border: solid #acacac 1px;
     cursor: pointer; 
@@ -86,7 +86,7 @@ ul.tab.text li a{padding:5px 10px;}
 table.form{border:1px solid #CCC; width:100%;}
 table.form td{padding:8px;border:1px solid #CCC;}
 table.form th{text-align:left; vertical-align:middle; padding:5px 20px 5px 5px; width:120px;border:1px solid #CCC; border-left:3px solid #44709E; font-weight:normal;}
-table.form input[type=text],table.form input[type=password]{width:250px;}
+table.form input[type=text],table.form input[type=password]{width:250px;height:20px;}
 table.form select{width:250px;}
 table.form textarea{width:250px; height:50px;}
 table.form input[type=text].full{width:500px;}

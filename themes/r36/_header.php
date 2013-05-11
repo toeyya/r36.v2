@@ -5,9 +5,6 @@
               <li class="line_topmenu4"><a href="home">หน้าแรก</a></li>
               <li class="line_topmenu3"><a href="log/index">ประวัติเข้าใช้ระบบ</a></li>
               <li class="line_topmenu4"><a href="users/r36/users/form/<?php echo $this->session->userdata('R36_UID') ?>/profile"><span>ประวัติส่วนตัว</span></a></li> 
-             <?php if($this->session->userdata('R36_LEVEL')=="00" || $this->session->userdata('R36_LEVEL')=="02" ): ?>
-              <li class="line_topmenu4"><a href="users/r36/users"><span>ผู้ใช้ระบบ</span></a></li>                       
-              <?php endif; ?>
               <li class="line_topmenu4"><a href="javascript:void(0);">กรอกแบบฟอร์ม</a>
                 <ul class="submenu4">
                      <li><a href="inform/index">แบบฟอร์มคนไข้ที่สัมผัสโรค</a></li>

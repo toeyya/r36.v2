@@ -266,3 +266,5 @@ table.form2 td {
     vertical-align: middle;
     width: 70%;
 }
+#Show_idcard >input[type="text"]{width:100px;}
+.alertred{color:red;}

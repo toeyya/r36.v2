@@ -3,9 +3,9 @@ $(document).ready(function(){
 
 })
 </script>
-<div id="title">ข้อมูลอำเภอ(เพิ่ม/แก้ไข)</div>
+<h1>ข้อมูลอำเภอ(เพิ่ม/แก้ไข)</h1>
 <form action="amphur/save" method="post" id="formm">
-<table  class="tbform">
+<table  class="form">
 <tr>
 	<th>รูปแบบเขตความรับผิดชอบ</th>
 	<td><?php echo form_dropdown('area_id',get_option('id','name','n_area order by created desc'),@$rs['area_id'],'class="styled-select" id="area_id"','-โปรดเลือก-'); ?><span class="alertred">*</span></td>
@@ -29,14 +29,13 @@ $(document).ready(function(){
 	<th>อำเภอ</th>
 	<td><input type="text" name="amphur_name" class="input_box_patient" value="<?php echo @$rs['amphur_name'] ?>"><span class="alertred">*</span></td>
 </tr>
+<tr><th></th>
+	<td><input  class="btn" type="submit" value="ตกลง"></td>
+</tr>
+
 </table>
-<div class="btn_inline">
+
 <?php echo (@$rs['amp_pro_id']) ? form_hidden('updated',time()) : form_hidden('created',time());
 			echo form_hidden('year',date('Y'));
 ?>
-      <ul>
-      	<li><button class="btn_save" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      	<li><button class="btn_cancel" type="button">&nbsp;&nbsp;&nbsp;</button></li>
-      </ul>
-</div>
 </form>

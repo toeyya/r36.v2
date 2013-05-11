@@ -4,7 +4,15 @@
 	<li <?php echo menu_active('permissions','permissions')?>><a href="permissions/admin/permissions">สิทธิ์การใช้งาน</a></li>
 	<?php //endif; ?>
 	<li <?php echo menu_active('permissions','permissions')?>><a href="users/admin/users">ผู้ใช้ระบบ</a></li>
-	<li <?php echo menu_active('permissions','permissions')?>><a href="users/admin/users">ตั้งค่าระบบโปรแกรมร.36</a></li>
+	<li <?php echo menu_active('permissions','permissions')?>><a href="users/admin/users">ตั้งค่าระบบโปรแกรมร.36</a>
+		<ul class="sublist">
+                 <li><a href="area/index">ข้อมูลเขตความรับผิดชอบ</a></li>
+                <li><a href="province/index">ข้อมูลจังหวัด</a></li>
+                <li><a href="amphur/index">ข้อมูลอำเภอ</a></li>
+				<li><a href="district/index">ข้อมูลตำบล</a></li>
+				<li><a href="hospital/index">ข้อมูสถานพยาบาล</a></li>					
+		</ul>
+	</li>
 	<li <?php echo menu_active('coverpages','coverpages')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a>
 	<li <?php echo menu_active('users','users')?>><a href="content/admin/content/index/2">สถานที่ชันสูตรตรวจโรคพิษสุนัขบ้า</a></li>	
 	<li <?php echo menu_active('contents','categories')?>><a href="ccontent/admin/content/index/3">สถานที่ให้คำปรึกษาเกี่ยวกับพิษสุนัขบ้า</a></li>
@@ -22,8 +30,7 @@
 </ul>
 <script>
 			$(function(){
-				$('.menu ul').hide();
-				<?php if(!empty($_GET['agency_id'])): ?>$('.menu li#agency-<?php echo $_GET['agency_id']; ?> ul').show();<?php endif; ?>
+				$('.menu ul').hide();			
 			    $('.menu li:has(ul) > a').prepend('<span class="symbol">+</span> ').click(function(){
 			    	var checkElement = $(this).next();
 					if((checkElement.is('ul')) && (checkElement.is(':visible'))) {

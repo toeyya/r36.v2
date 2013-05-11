@@ -1,41 +1,118 @@
 <?php
-class User extends Admin_Controller
+class Users extends Admin_Controller
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('user_model','user');		
+		$this->load->model('user_model','user');
+		$this->load->model('inform/inform_model','inform');
+		$this->load->model('hospital/hospital_model','hospital');
+		$this->load->model('inform/vaccine_model','vaccine');
+		$this->user->primary_key("uid");
 	}
-	function index($action=FALSE)
+	function index($show="search",$id=FALSE)
 	{
-		$this->template->set_layout('login');						
-		$this->template->build('admin/login');							
+		//$this->db->debug=TRUE;
+				$wh="uid <> '' ";
+				if(@$_GET['name']!='')$wh.=" AND (userfirstname LIKE '%".$_GET['name']."%' OR usersurname LIKE '%".$_GET['name']."%' OR usermail LIKE '%".$_GET['name']."%' OR username LIKE '%".$_GET['name']."%')";		
+				if(@$_GET['userposition']!='')	$wh.=" AND userposition = '".$_GET['userposition']."'";
+				if(@$_GET['userprovince']!="") $wh.=" AND userprovince ='".$_GET['userprovince']."'";				
+				if(@$_GET['hospital']!='')$wh.=" AND userhospital ='".$_GET['hospital']."'";					
+				if(isset($_GET['form_add']))$wh.=" AND form_add ='".$_GET['form_add']."'";
+				if(isset($_GET['form_edit']))$wh.=" AND form_edit ='".$_GET['form_edit']."'";	
+				if(isset($_GET['form_del']))$wh.=" AND form_del ='".$_GET['form_del']."'";	
+				$data['result'] = $this->user->select("uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition
+									 									 ,province_name,hospital_name,status		")
+														   ->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
+																	   LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
+																	   LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code")
+													      ->where($wh)->sort("")->order("userposition asc")->get();
+					//$data['result']=$this->user->get($sql);
+					$data['pagination']=$this->user->pagination();				
+					$this->template->append_metadata(js_checkbox('r36'));
+					$this->template->build('admin/users/index',$data);					
 	}
-	function login()
-	{	   
-		if($_POST)
-		{
-				if(login(mysql_real_escape_string($_POST['username']),mysql_real_escape_string($_POST['userpassword'])))
-				{
-					redirect('inform/index');
-														
-				}
-				else
-				{
-					set_notify('error',"กรุณากรอกใหม่อีกครั้ง");	
-					redirect('user/admin/user/index');
-				}				
-												
-		}				
+	function form($id=FALSE,$profile=FALSE)
+	{
+			//$this->db->debug=TRUE;
+			$this->user->primary_key("uid");
+			if(!$id){$id="?";}				
+			$data['rs']=$this->user->select("uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition,level_name,usermail,userpassword
+																	 ,a.province_name as province_name1,a.province_id as province_id1
+																	,b.province_name as province_name2,b.province_id as province_id2,n_district.amphur_id,district_id,status
+																	,hospital_name")
+																->join("INNER JOIN n_level_user  ON  n_user.userposition=n_level_user.level_code
+																				LEFT  JOIN n_province  a   ON  n_user.userprovince=a.province_id
+																				LEFT  JOIN n_hospital_1 	     ON  userhospital =n_hospital_1.hospital_code 								
+																				LEFT  JOIN n_province  b  ON  n_hospital_1.hospital_province_id=b.province_id 
+																				LEFT  JOIN n_district		 ON  n_hospital_1.hospital_amphur_id=n_district.amphur_id  
+																															and  n_user.userhospital =n_hospital_1.hospital_code 
+																															and n_district.province_id=n_hospital_1.hospital_province_id 
+																															and n_district.district_id=n_hospital_1.hospital_district_id
+																				")
+																->get_row($id);	
+			$data['title']=($profile)? "ประวัติส่วนตัว":"ข้อมูลผู้ใช้ระบบ (แก้ไข/เพิ่ม)";
+			$this->template->build('admin/users/form',$data);					
 	}
-	function forgot_password(){
-		
+	function save()
+	{
+		if($_POST){
+			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];		
+			$this->user->save($_POST);
+			set_notify('success',SAVE_DATA_COMPLETE);
+		}
+		redirect('users/r36/users');
 	}
 	
-	function nologin(){
-		
+	function delete(){
+		if(!empty($_GET['id'])){
+			$this->db->Execute("DELETE FROM n_user WHERE uid in(".$_GET['id'].")");
+			set_notify('success',SAVE_DATA_COMPLETE);		
+		}
+		redirect('users/r36/users');	
 	}
-
-
+	function popup(){
+			$this->template->set_layout('blank');		
+			$this->template->build('popup_list');		
+	}
+	function popup_list()
+	{//$this->db->debug=TRUE;
+		## # แสดงตารางนัดหมายคนไข้ได้อัตโนมัติ เมื่อถึงกำหนดในการับวัคซีนต่อไปโดยระบบจะต้องทำการแจ้งผ่านหน้าจอผู้ใช้งานได้ตลอดเวลา ###
+			$this->session->unset_userdata('schedule');
+			$yy=date('Y')+543;
+			//$current_date=$yy.'-'.date('m').'-'.date('d');
+			$current_date='2554-06-05';
+			if($this->session->userdata('R36_PROVINCE')!='' && $this->session->userdata('R36_LEVEL')=='02'){
+					$wh="AND provinceid = '".$this->session->userdata('R36_PROVINCE')."'  AND hospitalprovince <>  '".$this->session->userdata('R36_PROVINCE')."' ";
+			}
+			if($this->session->userdata('R36_HOSPITAL')){									
+					$hospital=$this->hospital->get_row("hospital_code",$this->session->userdata('R36_HOSPITAL'));
+					$wh="AND hospitalcode ='".$this->session->userdata('R36_HOSPITAL')."' 
+								AND hospitalprovince='".$hospital['hospital_province_id']."'  
+								AND hospitalamphur ='".$hospital['hospital_amphur_id']."' ";
+			}
+			if($this->session->userdata('R36_LEVEL')=='00'){
+					$wh="AND ((provinceid = '10'  AND hospitalprovince <>  '10') OR (typeforeign='3' AND nationalityname!='1')) ";
+			}
+			$data['result']=$this->inform->select("hospitalcode,hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid")
+																->join("INNER Join n_history ON n_information.information_historyid = n_history.historyid
+												 							  INNER Join n_vaccine ON n_information.information_historyid = n_vaccine.information_id ")	
+																->where("information_historyid <>'' AND closecase <>'2' AND (means  IN (1,2)) AND hospitalcode <>''  
+												 								AND n_vaccine.vaccine_date <>'' and vaccine_date >='".$current_date."' $wh AND n_information.total_vaccine<>'5' ")	
+																->groupby("information_id")->sort("")->order("n_information.id asc")->limit(100)->get();	
+			$data['current_date']=$current_date;												
+			$this->template->set_layout('blank');		
+			$this->template->build('popup_list',$data);
+	}
+	public function check_email(){
+		$rs=$this->db->Execute("select * from n_user where usermail = ?  and uid <> ? ",array($_GET['email'],$_GET['uid']));
+		echo ($rs) ? "true" :"false";
+	}
+	public function check_username(){	
+		$rs = $this->db->Execute("select * from n_user where username = ?  and uid <> ? ",array($_GET['username'],$_GET['uid']));
+		echo ($rs) ? "true" : "false";
+	}
+	
 }
+
 ?>
