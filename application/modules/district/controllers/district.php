@@ -30,14 +30,10 @@ class District extends Admin_Controller
 		  }
 		$data['wh']=$wh;
 		$data['result']=$this->district->select("district_name,province_id,amphur_id,tam_amp_id,district_id")															
-														    ->where(" district_id<>'' and province_id<>'' $wh")->sort("")->order("province_id,amphur_id,district_name ASC")
-														    ->limit(20)->get();
-				
-	
+												    ->where(" district_id<>'' and province_id<>'' $wh")->sort("")->order("province_id,amphur_id,district_name ASC")
+												    ->get();					
 		$data['pagination']=$this->district->pagination();
-		$this->template->build('district_index',$data);				
-		
-		
+		$this->template->build('district_index',$data);								
 	}
 	function form($tam_amp_id=FALSE)
 	{

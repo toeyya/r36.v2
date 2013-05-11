@@ -66,9 +66,9 @@ $(document).ready(function(){
 		});
 });
 </script>
-<div id="title">ข้อมูลสถานพยาบาล(เพิ่ม/แก้ไข)</div>
+<h1>สถานพยาบาล(เพิ่ม/แก้ไข)</h1>
 <form name="form1" action="hospital/save"  method="post" id="formm" >
-		<table class="tbform">
+		<table class="form">
                 <tr> 
                   <th width="110" height="20">จังหวัด :</th>
                   <td width="242" height="20">
@@ -120,8 +120,9 @@ $(document).ready(function(){
 	                  <?php echo ($rs['hospital_id']) ? form_hidden('updated',time()) : form_hidden('created',time())?>
 					</td>
                 </tr>
+                <tr>
+                	<th></th>
+                	<td>  <input type="submit" class="btn" value="ตกลง" name="btn_submit"></td>
+                </tr>
       </table>
- <div class="btn_inline">
-      <ul><li><button class="btn_save">&nbsp;&nbsp;&nbsp;</button></li><li><button class="btn_cancel">&nbsp;&nbsp;&nbsp;</button></li></ul>
-</div>     
 </form>

@@ -6,11 +6,11 @@
 	<li <?php echo menu_active('permissions','permissions')?>><a href="users/admin/users">ผู้ใช้ระบบ</a></li>
 	<li <?php echo menu_active('permissions','permissions')?>><a href="users/admin/users">ตั้งค่าระบบโปรแกรมร.36</a>
 		<ul class="sublist">
-                 <li><a href="area/index">ข้อมูลเขตความรับผิดชอบ</a></li>
-                <li><a href="province/index">ข้อมูลจังหวัด</a></li>
-                <li><a href="amphur/index">ข้อมูลอำเภอ</a></li>
-				<li><a href="district/index">ข้อมูลตำบล</a></li>
-				<li><a href="hospital/index">ข้อมูสถานพยาบาล</a></li>					
+                 <li><a href="area/index">เขตความรับผิดชอบ</a></li>
+                <li><a href="province/index">จังหวัด</a></li>
+                <li><a href="amphur/index">อำเภอ</a></li>
+				<li><a href="district/index">ตำบล</a></li>
+				<li><a href="hospital/index">สถานพยาบาล</a></li>					
 		</ul>
 	</li>
 	<li <?php echo menu_active('coverpages','coverpages')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a>

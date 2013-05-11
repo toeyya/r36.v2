@@ -46,9 +46,9 @@ $(document).ready(function(){
 
 });
 </script>
-<div id="title">ข้อมูลตำบล(เพิ่ม/แก้ไข)</div>
+<h1>ข้อมูลตำบล(เพิ่ม/แก้ไข)</h1>
 <form action="district/save" method="post" id="formm">
-<table  class="tbform">
+<table  class="form">
 <tr>
 	<th width="20%">รูปแบบเขตความรับผิดชอบ</th>
 	<td><?php echo form_dropdown('area_id',get_option('id','name','n_area order by created desc'),@$rs['area_id'],'class="styled-select"','-โปรดเลือก-'); ?><span class="alertred">*</span></td>
@@ -56,7 +56,7 @@ $(document).ready(function(){
 <tr> 
   <th>จังหวัด</th>
   <td>
-  	<?php if($rs['area_id'] && $rs['province_id']){  		
+  	<?php if(!empty($rs['area_id']) && !empty($rs['province_id'])){  		
   		echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['province_id'],'class="styled-select" id="province_id"','-โปรดเลือก-');
   	}else{?>
   		<select name="province_id" class="styled-select"><option>-โปรดเลือก-</option></select>
@@ -79,7 +79,7 @@ $(document).ready(function(){
 </tr>
 <tr> 
   <th>โค้ดตำบล</th>
-  <td><input type="text" class="input_box_patient" name="code" value="<?php echo $rs['code'] ?>" size="2" maxlength="2"><span class="alertred">*</span></td>
+  <td><input type="text" class="input_box_patient" name="code" value="<?php echo @$rs['code'] ?>" size="2" maxlength="2"><span class="alertred">*</span></td>
 </tr>
 <tr> 
   <th>ตำบล</th>
@@ -91,10 +91,9 @@ $(document).ready(function(){
   <?php echo ($rs['tam_amp_id']) ? form_hidden('updated',time()) : form_hidden('created',time())?>	
   </td>
 </tr>
+<tr>
+	<th></th>
+	<td><input type="submit" name="btn_save" class="btn" value="ตกลง"></td>
+</tr>
 </table>
-<div class="btn_inline">
-      <ul>
-      	<li><button class="btn_save" type="submit" name="btn_save">&nbsp;&nbsp;&nbsp;</button></li>
-      	<li><button class="btn_cancel" type="button" name="btn_cancel">&nbsp;&nbsp;&nbsp;</button></li></ul>
-</div>
 </form>
