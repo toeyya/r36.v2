@@ -1,5 +1,5 @@
 <?php
-class Auth extends Admin_Controller
+class Auth extends Public_Controller
 {
 	
 	public function __construct()

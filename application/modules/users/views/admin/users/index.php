@@ -32,8 +32,7 @@ var ref1,ref2,ref3;
 				}
 			});	
 	})
-	if ($("input[name=userposition]").is(":checked")){ChkShow();	}
-	$('input[name=userposition]').click(ChkShow);
+
 	
    $('input[name=del]').click(function(){
 	   	if($('.chk_del').is(':checked')){
@@ -60,7 +59,7 @@ var ref1,ref2,ref3;
 </script>
 <h1>ผู้ใช้ระบบ</h1>
 <div class="search">
-<form name="form1"  action="users/r36/users"  method="get" >
+<form name="form1"  action="users/admin/users"  method="get" >
 
 ชื่อ/นามสกุล/username<input type="text" name="name" value="<?php echo @$_GET['name'] ?>">		
 <input type="submit" name="search" value="ค้นหา">		

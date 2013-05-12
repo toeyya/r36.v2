@@ -23,13 +23,13 @@ class Users extends Admin_Controller
 				if(isset($_GET['form_del']))$wh.=" AND form_del ='".$_GET['form_del']."'";	
 				$data['result'] = $this->user->select("uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition
 									 									 ,province_name,hospital_name,status		")
-														   ->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
+														    ->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
 																	   LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
 																	   LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code")
 													      ->where($wh)->sort("")->order("userposition asc")->get();
 					//$data['result']=$this->user->get($sql);
 					$data['pagination']=$this->user->pagination();				
-					$this->template->append_metadata(js_checkbox('r36'));
+					$this->template->append_metadata(js_checkbox());
 					$this->template->build('admin/users/index',$data);					
 	}
 	function form($id=FALSE,$profile=FALSE)
@@ -57,7 +57,10 @@ class Users extends Admin_Controller
 	function save()
 	{
 		if($_POST){
-			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];		
+			if(!empty($_POST['idcard'])){
+				$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];
+			}
+					
 			$this->user->save($_POST);
 			set_notify('success',SAVE_DATA_COMPLETE);
 		}

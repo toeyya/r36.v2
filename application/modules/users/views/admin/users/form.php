@@ -40,6 +40,77 @@ var ref1,ref2,ref3;
 						}																					
 					}							
 		});
+	$("#hospital").hide();
+	$('select[name=userposition]').click(function(){
+		var value=$('select[name=userposition] option:selected').val();
+		if(value=="05"){
+			$("#hospital").show();
+		}else{
+			$('#hospital').hide();
+		}
+	})	;
+	$('select[name=userposition]').change(function(){
+		$('select[name=userposition]').trigger('click');
+	})
+	$("#form1").validate({
+		 groups: {
+    			groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"   		   
+  		},		
+		rules:{
+				telephone:{required:true,number:true, rangelength: [6, 9]}
+				,mobile:{required:true,number:true, rangelength: [9, 10]}
+	 			,cardW0:{ required: true, number:true},cardW1:{ required: true, number:true},cardW2:{ required: true, number:true},cardW3:{ required: true, number:true}
+		 		,cardW4:{ required: true, number:true,		
+		 			remote:{
+		 				url:'<?php echo base_url(); ?>inform/chk_idcard',
+				        data: {
+				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
+				          digit_last:function(){return $('#cardW4').val(); }
+				        }
+		 			}		 		
+		 		}			 					
+				,userfirstname:"required",usersurname:"required"
+				,userprovince:{ required: {depends: function(element) {return $('input[name=userposition]:checked').val() =='02' }}}
+				,userprovince2:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="03"}}}
+				,useramphur:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="03"}}}
+				,h_province:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="05";}}}
+				,h_amphur:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="05";}}}
+				,h_district:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="05";}}}
+				,hospital:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="05";}}}
+				,usermail:{
+					required:true,email:true,
+					remote:{url:'<?php echo base_url() ?>users/r36/users/check_email',data:{uid:function(){return $('#uid').val()}}}					
+				}
+				,userpassword:"required"
+				,repassword:{required:true, equalTo: "#userpassword"}
+				,username:{
+					required:true,
+					remote:{url :"<?php echo base_url() ?>users/r36/users/check_username",data:{uid:function(){return $("#uid").val()}}}
+				}			
+		},
+		messages:{
+			    telephone:{required:"กรุณาระบุค่ะ",number:"กรุณาระบุเฉพาะตัวเลขค่ะ",rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้นค่ะ"}
+			    ,mobile:{required:"กรุณาระบุค่ะ",number:"กรุณาระบุเฉพาะตัวเลขค่ะ",rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้นค่ะ"}
+				,cardW0:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
+		 		,cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
+		 		,cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
+		 		,cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
+		 		,cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}	
+				,userfirstname:" กรุณาระบุด้วยค่ะ",usersurname:" กรุณาระบุด้วยค่ะ"
+				,userprovince:" กรุณาระบุด้วยค่ะ",useramphur:" กรุณาระบุด้วยค่ะ",userdistrict:" กรุณาระบุด้วยค่ะ"
+				,userprovince2:" กรุณาระบุด้วยค่ะ"
+				,usermail:{required:" กรุณาระบุด้วยค่ะ",email:" ระบุไม่ถูกต้องค่ะ"}
+				,h_province:" กรุณาระบุด้วยค่ะ",h_amphur:" กรุณาระบุด้วยค่ะ",h_district:"กรุณาระบุด้วยค่ะ",hospital:" กรุณาระบุด้วยค่ะ"
+				,userpassword:" กรุณาระบุด้วยค่ะ"
+				,repassword:{required:" กรุณาระบุด้วยค่ะ",equalTo: " ระบุ password ไม่ถูกต้องค่ะ"}
+				,username:{required:" กรุณาระบุด้วยค่ะ",remote:" ชื่อ Username ซ้ำ กรุณาตรวจสอบ"}
+		},
+		errorPlacement: function(error, element){							    
+        		 if (element.attr("name") == "cardW0"  || element.attr("name") == "cardW1" 	|| element.attr('name') == "cardW2" || element.attr('name')=="cardW3" || element.attr('name')=="cardW4") error.insertAfter("#cardW4");
+        		 else if(element.attr("name")=="form_add" || element.attr("name")=="form_edit" || element.attr('name')=="form_del") $("input[name=form_del]").closest("li").append(error);
+        		 else error.insertAfter(element);
+		}						
+	});
 		
 	
 });// document
@@ -50,8 +121,21 @@ var ref1,ref2,ref3;
 <table  class="form">
   <tr>
   	<th>สิทธิ์การใช้งาน</th>
-  	<td><?php echo form_dropdown('userpostion',get_option("level_code",'level_name','n_level_user'),$rs['userposition'],'',''); ?></td>
+  	<td><?php echo form_dropdown('userposition',get_option("level_code",'level_name','n_level_user'),@$rs['userposition'],'',''); ?></td>
   </tr>
+<tr id="hospital">
+	<th>
+		จังหวัด<br/>
+		อำเภอ<br/>
+		ตำบล<br/>
+		สถานพยาบาล
+	</th>
+	<td><?php echo form_dropdown('h_province',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['province_id2'],'class="styled-select" id="h_province"','-โปรดเลือก-');	?>  
+			<br/><p id="input_Hamphur"><?php echo form_dropdown('') ?></p>
+			<br/><?php echo form_dropdown('') ?>
+			<br/>
+	</td>	
+</tr>
   <tr>
     <th width="96" height="20"class="topic">ชื่อ <span class="alertred" >*</span></th>
     <td width="339" height="20"><input name="userfirstname" type="text" value="<?php echo @$rs['userfirstname'];?>" class="input_box_patient " /></td>
