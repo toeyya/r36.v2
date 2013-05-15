@@ -43,13 +43,14 @@ var province_id,amphur_id,district_id;
 			$('#cardW2').rules('remove','required');$('#cardW3').rules('remove','required');$('#cardW4').rules('remove','required remote');	
 			$('#idcard').rules('remove','required');
 			$
-			$('input[name=in_out]').eq(0).css('display','').next('span').css('display','').end().prop('checked',true);		
-			$('input[name=in_out]').eq(1).prop('checked',false);	
+			//$('input[name=in_out]').eq(0).css('display','').next('span').css('display','').end().prop('checked',true);		
+			//$('input[name=in_out]').eq(1).prop('checked',false);	
+			$('#form1').attr('action','inform/index');
 		});
 		$('.btn_add').click(function(){
 			$('#form1').attr('action','inform/addNew');
-			$('input[name=in_out]').eq(0).css('display','none').next('span').css('display','none').prop('checked',false);
-			$('input[name=in_out]').eq(1).prop('checked',true);
+			//$('input[name=in_out]').eq(0).css('display','none').next('span').css('display','none').prop('checked',false);
+			//$('input[name=in_out]').eq(1).prop('checked',true);
 			if($('input[name=level]').val()=="05"){
 				// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้
 					$("#hospitalprovince option").filter(function() {return $(this).val() == $('input[name=h_province_id]').val();}).prop('selected', true);
@@ -128,8 +129,10 @@ var province_id,amphur_id,district_id;
 					}							
 		});
 		 
-		
-		 
+	$('.tb_patient1 tr:eq(4)').nextUntil('tr:eq(8)').hide();
+	$('input[name=search_adv]').click(function(){
+		$('.tb_patient1 tr:eq(4)').nextUntil('tr:eq(8)').toggle('slow');
+	});
 });
 </script>
 <div id="title">ค้นหาข้อมูลผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า</div>
@@ -219,37 +222,47 @@ var province_id,amphur_id,district_id;
 								
 				</td>
 			</tr>
-			<tr> 
-				  <th >ชื่อ :</th>
-				  <td><input name="name" type="text" id="name" size="30" maxlength="300"  class="input_box_patient" value="<?php echo @$_GET['name'] ?>"></td>
-				  <th  >นามสกุล :</th>
-				  <td><input name="surname" type="text" id="surname" size="30" maxlength="300"  class="input_box_patient" value="<?php echo @$_GET['surname'] ?>"></td>
-			</tr>
-			<tr>
-				<th >ประเภทผู้สัมผัสโรค</th>
-				<td colspan="4">
-					<span style="margin-left:12px;">
-						<input type="radio" name="in_out" value="" checked="checked"><span> ทั้งหมด</span>
-						<input type="radio" name="in_out" value="1"> ในเขต
-						<input type="radio" name="in_out" value="2" <?php echo (@$_GET['in_out']=="2")?'checked="checked"':''; ?>> นอกเขต</td>
-					</span>
-			</tr>
-			<tr> 
-				  <th>วันเริ่มต้น(วันที่สัมผัสโรค) :</th>
-				  <td><input type="text" name="startdate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['startdate'] ?>" /></td>
-				  <th>วันสิ้นสุด(วันที่สัมผัสโรค) : </th>
-				  <td><input type="text" name="enddate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['enddate']; ?>" /> </td>				  
-			</tr>
-			<tr> 
-				  <th>วันเริ่มต้น(วันที่บันทึกรายการ) :</th>
-				  <td><input type="text" name="report_startdate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['report_startdate'] ?>" /></td>
-				  <th>วันสิ้นสุด(วันที่บันทึกรายการ) : </th>
-				  <td><input type="text" name="report_enddate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['report_enddate']; ?>" /> </td>				  
-			</tr>
 
 			<tr>
-				  <th>ปิดเคส(จำนวนวัคซีน)  :</th>
-				  <td colspan="3">					
+				<th >สิทธิการรักษาพยาบาล</th>
+				<td colspan="4">
+					<span style="margin-left:12px;">
+						<input type="radio" name="in_out" value="1" <?php echo (@$_GET['in_out']=="1")?'checked="checked"':''; ?>> สิทธิการรักษาพยาบาล รพ.ที่สังกัด
+						<input type="radio" name="in_out" value="2" <?php echo (@$_GET['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาพยาบาล รพ.อื่น</td>
+					</span>
+			</tr>
+			<tr>
+				<th></th>
+				<td colspan="4">
+					<p style="margin-left:13px;"><input type="checkbox" name="search_adv" value="1" <?php echo (!empty($_GET['search_adv'])=="1")? "checked='checked'":''  ?>><span class="bold">ค้นหาขั้นสูง (advanced search)</span></p>
+			  </td>
+			</tr>
+			
+			<tr> 
+				  <th >ชื่อ-นามสกุล :</th>
+				  <td colspan="4"><input name="name" type="text" id="name" size="30" maxlength="300"  class="input_box_patient" value="<?php echo @$_GET['name'] ?>"> -
+				  <input name="surname" type="text" id="surname" size="30" maxlength="300"  class="input_box_patient" value="<?php echo @$_GET['surname'] ?>">
+				  </td>
+			</tr>				
+			<tr> 
+				  <th>วันที่สัมผัสโรค</th>
+				  <td>
+				  	<input type="text" name="startdate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['startdate'] ?>" /> ถึง		  
+				 	<input type="text" name="enddate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['enddate']; ?>" /> </td>		
+				  <th>วันที่บันทึกรายการ </th>
+				 <td><input type="text" name="report_startdate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['report_startdate'] ?>" /> ถึง
+				  <input type="text" name="report_enddate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['report_enddate']; ?>" /> </td>				  
+			  
+			
+			</tr>
+
+			
+			<tr>
+				  <th>ประเภทการปิดเคส</th>
+				  <td colspan="3">		<div style="margin:10px 0px 0px 16px">
+				  	<input type="radio" name="closed_type" value="1">ปิดเคสโดยเจ้าหน้าที่
+				    <input type="radio" name="closed_type" value="2">ปิดเคสอัตโนมัติ
+				 </div>						
 						<ul class="list" >
 							<li><input type="checkbox" name="total_vaccine[]" value="0" <?php if(@$_GET['total_vaccine']){if(in_array('0',$_GET['total_vaccine'])){ echo 'checked="checked"';}} ?>>
 								 	<span class="syringe syringe" title="0 เข็ม" class="vtip"></span> ปิดเคสไม่สมบูรณ์</li>
