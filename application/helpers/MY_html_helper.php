@@ -116,7 +116,6 @@ function currency_rate($price)
 
 			function chk_idcard($array,$digit_last)
 			{
-
 					$result=array();
 					array_walk($array,"multiply_array",array(&$result));
 					$sum=array_sum($result);
@@ -125,6 +124,7 @@ function currency_rate($price)
 					if(strlen($digit)>1){$digit=substr($digit,1,1);}
 					$chk_compare=($digit==$digit_last)? "yes":"no";
 					return $chk_compare;
+					
 			}
 			function get_ip(){
 				

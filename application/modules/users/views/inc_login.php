@@ -9,7 +9,7 @@
     <td bgcolor="#FFFFFF" height="180" valign="top">
     <div class="login">
     	<form action="users/login" method="post">
-		<span class="text-loginSystem">โปรแกรมการรายงานผู้สัมผัส<br>หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า</span>                  
+		<span class="text-loginSystem">ลงชื่อเข้าใช้ระบบ</span>                  
         	<div class="username-field"><input class="input_box" type="text" name="username" value="" /></div>
 			<div class="password-field"><input class="input_box" type="password" name="password" value="" /></div>
         	<input class="btn_go" type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;" >

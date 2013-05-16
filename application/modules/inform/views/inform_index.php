@@ -37,35 +37,35 @@ var province_id,amphur_id,district_id;
 
 // START ####  กรณีเพิ่มรายการ  ####
 		$('.btn_submit').click(function(){
-			$("#hospitalprovince").rules("remove");$('#hospital_amphur_id').rules('remove');$('#hospital_district_id').rules('remove');
-			$('#hospitalcode').rules('remove');	$('#hn').rules('remove');		
-			$('#cardW0').rules('remove','required');	$('#cardW1').rules('remove','required');
-			$('#cardW2').rules('remove','required');$('#cardW3').rules('remove','required');$('#cardW4').rules('remove','required remote');	
+			$("#hospitalprovince").rules("remove");$('#hospital_amphur_id').rules('remove');
+			$('#hospital_district_id').rules('remove');$('#hospitalcode').rules('remove');	$('#hn').rules('remove');		
+			$('#cardW0').rules('remove','required');$('#cardW1').rules('remove','required');$('#cardW2').rules('remove','required');
+			$('#cardW3').rules('remove','required');$('#cardW4').rules('remove','required remote');
 			$('#idcard').rules('remove','required');
-			$
-			//$('input[name=in_out]').eq(0).css('display','').next('span').css('display','').end().prop('checked',true);		
-			//$('input[name=in_out]').eq(1).prop('checked',false);	
+			$('#title').text("ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า")
 			$('#form1').attr('action','inform/index');
+			return true;
 		});
-		$('.btn_add').click(function(){
+		$('.btn_add').click(function(){			
 			$('#form1').attr('action','inform/addNew');
-			//$('input[name=in_out]').eq(0).css('display','none').next('span').css('display','none').prop('checked',false);
-			//$('input[name=in_out]').eq(1).prop('checked',true);
 			if($('input[name=level]').val()=="05"){
 				// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้
 					$("#hospitalprovince option").filter(function() {return $(this).val() == $('input[name=h_province_id]').val();}).prop('selected', true);
 					$("#hospital_amphur_id option").filter(function() {return $(this).val() == $('input[name=h_amphur_id]').val();}).prop('selected', true);	
 					$("#hospital_district_id option").filter(function() {return $(this).val() == $('input[name=h_district_id]').val();}).prop('selected', true);	
 					$("#hospitalcode option").filter(function() {return $(this).val() == $('input[name=h_code]').val();}).prop('selected', true);							
-			}			
-			//return false;	
+			}
+			$('#title').text("เพิ่มประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า")			
+			return true;	
 		})
 		
-		 $.validator.setDefaults({submitHandler: function() {document.form1.submit(); }});
+		 $.validator.setDefaults({
+		 	submitHandler:function(){
+		 	document.form1.submit();}
+		 });
 		 $('#form1').validate({
-		 	 debug:false,
-		 	 onkeyup: false,onfocusout: false,
-		 	  groups: {
+		 	 onkeyup: false,onfocusout:false,
+		 	 groups: {
     				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
   			},
 		 	rules:{
@@ -78,7 +78,8 @@ var province_id,amphur_id,district_id;
 		 		cardW4:{
 		 			required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true,	 		
 		 			remote:{
-		 				url:'<?php echo base_url(); ?>inform/chk_idcard',
+		 				url:'<?php echo base_url(); ?>inform/chkidcard',
+		 				type:'get',
 				        data: {
 				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
 				          digit_last:function(){return $('#cardW4').val(); }
@@ -129,13 +130,13 @@ var province_id,amphur_id,district_id;
 					}							
 		});
 		 
-	$('.tb_patient1 tr:eq(4)').nextUntil('tr:eq(8)').hide();
+	$('.tb_patient1 tr:eq(5)').nextUntil('tr:eq(8)').hide();
 	$('input[name=search_adv]').click(function(){
-		$('.tb_patient1 tr:eq(4)').nextUntil('tr:eq(8)').toggle('slow');
+		$('.tb_patient1 tr:eq(5)').nextUntil('tr:eq(8)').toggle('slow');
 	});
 });
 </script>
-<div id="title">ค้นหาข้อมูลผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า</div>
+<div id="title">ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า</div>
 <div id="search">
 <form name="form1"  method="get" id="form1" action="inform/index">		
 <input name="level" type="hidden" value="<?php echo $this->session->userdata('R36_LEVEL') ?>" />
@@ -224,17 +225,23 @@ var province_id,amphur_id,district_id;
 			</tr>
 
 			<tr>
-				<th >สิทธิการรักษาพยาบาล</th>
+				<th><span class="alertred">*</span> สิทธิการรักษาพยาบาล</th>
 				<td colspan="4">
-					<span style="margin-left:12px;">
-						<input type="radio" name="in_out" value="1" <?php echo (@$_GET['in_out']=="1")?'checked="checked"':''; ?>> สิทธิการรักษาพยาบาล รพ.ที่สังกัด
-						<input type="radio" name="in_out" value="2" <?php echo (@$_GET['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาพยาบาล รพ.อื่น</td>
+					<span style="margin-left:12px;"> 
+						<input type="radio" name="in_out" value="1" checked="checked" <?php echo (@$_GET['in_out']=="1")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการนี้
+						<input type="radio" name="in_out" value="2" <?php echo (@$_GET['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการอื่น
 					</span>
+				</td>
+			</tr>
+			<tr>
+				<th width="20%">ประเภทสิทธิการรักษาพยาบาล</th>
+				<td colspan="4"><?php echo form_dropdown('right_id',get_option('id','name','n_right'),@$_GET['right_id'],'class="input_box_patient"','- โปรดเลือก -') ?></td>
 			</tr>
 			<tr>
 				<th></th>
 				<td colspan="4">
-					<p style="margin-left:13px;"><input type="checkbox" name="search_adv" value="1" <?php echo (!empty($_GET['search_adv'])=="1")? "checked='checked'":''  ?>><span class="bold">ค้นหาขั้นสูง (advanced search)</span></p>
+					<p style="margin-left:13px;"><input type="checkbox" name="search_adv" value="1" <?php echo (!empty($_GET['search_adv'])=="1")? "checked='checked'":''  ?>>
+						<span class="bold blue">ค้นหาขั้นสูง (advanced search)</span></p>
 			  </td>
 			</tr>
 			
@@ -264,8 +271,6 @@ var province_id,amphur_id,district_id;
 				    <input type="radio" name="closed_type" value="2">ปิดเคสอัตโนมัติ
 				 </div>						
 						<ul class="list" >
-							<li><input type="checkbox" name="total_vaccine[]" value="0" <?php if(@$_GET['total_vaccine']){if(in_array('0',$_GET['total_vaccine'])){ echo 'checked="checked"';}} ?>>
-								 	<span class="syringe syringe" title="0 เข็ม" class="vtip"></span> ปิดเคสไม่สมบูรณ์</li>
 							<li><input type="checkbox" name="total_vaccine[]" value="1"<?php if(@$_GET['total_vaccine']){if(in_array('1',$_GET['total_vaccine'])){ echo 'checked="checked"';}} ?>>
 								 	<span class="syringe1 syringe" title="1 เข็ม"> </span> ฉีด 1 เข็ม</li>
 							<li><input type="checkbox" name="total_vaccine[]" value="2"<?php if(@$_GET['total_vaccine']){if(in_array('2',$_GET['total_vaccine'])){ echo 'checked="checked"';}} ?>>
@@ -319,7 +324,7 @@ var province_id,amphur_id,district_id;
 					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
 				<?php }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){
 											if($this->session->userdata('R36_FROMEDIT')=='Y'){ ?>
-													<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" target="_top" class="btn_edit">แก้ไข</a>
+													<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" target="_top" class="btn_edit"></a>
 							<?php	}
 						}  ?>
 				</td>

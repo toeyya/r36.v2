@@ -120,8 +120,7 @@ class Inform extends R36_Controller
 													   	
 		}else{
 			$data['rs']['hn_no']=1;
-		}	
-		
+		}			
 		$data['rs']['hn']=$_GET['hn'];	
 		$data['rs']['idcard']=$idcard;
 		$data['rs']['statusid']=$_GET['statusid'];
@@ -137,7 +136,6 @@ class Inform extends R36_Controller
 		$data['in_out']=$_GET['in_out'];		
 		$data['value_disabled']='';	
 		$data['process']="";
-		//var_dump($data);	
 		$this->template->build('inform_form',$data);
 	}
 
@@ -294,7 +292,7 @@ class Inform extends R36_Controller
 		if($_POST['means']!='3' && $_POST['means']!=''){
 			$j=($_POST['means']=="2")?4:5;			
 					for($i=0;$i<$j;$i++){
-								if($_POST['vaccine_date'][$i]!=''){
+								if($_POST['vaccine_name'][$i]!='0'){
 									$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>cld_date2my($_POST['vaccine_date'][$i])
 														 ,'vaccine_name'=>$_POST['vaccine_name'][$i],'vaccine_no'=> $_POST['vaccine_no'][$i]
 														 , 'vaccine_cc'=>$_POST['vaccine_cc'][$i] ,'vaccine_point'=>$_POST['vaccine_point'][$i]
@@ -306,7 +304,7 @@ class Inform extends R36_Controller
 		}
 		//  ------++++------    End n_vaccine  ------++++------ 
 		set_notify('success', SAVE_DATA_COMPLETE);		
-		redirect('inform/form/'.$information_id.'/'.$_POST['historyid'].'/'.$_POST['in_out'].'/'.$_POST['process']);
+		redirect('inform/index');
 	}
 	function  save_vaccine()
 	{
@@ -327,16 +325,15 @@ class Inform extends R36_Controller
 		$rs['district_name']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($rs['provinceid'],$rs['amphurid'],$rs['districtid']));
 		echo json_encode($rs);
 	}
-	public function chk_idcard(){
-	   if(@$_GET['idcard']!=""){
+	public function chkidcard()
+	{//must be true for valid elements   	
+		//var_dump($_GET);	 
 			for($i=0;$i<13;$i++){
 					$idcard_arr[]=substr($_GET['idcard'],$i,1);
 			}		
 			$chk=chk_idcard($idcard_arr,$_GET['digit_last']);		
-		  echo ($chk=="no")? "false":"true";
-	  }else{
-			echo "false";				 
-	 }		
+		  	echo ($chk=="no")? "false":"true";
+	  
 	}
 	function chk_idcard_edit()
 	{
@@ -370,8 +367,6 @@ class Inform extends R36_Controller
 		}
 		redirect('inform/index_dead');
 	}
-	function show_table_vaccine($id=FALSE,$hospitalcode=FALSE){
-		
-	}
+
 }
 ?>
