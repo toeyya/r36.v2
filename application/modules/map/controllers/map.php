@@ -1,5 +1,5 @@
 <?php
-class Map extends Public_Controller
+class Map extends Map_Controller
 {
 	function __construct()
 	{
@@ -10,7 +10,7 @@ class Map extends Public_Controller
 	function index()
 	{	//$this->db->debug=TRUE;
 		//$this->template->set_layout('_map');
-		$this->template->build('map_index');
+		$this->template->build('index');
 	}
 
 }

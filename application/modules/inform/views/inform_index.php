@@ -54,15 +54,16 @@ var province_id,amphur_id,district_id;
 				// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้
 					$("#hospitalprovince option").filter(function() {return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
 					$("select[name=hospital_province_id]").trigger('change');					
+					
 					alert($('input[name=h_amphur_id]').val());
-					$("#hospital_amphur_id option").filter(function(){				
-							return $(this).val()== $('input[name=h_amphur_id]').val();
+					$("#hospital_amphur_id option").filter(function(){										
+							return $(this).val()=== $('input[name=h_amphur_id]').val();							
 					}).prop('selected','selected');						
 					$("select[name=hospital_amphur_id]").trigger('change');
 					
-					alert($('input[name=h_district_id]').val());
-					$("#hospital_district_id option").filter(function(){
-						return $(this).val() == $('input[name=h_district_id]').val();
+					alert($('input[name=h_district_id]').val());				
+					$("#hospital_district_id option").filter(function(){						
+						return $(this).val() ==$('input[name=h_district_id]').val();
 					}).prop('selected', 'selected');	
 					$("select[name=hospital_district_id]").trigger('change');
 					
