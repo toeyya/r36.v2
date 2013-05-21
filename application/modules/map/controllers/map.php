@@ -10,7 +10,7 @@ class Map extends Map_Controller
 	function index()
 	{	//$this->db->debug=TRUE;
 		//$this->template->set_layout('_map');
-		$this->template->build('index');
+		$this->template->build('index-dataapi');
 	}
 
 }

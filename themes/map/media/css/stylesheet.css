@@ -16,6 +16,6 @@ body {
                 background:url(../images/bg.gif) repeat-x;width:3px; height:155px;
              
                 }
-#loading{background:url(../images/loadingmove.gif) no-repeat;width:78px; height:20px;}
+#loading{background:url(../images/loadingmove.gif) no-repeat;width:78px; height:20px;position:absolute;visibility:hidden;}
 #header{background:url(../images/head_gis.jpg) no-repeat;width:700px;height:155px;margin:-8px;padding:0px;}
 

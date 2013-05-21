@@ -180,6 +180,27 @@ var objgroup = new MMMapIGGroup(object);
 mmmapig.addObjectGroup(objgroup);
 }
 }
+
+var loadingtimeout = false;
+function loading(bool) {
+  if(bool) {
+    document.getElementById('loading').style.zIndex = '9999';
+    document.getElementById('loading').style.display = 'inline';
+    document.getElementById('loading-bar').style.zIndex = '9999';
+    document.getElementById('loading-bar').style.visibility = 'visible';
+    
+  }else {
+    var clear = function() {
+      document.getElementById('loading').style.zIndex = '-9999';
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('loading-bar').style.zIndex = '-9999';
+      document.getElementById('loading-bar').style.visibility = 'hidden';
+    }
+    if(loadingtimeout) clearTimeout(loadingtimeout)
+    loadingtimeout = setTimeout(clear, 100);
+  }
+}
+
 function checkZoom() {
 var zoom = mmmap.getZoom();
 if(zoom > 7) {

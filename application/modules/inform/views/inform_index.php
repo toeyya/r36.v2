@@ -159,6 +159,7 @@ var province_id,amphur_id,district_id;
 
 <form name="form1"  method="get" id="form1" action="inform/index">		
 <?php 
+	if($this->session->userdata('R36_LEVEL')=="05"){
 	$hospitalcode=$this->session->userdata('R36_HOSPITAL');
 	$rs=$this->hospital->get_row("hospital_code",$hospitalcode);	
 	$province_name=$this->db->GetOne("select province_name from n_province where province_id = ? ",$rs['hospital_province_id']);
@@ -173,11 +174,12 @@ var province_id,amphur_id,district_id;
 						,'h_district_id' => $rs['hospital_district_id']
 						,'h_code' =>$this->session->userdata('R36_HOSPITAL'));
 	echo form_hidden($data);
+	}
 ?>
 	<table class="tb_patient1">				
 			<tr> 
 				  <th><span class="alertred">*</span>จังหวัด :</th>
-				  <td>
+				  <td>				  	
 						<?php echo form_dropdown('hospital_province_id',get_option('province_id','province_name',"n_province where province_id <>'' order by province_name asc"),@$_GET['hospital_province_id'],'class="input_box_patient" id="hospitalprovince"','-โปรดเลือก-') ?>
 				  </td>
 				  <th height="20"  ><span class="alertred">*</span>อำเภอ :</th>
