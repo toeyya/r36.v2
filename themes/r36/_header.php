@@ -35,7 +35,7 @@
                      			<li><a href="report/index/7">รายงานรายชื่อคนไข้ที่เสียชีวิต   </a></li>
                      			<li><a href="report/index/8">สรุปผลการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าและอิมมูโนโกลบุลิน </a></li>
                      			<li><a href="report/index/9">SVG view</a></li>
-                     			<li><a href="map/index">GIS</a></li>
+                     			<li><a href="map">GIS</a></li>
                      		</ul>
                      </li>                    
                      <li><a href="javascript:void(0);">วิเคราะห์ตามปัจจัยต่างๆ</a></li>
@@ -54,6 +54,7 @@
                    
                  </ul>
                </li>
+                 
             </ul>
             </div>
 </div>
