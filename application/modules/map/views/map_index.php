@@ -26,7 +26,7 @@ var showonetambolfromzoom;
 var tambolinamphoe;
 var clicked = false;
 
-var fillcolor = "#FF3F3F";
+var fillcolor = "#FF3F3F"; // แดง
 var linecolor = "#FF3F3F";
 var clicklock = false;
 
@@ -50,6 +50,10 @@ function mmmap_client_init() {
    mmmap.showObject('สกลนคร', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
    mmmap.showObject('บึงกาฬ',"ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
    mmmap.showObject('อุดรธานี',"ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
+   
+    mmmap.showObject('พระนครศรีอยุธยา', "ADM", false, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+   mmmap.showObject('สิงห์บุรี',"ADM", false, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+   mmmap.showObject('ลพบุรี',"ADM", false, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
    mmmap.moveTo(13.767734,100.5351375);
   /* mmmap.showObject('5010;5011;5009', "IG", false, null, null, "00FF00", "00FF00", 0.7, 0.5); 
    mmmap.showObject('5001;5003;5008;5016;5017', "IG", false, null, null, "FCE005", "FCE005", 0.7, 0.5);//เหลือง
