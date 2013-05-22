@@ -8,7 +8,9 @@ var province_id,amphur_id,district_id;
 			data:'name=hospital_amphur_id&ref1='+province_id,
 			success:function(data){
 				$('#input_amphur').html(data);
+				//$('select[name=hospital_district_id] option:[value=""]').attr('selected',true);
 				$('#input_hospital').html('<select name="hospitalcode" class="input_box_patient" id="hospital"><option value="">-โปรดเลือก-</option></select>');
+				//$('#input_district').html('<select name="hospital_district_id" class="input_box_patient" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');
 			}
 		});
 	});
@@ -50,10 +52,26 @@ var province_id,amphur_id,district_id;
 			$('#form1').attr('action','inform/addNew');
 			if($('input[name=level]').val()=="05"){
 				// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้
-					$("#hospitalprovince option").filter(function() {return $(this).val() == $('input[name=h_province_id]').val();}).prop('selected', true);
-					$("#hospital_amphur_id option").filter(function() {return $(this).val() == $('input[name=h_amphur_id]').val();}).prop('selected', true);	
-					$("#hospital_district_id option").filter(function() {return $(this).val() == $('input[name=h_district_id]').val();}).prop('selected', true);	
-					$("#hospitalcode option").filter(function() {return $(this).val() == $('input[name=h_code]').val();}).prop('selected', true);							
+					$("#hospitalprovince option").filter(function() {return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
+					$("select[name=hospital_province_id]").trigger('change');					
+					
+					alert($('input[name=h_amphur_id]').val());
+					$("#hospital_amphur_id option").filter(function(){										
+							return $(this).val()=== $('input[name=h_amphur_id]').val();							
+					}).prop('selected','selected');						
+					$("select[name=hospital_amphur_id]").trigger('change');
+					
+					alert($('input[name=h_district_id]').val());				
+					$("#hospital_district_id option").filter(function(){						
+						return $(this).val() ==$('input[name=h_district_id]').val();
+					}).prop('selected', 'selected');	
+					$("select[name=hospital_district_id]").trigger('change');
+					
+					alert($('input[name=h_code]').val());					
+					$("#hospitalcode option").filter(function(){
+						return $(this).val() == $('input[name=h_code]').val();
+					}).prop('selected', 'selected');											
+
 			}
 			$('#title').text("เพิ่มประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า")			
 			return true;	
@@ -138,16 +156,30 @@ var province_id,amphur_id,district_id;
 </script>
 <div id="title">ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า</div>
 <div id="search">
+
 <form name="form1"  method="get" id="form1" action="inform/index">		
-<input name="level" type="hidden" value="<?php echo $this->session->userdata('R36_LEVEL') ?>" />
-<input name="h_province_id" type="hidden" value="<?php echo !empty($_GET['hospital_province_id']) ?>"/>
-<input name="h_amphur_id" type="hidden" value="<?php echo !empty($_GET['hospital_amphur_id']) ?>"/>
-<input name="h_district_id" type="hidden" value="<?php echo !empty($_GET['hospital_district_id']) ?>"/>
-<input name="h_code" type="hidden" value="<?php echo !empty($_GET['hospitalcode']) ?>"/> 
+<?php 
+	if($this->session->userdata('R36_LEVEL')=="05"){
+	$hospitalcode=$this->session->userdata('R36_HOSPITAL');
+	$rs=$this->hospital->get_row("hospital_code",$hospitalcode);	
+	$province_name=$this->db->GetOne("select province_name from n_province where province_id = ? ",$rs['hospital_province_id']);
+	$amphur_name = $this->db->GetOne("select amphur_name from n_amphur where province_id = ?  and amphur_id = ? ",array($rs['hospital_province_id'],$rs['hospital_amphur_id']));
+	$district_name = $this->db->GetOne("select district_name from n_district where province_id = ? and amphur_id = ? and district_id = ? ",array($rs['hospital_province_id'],$rs['hospital_amphur_id'],$rs['hospital_district_id']));
+	$data =array('province_name'=>$province_name
+						,'amphur_name'=>$amphur_name
+						,'district_name' => $district_name
+						,'level' => $this->session->userdata('R36_LEVEL')
+						,'h_province_id' => $rs['hospital_province_id']
+						,'h_amphur_id' => $rs['hospital_amphur_id']
+						,'h_district_id' => $rs['hospital_district_id']
+						,'h_code' =>$this->session->userdata('R36_HOSPITAL'));
+	echo form_hidden($data);
+	}
+?>
 	<table class="tb_patient1">				
 			<tr> 
 				  <th><span class="alertred">*</span>จังหวัด :</th>
-				  <td>
+				  <td>				  	
 						<?php echo form_dropdown('hospital_province_id',get_option('province_id','province_name',"n_province where province_id <>'' order by province_name asc"),@$_GET['hospital_province_id'],'class="input_box_patient" id="hospitalprovince"','-โปรดเลือก-') ?>
 				  </td>
 				  <th height="20"  ><span class="alertred">*</span>อำเภอ :</th>
@@ -287,7 +319,7 @@ var province_id,amphur_id,district_id;
 	  </table>
 <div class="btn_inline">
       <ul>
-      	<li><button class="btn_submit" name="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
+      	<li><button class="btn_submit" name="btn_submit" type="submit" value="btn_submit">&nbsp;&nbsp;&nbsp;</button></li>
         <li><button class="btn_cancel" name="btn_cancel" type="button">&nbsp;&nbsp;&nbsp;</button></li></ul>
 </div>
 </div>
@@ -303,7 +335,7 @@ var province_id,amphur_id,district_id;
             <th>บัตรประชาชน/  บัตร passport</th>
             <th>ชื่อ-นามสกุล</th>
             <th>โรงพยาบาล</th>
-            <th>ปิดเคส(จำนวนวัคซีน)</th>
+            <th>จำนวนวัคซีน(เข็ม)</th>
             <th>การกระทำ</th>
           </tr>                     	
 			<?php
@@ -311,26 +343,27 @@ var province_id,amphur_id,district_id;
 			$i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 10)-10)+1:1;
 			 foreach($result as $key =>$rec): ?>
               <tr> 
-                <td align="center"><?php //echo $i++?></td>
+                <td align="center"><?php echo $i++?></td>
                 <td><?php echo $rec['hospitalcode'].'/'.$rec['hn'].'-'.$rec['hn_no'];?></td>
                 <td><?php echo $rec['idcard'] ?></td>
 				<td><?php echo $rec['firstname'].' '.$rec['surname'];?></td>
 				<td><?php echo $rec['hospital_name']?></td>
                 <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
             <td>	
-            		<a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" target="_blank" class="btn_view"></a> 			
+            		<a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" target="_blank" class="btn_view vtip"></a> 			
 				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
-					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>" target="top" class="btn_edit" ></a>
-					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
+					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>" target="_blank" class="btn_edit vtip" ></a>
+					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
 				<?php }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){
 											if($this->session->userdata('R36_FROMEDIT')=='Y'){ ?>
-													<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" target="_top" class="btn_edit"></a>
+													<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" target="_blank" class="btn_edit vtip"></a>
 							<?php	}
 						}  ?>
+				<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine" target="_blank" class="btn_syring vtip" ></a>
 				</td>
               </tr>            
 			  <?php endforeach; ?>
 			 <?php endif; ?>			    
 </table>	
-<?php echo !empty($pagination) ?>
+
 

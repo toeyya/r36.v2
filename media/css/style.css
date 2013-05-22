@@ -41,7 +41,7 @@ a:hover {color:#0190fe;}
 .text_patient1{font-size:18px; color:#ca2090;}
 .tb_patient1,.tbform{width:100%;border-collapse: collapse;}
 .tb_patient1,.tb_patient1 td{border:1px solid #cecece;}
-.tb_patient1 th{text-align:right; padding-right:15px; line-height:40px;}
+.tb_patient1 th{text-align:right; padding-right:15px; line-height:30px;}
 .noborder, .noborder tr, .noborder th, .noborder td{border: none;}
 .td_patient1{border-bottom:#ca2090 solid 2px;}
 .text_patient{ text-align:right; padding-right:15px; line-height:40px;}
@@ -58,8 +58,8 @@ select.styled-select,select.input_box_patient{
 	/*color: #e31788; */
 	font-size: inherit; overflow: hidden; -webkit-appearance: button; padding-top: 2px;  padding-bottom: 2px;  text-overflow: ellipsis;  white-space: nowrap;}
 .box_calendar{float:left; border:1px solid #cecece; width:100px; margin-left:15px; height:20px;}
-input[type="submit"],.btn_submit{display:block; width:88px; height:26px; background-image: url(../images/btn_submit_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
-.btn_submit:hover{background-image: url(../images/btn_submit_hot.png); background-position:no-repeat;}
+input[type="submit"],.btn_submit{display:block; width:88px; height:26px; background-image: url(../images/btn_search_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
+.btn_submit:hover{background-image: url(../images/btn_search_hot.png); background-position:no-repeat;}
 input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; background-image: url(../images/btn_cancel_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
 .btn_cancel:hover{background-image: url(../images/btn_cancel_hot.png); background-position:no-repeat;}
 .btn_save{display:block; width:88px; height:26px; background-image: url(../images/btn_save_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
@@ -69,6 +69,11 @@ input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; backgrou
 				  vertical-align:super;
 				  }
 .btn_press:hover{background-image: url(../images/btn_press_hot.png); background-position:no-repeat;}
+.btn_del{display:inline-block; width:88px; height:26px; 
+				  background: url(../images/btn_del_reg.png) no-repeat; background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;
+				  vertical-align:super;
+				  }
+.btn_del:hover{background: url(../images/btn_del_hot.png) no-repeat; background-position:no-repeat;}
 .btn_inline {/*width:70%; */height:26px;text-align:center;margin-top:15px;}
 .btn_inline ul {list-style:none; margin:0px auto;padding:0;display:inline-block;}
 .btn_inline ul li{display:block; float:left;list-style:none; padding-right:15px;}
@@ -186,10 +191,12 @@ ul.sublist label{display:inline-block;width:100px;}
 .syringe2{background-position:-87px 72px;}
 .syringe1{background-position:-117px 72px;}
 .syringe4{background-position:-147px 72px;}
-.btn_view{background:url('../images/eye.png') no-repeat;width:16px;height: 16px;border:none;display:inline-block;}
-.btn_edit{background:url('../images/pencil.png') no-repeat;width:16px;height: 16px;border:none;display:inline-block;}
+.btn_view{background:url('../images/eye-icon.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
+.btn_edit{background:url('../images/pencil-icon.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
 .btn_delete{background:url('../images/cross.png') no-repeat;width:16px;height: 16px;border:none;display:inline-block;}
-.btn_add{background:url('../images/add.png') no-repeat;width:106px; height:25px;cursor:pointer; display:inline-block;border:none;float:right;}
+.btn_add{background:url('../images/btn_add.png') no-repeat;width:183px; height:29px;cursor:pointer; display:inline-block;border:none;float:right;}
+.btn_syring{background:url('../images/syringe/syringe-icon.png') no-repeat;
+				  width:24px;height:24px;border:none;display:inline-block;margin}
 
 #boxAdd{margin-top:15px;/*width:70%;*/}
 ul.sublist label.error,label.error{color:red;width:50%;}
@@ -204,4 +211,6 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 }
 .checkvaccine-cross{border:1px solid #ED0202;margin-right:3px;}
 .checkvaccine-check{border:'';margin-right:3px;}
-
+.user-online{background:url('../images/user-online.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
+.user-offline{background:url('../images/user-offline.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
+.tbvaccine p{margin:0px;}
