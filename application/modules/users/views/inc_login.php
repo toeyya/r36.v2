@@ -12,10 +12,10 @@
 		<span class="text-loginSystem">ลงชื่อเข้าใช้ระบบ</span>                  
         	<div class="username-field"><input class="input_box" type="text" name="username" value="" /></div>
 			<div class="password-field"><input class="input_box" type="password" name="password" value="" /></div>
-        	<input class="btn_go" type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;" >
-            <div class="forgot-usr-pwd"><a href="#">ลืมรหัสผ่าน?</a> </div><div class="clr"></div><br>
-            <input type="checkbox" name="remember" id="remember-me"  value="1"/>
-            <label for="remember-me">เข้าสู่ระบบโดยไม่ต้อง Login </label>     
+            <input class="btn_go" type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;" >
+            <div class="forgot-usr-pwd"><a href="users/register">ลงทะเบียน</a>|<a href="#">ลืมรหัสผ่าน</a></div>
+           
+  
          </form>            
     </div>
     </td>

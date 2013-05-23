@@ -43,5 +43,8 @@ class Users extends Public_Controller
 		logout();
 		redirect('home');
 	}
+	function register(){
+		$this->template->build('register');
+	}
 }  
 ?>

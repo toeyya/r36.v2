@@ -52,7 +52,8 @@ function login($username=FALSE,$password=FALSE,$remember=FALSE)
 function admin_login($username=FALSE,$password=FALSE){
 	// ผู้ดูแลระบบระดับกรม	
 	$CI =& get_instance();	
-	$sql="SELECT * FROM n_user	 WHERE  userposition='00' and   n_user.username= ?  AND n_user.userpassword= ? ";
+	$CI->db->debug=TRUE;
+	$sql="SELECT * FROM n_user	 WHERE  userposition='00' and   username= ?  AND userpassword= ? ";
 	$rs = $CI->db->GetRow($sql,array($username,$password));	
 	if($rs){
 		$CI->session->set_userdata('R36_UID',$rs['uid']);	

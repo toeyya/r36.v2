@@ -1,0 +1,14 @@
+@charset "utf-8";
+/*
+Design by http://www.favouritedesign.com
+*/
+
+/* ### GENERAL ### */
+#register form{margin:8px 14px 20px;}
+#register .row{background-color:#FFFFFF;margin-left:1px;margin-top:-8px;}
+label.error{color:red;width:50%;display:inline}
+label.alertred{font-size: 12px;	color: #FF0000;display:inline;}
+.username-field input[type="text"],.password-field input[type="password"] 
+{width: 120px;height: 16px;margin-top: 10px;
+	margin-left: 10px;	font-family: Verdana, Arial;font-size: 13px;color: #2d2d2d;
+	box-shadow:none;background:none;border:none}
