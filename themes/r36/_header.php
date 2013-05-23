@@ -26,6 +26,18 @@
                 <ul class="submenu8">                 
                      <li class="menu8"><a href="javascript:void(0);">วิเคราะห์เชิงพรรณา</a>
                      		<ul class="submenu8-1">
+<<<<<<< HEAD
+                     			<li><a href="report/index/1">สรุปข้อมูล ร.36</a></li>
+                     			<li><a href="report/index/2">สรุปข้อมูลการสัมผัสโรครายปี (เดือน)</a></li>
+                     			<li><a href="report/index/3">ข้อมูลการสัมผัสโรครายปี (ไตรมาส)</a></li>
+                     			<li><a href="report/index/5">สรุปประวัติการฉีดวัคซีน</a></li>
+                     			<li><a href="report/index/4">สรุปประวัติคนไข้ในเขตอำเภอและคนไข้นอกเขตอำเภอ   </a></li>
+                     			<li><a href="report/index/6">รายงานสรุปรายจังหวัด   </a></li>
+                     			<li><a href="report/index/7">รายงานรายชื่อคนไข้ที่เสียชีวิต   </a></li>
+                     			<li><a href="report/index/8">สรุปผลการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าและอิมมูโนโกลบุลิน </a></li>
+                     			<li><a href="report/index/9">SVG view</a></li>
+                     			<li><a href="map">GIS</a></li>
+=======
                      			<li><a href="report/index/1">ข้อมูลการสัมผัสโรค - ภาพรวม</a></li>
                      			<li><a href="report/index/2">ข้อมูลการสัมผัสโรค - รายเดือน</a></li>
                      			<li><a href="report/index/3">ข้อมูลการสัมผัสโรค - รายไตรมาส</a></li>
@@ -36,6 +48,7 @@
                      			<li><a href="report/index/8">ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบุลิน </a></li>
                      			<!--<li><a href="report/index/9">SVG view</a></li>-->
                      			<li><a href="map/index">ระบบภูมิศาสตร์สารสนเทศ (GIS)</a></li>
+>>>>>>> 9fb396c990ede3b37a0799bb0126b052c4eb6d8b
                      		</ul>
                      </li>                    
                      <li><a href="javascript:void(0);">วิเคราะห์ตามปัจจัยต่างๆ</a></li>
@@ -54,6 +67,7 @@
                    
                  </ul>
                </li>
+                 
             </ul>
             </div>
 </div>

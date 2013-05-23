@@ -18,4 +18,90 @@ body {
                 }
 #loading{background:url(../images/loadingmove.gif) no-repeat;width:78px; height:20px;position:absolute;visibility:hidden;}
 #header{background:url(../images/head_gis.jpg) no-repeat;width:700px;height:155px;margin:-8px;padding:0px;}
+#map	{width:1166px; border-color: #CCCCCC #CCCCCC #999999;border-style: solid;border-width: 1px;
+    		box-shadow: 0 2px 5px rgba(64, 64, 64, 0.1);padding:5px;overflow:hidden;background: #FFF;margin-left:-6px;clear:both;margin-top:8px;}
 
+#map #tab_right #tabs-gis #mmmap_div{width:790px;height: 1500px;margin-left:30px;}
+#map #tab_right #tabs-gis{width:800px;display:block;}
+#map #tab_right{width:860px;display:block;float:right}
+#map .search	{width:297px;float:left;}
+#map .search p{background-color: #E31788;color:#FFF;text-align: center;font-size:14px;font-weight:bold;margin:0px;padding:5px;height: 16px;line-height: 14px;border-radius:5px 51px 5px 51px;}
+#map .search ul{list-style: none;overflow: hidden;padding:0px;}
+#map .search ul.box{border:1px solid #AFD8A0;border-radius:5px;}
+
+#map .search li{border-bottom: 1px dashed #CCCCCC;display:inline-block;width:100%;padding:5px 0px;}
+#map .search ul.box li{border-bottom: none;}
+#map .search li label{width:100px;display:inline-block;padding:2px;}
+#map .search ul.box span{display:inline-block;margin-right:3px;}
+ul.tabs{
+border-bottom: 1 solid #D6D6D6;
+}
+.tabs li {
+list-style:none;
+display:inline;
+}
+.tabs a {
+padding:5px 10px;
+display:inline-block;
+background:#666;
+color:#fff;
+text-decoration:none;
+}
+.tabs a.active {
+background:#D6D6D6;
+color:#000;
+} 
+#tabs2{
+	margin-left:30px;
+}
+#breadcrumbs{
+	margin-left:30px;
+	border-bottom:1 dash #6394BD;	
+}
+.tbreport
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 14px;
+    background: #fff;
+    margin:0;
+    margin-bottom:10px;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+.tbreport th
+{
+    font-size: 16px;
+    font-weight: normal;
+    padding: 10px 5px 3px 5px;
+    border-top: 0px solid #ccc;
+    border-bottom: 2px solid #999;
+    border-left: 0px solid #ccc;
+    border-right: 0px solid #ccc;
+    text-align:left;
+    background-color:#fff;
+    color:#65358f;
+}
+.tbreport td
+{
+    color:#333;
+    padding:5px;
+    height:30px;
+    border-top: 0px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    vertical-align: top;
+}
+
+.tbreport td.B { font-weight:700;}
+.tbreport td strong { font-weight:700;}
+.tbreport td.red, span.red { color:#F00;}
+.tbreport tr:hover td,.tblist tr.active td {}
+.tbreport tr.total { border-top:2px dotted #666; border-bottom:2px dotted #666; font-weight:700; background:url(../images/bg_pattern.png);}
+.tbreport td.topic { background:#F5F5F5;}
+.tbreport td.topic p { padding:5px 0 5px 15px;}
+.tbreport td a:link {color:#800000; text-decoration:underline;}
+.tbreport td a:visited {color:#800000; text-decoration:underline;}
+.tbreport td a:hover {color: #F60; text-decoration:underline;}
+.tbreport td a:active {color: #800000; text-decoration:underline;}
