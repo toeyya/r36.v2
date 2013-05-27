@@ -801,7 +801,8 @@ $('select[name=prefix_name]').click(disableChkage);
                           <tr>
                             <td>&nbsp;</td>
                             <td ><div align="right">โทร<span class="alertred">*</span> : </div></td>
-                            <td><input name="telephone" type="text" class="input_box_patient " size="20" id="telephone" value="<?php echo @$rs['telephone'];?>"></td>
+                            <td style="width:33%"><input name="telephone" type="text" class="input_box_patient " size="20" id="telephone" value="<?php echo @$rs['telephone'];?>">
+                            	<span style="font-size:85%;display:inline-block;">รูปแบบ 021234567</span></td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>
                             <td>&nbsp;</td>

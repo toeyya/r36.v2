@@ -1,14 +1,17 @@
 <script type="text/javascript">
 $(document).ready(function(){
-	alert("ddd");
 	$('#form1').validate({
 		debug:true,
 		groups:{
 			groupname:'firstname surname',
-			groupidcard:'cardW0 cardW1 cardW2 cardW3 cardW4'
+			groupidcard:'cardW0 cardW1 cardW2 cardW3 cardW4',
+			grouptel:'tel0 tel1 tel2',
+			groupmobile:'mobile0 mobile1 mobile2'
 		},
 		rules:{
 			firstname:"required",surname:"required",
+			tel0:"required",tel1:"required",tel2:"required",
+			mobile0:"required",mobile1:"required",mobile2:"required",
 			cardW0:"required",cardW1:"required",cardW2:"required",cardW3:"required",
 			cardW4:{
 				required:true,
@@ -23,11 +26,20 @@ $(document).ready(function(){
 			userhospital:{
 				required:true,
 				remote:{
-					url:'<?php echo base_url(); ?>users/chkHospitalcode'
+					url:'<?php echo base_url(); ?>users/chkHospitalcode',
+					type:'get',
+					complete: function(data){
+					     if( data.responseText == "true" ) {
+					               $('input[name=userhospital]').next().next().html('test'); 
+					      }else{
+					      	 $('input[name=userhospital]').next().next().html(''); 
+					      }
+					}
+				
 				}
 			},
-			email:{
-				require:true,
+			usermail:{
+				required:true,
 				email:true
 			},
 			password:"required",
@@ -36,35 +48,44 @@ $(document).ready(function(){
 			}
 		},
 		messages:{
-			firstname:"กรุณาระบุด้วยค่ะ",surname:"กรุณาระบุด้วยค่ะ",			
-			cardW0:"กรุณาระบุให้ครบถ้วนค่ะ",	cardW1:"กรุณาระบุให้ครบถ้วนค่ะ",	cardW2:"กรุณาระบุให้ครบถ้วนค่ะ",	cardW3:"กรุณาระบุให้ครบถ้วนค่ะ",
+			mobile0:"กรุณาระบุ",mobile1:"กรุณาระบุ",mobile2:"กรุณาระบุ",
+			fax0:"กรุณาระบุ",fax1:"กรุณาระบุ",fax2:"กรุณาระบุ",
+			tel0:"กรุณาระบุ",tel1:"กรุณาระบุ",tel2:"กรุณาระบุ",
+			firstname:"กรุณาระบุ",surname:"กรุณาระบุ",			
+			cardW0:"กรุณาระบุ",	cardW1:"กรุณาระบุ",	cardW2:"กรุณาระบุ",	cardW3:"กรุณาระบุ",
 			cardW4:{
-				required:"กรุณาระบุให้ครบถ้วนค่ะ",
-				remote:"กรุณาระบุให้ถูกต้องค่ะ"
+				required:"กรุณาระบุ",
+				remote:"กรุณาระบุ"
 			},
 			userhospital:{
-				required:'กรุณาระบุด้วยค่ะ',
-				remote:'กรุณาให้ถูกต้องค่ะ'
+				required:'กรุณาระบุ',
+				remote:'กรุณาระบุให้ถูกต้อง'
 			},
-			email:{
-				required:"กรุณาระบุอีเมล์ด้วยค่ะ",
+			usermail:{
+				required:"กรุณาระบุ",
 				email:{
-					required:"กรุณาระบุด้วยค่ะ",
-					email:"กรุณาระบุให้ถูกต้องค่ะ"
+					required:"กรุณาระบุ",
+					email:"กรุณาระบุให้ถูกต้อง"
 				}
 			},
-			password:"กรุณาระบุด้วยค่ะ",
+			password:"กรุณาระบุ",
 		},
 	 	errorPlacement: function(error, element) {
 			if (element.attr("name") == "firstname" || element.attr("name") == "surname" ) {
 				error.insertAfter("#surname");
 			}else if(element.attr("name")=="cardW0" || element.attr("name")=="cardW1" || element.attr("name")=="cardW2" || element.attr("name")=="cardW3" || element.attr("name")=="cardW4"){
 					error.insertAfter("#cardW4");
-			}else {
+			}else if(element.attr('name')=="tel0" || element.attr('name')=="tel1" || element.attr('name')=="tel2"){
+				error.insertAfter("#tel2");
+			}else if(element.attr('name')=="mobile0" || element.attr('name')=="mobile1" || element.attr('name')=="mobile2"){
+				error.insertAfter("#mobile2");
+			}			
+			else {
 				error.insertAfter(element);
 			}
 		}
-	});	
+	});
+
 });
 </script>
 <ul class="breadcrumb">
@@ -72,27 +93,28 @@ $(document).ready(function(){
     <li>ลงทะเบียน</li>
 </ul>	
 <div id="register">
+<div id="span9">
 <div class="row">
 		<form action="users/signup" method="post" class="form-horizontal" id="form1">
  			<div class="control-group">
  				<label class="control-label" for="inputEmail">รหัสหน่วยงาน 9 หลัก</label>
 				<div class="controls">
-					<input type="text"  placeholder="รหัสหน่วยงาน 9 หลัก" name="userhospital" class="input-large" maxlength="9">
+					<input type="text" class="input-medium" placeholder="รหัสหน่วยงาน 9 หลัก" name="userhospital"  maxlength="9">
 					<label class="alertred">*</label>	
-					<label class="alertred"></label>			
-				</div>
-								
+					<label></label>			
+				</div>	
+					
  				<label class="control-label" for="inputEmail">อีเมล์</label>
 				<div class="controls">
 					<input type="text"  placeholder="อีเมล์" name="usermail" class="input-large"> <label class="alertred">*</label>
 				</div>
  				<label class="control-label" for="inputEmail">รหัสผ่าน</label>
 				<div class="controls">
-					<input type="text"  placeholder="รหัสผ่าน" name="password" id="password" class="input-large"> <label class="alertred">*</label>
+					<input type="text"  placeholder="รหัสผ่าน" class="input-medium"  name="password" id="password" class="input-large"> <label class="alertred">*</label>
 				</div>
  				<label class="control-label" for="inputEmail">ยืนยันรหัสผ่าน</label> 
 				<div class="controls">
-					<input type="text"  placeholder="อีเมล์" name="repassword" class="input-large"> <label class="alertred">*</label>
+					<input type="text"  placeholder="ยืนยันรหัสผ่าน" class="input-medium"  name="repassword" class="input-large"> <label class="alertred">*</label>
 				</div>		
  			</div>
  			<hr class="hr1">
@@ -108,33 +130,43 @@ $(document).ready(function(){
 				</div>			
 				<label class="control-label" for="inputFirstame">ชื่อ -นามสกุล</label>
 				<div class="controls">
-					<input type="text" id="firstname" placeholder="ชื่อ" name="fisrtname"> <label class="alertred">*</label>
-					<input type="text" id="surname" placeholder="นามสกุล" name="surname"> <label class="alertred">*</label>
+					<input type="text" id="firstname" class="input-medium" placeholder="ชื่อ" name="fisrtname"> <label class="alertred">*</label>
+					<input type="text" id="surname" class="input-medium" placeholder="นามสกุล" name="surname"> <label class="alertred">*</label>
 				</div>				
-
+				<br/>
 				<label class="control-label" for="inputPostion">ตำแหน่ง</label>
-				<div class="controls">
-					<input type="text" id="surname" placeholder="ตำแหน่ง-ระดับ" name="position">
+				<div class="controls">					
+					<?php echo form_dropdown('position',get_option('id','name','n_position'),'','','--กรุณาระบุ--') ?>
 				</div>
 
 				<label class="control-label" for="inputEmail">โทรศัพท์มือถือ</label>
 				<div class="controls">
-					<input type="text" name="mobile"  maxlength="3"  style="width:40px;" placeholder="08x" > -<input type="text" name="mobile"  maxlength="3"  style="width:50px;"> -<input type="text" name="mobile"  maxlength="4"  style="width:60px;">					
+					<input type="text" name="mobile0"  maxlength="3"  style="width:40px;" placeholder="08x" > -<input type="text" name="mobile1"  maxlength="3"  style="width:50px;"> -<input type="text" name="mobile2"  id="mobile2"  maxlength="4"  style="width:60px;">					
 					 <label class="alertred">*</label>
 				</div>
-				<label class="control-label" for="inputEmail">โทรศัทพ์สำนักงาน</label>
+				<label class="control-label" for="inputEmail">โทรศัพท์สำนักงาน</label>
 				<div class="controls">
-					<input type="text" name="telephone" maxlength="1"  style="width:15px;"> -<input type="text" name="telephone" maxlength="4" style="width:60px;"> -<input type="text" name="telephone" maxlength="4" style="width:60px;"> 				
+					<input type="text" name="tel0" maxlength="1"  style="width:15px;"> -<input type="text" name="tel1" maxlength="4" style="width:60px;"> -<input type="text" name="tel2" id="tel2" maxlength="4" style="width:60px;"> 				
 					
 					<label class="alertred">*</label> ต่อ <input type="text" name="telephone_extend" style="width:30px;"> 
 				</div>
 				<label class="control-label" for="inputEmail">โทรสาร</label>
 				<div class="controls">
-					<input type="text" name="fax" maxlength="1"  style="width:15px;"> -<input type="text" name="fax" maxlength="4" style="width:60px;"> -<input type="text" name="fax" maxlength="4" style="width:60px;"> 					
+					<input type="text" name="fax0" maxlength="1"  style="width:15px;"> -<input type="text" name="fax1" maxlength="4" style="width:60px;"> -<input type="text" name="fax2" id="fax2" maxlength="4" style="width:60px;"> 					
 				</div>
 				<div id="boxAdd"><button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
-			</div>			
+			</div>	
+			<hr class="hr1">
+				<label class="control-label" for="latitude"></label>
+				<div class="controls">
+					<input type="text" id="cardW0"  name="latitude" style="width:10px;">										
+				</div>
+				<label class="control-label" for="longtitude"></label>
+				<div class="controls">
+					<input type="text" id="cardW0"  name="longtitude" style="width:10px;">										
+				</div>				
 		</form>
+</div>
 </div>
 </div><!-- register -->
 

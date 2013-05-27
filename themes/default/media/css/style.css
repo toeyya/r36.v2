@@ -54,14 +54,13 @@ a:hover {color:#0190fe;}
 	.password-field {width:280px;height: 38px;float:left;margin-top: 10px;margin-left: 25px;background: url(../images/password-field.png) center left no-repeat;}
 	.password-field:hover {background: url(../images/password-field-hover.png) center left no-repeat;}
 	
-	input[type="text"], input[type="password"] {width: 120px;height: 16px;margin-top: 10px;	margin-left: 10px;	font-family: Verdana, Arial;font-size: 13px;color: #2d2d2d;}
+	.login input[type="text"], .login input[type="password"] {width: 120px;height: 16px;margin-top: 10px;	margin-left: 10px;	font-family: Verdana, Arial;font-size: 13px;color: #2d2d2d;}
 	
 	.forgot-usr-pwd{float:left;width:200ppx; margin-left:45px; margin-top:7px;}
 	.forgot-usr-pwd a{color:#dc1992; text-decoration:none; font-size:13px;}
 	.forgot-usr-pwd a:hover, .forgot-usr-pwd a:focus {text-decoration: underline;}
 
-	#boxAdd{margin-top:28px;margin-left:29%}
-
+	
 
 /* col2 */
 #col2{position:relative; float:left; top:-39px; margin-left:8px; width:710px;}
