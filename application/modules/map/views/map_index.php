@@ -762,10 +762,10 @@ $('ul.tabs').each(function(){
 				</select></li>
 		</ul>
 		<ul class="box">
-			<li><input type="checkbox" name="" value="1" checked="checked"><span class="red"></span>จำนวนผู้สัมผัสโรคระหว่าง 200 ขึ้นไป</li>
-			<li><input type="checkbox" name="" value="2" checked="checked"><span class="orange"></span>จำนวนผู้สัมผัสโรคระหว่าง 100-149</li>
-			<li><input type="checkbox" name="" value="3" checked="checked"><span class="yellow"></span>จำนวนผู้สัมผัสโรคระหว่าง 50-99</li>
-			<li><input type="checkbox" name="" value="4" checked="checked"><span class="green"></span>จำนวนผู้สัมผัสโรคระหว่าง 0-49</li>
+			<li><input type="checkbox" name="" value="1" checked="checked"><span class="red"></span>ระดับความเสี่ยงสูงสุด (Very high)</li>
+			<li><input type="checkbox" name="" value="2" checked="checked"><span class="orange"></span>ระดับความเสี่ยงสูง (High)</li>
+			<li><input type="checkbox" name="" value="3" checked="checked"><span class="yellow"></span>ระดับความเสี่ยงปานกลาง (Moderate)</li>
+			<li><input type="checkbox" name="" value="4" checked="checked"><span class="green"></span>ระดับความเสี่ยงน้อย (Low)</li>
 		</ul>
 		<div align="center"><input type="submit" name="search" value="ค้นหา" class="Submit" title="ปุ่มค้นหา">
 			<input type="submit" name="print" value="พิมพ์" class="Submit" title="ปุ่มพิมพ์">
@@ -787,13 +787,13 @@ $('ul.tabs').each(function(){
 		<table class="tbreport">
 		<tr>
 			<th rowspan="2">จังหวัด</th>
-			<th colspan="5" style="text-align:center;">เขตพื้นที่เสี่ยง(ระดับ)</th>
+			<th colspan="5" style="text-align:center;">การแบ่งระดับความเสี่ยงของพื้นที่</th>
 		</tr>
 		<tr>
-		  <td style="border-bottom:2px solid #FF3F3F;text-align: center">ระดับความเสี่ยงสูงสุด <br/>(150 ขึ้นไป)</td>
-		  <td style="border-bottom:2px solid #FC8105;text-align: center">ระดับความเสี่ยงสูง <br/>(100-149)</td>
-		  <td style="border-bottom:2px solid #FCE005;text-align: center">ระดับความเสี่ยงปานกลาง<br/> (50-99)</td>
-		  <td style="border-bottom:2px solid #00FF00;text-align: center">ระดับความเสี่ยงน้อย <br/>(0-49)</td>
+		  <td style="border-bottom:2px solid #FF3F3F;text-align: center">สูงสุด <br/>(Very high)</td>
+		  <td style="border-bottom:2px solid #FC8105;text-align: center">สูง <br/>(High)</td>
+		  <td style="border-bottom:2px solid #FCE005;text-align: center">ปานกลาง<br/> (Moderate)</td>
+		  <td style="border-bottom:2px solid #00FF00;text-align: center">ต่ำ <br/>(Low)</td>
 		</tr>
 		<tr>
 			<th>เชียงใหม่</th>

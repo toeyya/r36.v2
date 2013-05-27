@@ -46,5 +46,9 @@ class Users extends Public_Controller
 	function register(){
 		$this->template->build('register');
 	}
+	function chkHospitalcode(){
+		$rs=$this->hospital->get_one("id","hospital_code_healthoffice",$_GET['code']);
+		echo ($rs) ? "false":"true";
+	}
 }  
 ?>

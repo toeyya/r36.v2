@@ -245,18 +245,18 @@ $('select[name=prefix_name]').click(disableChkage);
 			
 			if($(this).val()==null || $(this).val()=='' || $(this).val()==undefined){					
 						$(this).addClass('checkvaccine-cross').next().remove();	
-						$('<img src="media/images/crossmark.png" width="16px" height="16px;" class="cross">').insertAfter($(this));
+						$('<img src="media/images/crossmark.png" width="16px" height="16px" class="cross">').insertAfter($(this));
 				if(selectVacc.val()==0){
 						selectVacc.addClass('checkvaccine-cross').next().remove();						
-						$('<img src="media/images/crossmark.png" width="16px" height="16px;" class="cross">').insertAfter(selectVacc);
+						$('<img src="media/images/crossmark.png" width="16px" height="16px" class="cross">').insertAfter(selectVacc);
 				}		
 			}else{
 				if(selectVacc.val()==0){
 						selectVacc.addClass('checkvaccine-cross').next().remove();						
-						$('<img src="media/images/crossmark.png" width="16px" height="16px;" class="cross">').insertAfter(selectVacc);
+						$('<img src="media/images/crossmark.png" width="16px" height="16px" class="cross">').insertAfter(selectVacc);
 				}else{																	
 						$(this).addClass('checkvaccine-check').next().remove();			
-						$('<img src="media/images/checkmark.png" width="16px" height="16px;" class="check">').insertAfter($(this));																	
+						$('<img src="media/images/checkmark.png" width="16px" height="16px" class="check">').insertAfter($(this));																	
 				}								
 			}		
 	});
@@ -352,6 +352,10 @@ $('select[name=prefix_name]').click(disableChkage);
 		
 	$("#form1").validate({
 		debug:false,
+		groups:{
+				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4",
+				groupname:"firstname surname"         								
+		},
 		rules:{
 			firstname:"required",surname:"required",
 			age:{required:true,number:true},
@@ -380,7 +384,7 @@ $('select[name=prefix_name]').click(disableChkage);
 		 		}       						
 		},
 		messages:{
-			firstname:"ระบุชื่อ",surname:"ระบุนามสกุล",
+			firstname:"ระบุด้วยค่ะ",surname:"ระบุด้วยค่ะ",
 			age:{required:"ระบุอายุ",number:"ระบุตัวเลขเท่านั้น"},	
 			provinceid:"ระบุจังหวัด",amphurid:"ระบุอำเภอ",districtid:"ระบุตำบล",doctorname:"ระบุแพทย์", reportname:"ระบุผู้รายงาน",
 			 positionname:"ระบุตำแหน่ง", reportdate:"ระบุวันที่รายงาน",
@@ -399,7 +403,8 @@ $('select[name=prefix_name]').click(disableChkage);
 			errorPlacement: function(error, element){								
 				if((element.attr('name')=='firstname') || (element.attr('name')=='surname') || (element.attr('name')=='age'))
 				{					
-					element.next().html(error);				
+					//element.next().html(error);
+					error.insertAfter("#surname");				
 				}else{
 					if(element.is(':radio'))
 					{ 
@@ -640,7 +645,7 @@ $('select[name=prefix_name]').click(disableChkage);
                                <input name="firstname" type="text" class="input_box_patient " id="firstname" value="<?php echo @$rs['firstname'];?>" size="20" />
 							   <span></span> &nbsp;&nbsp;
 							  นามสกุล<span class="alertred">*</span> :
-                              <input name="surname" type="text" value="<?php echo @$rs['surname'];?>" size="20"  class="input_box_patient ">
+                              <input name="surname" id="surname" type="text" value="<?php echo @$rs['surname'];?>" size="20"  class="input_box_patient ">
 							  <span></span>&nbsp;&nbsp;
 							อายุ<span class="alertred">*</span> :
                             <input name="age" id="age"  type="text" size="2" maxlength="2" value="<?php echo @$rs['age'];?>" class="input_box_patient auto"  onKeyUp="chk_than15(this.value);">
