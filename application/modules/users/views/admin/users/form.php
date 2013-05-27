@@ -171,9 +171,8 @@ var ref1,ref2,ref3;
   </tr>
   <tr>
   	<th>เบอร์มือถือ <span class="alertred">*</span></th>
-  	<td><input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>" class="input_box_patient" maxlength="3"  style="width:40px;"> -
-  		<input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>" class="input_box_patient" maxlength="3"  style="width:40px;"> -
-  		<input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>" class="input_box_patient" maxlength="4"  style="width:60px;">
+  	<td><input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>" class="input_box_patient"> 
+  		
   	</td>
   </tr>  		
   	<tr  id="hospital_level05" style="display:<? if(@@$rs['userposition']!='05' && @@$rs['userposition']!='03' ){echo 'none';}?>">
