@@ -126,6 +126,9 @@ class Report extends R36_Controller
 																		        GROUP BY n_information.id")->sort("")->order("vaccine_date asc")->get();
 		$this->template->build('report_schedule',$data);
 	}
+	function analyze(){
+		$this->template->build('report_analyze');
+	}
 
 
 	

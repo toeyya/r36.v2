@@ -1,6 +1,6 @@
-<div id="title">สรุปข้อมูลการสัมผัสโรครายปี (ไตรมาส)</div>
+<div id="title">ข้อมูลการสัมผัสโรค - รายไตรมาส</div>
 <div id="search">
-<form action="report/index/6" method="post" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/index/3" method="post" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 		<table class="tb_patient1">
 			  <tr>
 				<th>รูปแบบเขตความรับผิดชอบ</th>
@@ -68,4 +68,7 @@
       </ul>
 </div>	
 </form>
+</div>
+<div id="report">
+	
 </div>

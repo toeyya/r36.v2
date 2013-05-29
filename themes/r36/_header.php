@@ -31,7 +31,7 @@
                      			<li><a href="report/index/2">ข้อมูลการสัมผัสโรค - รายเดือน</a></li>
                      			<li><a href="report/index/3">ข้อมูลการสัมผัสโรค - รายไตรมาส</a></li>
                      			<li><a href="report/index/5">ข้อมูลการฉีดวัคซีน</a></li>
-                     			<li><a href="report/index/4">ข้อมูลคนไข้จำแนกตามสิทธิ์สถานบริการ   </a></li>
+                     			<li><a href="report/index/4">ข้อมูลผู้รับวัคซีนจำแนกตามสิทธิการรักษาของสถานบริการ</a></li>
                      			<li><a href="report/index/6">ข้อมูลรายจังหวัด   </a></li>
                      			<li><a href="report/index/7">ข้อมูลผู้เสียชีวิต   </a></li>
                      			<li><a href="report/index/8">ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบุลิน </a></li>
@@ -39,8 +39,8 @@
 
                      		</ul>
                      </li>                    
-                     <li><a href="javascript:void(0);">วิเคราะห์ตามปัจจัยต่างๆ</a></li>
-                     <li><a href="javascript:void(0);">ส่งออก ข้อมูลคนไข้ที่สัมผัสโรค</a></li>
+                     <li><a href="report/analyze">วิเคราะห์ตามปัจจัยต่างๆ</a></li>
+                     <li><a href="report/export/export_rabies">ส่งออก ข้อมูลคนไข้ที่สัมผัสโรค</a></li>
                      <li><a href="javascript:void(0);">ส่งออก ข้อมูลโรงพยาบาล</a></li>
                      <li><a href="javascript:void(0);">ส่งออก ข้อมูลตำบล</a></li>
                      <li><a href="report/schedule">ตารางนัดหมายคนไข้</a></li>

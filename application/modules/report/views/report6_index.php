@@ -1,4 +1,4 @@
-<div id="title">รายงานสรุปผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้ารายจังหวัด</div>
+<div id="title">ข้อมูลรายจังหวัด</div>
 <div id="search">
 <form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
@@ -94,51 +94,59 @@
 </form>
 </div>
 <div id="report">	
+<div id="title">
+	<p>รายงานจังหวัดนนทบุรี  เดือน ม.ค. ปี 2556</p>
+</div>
+<div class="right">หน่วย: คน</div>
 <table class="tbreport">
 	<tr>
-		<th>อำเภอ</th>
-		<th>ยอดรวม(คน)</th>
-		<th>สิทธิการรักษาสถานบริการนี้(คน)</th>
-		<th>สิทธิการรักษาสถานบริการอื่น(คน)</th>
+		<th rowspan="2">อำเภอ</th>
+		<th rowspan="2">ยอดรวม</th>
+		<th colspan="2">สิทธิการรักษา</th>		
 	</tr>
 	<tr>
-		<td>บางกรวย</td>
+		<th>สถานบริการนี้</th>
+		<th>สถานบริการอื่น</th>
+	</tr>
+	<tr class="para1">
+		<td class="pad-left">บางกรวย</td>
 		<td>73</td>
 		<td>55</td>
 		<td>18</td>
 	</tr>
-	<tr>
-		<td>บางบัวทอง</td>
+	<tr class="para1">
+		<td class="pad-left">บางบัวทอง</td>
 		<td>73</td>
 		<td>55</td>
 		<td>18</td>
 	</tr>
-	<tr>
-		<td>ปากเกร็ด</td>
+	<tr class="para1">
+		<td class="pad-left">ปากเกร็ด</td>
 		<td>73</td>
 		<td>55</td>
 		<td>18</td>
 	</tr>
-	<tr>
-		<td>เมืองนนทบุรี</td>
+	<tr class="para1">
+		<td class="pad-left">เมืองนนทบุรี</td>
 		<td>73</td>
 		<td>55</td>
 		<td>18</td>
 	</tr>
-	<tr>
-		<td>ไทรน้อย</td>
+	<tr class="para1">
+		<td class="pad-left">ไทรน้อย</td>
 		<td>73</td>
 		<td>55</td>
 		<td>18</td>
 	</tr>
-	<tr class="total">
-		<td>รวม</td>
+	<tr class="total para1">
+		<td class="pad-left">รวม</td>
 		<td>73</td>
 		<td>55</td>
 		<td>18</td>
 	</tr>
 </table>
-		<div id="btn_printout"><a href="report/index/4/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
+		<div id="btn_printout"><a href="report/index/6/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

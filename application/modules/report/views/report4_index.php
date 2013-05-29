@@ -320,7 +320,7 @@ $(function () {
 });		
 
 </script>
-<div id="title">สรุปประวัติคนไข้ในเขตอำเภอและคนไข้นอกเขตอำเภอ</div>
+<div id="title">ข้อมูลผู้รับวัคซีนจำแนกตามสิทธิการรักษาของสถานบริการ</div>
 <div id="search">
 <form action="report/index/4" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
@@ -452,191 +452,159 @@ $(function () {
 
 <div id="report">
 	<div id="title">				  
-		<p>สรุปประวัติคนไข้ในเขตอำเภอและคนไข้นอกเขตอำเภอ <?php echo $texttype;?></p>
-	    <p>รูปแบบเขตความรับผิดชอบ<?php echo $textarea;?>   ข้อมูลรายเขต <?php echo $textgroup;?></p>
-		<p>จังหวัด<?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?></p>
+		<p>รายงานผู้สัมผัสโรคจำแนกตามสิทธิการรักษาของสถานบริการ <?php echo $texttype;?></p>
+	    <p>เขตความรับผิดชอบ (<?php echo $textarea;?>) :เขต <?php echo $textgroup;?></p>
+		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>โรงพยาบาล <?php echo $texthospital;?>  ปี  <?php echo $textyear;?>  เดือน  <?php echo $textmonth;?></p>				
 	</div>
 
-	<table width="100%">
+	<table class="tbreport">         
           <tr>
-            <td colspan="3"><hr align="center" width="100%" size="1" /></td>
+            <th style="text-align: center" rowspan="2"><strong>รายการ</strong></th>
+            <th colspan="2" style="text-align:center"><strong>สิทธิการรักษา</strong></th>
           </tr>
-          <tr>
-            <td width="60%" rowspan="2" align="center" valign="top"><strong>รายการ</strong></td>
-            <td colspan="2" align="center" height="20"><strong>จำนวน</strong></td>
-          </tr>
-          <tr>
-            <td width="20%" align="center" height="20"><strong>ในเขต</strong></td>
-            <td width="20%" align="center" height="20"><strong>นอกเขต</strong></td>
-          </tr>
-          <tr>
-            <td colspan="3"><hr align="center" width="100%" size="1" /></td>
-          </tr>
-
+          <tr>          	
+            <th align="center"><strong>สถานบริการนี้</strong></th>
+            <th align="center"><strong>สถานบริการอื่น</strong></th>
+          </tr> 
               <tr>
-                <td height="20"><span class="bold">1. รายงานประวัติการฉีดวัคซีนคนไข้ (คน) ( N = 206 )</span><img src="media/images/n_execl.gif" width="16px" height="16px"></td>
-                <td align="center">181</td>
-                <td align="center">25</td>
+                <td><strong>1. จำนวนผู้สัมผัสโรค ( N = 206 )</strong><img src="media/images/n_execl.gif" width="16px" height="16px"></td>
+                <td align="center"><strong>181</strong></td>
+                <td align="center"><strong>25</strong></td>
               </tr>
-              <tr>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-              </tr>
-
                   <tr>
-                    <td height="20"><span class="bold">2. สัญชาติ (คน) 
+                    <td><strong>2. สัญชาติ (คน) </strong>
                     	<a href="javascript:void()" class="bar-chart img"></a>
                     	<a href="javascript:void()" class="pie-chart img" ></a>
                     	<a href="javascript:void()" class="horizontal-chart img" ></a>
-                    </span></td>
+                    </td>
                     <td>&nbsp;</td>
                     <td>&nbsp;</td>
                   </tr>
                   <tr >
-                    <td height="20">ไทย</td>
+                    <td><span class="para1">ไทย</span></td>
                     <td align="center">179</td>
                     <td align="center">25</td>
                   </tr>
                   <tr>
-                    <td height="20">จีน/ฮ่องกง/ใต้หวัน</td>
+                    <td><span class="para1">จีน/ฮ่องกง/ใต้หวัน</span></td>
                     <td align="center">0</td>
                     <td align="center">0</td>
                   </tr>
                   <tr>
-                    <td height="20">พม่า</td>
+                    <td><span class="para1">พม่า</span></td>
                     <td align="center">5</td>
                     <td align="center">5</td>
                   </tr>
                   <tr>
-                    <td height="20">มาเลเซีย</td>
+                    <td><span class="para1">มาเลเซีย</span></td>
                     <td align="center">1</td>
                     <td align="center">0</td>
                   </tr>
                   <tr>
-                    <td height="20">กัมพูชา</td>
+                    <td><span class="para1">กัมพูชา</span></td>
                     <td align="center">2</td>
                     <td align="center">3</td>
                   </tr>
                   <tr>
-                    <td height="20">ลาว</td>
+                    <td ><span class="para1">ลาว</span></td>
                     <td align="center">1</td>
                     <td align="center">2</td>
                   </tr>
                   <tr>
-                    <td height="20">เวียดนาม</td>
+                    <td><span class="para1">เวียดนาม</span></td>
                     <td align="center">1</td>
-                    <td align="center">0</td>
+                    <td align="center" >0</td>
                   </tr>
                   <tr>
-                    <td height="20">ยุโรป</td>
-                    <td align="center">10</td>
-                    <td align="center">0</td>
+                    <td><span class="para1">ยุโรป</span></td>
+                    <td align="center" >10</td>
+                    <td align="center" >0</td>
                   </tr>
                   <tr>
-                    <td height="20">อเมริกา</td>
-                    <td align="center">1</td>
-                    <td align="center">1</td>
+                    <td><span class="para1">อเมริกา</span></td>
+                    <td align="center" >1</td>
+                    <td align="center" >1</td>
                   </tr>
                   <tr>
-                    <td height="20">ไม่ทราบสัญชาติ</td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
+                    <td><span class="para1">ไม่ทราบสัญชาติ</span></td>
+                    <td align="center" >0</td>
+                    <td align="center" >0</td>
                   </tr>
                   <tr>
-                    <td height="20">ไม่ระบุ</td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
+                    <td><span class="para1">ไม่ระบุ</span></td>
+                    <td align="center" >0</td>
+                    <td align="center" >0</td>
                   </tr>
                   <tr>
-                    <td align="right" height="20"><strong>รวม</strong></td>
-                    <td align="center">200</td>
-                    <td align="center">36</td>
+                    <td align="center"><strong>รวม</strong></td>
+                    <td align="center"><strong>200</strong></td>
+                    <td align="center"><strong>36</strong></td>
                   </tr>
                   <tr>
-                  	<td colspan="3"><div id="container" style="width: 750px; height: 400px; margin: 0 auto"></div><div align="center"><a href="javascript:void()" name="close" title="close">close</a></div></td>
+                  	<td colspan="3"><div id="container" style="width: 750px; height: 400px; margin: 0 auto"></div><div ><a href="javascript:void()" name="close" title="close">close</a></div></td>
                   </tr>
                   <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
-
-                  <tr>
-                    <td height="20"><span class="bold">3. ชนิดของอิมมูโนโกลบุลิน (RIG) (โด๊ส)
+                    <td><strong>3. ชนิดของอิมมูโนโกลบุลิน (RIG) (โด๊ส)
                     	  <a href="javascript:void()" class="bar-chart img"></a>
                     	<a href="javascript:void()" class="pie-chart img" ></a>
                     	<a href="javascript:void()" class="horizontal-chart img" ></a>
-                    	</span></td>
-                    <td align="center"></td>
-                    <td align="center"></td>
+                    	</td>
+                    <td ></td>
+                    <td ></td>
                   </tr>
                   <tr>
-                    <td height="20">ERIG</td>
-                    <td align="center">20</td>
-                    <td align="center">10</td>
+                    <td><span class="para1">ERIG</span></td>
+                    <td align="center" >20</td>
+                    <td align="center" >10</td>
                   </tr>
                   <tr>
-                    <td height="20">HRIG</td>
-                    <td align="center">5</td>
-                    <td align="center">6</td>
+                    <td><span class="para1">HRIG</span></td>
+                    <td align="center" >5</td>
+                    <td align="center" >6</td>
                   </tr>
                   <tr>
-                    <td height="20" align="right"><strong>รวม</strong></td>
-                    <td align="center">25</td>
-                    <td align="center">16</td>
-                  </tr>
+                    <td align="center"><strong>รวม</strong></td>
+                    <td align="center"><strong>25</strong></td>
+                    <td align="center"><strong>16</strong></td>
+                  </tr>            
                   <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                
-                  <tr>
-                    <td height="20"><span class="bold">4. ชนิดของวัคซีน (โด๊ส)
+                    <td><strong>4. ชนิดของวัคซีน (โด๊ส)</strong>
                     	 <a href="javascript:void()" class="bar-chart img"></a>
                     	<a href="javascript:void()" class="pie-chart img" ></a>
                     	<a href="javascript:void()" class="horizontal-chart img" ></a>
-                    </span></td>
-                    <td align="center"></td>
-                    <td align="center"></td>
+                   </td>
+                    <td ></td>
+                    <td ></td>
                   </tr>
                   <tr>
-                    <td height="20">PVRV</td>
-                    <td align="center">334</td>
-                    <td align="center">37</td>
+                    <td><span class="para1">PVRV</span></td>
+                    <td align="center" >334</td>
+                    <td align="center" >37</td>
                   </tr>
                   <tr>
-                    <td height="20">PCEC</td>
-                    <td align="center">148</td>
-                    <td align="center">19</td>
+                    <td><span class="para1">PCEC</span></td>
+                    <td align="center" >148</td>
+                    <td align="center" >19</td>
                   </tr>
                   <tr>
-                    <td height="20">HDCV</td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
+                    <td><span class="para1">HDCV</span></td>
+                    <td align="center" >0</td>
+                    <td align="center" >0</td>
                   </tr>
                   <tr>
-                    <td height="20">PDEV</td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
+                    <td><span class="para1">PDEV</span></td>
+                    <td align="center" >0</td>
+                    <td align="center" >0</td>
                   </tr>
                   <tr>
-                    <td height="20" align="right"><strong>รวม</strong></td>
-                    <td align="center">482</td>
-                    <td align="center">56</td>
-                  </tr>
-                  <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                  </tr>
-                  <tr>
-                    <td colspan="3"><hr align="center" width="100%" size="1" /></td>
+                    <td align="center"><strong>รวม</strong></td>
+                    <td align="center" ><strong>482</strong></td>
+                    <td align="center" ><strong>56</strong></td>
                   </tr>
                 </table>
-
+		<hr class="hr1">
+		<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>			
 		<div id="btn_printout"><a href="report/index/4/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">

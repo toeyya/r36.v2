@@ -8,7 +8,7 @@
 		<script type="text/javascript" src="media/js/printreport.js"></script>
 		<link rel="stylesheet" type="text/css" href="media/css/default.css" />
 		<link rel="stylesheet" type="text/css" href="media/css/style.css" />
-		<link rel="stylesheet" type="text/css" href="media/css/print.css" />
+		<link rel="stylesheet" type="text/css" href="media/css/print.css"  media="all"/>
 	</head>
 	<body>	
 	<?php echo $template['body']; ?>					

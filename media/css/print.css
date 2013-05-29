@@ -3,10 +3,23 @@ background-image:none; color:#000000;font-size:11px;
 line-height: 1.4em; word-spacing:1px; letter-spacing:0.2px;
 font-family: Tahoma, verdana, sans-serif;}
 
-#title{display:none;}
-#search{display:none}
-#report #title{width:750px;display:block;}
-#report{width:auto;margin:0 5%;padding:0;border:0;}
-#report table{width:750px;margin-left:5%;}
-#report #area_btn_print{display:block;}
+#title,#search{display:none;}
+div#report{width:842px;}
+#report{width:842px;padding:10px;margin:0 auto;}
+#report #title{width:750px;display:block;margin-bottom:22px;margin-top:-16px;}
+#report table{margin-top:10px;}
+#report #area_btn_print{display:block;margin:5% 37%}
 #btn_printout{display:none;}
+#report #description{display:block;background-color:#F7F7F7}
+#report #description p.heading{background-color:#FE6FC9;text-align:center;padding-top:7px;font-weight:700;margin:0;}
+#report #description ul{margin:0px;}
+#report #description ul li{list-style-type:decimal}
+#report #description div strong{margin:0 5%;}
+#report #reference{margin-top:10px;}
+#report .right{margin-top:-13px;}
+.tbreport th{height:17px;}
+.tbreport td{border:none;height:16px;}
+
+.tbdesc th,.tbdesc td{padding-bottom:17px;vertical-align:top;}
+.tbdesc th{width:120px;}
+

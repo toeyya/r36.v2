@@ -1,5 +1,7 @@
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function(){	
+	$('input[name=userhospital]').next().addClass('alertred').html('');
+	
 	$('#form1').validate({
 		debug:true,
 		groups:{
@@ -29,10 +31,11 @@ $(document).ready(function(){
 					url:'<?php echo base_url(); ?>users/chkHospitalcode',
 					type:'get',
 					complete: function(data){
-					     if( data.responseText == "true" ) {
-					          $('input[name=userhospital]').next().next().html('test'); 
+					     if (data.responseText == "false") {
+					        	$('input[name=userhospital]').next().addClass('alertred').html('');
 					      }else{
-					      	 $('input[name=userhospital]').next().next().html(''); 
+					      	    $('input[name=userhospital]').next().removeClass('alertred').html(data.responseText); 
+					      	 
 					      }
 					}
 				
@@ -101,7 +104,7 @@ $(document).ready(function(){
 				<div class="controls">
 					<input type="text" class="input-medium" placeholder="รหัสหน่วยงาน 9 หลัก" name="userhospital"  maxlength="9">
 					<label class="alertred">*</label>		
-					<label></label>		
+							
 				</div>	
 					
  				<label class="control-label" for="inputEmail">อีเมล์</label>
@@ -157,14 +160,7 @@ $(document).ready(function(){
 				<div id="boxAdd"><button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
 			</div>	
 			<hr class="hr1">
-				<label class="control-label" for="latitude"></label>
-				<div class="controls">
-					<input type="text" id="cardW0"  name="latitude" style="width:10px;">										
-				</div>
-				<label class="control-label" for="longtitude"></label>
-				<div class="controls">
-					<input type="text" id="cardW0"  name="longtitude" style="width:10px;">										
-				</div>				
+		
 		</form>
 </div>
 </div>

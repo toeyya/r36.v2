@@ -112,18 +112,6 @@ input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; backgrou
 	padding:5px 0px;
 }
 .footer{margin-top:15px;height:31px; padding-left:47px; width:96%; position:relative; padding-top:7px; background-image: url(../images/bg_footer.jpg); background-repeat: repeat-x;}
-#report{
-	margin-top:30px;
-	margin-left:10px;
-}
-#report #title{
-	font-size:12px;
-	font-weight:bold;
-	color:#000;
-	height: auto;
-	border:none;
-	background:none;
-}
 
 			
 /********************************      Login Page      ********************************/
@@ -215,8 +203,24 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 .user-online{background:url('../images/user-online.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
 .user-offline{background:url('../images/user-offline.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
 .tbvaccine p{margin:0px;}
-#report #title{display:none;}
+#report{
+	margin-top:50px;
+	margin-left:10px;
+}
+#report #title{
+	font-size:12px;
+	font-weight:bold;
+	color:#000;
+	height: auto;
+	border:none;
+	background:none;
+	display:none;
+}
+
+#report #title p{margin-bottom:-22px;font-size:13px;}
 #report #area_btn_print{display:none;}
+#report #description{display:none;}
+#report .right{margin-top:-17px;}
 
 
 .tbreport
@@ -240,21 +244,22 @@ ul.sublist label.error,label.error{color:red;width:50%;}
     border-bottom: 2px solid #999;
     border-left: 0px solid #ccc;
     border-right: 0px solid #ccc;
-    text-align:left;
+    text-align:center;
     background-color:#fff;
-     height:30px;
+     height:17px;
    
 }
 .tbreport td
 {
     color:#333;
     padding:6px 3px;
-    height:25px;
-    border-top: 0px solid #ccc;
+    height:16px;
+    /*border-top: 0px solid #ccc;
     border-bottom: 1px solid #ccc;
     border-left: 0px solid #ccc;
-    border-right: 0px solid #ccc;
+    border-right: 0px solid #ccc;*/
     vertical-align: top;
+ 
 }
 
 .tbreport td.B { font-weight:700;}
@@ -262,7 +267,7 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 
 .tbreport td strong { font-weight:700;}
 .tbreport td.red, span.red { color:#F00;}
-.tbreport tr:hover td,.tblist tr.active td {}
+.tbreport tr:hover td,.tblist tr.active td {background:#FDB8EE;font-weight:bold;}
 .tbreport tr.total { border-top:2px dotted #666; border-bottom:2px dotted #666; font-weight:700; background:url(../images/bg_pattern.png);}
 .tbreport td.topic { background:#F5F5F5;}
 .tbreport td.topic p { padding:5px 0 5px 15px;}
@@ -270,7 +275,8 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 .tbreport td a:visited {color:#800000; text-decoration:underline;}
 .tbreport td a:hover {color: #F60; text-decoration:underline;}
 .tbreport td a:active {color: #800000; text-decoration:underline;}
-
+.tbreport tr.para1{text-align:center;}
+.tbreport tr.para1 td.pad-left{text-align:left;padding-left:40px;}
 .tbreport1
 {
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
@@ -310,4 +316,4 @@ ul.sublist label.error,label.error{color:red;width:50%;}
     text-align:center;
 }
 .tbreport1 th.B{font-weight:900;font-size:14px;}
-#btn_printout{width:auto;margin-left:50%;}
+#btn_printout{float:right;margin-top:10px;}

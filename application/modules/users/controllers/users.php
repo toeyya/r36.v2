@@ -47,8 +47,11 @@ class Users extends Public_Controller
 		$this->template->build('register');
 	}
 	function chkHospitalcode(){
-		$rs=$this->hospital->get_one("hospital_id","hospital_code_healthoffice",$_GET['userhospital']);
-		echo ($rs) ? "true":"false";
+		$rs=$this->hospital->get_one("hospital_name","hospital_code_healthoffice",$_GET['userhospital']);		
+		echo ($rs) ? $rs:"false";
+	}
+	function forgetPassword(){
+		$this->template->build('forgetpassword');
 	}
 }  
 ?>

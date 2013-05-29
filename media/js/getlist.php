@@ -1,7 +1,7 @@
 <?
-header ("Content-Type:text/plain;Charset=TIS-620");
-   set_time_limit(180);
-   session_start ();
+//header ("Content-Type:text/plain;Charset=TIS-620");
+   //set_time_limit(180);
+   //session_start ();
    //include('include/filemaster.php');
     //include("../include/Config_DB.php");
 	//include("../include/Connect_DB.php");
@@ -166,9 +166,9 @@ header ("Content-Type:text/plain;Charset=TIS-620");
 		print '</select>';
 
   }
-  //---Report ??????-----
-  if($mode=='D_main'){
-	  if($ref1=='1'){
+  //---Report ปัจจัยรอง-----
+  if($_GET['mode']=='D_main'){
+	  if($_GET['ref1']=='1'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">เพศ</option>';
@@ -182,7 +182,8 @@ header ("Content-Type:text/plain;Charset=TIS-620");
 		echo	'<option value="9">การล้างแผล</option>';
 		echo	'<option value="10">การใส่ยาฆ่าเชื้อ</option>';
 	    echo '</select>';
-	  }else if($ref1=='2'){
+
+	  }else if($_GET['ref1']=='2'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">ชนิดสัตว์นำโรค</option>';
@@ -190,7 +191,7 @@ header ("Content-Type:text/plain;Charset=TIS-620");
 		echo	'<option value="3">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 		echo	'<option value="4">การส่งหัวสัตว์ตรวจ</option>';
 	    echo '</select>';
-	  }else if($ref1=='3'){
+	  }else if($_GET['ref1']=='3'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">สถานภาพสัตว์</option>';
@@ -198,24 +199,24 @@ header ("Content-Type:text/plain;Charset=TIS-620");
 		echo	'<option value="3">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 		echo	'<option value="4">การส่งหัวสัตว์ตรวจ</option>';
 	    echo '</select>';
-	  }else if($ref1=='4'){
+	  }else if($_GET['ref1']=='4'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">ชนิดสัตว์นำโรค</option>';
 		echo	'<option value="2">สถานภาพสัตว์</option>';
 		echo	'<option value="3">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 	    echo '</select>';
-	  }else if($ref1=='5'){
+	  }else if($_GET['ref1']=='5'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">จำนวนหัวสัตว์ที่ส่งตรวจ</option>';
 	    echo '</select>';
-	  }else if($ref1=='6'){
+	  }else if($_GET['ref1']=='6'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">จำนวนหัวสัตว์ที่ส่งตรวจพบเชื้อ</option>';
 	    echo '</select>';
-	  }else if($ref1=='7'){
+	  }else if($_GET['ref1']=='7'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">อาชีพ</option>';
@@ -225,7 +226,7 @@ header ("Content-Type:text/plain;Charset=TIS-620");
 		echo	'<option value="5">จำนวนเข็มของการฉีด</option>';
 		echo	'<option value="6">ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ</option>';
 	    echo '</select>';
-	  }else if($ref1=='8'){
+	  }else if($_GET['ref1']=='8'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส</option>';
@@ -233,7 +234,7 @@ header ("Content-Type:text/plain;Charset=TIS-620");
 		echo	'<option value="3">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 		echo	'<option value="4">วิธีฉีดวัคซีนในคน</option>';
 	    echo '</select>';
-	  }else if($ref1=='9'){
+	  }else if($_GET['ref1']=='9'){
     	echo '<select name="detail_minor" class="textbox widthselect">';
 		echo	'<option value="-">ปัจจัยรอง</option>';
 		echo	'<option value="1">การกักขังได้/ติดตามได้</option>';
@@ -245,6 +246,7 @@ header ("Content-Type:text/plain;Charset=TIS-620");
 		echo	'<option value="-">ปัจจัยรอง</option>';
 	    echo '</select>';
 	  }
+	  		return true;
   }
   //--End-Report ปัจจัย-----
 
@@ -299,8 +301,9 @@ if($mode=='Report_province'){
 
 }
 //--End Report รายงานสรุปรายจังหวัด----
-if(isset($_GET))
-{	
+if(isset($_GET['province']) && isset($_GET['amphur']))
+{
+
 	$province = mysql_real_escape_string($_GET['province']);
 	$amphur = mysql_real_escape_string($_GET['amphur']);
 	

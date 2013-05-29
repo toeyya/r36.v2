@@ -8,7 +8,7 @@ $(document).ready(function(){
 })
 	
 </script>
-<div id="title">สรุปประวัติการฉีดวัคซีน</div>
+<div id="title">ข้อมูลการฉีดวัคซีน</div>
 <div id="search">
 <form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
@@ -143,6 +143,11 @@ $(document).ready(function(){
 </form>
 </div>
 <div id="report">
+	<div id="title"><p>รายงานการฉีดวัคซีน</p>
+	<p>เขตความรับผิดชอบ (12 เขต) : เขต 1 จังหวัด นนทบุรี  อำเภอ บางกรวย  ตำบล บางกรวย </p>
+	<p>สถานบริการ โรงพยาบาลบางกรวย <span>ปี 2556</span> เดือน ทั้งหมด ถึง ทั้งหมด </p>
+ </div>
+ <div class="right">หน่วย:คน</div>
 	<table class="tbreport">
 		<tr>
 			<tr>
@@ -291,10 +296,12 @@ $(document).ready(function(){
 			<td ><strong>0</strong></td>
 		</tr>
 	</table>
+	<hr class="hr1">
 	<div id="description">
+		<p class="heading">หลักเกณฑ์การให้บริการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าที่ถูกต้อง</p>
 		<ul>
 			<li><strong>ผู้สัมผัสโรคพิษสุนัขบ้าที่ไม่เคยได้รับการฉีดวัคซีนฯ มาก่อน</strong> เมื่อได้รับเชื้อ (สัตว์ที่สัมผัสเป็นโรคพิษสุนัขบ้าและลักษณะที่สัมผัสเสี่ยงต่อการได้รับเชื้อ) 
-				ต้องได้รับการฉีดวัคซีนครบ 5 เข็ม กรณีที่สัตว์ที่สัมผัสเป็นสุนัขหรือแมวที่ไม่แน่ใจว่าเป็นโรคพิษสุนัขบ้าหรือไม่และสามารถติดตามดูอาการได้ 
+				ต้องได้รับการฉีดวัคซีนครบชุด (ID 4 เข็ม, IM 5 เข็ม) กรณีที่สัตว์ที่สัมผัสเป็นสุนัขหรือแมวที่ไม่แน่ใจว่าเป็นโรคพิษสุนัขบ้าหรือไม่และสามารถติดตามดูอาการได้ 
 				ถ้าสุนัขหรือแมวมีอาการปกติไม่ตายภายหลังการสัมผัส 10 วัน 
 				ให้หยุดฉีดวัคซีนฯ ได้</li>
 		  <li>
@@ -303,13 +310,13 @@ $(document).ready(function(){
 		  </li>
 		  <li>
 		  	 กรณีที่สัตว์สัมผัสเป็นสุนัขหรือแมวหลังจากเฝ้าดูอาการแล้ว 10 วัน หลังจากถูกกัด ยังมีอาการปกติให้ถือว่าสุนัขหรือแมวนั้นไม่มีเชื้อในขณะที่ถูกกัด จึงให้หยุดฉีดวัคซีนได้
-		  </li>
-		  <il>
-		  	(ผู้สัมผัสที่ได้รับวัคซีนที่มีคุณภาพมาแล้วน้อยกว่า 3 เข็ม หรือได้รับวัคซีนป้องกันโรคพิษสุนัขบ้าชนิดที่ผลิตจากสมองสัตว์ ให้ปฎิบัติเหมือนผู้ที่ไม่เคยได้รับการฉีดวัคซีนมาก่อน)
-		  </il>
+		  </li>		  		  	
 		</ul>
+		<div><strong>(ผู้สัมผัสที่ได้รับวัคซีนที่มีคุณภาพมาแล้วน้อยกว่า 3 เข็ม หรือได้รับวัคซีนป้องกันโรคพิษสุนัขบ้าชนิดที่ผลิตจากสมองสัตว์  ให้ปฎิบัติเหมือนผู้ที่ไม่เคยได้รับการฉีดวัคซีนมาก่อน)</strong></div>
 	</div>
-		<div id="btn_printout"><a href="report/index/4/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+
+	<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
+		<div id="btn_printout"><a href="report/index/5/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
