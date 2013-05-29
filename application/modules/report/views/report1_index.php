@@ -131,3 +131,23 @@ $(document).ready(function(){
 </div>	
 </form>
 </div>
+<div id="report">
+		<table class="tbreport">
+			<tr>
+				<th rowspan="2">ข้อมูล</th>
+			</tr>
+			<tr>
+				<th colspan="5">ไตรมาส (N=0)</th>
+			</tr>
+			<tr>
+				<th>1</th>
+				<th>2</th>
+				<th>3</th>
+				<th>4</th>
+				<th>รวม</th>
+			</tr>
+			<tr>
+				<td>ผู้สัมผัสโรคพิษสุนัขบ้า (คน)</td>
+			</tr>
+		</table>
+</div>

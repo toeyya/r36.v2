@@ -148,3 +148,51 @@
       </ul>
 </div>
 </form>
+</div>
+<div id="report">
+	<table class="tbreport1">
+		<tr>
+			<th colspan="10" style="text-align:center;" class="B">จำนวนฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าและอิมมูโนโกลบูลิน</th>
+		</tr>
+		<tr style="text-align: center;">
+			<th colspan="2">ฉีดวัคซีนครบชุด <br/>(ครบชุด 4-5 เข็มหรือกระตุ้น) (ราย)</th>
+			<th colspan="2">ฉีดวัคซีนต่ำกว่า 4-5 เข็ม <br/>(ราย)</th>
+			<th colspan="2">ฉีดวัคซีนไม่ครบชุด <br/> (ราย)</th>
+			<th colspan="2">ผู้ได้รับการฉีดวัคซีนรวม <br/> (ราย)</th>
+			<th>ผู้ไม่ฉีดวัคซีน <br/>(ราย)</th>
+			<th>ผู้ได้รับการฉีดอิมมูโนโกลบูลินโรคพิษสุนัขบ้า(RIG)<br/> (ราย)</th>
+		</tr>
+		<tr>
+			<td>IM</td>
+			<td>ID</td>
+			<td>IM</td>
+			<td>ID</td>
+			<td>IM</td>
+			<td>ID</td>
+			<td>IM</td>
+			<td>ID</td>
+			<td></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+		</tr>
+	</table>	
+	<div id="description">
+				
+	</div>
+		<div id="btn_printout"><a href="report/index/4/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="area_btn_print">
+			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+		</div>
+</div>

@@ -92,3 +92,55 @@
       </ul>
 </div>
 </form>
+</div>
+<div id="report">	
+<table class="tbreport">
+	<tr>
+		<th>อำเภอ</th>
+		<th>ยอดรวม(คน)</th>
+		<th>สิทธิการรักษาสถานบริการนี้(คน)</th>
+		<th>สิทธิการรักษาสถานบริการอื่น(คน)</th>
+	</tr>
+	<tr>
+		<td>บางกรวย</td>
+		<td>73</td>
+		<td>55</td>
+		<td>18</td>
+	</tr>
+	<tr>
+		<td>บางบัวทอง</td>
+		<td>73</td>
+		<td>55</td>
+		<td>18</td>
+	</tr>
+	<tr>
+		<td>ปากเกร็ด</td>
+		<td>73</td>
+		<td>55</td>
+		<td>18</td>
+	</tr>
+	<tr>
+		<td>เมืองนนทบุรี</td>
+		<td>73</td>
+		<td>55</td>
+		<td>18</td>
+	</tr>
+	<tr>
+		<td>ไทรน้อย</td>
+		<td>73</td>
+		<td>55</td>
+		<td>18</td>
+	</tr>
+	<tr class="total">
+		<td>รวม</td>
+		<td>73</td>
+		<td>55</td>
+		<td>18</td>
+	</tr>
+</table>
+		<div id="btn_printout"><a href="report/index/4/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="area_btn_print">
+			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+		</div>
+</div>	

@@ -80,10 +80,11 @@ class Report extends R36_Controller
 		    $data['cond']=$cond;
 
 				  	
-			//if($preview) $this->template->set_layout('blank');
+			if($preview) $this->template->set_layout('print');
 			
 			if($no=="4"){
-				$this->template->build('report4_demo',$data);
+				//$this->template->build('report4_demo',$data);
+				$this->template->build("report".$no."_index",$data);
 			}else{
 				$this->template->build("report".$no."_index",$data);
 			}

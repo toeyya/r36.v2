@@ -30,7 +30,7 @@ $(document).ready(function(){
 					type:'get',
 					complete: function(data){
 					     if( data.responseText == "true" ) {
-					               $('input[name=userhospital]').next().next().html('test'); 
+					          $('input[name=userhospital]').next().next().html('test'); 
 					      }else{
 					      	 $('input[name=userhospital]').next().next().html(''); 
 					      }
@@ -100,8 +100,8 @@ $(document).ready(function(){
  				<label class="control-label" for="inputEmail">รหัสหน่วยงาน 9 หลัก</label>
 				<div class="controls">
 					<input type="text" class="input-medium" placeholder="รหัสหน่วยงาน 9 หลัก" name="userhospital"  maxlength="9">
-					<label class="alertred">*</label>	
-					<label></label>			
+					<label class="alertred">*</label>		
+					<label></label>		
 				</div>	
 					
  				<label class="control-label" for="inputEmail">อีเมล์</label>

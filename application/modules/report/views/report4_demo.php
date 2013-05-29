@@ -530,12 +530,12 @@ $(function () {
                     <td align="center">0</td>
                   </tr>
                   <tr>
-                    <td height="20">;ยุโรป</td>
+                    <td height="20">ยุโรป</td>
                     <td align="center">10</td>
                     <td align="center">0</td>
                   </tr>
                   <tr>
-                    <td height="20">;อเมริกา</td>
+                    <td height="20">อเมริกา</td>
                     <td align="center">1</td>
                     <td align="center">1</td>
                   </tr>

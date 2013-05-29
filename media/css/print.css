@@ -1,19 +1,12 @@
-body{ background-color:#FFFFFF; background-image:none; color:#000000;font-size:11px;line-height:12px;font-family: Tahoma, verdana, sans-serif;}
-#login table{
-	border:1px solid #000;
-	background-color:#6394bd;
-	border-spacing:0px;
-}
-#login table th.headtable{
-	color: #FFFFFF;
-	font-weight:bold;
-	border:1px solid #000;
-	
-}
-#login table td{border:1px solid #000;}
-#printreport,#closereport{display:none}
-#login .alertred{
-	font-size: 12px;
-	color: #FF0000;
-}
-#login a{color:#000;text-decoration:	none;}
+body{ background-color:#FFFFFF; 
+background-image:none; color:#000000;font-size:11px;
+line-height: 1.4em; word-spacing:1px; letter-spacing:0.2px;
+font-family: Tahoma, verdana, sans-serif;}
+
+#title{display:none;}
+#search{display:none}
+#report #title{width:750px;display:block;}
+#report{width:auto;margin:0 5%;padding:0;border:0;}
+#report table{width:750px;margin-left:5%;}
+#report #area_btn_print{display:block;}
+#btn_printout{display:none;}

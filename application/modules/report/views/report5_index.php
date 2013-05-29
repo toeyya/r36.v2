@@ -141,3 +141,177 @@ $(document).ready(function(){
       </ul>
 </div>	
 </form>
+</div>
+<div id="report">
+	<table class="tbreport">
+		<tr>
+			<tr>
+				<th style="text-align:center">เงื่อนไข</th>
+				<th>จำนวน (N=0)</th>
+			</tr>
+		</tr>
+		<tr>
+			<td><strong>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
+			<td>0</td>			
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+		<tr>
+			<td><strong>2. ผู้สัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าภายใน 6 เดือนได้รับการฉีดวัคซีน</strong></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+		<tr>
+			<td><strong>3.ผู้สัมผัสหรือสงสัยว่าสัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าเกิน 6 เดือน ได้รับการฉีดวัคซีน</strong></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+		<tr>
+			<td><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์ไม่ตายภายใน 10 วัน โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+		<tr>
+			<td><strong>5. ผู้สัมผัสโรคพิษสุนัขบ้าฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><strong>6. ชนิดของวัคซีน (โด๊ส)</strong></td>
+			<td>0</td>
+		</tr>
+			<tr>
+			<td><span class="para1">- PVRV</span></td>
+			<td>0</td>
+		</tr>
+				<tr>
+			<td><span class="para1">- PCEC</span></td>
+			<td>0</td>
+		</tr>
+				<tr>
+			<td><span class="para1">- HDCV</span></td>
+			<td>0</td>
+		</tr>
+				<tr>
+			<td><span class="para1">- PDEV</span></td>
+			<td>0</td>
+		</tr>		
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+	</table>
+	<div id="description">
+		<ul>
+			<li><strong>ผู้สัมผัสโรคพิษสุนัขบ้าที่ไม่เคยได้รับการฉีดวัคซีนฯ มาก่อน</strong> เมื่อได้รับเชื้อ (สัตว์ที่สัมผัสเป็นโรคพิษสุนัขบ้าและลักษณะที่สัมผัสเสี่ยงต่อการได้รับเชื้อ) 
+				ต้องได้รับการฉีดวัคซีนครบ 5 เข็ม กรณีที่สัตว์ที่สัมผัสเป็นสุนัขหรือแมวที่ไม่แน่ใจว่าเป็นโรคพิษสุนัขบ้าหรือไม่และสามารถติดตามดูอาการได้ 
+				ถ้าสุนัขหรือแมวมีอาการปกติไม่ตายภายหลังการสัมผัส 10 วัน 
+				ให้หยุดฉีดวัคซีนฯ ได้</li>
+		  <li>
+		  	<strong>ผู้สัมผัสที่เคยได้รับการฉีดวัคซีนที่มีคุณภาพมาแล้ว</strong>ตั้งแต่ 3 เข็มขึ้นไป ถ้าได้รับวัคซีนเข็มสุดท้ายไม่เกิน 6 เดือนต้องได้รับการฉีดวัคซีนฯ 
+			กระตุ้น อีก 1 เข็ม แต่ถ้าได้รับวัคซีนเข็มสุดท้ายเกิน 6 เดือนต้องได้รับการฉีดวัคซีนกระตุ้นอีก 2 เข็ม
+		  </li>
+		  <li>
+		  	 กรณีที่สัตว์สัมผัสเป็นสุนัขหรือแมวหลังจากเฝ้าดูอาการแล้ว 10 วัน หลังจากถูกกัด ยังมีอาการปกติให้ถือว่าสุนัขหรือแมวนั้นไม่มีเชื้อในขณะที่ถูกกัด จึงให้หยุดฉีดวัคซีนได้
+		  </li>
+		  <il>
+		  	(ผู้สัมผัสที่ได้รับวัคซีนที่มีคุณภาพมาแล้วน้อยกว่า 3 เข็ม หรือได้รับวัคซีนป้องกันโรคพิษสุนัขบ้าชนิดที่ผลิตจากสมองสัตว์ ให้ปฎิบัติเหมือนผู้ที่ไม่เคยได้รับการฉีดวัคซีนมาก่อน)
+		  </il>
+		</ul>
+	</div>
+		<div id="btn_printout"><a href="report/index/4/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="area_btn_print">
+			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+		</div>
+</div>
