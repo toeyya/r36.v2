@@ -2,6 +2,8 @@ body{ background-color:#FFFFFF;
 background-image:none; color:#000000;font-size:11px;
 line-height: 1.4em; word-spacing:1px; letter-spacing:0.2px;
 font-family: Tahoma, verdana, sans-serif;}
+a{content: " (" attr(href) ")";color:#000000;}
+h3{font-size:13px;margin-bottom:-26px;color:#2A2A2A}
 
 #title,#search{display:none;}
 div#report{width:842px;}
@@ -16,10 +18,31 @@ div#report{width:842px;}
 #report #description ul li{list-style-type:decimal}
 #report #description div strong{margin:0 5%;}
 #report #reference{margin-top:10px;}
+
 #report .right{margin-top:-13px;}
+
+
 .tbreport th{height:17px;}
 .tbreport td{border:none;height:16px;}
+.tbreport tr:hover td,.tblist tr.active td {background:none;font-weight:normal;}
+.tbreport td.reference{padding-top:10px;border-top:1px solid #2A2A2A}
+
+
 
 .tbdesc th,.tbdesc td{padding-bottom:17px;vertical-align:top;}
 .tbdesc th{width:120px;}
-.tbreport tr:hover td,.tblist tr.active td {background:none;font-weight:normal;}
+
+@media all {
+	.page-break	{ display: none; }
+}
+
+@media print {
+	.page-break	{display: block; page-break-before: always; }
+}
+<!--[if gte IE 8]>
+table { page-break-inside:auto;}
+tr    { page-break-inside:auto; page-break-after:auto }
+table thead{display:table-header-group}
+table tfoot { display: table-footer-group;}
+table tbody{display: table-row-group;}
+<![endif]-->

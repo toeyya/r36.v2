@@ -78,6 +78,7 @@
 	</div>
 	<div class="right">หน่วย:คน</div>
 	<table class="tbreport">
+		<thead>
 		<tr>
 			<th rowspan="2">ข้อมูล</th>
 			<th colspan="5">ไตรมาส (N=70,305)</th>
@@ -89,6 +90,8 @@
 			<th>4</th>
 			<th >รวม</th>
 		</tr>
+		</thead>
+		<tbody>
 		<tr class="para1">
 			<td align="left"><strong>ผู้สัมผัสโรคพิษสุนัขบ้า</strong></td>
 			<td>34,335</td>
@@ -251,7 +254,194 @@
 			<td>0</td>
 			<td>0</td>
 			<td>0</td>		
-		</tr>					
+		</tr>	
+		<tr ><td colspan="6"><strong>ชนิดสัตว์นำโรค</strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">สุนัข</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">แมว</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ลิง</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ชะนี</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">หนู</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">อื่นๆ</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr ><td colspan="6"><strong>อายุสัตว์</strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">น้อยกว่า 3 เดือน</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">3-6 เดือน</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">6-12 เดือน</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">มากกว่า 1 ปี</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ทราบ</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+
+	<tr><td colspan="6"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">กักขังได้ / ติดตามได้</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ตายภายใน 10 วัน</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ไม่ตายภายใน 10 วัน</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">กักขังไม่ได้</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ถูกฆ่าตาย</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">หนีหาย / จำไม่ได้</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>				
+			
+		</tr>
+		</tbody>				
 	</table>
 			<hr class="hr1">
 		<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>			
