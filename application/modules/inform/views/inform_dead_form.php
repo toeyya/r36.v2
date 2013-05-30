@@ -313,18 +313,18 @@ $(document).ready(function(){
 							 <span id="input_place_province">								
 									<?php									
 										$class='class="input_box_patient "  id="hospitalprovince"';										
-										echo form_dropdown('hospitalprovince',get_option('province_id','province_name'," n_province WHERE province_id !='' ORDER BY province_name ASC"),$rs['hospitalprovince'],$class,'-โปรดเลือก-'); 
+										echo form_dropdown('hospitalprovince',get_option('province_id','province_name'," n_province WHERE province_id !='' ORDER BY province_name ASC"),@$rs['hospitalprovince'],$class,'-โปรดเลือก-'); 
 									?>	                          	                    
 							</span></td>
                               <td width="14%"><div align="right">อำเภอ/เขต <span class="alertred">*</span> : </div></td>
                               <td width="14%">
 							  <span id="hospital_amphur">								  
 									  <?																
-											if($rs['hospitalprovince']!='')
+											if(!empty($rs['hospitalprovince']))
 											{
 												$class='class="input_box_patient " id="hospitalamphur"';		
 																													  
-												echo form_dropdown('hospitalamphur',get_option("amphur_id","amphur_name"," n_amphur WHERE province_id='".$rs['hospitalprovince']."' ORDER BY amphur_name ASC"),$rs['hospitalamphur'],$class,'-โปรดเลือก-'); 
+												echo form_dropdown('hospitalamphur',get_option("amphur_id","amphur_name"," n_amphur WHERE province_id='".$rs['hospitalprovince']."' ORDER BY amphur_name ASC"),@$rs['hospitalamphur'],$class,'-โปรดเลือก-'); 
 											}
 											else{
 									  ?>	 
@@ -337,7 +337,7 @@ $(document).ready(function(){
                               <td width="14%">
 							  <span id="hospital_district">							                            
                              	<?php 
-	                             	if($rs['hospitalamphur']!='')
+	                             	if(!empty($rs['hospitalamphur']))
 									{
 		                             	$cond="n_district WHERE amphur_id ='".$rs['hospitalamphur']."' AND  province_id ='". $rs['hospitalprovince']."' ORDER BY district_name ASC";
 		                             	 echo form_dropdown('hospitaldistrict',get_option('district_id','district_name',$cond),$rs['hospitaldistrict'],'class="input_box_patient " id="hospitaldistrict"','-โปรดเลือก-'); 											
@@ -353,7 +353,7 @@ $(document).ready(function(){
                           	<td>							 
 							  	<span id="input_hospital">
 							  		<?php $cond="";
-							  		if($rs['hospitalcode'] && $rs['hospitalamphur'] && $rs['hospitalprovince']){
+							  		if(!empty($rs['hospitalcode']) && !empty($rs['hospitalamphur']) && !empty($rs['hospitalprovince'])){
 							  			$cond="WHERE hospital_province_id='".$rs['hospital']."' and hospital_amphur_id='".$rs['hospitalamphur']."' and hospital_district_id='".$rs['hospitaldistrict']."'";
 							  			echo form_dropdown('hospitalcode',get_option('hospital_id','hospital_name','n_hospital $cond'),$rs['hospitalcode'],'class="input_box_patient " id="hospital"','-โปรดเลือก-');
 									}else{									 	
@@ -561,7 +561,7 @@ $(document).ready(function(){
 					<table width="100%">
 					  <tr>
 						<td  width="6%"valign="top">ลักษณะอาการ : </td>
-						<td width="83%"><textarea name="symptoms"   cols="30" rows="3" class='input_box_patient'><?php echo $rs['symptoms']?></textarea></td>
+						<td width="83%"><textarea name="remark"   cols="30" rows="3" class='input_box_patient'><?php echo $rs['remark']?></textarea></td>
 					  </tr>
 					</table>
 				     </td>

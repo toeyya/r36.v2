@@ -3,7 +3,7 @@
 <form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	  <tr>
-			<th>รูปแบบเขตความรับผิดชอบ</th>
+			<th>เขตความรับผิดชอบ</th>
 			<td>
 				<select name="area" id="area" class="styled-select" >
 					<option value="-">กรุณาเลือกเขต</option>
@@ -11,7 +11,7 @@
 					<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
 				</select>
 			 </td>
-			 <th>ข้อมูลรายเขต</th>
+			 <th>เขตที่</th>
 			<td>
 			<span id="grouplist">
 				<select name="group" class="styled-select" id="group">
@@ -19,7 +19,7 @@
 				</select>
 			</span>
 			</td>
-			<th>ข้อมูลรายจังหวัด</th>
+			<th>จังหวัด</th>
 			<td>
 			<span id="provincelist">
 				<select name="province" class="styled-select" id="prvince">
@@ -29,7 +29,7 @@
 			</td>			
 	  </tr>
 	 	  <tr>
-	    <th>จำแนกรายปีของวันที่สัมผัสโรค</th>
+	    <th>ปีของวันที่สัมผัสโรค</th>
 	    <td>
 			<select name="year" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -42,7 +42,7 @@
 			}
 			?>
 			</select>					</td>
-			<th>จำแนกรายเดือนของวันที่สัมผัสโรค</th>
+			<th>เดือนของวันที่สัมผัสโรค</th>
 	    	<td>
 			<select name="month" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -57,7 +57,7 @@
 		</td>
 	</tr>
 	<tr>
-	  <th>จำแนกรายปีของวันที่บันทึกรายการ</th>
+	  <th>ปีของวันที่บันทึกรายการ</th>
 	    <td>
 			<select name="year_report" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -70,7 +70,7 @@
 			}
 			?>
 			</select></td>			
-			<th>จำแนกรายเดือนของวันที่บันทึกรายการ</th>
+			<th>เดือนของวันที่บันทึกรายการ</th>
 	    	<td>
 			<select name="month_report" class="styled-select">
 			<option value="">ทั้งหมด</option>

@@ -13,7 +13,7 @@ $(document).ready(function(){
 <form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	  <tr>
-			<th>รูปแบบเขตความรับผิดชอบ</th>
+			<th>เขตความรับผิดชอบ</th>
 			<td>
 				<select name="area" id="area" class="styled-select" >
 					<option value="-">กรุณาเลือกเขต</option>
@@ -21,7 +21,7 @@ $(document).ready(function(){
 					<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
 				</select>
 			 </td>
-			 <th>ข้อมูลรายเขต</th>
+			 <th>เขตที่</th>
 			<td>
 			<span id="grouplist">
 				<select name="group" class="styled-select" id="group">
@@ -29,7 +29,7 @@ $(document).ready(function(){
 				</select>
 			</span>
 			</td>
-			<th>ข้อมูลรายจังหวัด</th>
+			<th>จังหวัด</th>
 			<td>
 			<span id="provincelist">
 				<select name="province" class="styled-select" id="prvince">
@@ -39,18 +39,18 @@ $(document).ready(function(){
 			</td>			
 	  </tr>
 	  <tr>
-		<th>ข้อมูลรายอำเภอ</th>
+		<th>อำเภอ</th>
 		<td>
 			<span id="amphurlist">
 				<select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select>
 			</span></td>
-		<th>ข้อมูลรายตำบล</th>
+		<th>ตำบล</th>
 			<td>
 				<span id="districtlist">
 					<select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select>
 				</span>	
 			</td>
-			<th>ข้อมูลรายโรงพยาบาล</td>
+			<th>สถานบริการ</td>
 			<td>
 				<span id="hospitallist">
 				<select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select>
@@ -58,7 +58,7 @@ $(document).ready(function(){
 	  </tr>
 
 	  <tr>
-	    <th>จำแนกรายปีของวันที่สัมผัสโรค</th>
+	    <th>ปีของวันที่สัมผัสโรค</th>
 	    <td>
 			<select name="year" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -71,7 +71,7 @@ $(document).ready(function(){
 			}
 			?>
 			</select>					</td>
-			<th>จำแนกรายเดือนของวันที่สัมผัสโรค</th>
+			<th>เดือนของวันที่สัมผัสโรค</th>
 	    	<td>
 			<select name="month_start" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -95,7 +95,7 @@ $(document).ready(function(){
 		</td>
 	 </tr>
 	 <tr>
-	  <th>จำแนกรายปีของวันที่บันทึกรายการ</th>
+	  <th>ปีของวันที่บันทึกรายการ</th>
 	    <td>
 			<select name="year_report" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -110,7 +110,7 @@ $(document).ready(function(){
 			</select></td>	
 		
 
-			<th>จำแนกรายเดือนของวันที่บันทึกรายการ</th>
+			<th>เดือนของวันที่บันทึกรายการ</th>
 	    	<td>
 			<select name="month_report_start" class="styled-select">
 			<option value="">ทั้งหมด</option>

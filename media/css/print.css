@@ -6,7 +6,7 @@ font-family: Tahoma, verdana, sans-serif;}
 #title,#search{display:none;}
 div#report{width:842px;}
 #report{width:842px;padding:10px;margin:0 auto;}
-#report #title{width:750px;display:block;margin-bottom:22px;margin-top:-16px;}
+#report #title{display:block;margin-bottom:22px;margin-top:-16px;}
 #report table{margin-top:10px;}
 #report #area_btn_print{display:block;margin:5% 37%}
 #btn_printout{display:none;}
@@ -22,4 +22,4 @@ div#report{width:842px;}
 
 .tbdesc th,.tbdesc td{padding-bottom:17px;vertical-align:top;}
 .tbdesc th{width:120px;}
-
+.tbreport tr:hover td,.tblist tr.active td {background:none;font-weight:normal;}

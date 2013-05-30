@@ -51,11 +51,9 @@
                      <li><a href="javascript:void(0);">คู่มือการใช้งานโปรแกรม ร.36</a></li>
                      <li><a href="javascript:void(0);">แบบรายงาน ร.36</a></li>
                      <li><a href="javascript:void(0);">Download โปรแกรม Offline</a></li>
-                     <li><a href="uploads/Rabies_CPG56_QA_Low.pdf">แนวทางเวชปฏิบัติโรคพิษสุนัขบ้าและคำถามที่พบบ่อย</a></li>
-                   
+                     <li><a href="uploads/Rabies_CPG56_QA_Low.pdf">แนวทางเวชปฏิบัติโรคพิษสุนัขบ้าและคำถามที่พบบ่อย</a></li>                  
                  </ul>
-               </li>
-                 
+               </li> 
             </ul>
             </div>
 </div>
