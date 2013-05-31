@@ -39,14 +39,21 @@ var province_id,amphur_id,district_id;
 
 // START ####  กรณีเพิ่มรายการ  ####
 		$('.btn_submit').click(function(){
-			$("#hospitalprovince").rules("remove");$('#hospital_amphur_id').rules('remove');
-			$('#hospital_district_id').rules('remove');$('#hospitalcode').rules('remove');	$('#hn').rules('remove');		
-			$('#cardW0').rules('remove','required');$('#cardW1').rules('remove','required');$('#cardW2').rules('remove','required');
-			$('#cardW3').rules('remove','required');$('#cardW4').rules('remove','required remote');
-			$('#idcard').rules('remove','required');
-			$('#title').text("ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า")
+			alert("ddd");
+			$("#hospitalprovince").rules("remove");
+			$('#hospital_amphur_id').rules('remove');
+			$('#hospital_district_id').rules('remove');
+			$('input[name=hospitalcode]').rules('remove');	
+			$('#hn').rules('remove');		
+			$('#cardW0').rules('remove','required');
+			$('#cardW1').rules('remove','required');
+			$('#cardW2').rules('remove','required');
+			$('#cardW3').rules('remove','required');
+			$('#cardW4').rules('remove','required');
+			$('#idcard').rules('remove','required remote');
+			$('#title').text("ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า");
 			$('#form1').attr('action','inform/index');
-			return true;
+			return false;
 		});
 		$('.btn_add').click(function(){			
 			$('#form1').attr('action','inform/addNew');

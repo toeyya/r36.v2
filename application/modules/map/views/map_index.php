@@ -42,7 +42,9 @@ function mmmap_client_init() {
   mmmap.hideCenterMark();
   
    mmmap.showObject('เชียงราย', "ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // Chiang Rai, with line and fill colors ภาคเหนือ
+
    mmmap.showObject('น่าน', "ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // แดง
+
   mmmap.showObject('พะเยา',"ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // แดง
   mmmap.showObject('แพร่',"ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // แดง
   mmmap.showObject('แม่ฮ่องสอน', "ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // แดง
@@ -53,7 +55,9 @@ function mmmap_client_init() {
   mmmap.showObject('กาฬสินธุ์',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // , Kalasin with line and fill colors ภาคตะวันออกเฉียงเหนือ
   mmmap.showObject('ขอนแก่น',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('ชัยภูมิ',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
-  mmmap.showObject('นครพนม',"ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // เขียว
+
+  mmmap.showObject('นครพนม',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
+
   mmmap.showObject('นครราชสีมา',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('บึงกาฬ',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('บุรีรัมย์',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
@@ -64,10 +68,12 @@ function mmmap_client_init() {
   mmmap.showObject('เลย',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('สกลนคร',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('สุรินทร์',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
-  mmmap.showObject('ศรีสะเกษ',"ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // เขียว
+
+  mmmap.showObject('ศรีสะเกษ',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('หนองคาย',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('หนองบัวลำภู',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
-  mmmap.showObject('อุดรธานี',"ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // เขียว
+  mmmap.showObject('อุดรธานี',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
+
   mmmap.showObject('อุบลราชธานี',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('อำนาจเจริญ',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   
@@ -76,25 +82,32 @@ function mmmap_client_init() {
   mmmap.showObject('ชัยนาท',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('นครนายก',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('นครปฐม',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
-  mmmap.showObject('นครสวรรค์',"ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // ส้ม
+
+  mmmap.showObject('นครสวรรค์',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('นนทบุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('ปทุมธานี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('พระนครศรีอยุธยา',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('พิจิตร',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม 
   mmmap.showObject('พิษณุโลก',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('เพชรบูรณ์',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
-  mmmap.showObject('ลพบุรี',"ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // ส้ม
+
+  mmmap.showObject('ลพบุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('สมุทรปราการ',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('สมุทรสงคราม',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม 
   mmmap.showObject('สมุทรสาคร',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
  mmmap.showObject('สิงห์บุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('สุโขทัย',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
-  mmmap.showObject('สุพรรณบุรี',"ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // ส้ม
+
+  mmmap.showObject('สุพรรณบุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('สระบุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม 
   mmmap.showObject('อ่างทอง',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('อุทัยธานี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   
- mmmap.showObject('จันทบุรี', "ADM", false, null, null, "A7FA00", "A7FA00", 0.7, 0.5);// ,  	Chanthaburi with line and fill colors ภาคตะวันออก
+
+
   mmmap.showObject('ฉะเชิงเทรา', "ADM", false, null, null, "A7FA00", "A7FA00", 0.7, 0.5); // เขียวออ่น
   mmmap.showObject('ชลบุรี', "ADM", false, null, null, "A7FA00", "A7FA00", 0.7, 0.5); // เขียวออ่น
   mmmap.showObject('ตราด', "ADM", false, null, null, "A7FA00", "A7FA00", 0.7, 0.5); // เขียวออ่น
@@ -104,9 +117,11 @@ function mmmap_client_init() {
   
   mmmap.showObject('กาญจนบุรี', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // , Kanchanaburi with line and fill colors ภาคตะวันตก
   mmmap.showObject('ตาก', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
-  mmmap.showObject('ประจวบคีรีขันธ์', "ADM", false, null, null, "DF0101", "DF0101", 0.7, 0.5); // เหลือง
+
+  mmmap.showObject('ประจวบคีรีขันธ์', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
   mmmap.showObject('เพชรบุรี', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
   mmmap.showObject('ราชบุรี', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
+  mmmap.showObject('จันทบุรี', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
 
    
      mmmap.showObject('กระบี่',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // , 	Krabi  with line and fill colors ภาคใต้ 
@@ -117,7 +132,10 @@ function mmmap_client_init() {
   mmmap.showObject('ปัตตานี',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('พังงา',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('พัทลุง',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
-  mmmap.showObject('ภูเก็ต ',"ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // เหลืองเข้ม
+
+
+  mmmap.showObject('ภูเก็ต ',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
+
   mmmap.showObject('ระนอง',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('สตูล',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('สงขลา',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
@@ -761,10 +779,10 @@ $('ul.tabs').each(function(){
 				</select></li>
 		</ul>
 		<ul class="box">
-			<li><input type="checkbox" name="" value="1" checked="checked"><span class="red"></span>จำนวนผู้สัมผัสโรคระหว่าง 200 ขึ้นไป</li>
-			<li><input type="checkbox" name="" value="2" checked="checked"><span class="orange"></span>จำนวนผู้สัมผัสโรคระหว่าง 100-149</li>
-			<li><input type="checkbox" name="" value="3" checked="checked"><span class="yellow"></span>จำนวนผู้สัมผัสโรคระหว่าง 50-99</li>
-			<li><input type="checkbox" name="" value="4" checked="checked"><span class="green"></span>จำนวนผู้สัมผัสโรคระหว่าง 0-49</li>
+			<li><input type="checkbox" name="" value="1" checked="checked"><span class="red"></span>ระดับความเสี่ยงสูงสุด (Very high)</li>
+			<li><input type="checkbox" name="" value="2" checked="checked"><span class="orange"></span>ระดับความเสี่ยงสูง (High)</li>
+			<li><input type="checkbox" name="" value="3" checked="checked"><span class="yellow"></span>ระดับความเสี่ยงปานกลาง (Moderate)</li>
+			<li><input type="checkbox" name="" value="4" checked="checked"><span class="green"></span>ระดับความเสี่ยงน้อย (Low)</li>
 		</ul>
 		<div align="center"><input type="submit" name="search" value="ค้นหา" class="Submit" title="ปุ่มค้นหา">
 			<input type="submit" name="print" value="พิมพ์" class="Submit" title="ปุ่มพิมพ์">
@@ -786,13 +804,13 @@ $('ul.tabs').each(function(){
 		<table class="tbreport">
 		<tr>
 			<th rowspan="2">จังหวัด</th>
-			<th colspan="5" style="text-align:center;">เขตพื้นที่เสี่ยง(ระดับ)</th>
+			<th colspan="5" style="text-align:center;">การแบ่งระดับความเสี่ยงของพื้นที่</th>
 		</tr>
 		<tr>
-		  <td style="border-bottom:2px solid #FF3F3F;text-align: center">ระดับความเสี่ยงสูงสุด <br/>(150 ขึ้นไป)</td>
-		  <td style="border-bottom:2px solid #FC8105;text-align: center">ระดับความเสี่ยงสูง <br/>(100-149)</td>
-		  <td style="border-bottom:2px solid #FCE005;text-align: center">ระดับความเสี่ยงปานกลาง<br/> (50-99)</td>
-		  <td style="border-bottom:2px solid #00FF00;text-align: center">ระดับความเสี่ยงน้อย <br/>(0-49)</td>
+		  <td style="border-bottom:2px solid #FF3F3F;text-align: center">สูงสุด <br/>(Very high)</td>
+		  <td style="border-bottom:2px solid #FC8105;text-align: center">สูง <br/>(High)</td>
+		  <td style="border-bottom:2px solid #FCE005;text-align: center">ปานกลาง<br/> (Moderate)</td>
+		  <td style="border-bottom:2px solid #00FF00;text-align: center">ต่ำ <br/>(Low)</td>
 		</tr>
 		<tr>
 			<th>เชียงใหม่</th>

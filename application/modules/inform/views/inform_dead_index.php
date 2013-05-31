@@ -178,7 +178,7 @@ $(document).ready(function(){
 </div>	  
 </form>
 </div>
-<div id="boxAdd"><a href="inform/form_dead/" class="btn_add" title="เพิ่มข้อมูล"></a></div>
+<div id="boxAdd"><a href="inform/form_dead/" class="btn_add1" title="เพิ่มข้อมูล"></a></div>
 <?php if(!empty($result)): ?>
 			<table width="70%" class="tb_search_Rabies1">
 			  <tr>
@@ -204,7 +204,7 @@ $(document).ready(function(){
 			 	<td></td>
 			 	<td>
 			 		<a href="inform/form_dead/<?php echo $item['id'] ?>" target="_blank" class="btn_view" name="btn_view" title="ดู"></a>
-			 		<a href="inform/" target="_blank" class="btn_edit" title="แก้ไข" name="btn_edit"></a>
+			 		<a href="inform/form_dead/<?php echo $item['id']?>" target="_blank" class="btn_edit" title="แก้ไข" name="btn_edit"></a>
 			 	</td>
 			 </tr>
 			 <?php ++$i;endforeach; ?>

@@ -8,12 +8,12 @@ $(document).ready(function(){
 })
 	
 </script>
-<div id="title">สรุปประวัติการฉีดวัคซีน</div>
+<div id="title">ข้อมูลการฉีดวัคซีน</div>
 <div id="search">
 <form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	  <tr>
-			<th>รูปแบบเขตความรับผิดชอบ</th>
+			<th>เขตความรับผิดชอบ</th>
 			<td>
 				<select name="area" id="area" class="styled-select" >
 					<option value="-">กรุณาเลือกเขต</option>
@@ -21,7 +21,7 @@ $(document).ready(function(){
 					<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
 				</select>
 			 </td>
-			 <th>ข้อมูลรายเขต</th>
+			 <th>เขตที่</th>
 			<td>
 			<span id="grouplist">
 				<select name="group" class="styled-select" id="group">
@@ -29,7 +29,7 @@ $(document).ready(function(){
 				</select>
 			</span>
 			</td>
-			<th>ข้อมูลรายจังหวัด</th>
+			<th>จังหวัด</th>
 			<td>
 			<span id="provincelist">
 				<select name="province" class="styled-select" id="prvince">
@@ -39,18 +39,18 @@ $(document).ready(function(){
 			</td>			
 	  </tr>
 	  <tr>
-		<th>ข้อมูลรายอำเภอ</th>
+		<th>อำเภอ</th>
 		<td>
 			<span id="amphurlist">
 				<select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select>
 			</span></td>
-		<th>ข้อมูลรายตำบล</th>
+		<th>ตำบล</th>
 			<td>
 				<span id="districtlist">
 					<select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select>
 				</span>	
 			</td>
-			<th>ข้อมูลรายโรงพยาบาล</td>
+			<th>สถานบริการ</td>
 			<td>
 				<span id="hospitallist">
 				<select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select>
@@ -58,7 +58,7 @@ $(document).ready(function(){
 	  </tr>
 
 	  <tr>
-	    <th>จำแนกรายปีของวันที่สัมผัสโรค</th>
+	    <th>ปีของวันที่สัมผัสโรค</th>
 	    <td>
 			<select name="year" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -71,7 +71,7 @@ $(document).ready(function(){
 			}
 			?>
 			</select>					</td>
-			<th>จำแนกรายเดือนของวันที่สัมผัสโรค</th>
+			<th>เดือนของวันที่สัมผัสโรค</th>
 	    	<td>
 			<select name="month_start" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -95,7 +95,7 @@ $(document).ready(function(){
 		</td>
 	 </tr>
 	 <tr>
-	  <th>จำแนกรายปีของวันที่บันทึกรายการ</th>
+	  <th>ปีของวันที่บันทึกรายการ</th>
 	    <td>
 			<select name="year_report" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -110,7 +110,7 @@ $(document).ready(function(){
 			</select></td>	
 		
 
-			<th>จำแนกรายเดือนของวันที่บันทึกรายการ</th>
+			<th>เดือนของวันที่บันทึกรายการ</th>
 	    	<td>
 			<select name="month_report_start" class="styled-select">
 			<option value="">ทั้งหมด</option>
@@ -141,3 +141,184 @@ $(document).ready(function(){
       </ul>
 </div>	
 </form>
+</div>
+<div id="report">
+	<div id="title"><p>รายงานการฉีดวัคซีน</p>
+	<p>เขตความรับผิดชอบ (12 เขต) : เขต 1 จังหวัด นนทบุรี  อำเภอ บางกรวย  ตำบล บางกรวย </p>
+	<p>สถานบริการ โรงพยาบาลบางกรวย <span>ปี 2556</span> เดือน ทั้งหมด ถึง ทั้งหมด </p>
+ </div>
+ <div class="right">หน่วย:คน</div>
+	<table class="tbreport">
+		<tr>
+			<tr>
+				<th style="text-align:center">เงื่อนไข</th>
+				<th>จำนวน (N=0)</th>
+			</tr>
+		</tr>
+		<tr>
+			<td><strong>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
+			<td>0</td>			
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+		<tr>
+			<td><strong>2. ผู้สัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าภายใน 6 เดือนได้รับการฉีดวัคซีน</strong></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+		<tr>
+			<td><strong>3.ผู้สัมผัสหรือสงสัยว่าสัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าเกิน 6 เดือน ได้รับการฉีดวัคซีน</strong></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+		<tr>
+			<td><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์ไม่ตายภายใน 10 วัน โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+		<tr>
+			<td><strong>5. ผู้สัมผัสโรคพิษสุนัขบ้าฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong></td>
+			<td>0</td>
+		</tr>
+		<tr>
+			<td><strong>6. ชนิดของวัคซีน (โด๊ส)</strong></td>
+			<td>0</td>
+		</tr>
+			<tr>
+			<td><span class="para1">- PVRV</span></td>
+			<td>0</td>
+		</tr>
+				<tr>
+			<td><span class="para1">- PCEC</span></td>
+			<td>0</td>
+		</tr>
+				<tr>
+			<td><span class="para1">- HDCV</span></td>
+			<td>0</td>
+		</tr>
+				<tr>
+			<td><span class="para1">- PDEV</span></td>
+			<td>0</td>
+		</tr>		
+		<tr>
+			<td style="text-align:center"><strong>รวม</strong></td>
+			<td ><strong>0</strong></td>
+		</tr>
+	</table>
+	<hr class="hr1">
+	<div id="description">
+		<p class="heading">หลักเกณฑ์การให้บริการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าที่ถูกต้อง</p>
+		<ul>
+			<li><strong>ผู้สัมผัสโรคพิษสุนัขบ้าที่ไม่เคยได้รับการฉีดวัคซีนฯ มาก่อน</strong> เมื่อได้รับเชื้อ (สัตว์ที่สัมผัสเป็นโรคพิษสุนัขบ้าและลักษณะที่สัมผัสเสี่ยงต่อการได้รับเชื้อ) 
+				ต้องได้รับการฉีดวัคซีนครบชุด (ID 4 เข็ม, IM 5 เข็ม) กรณีที่สัตว์ที่สัมผัสเป็นสุนัขหรือแมวที่ไม่แน่ใจว่าเป็นโรคพิษสุนัขบ้าหรือไม่และสามารถติดตามดูอาการได้ 
+				ถ้าสุนัขหรือแมวมีอาการปกติไม่ตายภายหลังการสัมผัส 10 วัน 
+				ให้หยุดฉีดวัคซีนฯ ได้</li>
+		  <li>
+		  	<strong>ผู้สัมผัสที่เคยได้รับการฉีดวัคซีนที่มีคุณภาพมาแล้ว</strong>ตั้งแต่ 3 เข็มขึ้นไป ถ้าได้รับวัคซีนเข็มสุดท้ายไม่เกิน 6 เดือนต้องได้รับการฉีดวัคซีนฯ 
+			กระตุ้น อีก 1 เข็ม แต่ถ้าได้รับวัคซีนเข็มสุดท้ายเกิน 6 เดือนต้องได้รับการฉีดวัคซีนกระตุ้นอีก 2 เข็ม
+		  </li>
+		  <li>
+		  	 กรณีที่สัตว์สัมผัสเป็นสุนัขหรือแมวหลังจากเฝ้าดูอาการแล้ว 10 วัน หลังจากถูกกัด ยังมีอาการปกติให้ถือว่าสุนัขหรือแมวนั้นไม่มีเชื้อในขณะที่ถูกกัด จึงให้หยุดฉีดวัคซีนได้
+		  </li>		  		  	
+		</ul>
+		<div><strong>(ผู้สัมผัสที่ได้รับวัคซีนที่มีคุณภาพมาแล้วน้อยกว่า 3 เข็ม หรือได้รับวัคซีนป้องกันโรคพิษสุนัขบ้าชนิดที่ผลิตจากสมองสัตว์  ให้ปฎิบัติเหมือนผู้ที่ไม่เคยได้รับการฉีดวัคซีนมาก่อน)</strong></div>
+	</div>
+
+	<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
+		<div id="btn_printout"><a href="report/index/5/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="area_btn_print">
+			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+		</div>
+</div>

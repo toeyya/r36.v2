@@ -166,69 +166,8 @@ var ref1,ref2,ref3;
   </tr>
   <tr>
     <th valign="top">สิทธิืการใช้งาน</th>
-    <td>
-    	 <ul class="sublist">
-	           <li>
-		           	<input name="userposition"  type="radio"  value="00" <? if(@$rs['userposition']=='00'){echo"checked= 'checked'";}?> />
-		          	<span>ผู้ดูแลระบบระดับกรม(สำนักโรคติดต่อทั่วไป)</span>
-	          	</li>
-	          	<li>
-	           		<input name="userposition"   type="radio" value="01"   <? if(@$rs['userposition']=='01'){echo 'checked';}?> />
-					<span>ผู้ดูแลระบบระดับเขต</span>
-				</li>
-				<li>
-	              <input name="userposition"  type="radio" value="02" <? if(@$rs['userposition']=='02'){echo 'checked';}?> />
-				 <span>ผู้ดูแลระบบระดับจังหวัด</span>
-			 	</li>      
-        	<li id="pv_level02" style="display:<? if(@$rs['level_code']!='02'){?>none<? }?>">          
-	             จังหวัด <span class="alertred">*</span><?php echo form_dropdown('userprovince',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince'],' class="styled-select" id="userprovince"','-โปรดเลือก-'); ?>             
-        	</li>
-        	<li>
-              <input name="userposition"  type="radio" value="03"  <? if(@$rs['userposition']=='03'){echo 'checked';}?> />
-         	  <span>ผู้ดูแลระบบระดับอำเภอ</span>
-         	</li>
-  			<li  id="Chk_level03" style="display:<? if(@$rs['level_code']!='03' ){?>none<? }?>">
-		        <ul  class="sublist">
-		        		<li> จังหวัด <span class="alertred">*</span>
-		        		<?php echo form_dropdown('userprovince2',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince2'],' class="styled-select" id="userprovince2"','-โปรดเลือก-'); ?></li>
-		        		<li>อำเภอ <span class="alertred">*</span>
-		        			<?php echo form_dropdown('useramphur',get_option('amp_pro_id','amphur_name','n_amphur order by amphur_name asc'),@$rs['useramphur'],' class="styled-select" id="useramphur"','-โปรดเลือก-'); ?></li>
-		        		<li><input type="checkbox" name="form_add"  id="form_add03" class="require_one" value="Y" <? if(@$rs['form_add']=='Y'){echo 'checked';}?> /><span> กรอกแบบฟอร์ม ร.36</span></li>
-						<li><input type="checkbox" name="form_edit"  id="form_edit03" class="require_one" value="Y" <? if(@$rs['form_edit']=='Y'){echo 'checked';}?>  /><span>แก้ไขแบบฟอร์ม ร.36 </span></li>
-			           <li><input type="checkbox" name="form_del"    id="form_del03"  class="require_one" value="Y"  <? if(@$rs['form_del']=='Y'){echo 'checked';}?> /><span>ลบแบบฟอร์ม ร.36 </span></li>
-		         </ul>
-         	</li>
-        <li>
-            <input name="userposition"  type="radio" value="04"  <? if(@$rs['userposition']=='04'){echo 'checked';}?> />         
-          	<span>ผู้ดูแลระบบระดับตำบล</span>
-        </li>
-  			<li  id="Chk_level04" style="display:<? if(@$rs['level_code']!='04' ){?>none<? }?>">
-		        <ul  class="sublist">
-		        		<li> จังหวัด <span class="alertred">*</span><?php echo form_dropdown('userprovince3',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince2'],' class="styled-select" id="userprovince2"','-โปรดเลือก-'); ?></li>
-		        		<li>อำเภอ <span class="alertred">*</span><?php echo form_dropdown('useramphur3',get_option('amp_pro_id','amphur_name','n_amphur order by amphur_name asc'),@$rs['useramphur'],' class="styled-select" id="useramphur"','-โปรดเลือก-'); ?></li>
-		        		<li>ตำบล <span class="alertred">*</span><?php echo form_dropdown('userdistrict3',get_option('amp_pro_id','amphur_name','n_amphur order by amphur_name asc'),@$rs['useramphur'],' class="styled-select" id="useramphur"','-โปรดเลือก-'); ?></li>
-		        		<li><input type="checkbox" name="form_add"  id="form_add04" class="require_one" value="Y" <? if(@$rs['form_add']=='Y'){echo 'checked';}?> /><span> กรอกแบบฟอร์ม ร.36</span></li>
-						<li><input type="checkbox" name="form_edit"  id="form_edit04" class="require_one" value="Y" <? if(@$rs['form_edit']=='Y'){echo 'checked';}?>  /><span>แก้ไขแบบฟอร์ม ร.36 </span></li>
-			           <li><input type="checkbox" name="form_del"    id="form_del04"  class="require_one" value="Y"  <? if(@$rs['form_del']=='Y'){echo 'checked';}?> /><span>ลบแบบฟอร์ม ร.36 </span></li>
-		         </ul>
-         	</li>
-		<li>
-              <input name="userposition"  type="radio" value="05"  <? if(@$rs['userposition']=='05'){echo 'checked';}?> />
-          		<span>Staff</span>
-        </li>
-        <li id="Chk_level05" style="display:<? if(@$rs['level_code']!='05' ){echo 'none'; }?>">
-	        <ul  class="sublist">
-	        		<li><input type="checkbox" name="form_add"  id="form_add05" class="require_one" value="Y" <? if(@$rs['form_add']=='Y'){echo 'checked';}?> /><span>กรอกแบบฟอร์ม ร.36 </span></li>           
-	            	<li><input type="checkbox" name="form_edit"  id="form_edit05"	class="require_one" value="Y" <? if(@$rs['form_edit']=='Y'){echo 'checked';}?>  /><span>แก้ไขแบบฟอร์ม ร.36 </span></li>
-					<li><input type="checkbox" name="form_del" 	id="form_del05" 	class="require_one" value="Y"  <? if(@$rs['form_del']=='Y'){echo 'checked';}?> /><span>ลบแบบฟอร์ม ร.36 </span></li>
-	          </ul>
-          </li>
-          <li>
-              <input name="userposition"  type="radio" value="06" <? if(empty($rs['userposition'])){echo 'checked';}?>    <? if(@$rs['userposition']=='06'){echo 'checked';}?> />
-          		<span>ผู้ใช้ระบบทั่วไป</span>
-          </li>
-          </td> 
-       </tr>        
+    <td><?php echo form_dropdown('userposition',get_option('level_code','level_name','n_level_user'),@$rs['userposition'],'class="input_box_patient"','--โปรดเลือก--') ?></td> 
+      </tr>       
   		<tr  id="hospital_level05" style="display:<? if(@@$rs['userposition']!='05' && @@$rs['userposition']!='03' ){echo 'none';}?>">
     <th valign="top"  >สถานพยาบาล </th>
     <td>

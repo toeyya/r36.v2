@@ -13,7 +13,7 @@ class Map extends Map_Controller
 		$this->template->build('map_index');
 	}
 	function combine2(){
-			$this->template->build('map_index2');
+			$this->template->build('index-dataapi-combine2');
 	}
 
 }

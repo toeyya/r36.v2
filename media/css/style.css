@@ -19,7 +19,7 @@ a:hover {color:#0190fe;}
 *:focus {outline: none;}
 
 /* main */
-.main {position:relative; padding:0; margin:5px auto; width:100%; height:107px; background: url(../images/bg_rabies-3.jpg) no-repeat;}
+.main {position:relative; padding:0; margin:0px; width:100%; height:107px; background: url(../images/bg_rabies-3.jpg) no-repeat;}
 .name{float:left; margin-left:90px; margin-top:0px; width:724px; height:70px; background: url(../images/name2.png) no-repeat;}
 .dog1{float:left; /*margin-left:793px; */width:265px; height:142px; background: url(../images/dog1.png) no-repeat; /*position:absolute;*/}
 .logedin{float:left;/*margin-left:280px; */margin-top:45px;}
@@ -29,12 +29,12 @@ a:hover {color:#0190fe;}
 .userlogedin.userlogedin_text2{color:#2151b3;}
 .btn_logout{width:122px; height:26px; cursor:pointer; border:none; background: url(../images/btn_logout_reg2.png) no-repeat;display:block;}
 .btn_logout:hover{border:none; background:url(../images/btn_logout.png) no-repeat; }
-#bg_dog1{float:left;width:99%; background: url(../images/bg_dog1.jpg) repeat-x;margin-top:-36px;}
+#bg_dog1{float:left;width:100%; background: url(../images/bg_dog1.jpg) repeat-x;margin-top:-36px;}
 
 
 
 /* content */
-#content { padding-left:10px; float:left; width:90%;  /*margin-left:50px;*/ padding-top:30px;margin:0 auto; }
+#content { padding-left:10px; float:left; width:99%;  /*margin-left:50px;*/ padding-top:30px;margin:0 auto; }
 .welcome{color:#e31788; font-size:15px;}
 .nameMember{color:black; font-size:15px;margin:60px 0px 0px 57px;}
 .path{margin-left:800px; color:#89898a;}
@@ -97,6 +97,40 @@ input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; backgrou
     border-style: solid;
     border-width: 1px 0;
 }
+
+
+.tbdead th{
+	text-align:right; padding-right:15px; line-height:40px;
+	border-color: #CCCCCC;
+    border-style: dashed solid;
+    border-width: 1px 1px 1px 0;
+}
+
+.tbdead td{
+	/*border-color: #CCCCCC;
+    border-style: solid;
+    border-width: 1px 0;*/
+    padding:5px;
+}
+.tbdead td span.topic{
+	width:100px;
+	display:inline-block;
+	text-align:right;
+}	
+.tbdead td span.topic.radio{
+margin-right:11px;
+}	
+.tbdead ul{width:600px;}
+.tbdead ul li{
+	list-style: none;
+	width:85px;
+	display:inline-block;
+	vertical-align: top;
+	padding:5px;
+}
+.tbdead ul li.topic{
+	width:277px;
+}
 .tbvaccine{width:100%;margin:10px 0px;padding:0px;border-collapse: collapse;}
 .tbvaccine th{	
 	border-bottom: solid #CCC 2px;
@@ -112,17 +146,6 @@ input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; backgrou
 	padding:5px 0px;
 }
 .footer{margin-top:15px;height:31px; padding-left:47px; width:96%; position:relative; padding-top:7px; background-image: url(../images/bg_footer.jpg); background-repeat: repeat-x;}
-#report{
-	margin-top:30px;
-}
-#report #title{
-	font-size:12px;
-	font-weight:bold;
-	color:#000;
-	height: auto;
-	border:none;
-	background:none;
-}
 
 			
 /********************************      Login Page      ********************************/
@@ -195,6 +218,7 @@ ul.sublist label{display:inline-block;width:100px;}
 .btn_edit{background:url('../images/pencil-icon.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
 .btn_delete{background:url('../images/cross.png') no-repeat;width:16px;height: 16px;border:none;display:inline-block;}
 .btn_add{background:url('../images/btn_add.png') no-repeat;width:183px; height:29px;cursor:pointer; display:inline-block;border:none;float:right;}
+.btn_add1{background:url('../images/add.png') no-repeat;width:106px; height:25px;cursor:pointer; display:inline-block;border:none;float:right;}
 .btn_syring{background:url('../images/syringe/syringe-icon.png') no-repeat;
 				  width:24px;height:24px;border:none;display:inline-block;margin}
 
@@ -214,3 +238,119 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 .user-online{background:url('../images/user-online.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
 .user-offline{background:url('../images/user-offline.png') no-repeat;width:24px;height: 24px;border:none;display:inline-block;}
 .tbvaccine p{margin:0px;}
+#report{
+	margin-top:50px;
+	margin-left:10px;
+}
+#report #title{
+	font-size:12px;
+	font-weight:bold;
+	color:#000;
+	height: auto;
+	border:none;
+	background:none;
+	display:none;
+}
+
+#report #title p{margin-bottom:-22px;font-size:13px;}
+#report #area_btn_print{display:none;}
+#report #description{display:none;}
+#report .right{margin-top:-17px;}
+
+.tbreport
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    background: #fff;
+    margin:0;
+    margin-bottom:10px;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+   
+}
+.tbreport th
+{
+    font-size: 12px;
+    font-weight: bold;
+    padding: 10px 5px 12px 5px;
+    border-top: 2px solid #999;
+    border-bottom: 2px solid #999;
+    border-left: 0px solid #ccc;
+    border-right: 0px solid #ccc;
+    text-align:center;
+    background-color:#fff;
+     height:17px;
+   
+}
+.tbreport td
+{
+    color:#333;
+    padding:6px 3px;
+    height:16px;
+    /*border-top: 0px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 0px solid #ccc;
+    border-right: 0px solid #ccc;*/
+    vertical-align: top;
+ 
+}
+
+.tbreport td.B { font-weight:700;}
+.tbreport td.para1{margin-left:20px;}
+
+.tbreport td strong {font-weight:700;}
+.tbreport td.red, span.red { color:#F00;}
+.tbreport tr:hover td,.tblist tr.active td {background:#FDB8EE;font-weight:bold;}
+.tbreport tr.total { border-top:2px dotted #666; border-bottom:2px dotted #666; font-weight:700; background:url(../images/bg_pattern.png);}
+.tbreport td.topic { background:#F5F5F5;}
+.tbreport td.topic p { padding:5px 0 5px 15px;}
+.tbreport td a:link {color:#800000; text-decoration:underline;}
+.tbreport td a:visited {color:#800000; text-decoration:underline;}
+.tbreport td a:hover {color: #F60; text-decoration:underline;}
+.tbreport td a:active {color: #800000; text-decoration:underline;}
+.tbreport tr.para1{text-align:center;}
+.tbreport tr.para1 td.pad-left{text-align:left;padding-left:40px;}
+.tbreport tr.para1 td.pad-left2{text-align:left;padding-left:60px;}
+.tbreport1
+{
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;
+    background: #fff;
+    margin:0;
+    margin-bottom:10px;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+   
+}
+.tbreport1 th
+{
+    font-size: 12px;
+    font-weight: bold;
+    padding: 10px 5px 12px 5px;
+    border-top: 2px solid #999;
+    border-bottom: 2px solid #999;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    text-align:center;
+    background-color:#fff;
+     height:30px;
+   
+}
+.tbreport1 td
+{
+    color:#333;
+    padding:6px 3px;
+    height:25px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    vertical-align: top;
+    text-align:center;
+}
+.tbreport1 th.B{font-weight:900;font-size:14px;}
+#btn_printout{float:right;margin-top:10px;}
+#report #multiAccordion  #reference{font-size:11px;}
+.page-break{margin:-1px 0px; padding:0px;height:0px;}

@@ -18,7 +18,7 @@ class Auth extends Public_Controller
 	public function login()
 	{
 		if($_POST)
-		{
+		{		
 			if(admin_login($_POST['username'], $_POST['password']))
 			{
 				//Addlog("login","เข้าสู่ระบบ");	

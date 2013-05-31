@@ -15,8 +15,7 @@ class Inform extends R36_Controller
 	}
 	function index()
 	{
-		//$this->db->debug=true;			
-	
+		//$this->db->debug=true;				
 		if(isset($_GET['btn_submit']))
 		{// กดค้นหา					
 		

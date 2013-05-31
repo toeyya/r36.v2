@@ -80,10 +80,11 @@ class Report extends R36_Controller
 		    $data['cond']=$cond;
 
 				  	
-			//if($preview) $this->template->set_layout('blank');
+			if($preview) $this->template->set_layout('print');
 			
 			if($no=="4"){
-				$this->template->build('report4_demo',$data);
+				//$this->template->build('report4_demo',$data);
+				$this->template->build("report".$no."_index",$data);
 			}else{
 				$this->template->build("report".$no."_index",$data);
 			}
@@ -124,6 +125,9 @@ class Report extends R36_Controller
 														       					AND n_information.total_vaccine!='5' AND date(vaccine_date) BETWEEN '2555-11-25' AND '2555-12-25' 
 																		        GROUP BY n_information.id")->sort("")->order("vaccine_date asc")->get();
 		$this->template->build('report_schedule',$data);
+	}
+	function analyze(){
+		$this->template->build('report_analyze');
 	}
 
 

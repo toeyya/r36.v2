@@ -146,12 +146,12 @@ var ref1,ref2,ref3;
   </tr>
   <tr>
   	<th>เลขที่บัตรประชาชน  <span class="alertred">*</span></th>
-  	<td><span style="margin-left:15px;" id="Show_idcard">
-  			<input type="text" name="cardW0"   id="cardW0"   value=""  size="1" maxlength="1">-
-  			<input type="text"  name="cardW1"  id="cardW1"   value=""  size="4" maxlength="4">-
-  			<input type="text"  name="cardW2"  id="cardW2"   value=""  size="5" maxlength="5">-
-  			<input type="text"  name="cardW3"  id="cardW3"  value=""  size="2" maxlength="2">-
-  			<input type="text"  name="cardW4"  id="cardW4"  value=""  size="1" maxlength="1"> 	
+  	<td><span  id="Show_idcard">
+  			<input type="text" name="cardW0"   id="cardW0"   value=""  size="1" maxlength="1" style="width:15px;" class="input_box_patient">-
+  			<input type="text"  name="cardW1"  id="cardW1"   value=""  size="4" maxlength="4" style="width:30px;" class="input_box_patient">-
+  			<input type="text"  name="cardW2"  id="cardW2"   value=""  size="5" maxlength="5" style="width:40px;" class="input_box_patient">-
+  			<input type="text"  name="cardW3"  id="cardW3"  value=""  size="2" maxlength="2" style="width:20px;" class="input_box_patient">-
+  			<input type="text"  name="cardW4"  id="cardW4"  value=""  size="1" maxlength="1" style="width:15px;" class="input_box_patient"> 	
   			</span>					
   	</td>
   </tr>
@@ -161,16 +161,19 @@ var ref1,ref2,ref3;
   </tr>
   <tr>
   	<th>เบอร์ออฟฟิต <span class="alertred">*</span></th>
-  	<td><input type="text" name="telephone" value="<?php echo @$rs['tel'] ?>" class="input_box_patient"> <small>ตัวอย่าง 02526666</small>
+  	<td>
+  		<input type="text" name="telephone" value="<?php echo @$rs['tel'] ?>" class="input_box_patient"  maxlength="2"  style="width:20px;">-	
+  		<input type="text" name="telephone" value="<?php echo @$rs['tel'] ?>" class="input_box_patient"  maxlength="3" style="width:40px;"> -
+		<input type="text" name="telephone" value="<?php echo @$rs['tel'] ?>" class="input_box_patient" maxlength="4" style="width:60px;"> 
+		 ต่อ <input type="text" name="telphone_extend" value="<?php echo @$rs['tel_extend'] ?>" class="input_box_patient" style="width:30px;">
+
   	</td>
   </tr>
   <tr>
-  	 <th>เบอร์ต่อ </th>
-  	<td><input type="text" name="telphone_extend" value="<?php echo @$rs['tel_extend'] ?>" class="input_box_patient"></td>
-  </tr>
-  <tr>
   	<th>เบอร์มือถือ <span class="alertred">*</span></th>
-  	<td><input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>" class="input_box_patient"> <small>ตัวอย่าง 0811234567</small></td>
+  	<td><input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>" class="input_box_patient"> 
+  		
+  	</td>
   </tr>  		
   	<tr  id="hospital_level05" style="display:<? if(@@$rs['userposition']!='05' && @@$rs['userposition']!='03' ){echo 'none';}?>">
     <th valign="top"  >สถานพยาบาล </th>

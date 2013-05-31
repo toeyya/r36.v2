@@ -1,19 +1,48 @@
-body{ background-color:#FFFFFF; background-image:none; color:#000000;font-size:11px;line-height:12px;font-family: Tahoma, verdana, sans-serif;}
-#login table{
-	border:1px solid #000;
-	background-color:#6394bd;
-	border-spacing:0px;
+body{ background-color:#FFFFFF; 
+background-image:none; color:#000000;font-size:11px;
+line-height: 1.4em; word-spacing:1px; letter-spacing:0.2px;
+font-family: Tahoma, verdana, sans-serif;}
+a{content: " (" attr(href) ")";color:#000000;}
+h3{font-size:13px;margin-bottom:-26px;color:#2A2A2A}
+
+#title,#search{display:none;}
+div#report{width:842px;}
+#report{width:842px;padding:10px;margin:0 auto;}
+#report #title{display:block;margin-bottom:22px;margin-top:-16px;}
+#report table{margin-top:10px;}
+#report #area_btn_print{display:block;margin:5% 37%}
+#btn_printout{display:none;}
+#report #description{display:block;background-color:#F7F7F7}
+#report #description p.heading{background-color:#FE6FC9;text-align:center;padding-top:7px;font-weight:700;margin:0;}
+#report #description ul{margin:0px;}
+#report #description ul li{list-style-type:decimal}
+#report #description div strong{margin:0 5%;}
+#report #reference{margin-top:10px;}
+
+#report .right{margin-top:-13px;}
+
+
+.tbreport th{height:17px;}
+.tbreport td{border:none;height:16px;}
+.tbreport tr:hover td,.tblist tr.active td {background:none;font-weight:normal;}
+.tbreport td.reference{padding-top:10px;border-top:1px solid #2A2A2A}
+
+
+
+.tbdesc th,.tbdesc td{padding-bottom:17px;vertical-align:top;}
+.tbdesc th{width:120px;}
+
+@media all {
+	.page-break	{ display: none; }
 }
-#login table th.headtable{
-	color: #FFFFFF;
-	font-weight:bold;
-	border:1px solid #000;
-	
+
+@media print {
+	.page-break	{display: block; page-break-before: always; }
 }
-#login table td{border:1px solid #000;}
-#printreport,#closereport{display:none}
-#login .alertred{
-	font-size: 12px;
-	color: #FF0000;
-}
-#login a{color:#000;text-decoration:	none;}
+<!--[if gte IE 8]>
+table { page-break-inside:auto;}
+tr    { page-break-inside:auto; page-break-after:auto }
+table thead{display:table-header-group}
+table tfoot { display: table-footer-group;}
+table tbody{display: table-row-group;}
+<![endif]-->

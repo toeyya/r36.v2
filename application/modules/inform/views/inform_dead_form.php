@@ -1,5 +1,9 @@
 <script type="text/javascript">
 $(document).ready(function(){
+	 $('#multiAccordion').multiAccordion({
+            heightStyle: "content",
+            active:0
+        });
 	var ref1,ref3,ref5,ref6;	
 	$("#provinceid").change(function(){
 		ref1=$("#provinceid option:selected").val();
@@ -139,524 +143,452 @@ $(document).ready(function(){
 	});
 });
 </script>
-<div id="title">แบบฟอร์มคนไข้ที่เสียชีวิต</div>
+<div id="title">แบบฟอร์มผู้เสียชีวิตด้วยโรคพิษสุนัขบ้า</div>
 <form id="form1" name="form1" method="post"  action="inform/save_dead" > 
-		<table class="tbchild" width="100%">
-		  <tr>
-			<td>
-				<table width="100%" class="noborder" cellpadding="5" cellspacing="10">
-				  <tr>
-					<td width="3%" valign="top">1</td>
-					<td width="100%" valign="top"><table width="100%" class="noborder">
-                      <tr>
-                        <td valign="top">
-                        		ชื่อ<span class="alertred">*</span> : 
-							   <input name="firstname" type="text" class="input_box_patient " id="firstname" value="<?php echo $rs['firstname'];?>" size="20" /><span></span>&nbsp;&nbsp;
-							  นามสกุล<span class="alertred">*</span> :
-							  <input name="surname" type="text" value="<?php echo $rs['surname'];?>" size="20"  class="input_box_patient "><span></span>&nbsp;&nbsp;
-								อายุ : <input name="age" type="text" size="2" value="<?php $rs['age'];?>" onKeyPress="return NumberOnly();" class="input_box_patient auto "> ปี 
-								เพศ : <input name="gender" type="radio" value="1" <? if($rs['gender']=='1'){ print "checked";}?>> ชาย&nbsp;&nbsp;
-									 	  <input name="gender" type="radio" value="2" <? if($rs['gender']=='2'){ print "checked";}?>> หญิง</td>
-                      </tr>
-                      <tr>
-                        <td><table width="100%" border="0" cellspacing="0" cellpadding="3">
-                          <tr>
-                            <td width="10%">ที่อยู่ปัจจุบัน</td>
-                            <td width="8%"><div align="right">เลขที่ <span class="alertred">*</span>  :</div></td>
-                            <td width="19%"><input name="nohome" type="text" class="input_box_patient " size="20" value="<?php echo $rs['nohome'];?>"></td>
-                            <td width="12%"><div align="right">หมู่ที่ : </div></td>
-                            <td width="19%"><input name="moo" type="text" class="input_box_patient " size="20" value="<?php echo $rs['moo'];?>" /></td>
-                            <td width="12%"><div align="right">หมู่บ้าน : </div></td>
-                            <td width="20%"><input name="villege" type="text" class="input_box_patient " size="20" value="<?php echo $rs['villege'];?>"></td>
-                          </tr>
-                          <tr>
-                            <td>&nbsp;</td>
-                            <td><div align="right">ซอย : </div></td>
-                            <td><input name="soi" type="text" class="input_box_patient " size="20" value="<?php echo $rs['soi'];?>" /></td>
-                            <td><div align="right">ถนน : </div></td>
-                            <td><input name="road" type="text" class="input_box_patient " id="road" value="<?php echo $rs['road'];?>" size="20" /></td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
-                          </tr>
-                          <tr>
-                            <td>&nbsp;</td>
-                            <td><div align="right">จังหวัด<span class="alertred">*</span>  :</div></td>
-                            <td>
-                            	<?php 
-                            		$class='class="input_box_patient " id="provinceid"';
-                            		echo form_dropdown('provinceid',get_option('province_id','province_name','n_province ORDER BY province_name ASC'),@$rs['provinceid'],$class,'-โปรดเลือก-');
-								 ?>
-                            </td>
-                            <td><div align="right">อำเภอ/เขต<span class="alertred">*</span>  : </div></td>
-                            <td>
-							<span id="Input_amphur">						
-								<?
-								
-								if($rs['provinceid']!=''){
-										if($rs['amphurid']!=''){
-											$whamp="AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";
-										}else{
-											$whamp="AND province_id='".$rs['provinceid']."'";
-										}																				 
-									echo form_dropdown('amphurid',get_option('amphur_id','amphur_name',"n_amphur WHERE amphur_id!=''".$whamp."  ORDER BY amphur_name ASC"),@$rs['amphurid'],'class="input_box_patient " id="amphurid"','-โปรดเลือก-');
-								}else{									
-								?>
-									<select name="amphurid" id="amphurid" class="input_box_patient ">
-										<option value="">-โปรดเลือก-</option>
-									</select>
-								<?php } ?>
- 							</span>							</td>
-                            <td><div align="right">ตำบล/แขวง <span class="alertred">*</span> : </div></td>
-                            <td>
-							<span id="Input_district">
-								<?
-								if($rs['amphurid']!=''){
-										if($rs['districtid']!=''){
-											$whdis="AND district_id ='".$rs['districtid']."' AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";
-										}else{
-											$whdis="AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";
-										}	
-																		
-										echo  form_dropdown('district_id',get_option('district_id','district_name'," n_district WHERE district_id!='' ". $whdis." ORDER BY district_name ASC"),@$rs['districtid'],'class="input_box_patient " id="districtid"','-โปรดเลือก-');
-									}else{
-								?>     
-									<select name="districtid" id="districtid" class="input_box_patient ">
-										<option value="">-โปรดเลือก-</option>
-									</select>
-								<?php } ?>              
-							</span></td>
-                          </tr>
-                          </table> </td>
-                      </tr>
-                    </table></td>
-				  </tr>
-				  <tr>
-					<td valign="top">2</td>
-					<td><table width="100%" border="0" cellspacing="0" cellpadding="2" class="noborder">
-                      <tr>
-                        <td valign="top" colspan="2">สถานที่ได้รับเชื้อ(ถูกกัด)  </td>
-                      </tr>
-                      <tr>
-                        <td width="10%">&nbsp;</td>
-                        <td width="90%"><table width="65%" border="0" cellspacing="12" cellpadding="2">
-                            <tr>
-                              <td width="13%"><div align="right">สถานที่ : </div></td>
-                              <td colspan="5">
-							  			<input name="detail_bite" type="radio" value="1" <?php if($rs['detail_bite']=='1'){ echo 'checked';}?> />ตลาด &nbsp;
-										<input name="detail_bite" type="radio" value="2" <?php if($rs['detail_bite']=='2'){ echo 'checked';}?>/>วัด &nbsp;
-										<input name="detail_bite" type="radio" value="3" <?php if($rs['detail_bite']=='3'){ echo 'checked';}?>/>โรงเรียน &nbsp;
-										<input name="detail_bite" type="radio" value="4" <?php if($rs['detail_bite']=='4'){ echo 'checked';}?>/>บ้านพัก &nbsp;
-										<input name="detail_bite" type="radio" value="5" <?php if($rs['detail_bite']=='5'){ echo 'checked';}?> />ที่สาธารณะ &nbsp;
-							</td>
-                            </tr>
-                            <tr>
-                              <td><div align="right">จังหวัด <span class="alertred">*</span> : </div></td>
-                              <td width="14%">
-							 <span id="input_place_province">								
-									<?php									
-										$class='class="input_box_patient "  id="provinceidplace"';										
-										echo form_dropdown('provinceidplace',get_option('province_id','province_name'," n_province WHERE province_id !='' ORDER BY province_name ASC"),$rs['provinceidplace'],$class,'-โปรดเลือก-'); 
-									?>
-	                          
-	                    
-							</span></td>
-                              <td width="14%"><div align="right">อำเภอ/เขต <span class="alertred">*</span> : </div></td>
-                              <td width="16%">
-							  <span id="input_place_amphur">								  
-									  <?																
-											if($rs['provinceidplace']!='')
-											{
-												$class='class="input_box_patient " id="amphuridplace"';		
-																													  
-												echo form_dropdown('amphuridplace',get_option("amphur_id","amphur_name"," n_amphur WHERE province_id='".$rs['provinceidplace']."' ORDER BY amphur_name ASC"),$rs['amphuridplace'],$class,'-โปรดเลือก-'); 
-											}
-											else{
-									  ?>	 
-									  	 <select name="amphuridplace" id="amphuridplace" class="input_box_patient ">
-									  	 	<option value="">-โปรดเลือก-</option>
-									  	 </select> 
-									  <?php } ?>                      
-							  </span> </td>
-                              <td width="16%"><div align="right">ตำบล/แขวง <span class="alertred">*</span> : </div></td>
-                              <td width="27%">
-							  <span id="input_place_district">							                            
-                             	<?php 
-	                             	if($rs['amphuridplace']!='')
-									{
-		                             	$cond="n_district WHERE amphur_id ='".$rs['amphuridplace']."' AND  province_id ='". $rs['provinceidplace']."' ORDER BY district_name ASC";
-		                             	 echo form_dropdown('districtidplace',get_option('district_id','district_name',$cond),$rs['districtidplace'],'class="input_box_patient " id="districtidplace"','-โปรดเลือก-'); 											
-									}else{
-								?>
-									<select name="districtidplace" id="districtidplace" class="input_box_patient ">
-										<option value="">-โปรดเลือก-</option>
-									</select>
-								<?php } ?>
-							  </span>  </td>
-                            </tr>
-                        </table></td>
-                      </tr>
-                    </table></td>
-				  </tr><!-- ข้อ 2 -->
-				  <tr>
-					<td valign="top">3</td>
-					<td><table width="100%" border="0" cellspacing="0" cellpadding="2" class="noborder">
-                      <tr>
-                        <td valign="top" colspan="2">สถานพยาบาลที่รักษา  </td>
-                      </tr>
-                      
-                      <tr>
-                        <td width="10%">&nbsp;</td>
-                        <td width="90%"><table width="100%" border="0" cellspacing="0" cellpadding="2">
-                            <tr>
-                              <td><div align="right">จังหวัด <span class="alertred">*</span> : </div></td>
-                              <td width="12%">
-							 <span id="input_place_province">								
-									<?php									
-										$class='class="input_box_patient "  id="hospitalprovince"';										
-										echo form_dropdown('hospitalprovince',get_option('province_id','province_name'," n_province WHERE province_id !='' ORDER BY province_name ASC"),$rs['hospitalprovince'],$class,'-โปรดเลือก-'); 
-									?>	                          	                    
-							</span></td>
-                              <td width="14%"><div align="right">อำเภอ/เขต <span class="alertred">*</span> : </div></td>
-                              <td width="14%">
-							  <span id="hospital_amphur">								  
-									  <?																
-											if($rs['hospitalprovince']!='')
-											{
-												$class='class="input_box_patient " id="hospitalamphur"';		
-																													  
-												echo form_dropdown('hospitalamphur',get_option("amphur_id","amphur_name"," n_amphur WHERE province_id='".$rs['hospitalprovince']."' ORDER BY amphur_name ASC"),$rs['hospitalamphur'],$class,'-โปรดเลือก-'); 
-											}
-											else{
-									  ?>	 
-									  	 <select name="hospitalamphur" id="hospitalamphur" class="input_box_patient ">
-									  	 	<option value="">-โปรดเลือก-</option>
-									  	 </select> 
-									  <?php } ?>                      
-							  </span> </td>
-                              <td width="14%"><div align="right">ตำบล/แขวง <span class="alertred">*</span> : </div></td>
-                              <td width="14%">
-							  <span id="hospital_district">							                            
-                             	<?php 
-	                             	if($rs['hospitalamphur']!='')
-									{
-		                             	$cond="n_district WHERE amphur_id ='".$rs['hospitalamphur']."' AND  province_id ='". $rs['hospitalprovince']."' ORDER BY district_name ASC";
-		                             	 echo form_dropdown('hospitaldistrict',get_option('district_id','district_name',$cond),$rs['hospitaldistrict'],'class="input_box_patient " id="hospitaldistrict"','-โปรดเลือก-'); 											
-									}else{
-								?>
-									<select name="hospitaldistrict" id="hospitaldistrict" class="input_box_patient ">
-										<option value="">-โปรดเลือก-</option>
-									</select>
-								<?php } ?>
-							  </span> 						  
-							  </td>
-							<td width="8%"> สถานพยาบาล <span class="alertred">*</span> :</td>
-                          	<td>							 
-							  	<span id="input_hospital">
-							  		<?php $cond="";
-							  		if($rs['hospitalcode'] && $rs['hospitalamphur'] && $rs['hospitalprovince']){
-							  			$cond="WHERE hospital_province_id='".$rs['hospital']."' and hospital_amphur_id='".$rs['hospitalamphur']."' and hospital_district_id='".$rs['hospitaldistrict']."'";
-							  			echo form_dropdown('hospitalcode',get_option('hospital_id','hospital_name','n_hospital $cond'),$rs['hospitalcode'],'class="input_box_patient " id="hospital"','-โปรดเลือก-');
-									}else{									 	
-							  		 ?>
-										<select name="hospital" id="hospital" class="input_box_patient ">
-											<option value="">-โปรดเลือก-</option>
-										</select>
-							  		 <?php } ?>
-							  	</span></td>
-                          </tr>
-                        </table></td>
-                      </tr>
-                    </table></td>
-				  </tr><!-- ข้อ 2 -->				  
-				  <tr>
-				    <td >4</td>
-				    <td >ชนิดสัตว์ที่กัด : <input name="statusanimal_text" type="text" size="40"  class="input_box_patient " value="<?php echo $rs['statusanimal']?>"/>
+<div id="multiAccordion">
+	<h3><a href="javascript:void(0)">ส่วนที่ 1 ข้อมูลทั่วไป</a></h3>
+	<div id="section1">
+		<table class="tbdead">
+		<tr>
+				<th rowspan="3">1.</th>
+				<td>	<span class="topic">คำนำหน้า</span> <select name="prefix_name" class="styled-select ">
+							 	<option value="">- โปรดเลือก -</option>
+								<option value="นาย" <?php  echo (@$rs['prefix_name']=='นาย')? "selected='selected'":"" ?>>นาย</option>
+								<option value="นาง" <?php  echo (@$rs['prefix_name']=='นาง')? "selected='selected'":"" ?>>นาง</option>
+								<option value="นางสาว" <?php  echo (@$rs['prefix_name']=='นางสาว')? "selected='selected'":"" ?>>นางสาว</option>
+								<option value="ด.ช." <?php  echo (@$rs['prefix_name']=='ด.ช.')? "selected='selected'":"" ?>>ด.ช.</option>
+								<option value="ด.ญ." <?php  echo (@$rs['prefix_name']=='ด.ญ.')? "selected='selected'":"" ?>>ด.ญ.</option>							
+							 </select></td>
+				<td><span class="topic radio">เพศ </span>
+						<input name="gender" type="radio"  value="1" <? if(@$rs['gender']=='1'){ echo "checked";}?>> ชาย
+						<input name="gender" type="radio" value="2" <? if(@$rs['gender']=='2'){ echo "checked";}?>> หญิง</td>			
+			</tr>
+			<tr>
+				
+					<td><span class="topic">ชื่อ<span class="alertred">*</span></span>
+							<input name="firstname" type="text" class="input_box_patient" id="firstname" value="<?php echo $rs['firstname'];?>" size="20" />
 					</td>
-			      </tr>
-				  <tr>
-				    <td valign="top">5</td>
-				    <td>
-					<table width="100%" border="0" cellpadding="0" cellspacing="0">
-							  <tr>
-									<td colspan="2">สถานภาพสัตว์</td>
-							  </tr>
-							  <tr>
-								<td width="12%"><input name="statusanimal" type="radio" value="1" <? if($rs['statusanimal']=='1'){ echo 'checked';}?> onClick="show_hide_clear_status(document.form1);"/> มีเจ้าของ</td>
-									<td width="88%">
-									<table width="100%" border="0" cellpadding="0" cellspacing="0" id="statusanimal_table"  <? if($rs['statusanimal']!='2'){echo 'style="display:none"';}?>>
-										  <tr>
-											<td width="22%"><input name="statusanimal_detail" type="radio" value="3" <? if($rs['statusanimal_detail']=='3'){ echo 'checked';}?>/> ของผู้อื่น</td>
-												<td width="78%"><input name="statusanimal_detail" type="radio" value="4" <? if($rs['statusanimal_detail']=='4'){ echo 'checked';}?> /> ของตนเอง</td>
-										  </tr>
-									</table>
-								</td>
-							  </tr>
-							  <tr>
-									<td  width="20%"><input name="statusanimal" type="radio" value="2" <? if($rs['statusanimal']=='2'){ echo 'checked';}?> onClick="show_hide_clear_status(document.form1);"/> ไม่มีเจ้าของ</td>
-									<td>&nbsp;</td>
-							  </tr>
-						</table>
-					</td>
-			      </tr>
-				  <tr>
-				    <td valign="top" >6</td>
-				    <td >
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-						  <tr>
-							<td colspan="2">อายุของสัตว์ : </td>
-						  </tr>
-						  <tr>
-							<td width="8%">&nbsp;</td>
-							<td width="92%"><input name="ageanimal" type="radio" value="1"<? if($rs['ageanimal']=='1'){ echo "checked";}?>/> ต่ำกว่า 3 เดือน</td>
-						  </tr>
-						  <tr>
-							<td>&nbsp;</td>
-							<td><input name="ageanimal" type="radio" value="2" <? if($rs['ageanimal']=='2'){ echo "checked";}?>/> 3 ถึง 6 เดือน</td>
-						  </tr>
-						  <tr>
-							<td>&nbsp;</td>
-							<td><input name="ageanimal" type="radio" value="3" <? if($rs['ageanimal']=='3'){ echo "checked";}?>/>3 ถึง 12 เดือน</td>
-						  </tr>
-						  <tr>
-							<td>&nbsp;</td>
-							<td><input name="ageanimal" type="radio" value="4" <? if($rs['ageanimal']=='4'){ echo "checked";}?>/> มากกว่าปี</td>
-						  </tr>
-						  <tr>
-							<td>&nbsp;</td>
-							<td><input name="ageanimal" type="radio" value="5" <? if($rs['ageanimal']=='5'){ echo "checked";}?>> ไม่ทราบ</td>
-						  </tr>
-						</table>
-					</td>
-			      </tr>
-				  <tr>
-				    <td valign="top">7</td>
-				    <td>
-					<table width="100%" border="0" cellspacing="0" cellpadding="0" >
-					  <tr>
-						<td colspan="2">การมีชีวีต : </td>
-					  </tr>
-					  <tr>
-						<td width="8%">&nbsp;</td>
-						<td width="92%"><input name="lifeanimal" type="radio" value="1" <? if($rs['lifeanimal']=='1'){ echo "checked";}?>> ตายเอง</td>
-					  </tr>
-					  <tr>
-						<td>&nbsp;</td>
-						<td><input name="lifeanimal" type="radio" value="2" <? if($rs['lifeanimal']=='2'){ echo "checked";}?>> ถูกฆ่าตาย</td>
-					  </tr>
-					  <tr>
-						<td>&nbsp;</td>
-						<td><input name="lifeanimal" type="radio" value="3" <? if($rs['lifeanimal']=='3'){ echo "checked";}?>> ตายจากอุบัติเหตุ</td>
-					  </tr>
-					  <tr>
-						<td>&nbsp;</td>
-						<td><input name="lifeanimal" type="radio" value="4" <? if($rs['lifeanimal']=='4'){ echo "checked";}?>> หนีหาย</td>
-					  </tr>
-					  <tr>
-						<td>&nbsp;</td>
-						<td><input name="lifeanimal" type="radio" value="5" <? if($rs['lifeanimal']=='5'){ echo "checked";}?>> ไม่ทราบ</td>
-					  </tr>
-					  <tr>
-						<td colspan="2">หลังกัดผู้ป่วย <input type="text" value="<?php echo $rs['afterbitday']?>"  name="afterbitday" size="3" onKeyUp="chkFormatNam (this.value,this.name);"  class="input_box_patient "/> วัน</td>
-					  </tr>
-					</table>
-			      </tr>
-				  <tr>
-				    <td valign="top">8</td>
-				    <td><table width="100%" border="0" cellspacing="0" cellpadding="0" >
-					  <tr>
-						<td colspan="3">การส่งตรวจ:  </td>
-					  </tr>
-					  <tr>
-						<td width="10%">&nbsp;</td>
-						<td colspan="2"><input name="headsend" type="radio" value="ๅ" <? if($rs['headsend']=='1'){ echo "checked";}?> onClick="show_hide_clear_batteria(document.form1);"> ไม่ส่ง</td>
-					  </tr>
-					  <tr>
-						<td>&nbsp;</td>
-						<td width="14%"><input name="headsend" type="radio" value="2" <? if($rs['headsend']=='2'){ echo "checked";}?> onClick="show_hide_clear_batteria(document.form1);"> ส่ง</td>
-						<td width="76%">
-								<table width="100%" border="0" cellpadding="0" cellspacing="0" id="batteria_table" class="noborder" <? if($rs['headsend']!='2'){echo 'style="display:none"';}?>>
-									  <tr>
-											<td width="22%"><input name="batteria" type="radio" value="1" <? if($rs['batteria']=='1'){ echo 'checked';}?>/> พบเชื้อ</td>
-											<td width="78%"><input name="batteria" type="radio" value="2" <? if($rs['batteria']=='2'){ echo 'checked';}?> /> ไม่พบเชื้อ</td>
-									  </tr>
-								</table>						
-						</td>
-					  </tr>
-					</table>
-			      </tr>
-				  <tr>
-				    <td>9</td>
-				    <td>วันที่สัมผัส(หรือประมาณ): <input name="dateanimal" type="text" size="40"  class="input_box_patient " value="<?php echo $rs['dateanimal']?>"/>
-			      </tr>
-				  <tr>
-				    <td >10</td>
-				    <td >ตำแหน่งที่รับเชื้อ : <input name="touchme" type="text" size="40"  class="input_box_patient " value="<?php echo $rs['touchme']?>"/>
-					</td>
-			      </tr>
-				  <tr>
-				    <td  valign="top">11</td>
-				    <td >
-					<table width="100%" border="0" cellpadding="0" cellspacing="0">
-						  <tr>
-							<td colspan="2">การฉีด Rabies Vaccine :</td>
-						  </tr>
-						  <tr>
-							<td width="9%" height="25"><input name="vaccine" type="radio" value="1" <? if($rs['vaccine']=='1'){echo 'checked';}?>  onclick="show_hide_clear_vaccinedead(document.form1);"/>ฉีด</td>
-							<td width="91%">
-								<table width="100%" border="0" cellpadding="0" cellspacing="0" id="vaccine_1" <? if($rs['vaccine']!='1'){echo 'style="display:none"';}?>>
-									  <tr>
-											<td width="9%"><input type="text" name="vaccine_text" value="<?php echo $rs['vaccine_text']?>" class="input_box_patient "  size="2" maxlength="2"   onKeyUp="chkFormatNam (this.value,this.name);" /> เข็ม</td>
-											<td width="91%"><input name="vaccine_date" type="text" size="10" class="input_box_patient auto  datepicker" readonly="" value="<?php echo $rs['vaccine_date'];?>" /></td>
-									  </tr>
-								</table>							
-							</td>
-						  </tr>
-						  <tr>
-							<td  height="25"><input name="vaccine" type="radio" value="2"  <? if($rs['vaccine']=='2'){echo 'checked';}?>  onclick="show_hide_clear_vaccinedead(document.form1);"/>ไม่ฉีด</td>
-							<td></td>
-						  </tr>
-					  </table>
-					</td>
-			      </tr>
-				  <tr>
-				    <td  valign="top">12</td>
-				    <td >
-					<table width="100%" border="0" cellpadding="0" cellspacing="0">
-						  <tr>
-							<td colspan="2">การฉีดอิมมูโนโกลบูลิน :</td>
-						  </tr>
-						  <tr>
-							<td width="9%" height="25"><input name="vaccine_h" type="radio" value="1" <? if($rs['vaccine_h']=='1'){echo 'checked';}?>  onclick="show_hide_clear_vaccine_h(document.form1);"/>ฉีด</td>
-							<td width="91%">
-								<table width="100%" border="0" cellpadding="0" cellspacing="0" id="vaccine_table" <? if($rs['vaccine_h']!='1'){echo 'style="display:none"';}?>>
-									  <tr>
-										<td width="9%"><input name="erig_hrig" type="radio" value="1" <? if($rs['erig_hrig']=='1'){ print "checked";}?>> ERIG</td>
-											<td width="91%"><input name="erig_hrig" type="radio" value="2" <? if($rs['erig_hrig']=='2'){ print "checked";}?>> HRIG</td>
-									  </tr>
-								</table>							
-							</td>
-						  </tr>
-						  <tr>
-							<td  height="25"><input name="vaccine_h" type="radio" value="2"  <? if($rs['vaccine_h']=='2'){echo 'checked';}?>  onclick="show_hide_clear_vaccine_h(document.form1);"/>ไม่ฉีด</td>
-							<td></td>
-						  </tr>
-					  </table>
-					</td>
-			      </tr>
-				  <tr>
-				    <td >13</td>
-				    <td >วันที่เริ่มป่วย : 
-					 <input name="startdate" type="text" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo (empty($rs['startdate']))?  $rs['startdate']: cld_my2date($rs['startdate']);?>"  />
-					 </td>
-			      </tr>
-				  <tr>
-				    <td >14</td>
-				    <td >วันที่ถึงแก่กรรม<span class="alertred">*</span> : 
-					<input name="enddate" type="text" size="10" class="input_box_patient auto datepicker"  id="enddate" readonly="" value="<?php echo (empty($rs['enddate']))? $rs['endate']:cld_my2date($rs['enddate']);?>"  />
-					 </td>
-			      </tr>
-				  <tr>
-				    <td  valign="top">15</td>
-				    <td>
-					<table width="100%">
-					  <tr>
-						<td  width="6%"valign="top">ลักษณะอาการ : </td>
-						<td width="83%"><textarea name="symptoms"   cols="30" rows="3" class='input_box_patient'><?php echo $rs['symptoms']?></textarea></td>
-					  </tr>
-					</table>
-				     </td>
-			      </tr>
-				  <tr>
-				    <td  valign="top">16</td>
-				    <td >				
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-						  <tr>
-							<td colspan="2">การตรวจวินิจฉันยืนยัน : </td>
-						  </tr>
-						  <tr>
-							<td width="9%">&nbsp;</td>
-							<td width="91%">
-							<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							  <tr>
-								<td width="19%" valign="top">1.ตัวอย่างที่ส่งตรวจเป็น</td>
-								<td width="81%">
-								<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								  <tr>
-									<td><input name="detailexample1" type="radio" value="1"  <? if($rs['detailexample1']=='1'){ echo 'checked';}?>/> น้ำปัสสาวะ</td>
-								  </tr>
-								  <tr>
-									<td><input name="detailexample1" type="radio" value="2" <? if($rs['detailexample1']=='2'){ echo 'checked';}?> /> น้ำลาย</td>
-								  </tr>
-								  <tr>
-									<td><input name="detailexample1" type="radio" value="3"  <? if($rs['detailexample1']=='3'){ echo 'checked';}?>/> น้ำไขสันหลัง</td>
-								  </tr>
-								  <tr>
-									<td><input name="detailexample1" type="radio" value="4"  <? if($rs['detailexample1']=='4'){ echo 'checked';}?>/> เนื้อสมอง</td>
-								  </tr>
-								</table>
-								</td>
-							  </tr>
-							  <tr>
-								<td>2.สถานที่ส่งตรวจที่ </td>
-								<td><input type="text" name="sendhospital" value="<?php echo $rs['sendhospital']; ?>"  class="input_box_patient "/></td>
-							  </tr>
-							  <tr>
-								<td valign="top">3.ผลการตรวจวินิจฉัย</td>
-								<td>
-								<table width="100%" border="0" cellspacing="0" cellpadding="0">
-								  <tr>
-									<td><input name="ans" type="radio" value="1" <? if($rs['ans']=='1'){echo 'checked';}?>  onClick="show_hide_clear_ans_exam(document.form1);"/> Positive</td>
-									<td><div id="ans_exam" <? if($rs['ans']!='1'){echo 'style = "display:none"';}?>>ระบุตัวอย่าง <input type="text" name="exam" value="<?php echo $rs['exam']?>" class="input_box_patient " /></div></td>
-								  </tr>
-								  <tr>
-									<td colspan="2"><input name="ans" type="radio" value="2" <? if($rs['ans']=='2'){echo 'checked';}?>  onClick="show_hide_clear_ans_exam(document.form1);"/> Negative</td>
-								  </tr>
-								</table>
-								</td>
-							  </tr>
-							</table>							
-							</td>
-						  </tr>
-					  </table></td>
-			      </tr>
-				  <tr>
-				    <td colspan="2">
-					<table width="100%" border="0" cellspacing="2" cellpadding="0">
-					  <tr>
-						<td width="50%">&nbsp;</td>
-						<td><table width="100%" border="0" cellspacing="2" cellpadding="2">
-						  <tr>
-							<td width="29%" align="right">ชื่อผู้รายงาน<span class="alertred">*</span>&nbsp;:</td>
-							<td width="71%"><input type="text" name="reportname" value="<?php echo $rs['reportname']?>"  class="input_box_patient "/></td>
-						  </tr>
-						  <tr>
-							<td align="right">ตำแหน่ง<span class="alertred">*</span>&nbsp;:</td>
-							<td><input type="text" name="positionname" value="<?php echo $rs['positionname']?>"  class="input_box_patient "/></td>
-						  </tr>
-						  <tr>
-							<td align="right">เบอร์โทรศัพท์<span class="alertred">*</span>&nbsp;:</td>
-							<td><input type="text" name="telname" value="<?php echo $rs['telname']?>"  class="input_box_patient "/></td>
-						  </tr>
-						  <tr>
-							<td align="right">วันที่บันทึก </td>
-							<td>
-							<?
-									$Ydate=date('Y')+543;
-									$datedeflaut=date("-m-d");
-									$reportdate=cld_my2date($Ydate.$datedeflaut);
-							?>
-			        				<input name="reportdate" type="text" size="10" class="input_box_patient " readonly  value="<?php echo (@$rs['reportdate'])? cld_my2date(@$rs['reportdate']):$reportdate;?>"> 							
-							</td>
-						  </tr>
-						</table>
-						</td>
-					  </tr>
-					</table>
-					</td>
-				</table>
+					<td><span class="topic">นามสกุล <span class="alertred">*</span></span>
+							  <input name="surname" type="text" value="<?php echo $rs['surname'];?>" size="20"  class="input_box_patient ">
+					</td>	
+					<td><span class="topic">บัตรประชาชน</span>
+						<span id="Show_idcard"> 
+						<input name="cardW0" id="cardW0" type="text" class="input_box_patient nowidth" size="1" maxlength="1" value="<?php echo @$cardW0?>" />
+						  -
+						  <input name="cardW1"  id="cardW1" type="text" class="input_box_patient nowidth" size="4" maxlength="4"  value="<?php echo @$cardW1?>" />
+						  -
+						  <input name="cardW2"  id="cardW2" type="text" class="input_box_patient nowidth" size="5" maxlength="5"   value="<?php echo @$cardW2?>"/>
+						  -
+						  <input name="cardW3" id="cardW3" type="text" class="input_box_patient nowidth" size="2" maxlength="2"  value="<?php echo @$cardW3?>" />
+						  -
+						<input name="cardW4" id="cardW4" type="text" class="input_box_patient nowidth" size="1" maxlength="1"  value="<?php echo @$cardW4?>"  />				
+				
+					</td>					
+			</tr>
+			<tr>				
+				<td><span class="topic">อายุ<span class="alertred">*</span></span>
+                            <input name="age" id="age"  type="text" size="2" maxlength="2" value="<?php echo @$rs['age'];?>" class="input_box_patient auto"  onKeyUp="chk_than15(this.value);"></td>
+				<td><span class="topic">ผู้ปกครอง</span> <input name="parentname" type="text" class="input_box_patient " id="parentname" value="<?php echo $rs['parentname'];?>" size="50" style="width:300px;"/>
+		    	<td colspan="3"><small>(กรณีผู้ป่วยอายุต่ำกว่า 15 ปี กรุณากรอกชื่อ-นามสกุล ผู้ปกครอง)</small></td>							    			
+			</tr>
+			<tr>
+				<th>2. </th>
+				<td><span class="topic radio">เชื้อชาติ</span>
+											<input name="nationality" type="radio" value="1" <? if(@$rs['nationalityname']=='1'){ echo "checked";}?> onClick="show_hide_nationality(document.form1);"> ไทย&nbsp;&nbsp;
+						<input name="nationality" type="radio" value="2" <? if(@$rs['nationalityname']=='2'){ echo "checked";}?> onClick="show_hide_nationality(document.form1);"> อื่นๆ 
+						<span id="nationality_tr1" <? if(@$rs['nationalityname']!='2'){ print 'style = "display:none"';}?>>
+						สัญชาติ :&nbsp; 
+							<select name="nationalityname"  class="styled-select " onChange="show_hide_clear_nationality_text(this)">
+								<option value="0" <? if(@$rs['nationalityname']=='0'){echo "selected";}?>>เลือกสัญชาติ</option>
+								<option value="2" <? if(@$rs['nationalityname']=='2'){echo "selected";}?>>จีน/ฮ่องกง/ใต้หวัน</option>
+								<option value="3" <? if(@$rs['nationalityname']=='3'){echo "selected";}?>>พม่า</option>
+								<option value="4" <? if(@$rs['nationalityname']=='4'){echo "selected";}?>>มาเลเซีย</option>
+								<option value="5" <? if(@$rs['nationalityname']=='5'){echo "selected";}?>>กัมพูชา</option>
+								<option value="6" <? if(@$rs['nationalityname']=='6'){echo "selected";}?>>ลาว</option>
+								<option value="7" <? if(@$rs['nationalityname']=='7'){echo "selected";}?>>เวียดนาม</option>
+								<option value="8" <? if(@$rs['nationalityname']=='8'){echo "selected";}?>>ยุโรป</option>
+								<option value="9" <? if(@$rs['nationalityname']=='9'){echo "selected";}?>>อเมริกา</option>
+								<option value="10" <? if(@$rs['nationalityname']=='10'){echo "selected";}?>>ไม่ทราบสัญชาติ</option>
+								<option value="11" <? if(@$rs['nationalityname']=='11'){echo "selected";}?>>อื่นๆ</option>
+                          </select>&nbsp;
+							<span id="nationality_div" <? if(@$rs['nationalityname']!='11'){ print 'style = "display:none"';}?>>
+								  <span class="alertred">(โปรดระบุ)</span>&nbsp;
+								  <input name="othernationalityname" id="othernationalityname" type="text" value="<?php echo @$rs['othernationalityname'];?>" class="input_box_patient " size="20">
+						  </span>
+						</span>
 				</td>
-		  </tr>
+				<td><span class="topic radio">ศาสนา</span>
+					<input type="radio" value="1" name="religion">พุทธ
+					<input type="radio" value="2" name="religion">คริสต์
+					<input type="radio" value="3" name="religion">อิสลาม
+					<input type="radio" value="4" name="religion">อื่นๆ
+				</td>
+				<td><span class="topic">อาชีพ</span>
+							<?php echo form_dropdown('occupationname',get_option('id','name','n_occupations'),@$rs['occupationname'],'class="styled-select " onChange="return show_hide_clear_otheroccupationname(this);" id="occupation_than15"','- กรุณาเลือกอาชีพ-'); ?>
+							<?php 
+							$class='class="styled-select" onChange="return show_hide_clear_otheroccupationname(this);" id="occupation_less15"';
+							echo form_dropdown('occupationname_b',get_option('id','name','n_occupations where id in(1,2,3)'),@$rs['occupationname'],$class,'- กรุณาเลือกอาชีพ-'); ?>
+						<? if(@$rs['age']>15){ 
+										echo	"<script>document.getElementById ('occupation_less15').style.display='none'</script>";
+								}else{ 
+										echo	"<script>document.getElementById ('occupation_than15').style.display='none'</script>";
+								}
+						?>
+							<span  id="otheroccupationname_tr" <? if(@$rs['occupationname']!='20'){ print 'style = "display:none"'; }?>>
+							<span class="alertred">(โปรดระบุ)&nbsp;
+						<input name="otheroccupationname" id="otheroccupationname"  type="text" class="input_box_patient " size="10" value="<?php echo @$rs['otheroccupationname'];?>" /></span>
+						</span>
+				</td>
+			</tr>	
+			<tr>
+				<th rowspan="3">3. </th>
+				<td>ที่อยู่ขณะป่วย เลขที่<input type="text"  class="input_box_patient "name="no_home" value="<?php echo $rs['no_home'] ?>">					</td>
+				<td><span class="topic">หมู่ที่</span><input type="text" class="input_box_patient " name="moo" value="<?php echo $rs['moo'] ?>"></td>
+				<td><span class="topic">หมู่บ้าน</span><input type="text"  class="input_box_patient "name="villege" value="<?php echo $rs['villege'] ?>"></td>
+			</tr>
+			<tr>
+				<td>	<span class="topic">ชุมชน</span><input type="text"  class="input_box_patient "name="community" value="<?php echo $rs['community'] ?>"></td>
+				<td><span class="topic">ซอย</span><input name="soi" type="text" class="input_box_patient " size="20" value="<?php echo $rs['soi'];?>" /></td>
+                <td><span class="topic">ถนน</span><input name="road" type="text" class="input_box_patient " id="road" value="<?php echo $rs['road'];?>" size="20" /></td>			
+			</tr>
+			<tr>
+               <td><span class="topic">จังหวัด<span class="alertred">*</span></span>	
+                	<?php $class='class="input_box_patient " id="provinceid"';
+                		echo form_dropdown('provinceid',get_option('province_id','province_name','n_province ORDER BY province_name ASC'),@$rs['provinceid'],$class,'-โปรดเลือก-');?>
+				</td>
+                 <td><span class="topic">อำเภอ/เขต<span class="alertred">*</span></span>
+						<span id="Input_amphur">						
+							<?								
+							if($rs['provinceid']!=''){
+									if($rs['amphurid']!=''){
+										$whamp="AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";
+									}else{
+										$whamp="AND province_id='".$rs['provinceid']."'";
+									}																				 
+								echo form_dropdown('amphurid',get_option('amphur_id','amphur_name',"n_amphur WHERE amphur_id!=''".$whamp."  ORDER BY amphur_name ASC"),@$rs['amphurid'],'class="input_box_patient " id="amphurid"','-โปรดเลือก-');
+							}else{									
+							?>
+								<select name="amphurid" id="amphurid" class="input_box_patient ">
+									<option value="">-โปรดเลือก-</option>
+								</select>
+							<?php } ?>
+						</span></td>						
+                  <td><span class="topic">ตำบล/แขวง <span class="alertred">*</span></span>
+						<span id="Input_district">
+							<?
+							if($rs['amphurid']!=''){
+									if($rs['districtid']!=''){
+										$whdis="AND district_id ='".$rs['districtid']."' AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";
+									}else{
+										$whdis="AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";
+									}	
+																	
+									echo  form_dropdown('district_id',get_option('district_id','district_name'," n_district WHERE district_id!='' ". $whdis." ORDER BY district_name ASC"),@$rs['districtid'],'class="input_box_patient " id="districtid"','-โปรดเลือก-');
+								}else{
+							?>     
+								<select name="districtid" id="districtid" class="input_box_patient ">
+									<option value="">-โปรดเลือก-</option>
+								</select>
+							<?php } ?></span>
+				</td>
+		</tr>
+		<tr>
+			<th rowspan="4">4.</th>
+			<td><span class="topic radio">ภูมิลำเนา</span>
+					<input type="radio" value="1" name="addr_same">ที่อยู่ขณะป่วย
+					<input type="radio" value="2" name="addr_same">คนละที่</td>
+		</tr>
+		<tr>
+			<td><span class="topic">เลขที่</span><input type="text"  class="input_box_patient "name="no_home" value="<?php echo $rs['no_home'] ?>">					</td>
+			<td><span class="topic">หมู่ที่</span><input type="text" class="input_box_patient " name="moo" value="<?php echo $rs['moo'] ?>"></td>
+			<td> <span class="topic">หมู่บ้าน</span><input type="text"  class="input_box_patient "name="villege" value="<?php echo $rs['villege'] ?>"></td>
+		</tr>
+		<tr>
+			<td>	<span class="topic">ชุมชน</span><input type="text"  class="input_box_patient "name="community" value="<?php echo $rs['community'] ?>"></td>
+			<td><span class="topic">ซอย</span><input name="soi" type="text" class="input_box_patient " size="20" value="<?php echo $rs['soi'];?>" /></td>
+            <td><span class="topic">ถนน</span><input name="road" type="text" class="input_box_patient " id="road" value="<?php echo $rs['road'];?>" size="20" /></td>			
+		</tr>
+			<tr>
+               <td><span class="topic">จังหวัด<span class="alertred">*</span></span>	
+                	<?php $class='class="input_box_patient " id="provinceid"';
+                		echo form_dropdown('provinceid',get_option('province_id','province_name','n_province ORDER BY province_name ASC'),@$rs['provinceid'],$class,'-โปรดเลือก-');?>
+				</td>
+                 <td><span class="topic">อำเภอ/เขต<span class="alertred">*</span></span>
+						<span id="Input_amphur">						
+							<?								
+							if($rs['provinceid']!=''){
+									if($rs['amphurid']!=''){
+										$whamp="AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";
+									}else{
+										$whamp="AND province_id='".$rs['provinceid']."'";
+									}																				 
+								echo form_dropdown('amphurid',get_option('amphur_id','amphur_name',"n_amphur WHERE amphur_id!=''".$whamp."  ORDER BY amphur_name ASC"),@$rs['amphurid'],'class="input_box_patient " id="amphurid"','-โปรดเลือก-');
+							}else{									
+							?><select name="amphurid" id="amphurid" class="input_box_patient "><option value="">-โปรดเลือก-</option></select>
+						<?php } ?>
+						</span></td>						
+                  <td><span class="topic">ตำบล/แขวง <span class="alertred">*</span></span>
+						<span id="Input_district">
+							<?
+							if($rs['amphurid']!=''){
+									if($rs['districtid']!=''){
+										$whdis="AND district_id ='".$rs['districtid']."' AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";
+									}else{
+										$whdis="AND amphur_id ='".$rs['amphurid']."' AND province_id='".$rs['provinceid']."'";}																		
+										echo  form_dropdown('district_id',get_option('district_id','district_name'," n_district WHERE district_id!='' ". $whdis." ORDER BY district_name ASC"),@$rs['districtid'],'class="input_box_patient " id="districtid"','-โปรดเลือก-');
+								}else{
+							?> <select name="districtid" id="districtid" class="input_box_patient"><option value="">-โปรดเลือก-</option> </select>
+						<?php } ?></span>
+				</td>	
+		</tr>
+		<tr>
+			<th>5.</th>
+			<td colspan="2">เบอร์โทรศัพท์ของญาติ / เพื่อนบ้าน / ผู้นำส่ง ที่สามารถติดต่อได้ <input type="text" class="input_box_patient" name="telephone" value="<?php echo $rs['telephone']  ?>"></td>
+		</tr>
 		</table>
+	</div><!--section1 -->
+	<h3><a href="javascript:void(0)">ส่วนที่ 2 อาการและอาการแสดง</a></h3>
+	<div id="section2">
+		<table class="tbdead">
+			<tr>
+				<th>1. </th>
+				<td><span class="topic">วันเริ่มอาการ</span><input type="text" name="" class="input_box_patient datepicker"></td>
+				<td><span class="topic">รักษาที่</span><input type="text" name="hospitalcode" class="input_box_patient"></td>
+				<td><span class="topic">วันที่</span><input type="text" name="" class="input_box_patient datepicker"></td>
+			</tr>
+			<tr>
+				<th>2. </th>
+				<td><span class="topic radio">ประเภทผู้ป่วย</span>
+					<input type="radio" name="patient_type" value="in">ผู้ป่วยนอก
+					<input type="radio" name="patient_type" value="out">ผู้ป่วยใน
+				</td>
+				<td colspan="2"><span class="topic radio">ผลการรักษา</span>
+						
+						<input type="radio" name="patient_type" value="in">กำลังรักษา <input type="text" name="" value="" class="input_box_patient">
+						
+						<input type="radio" name="patient_type" value="out">เสียชีวิต วันที่ <input type="text" name="" class="input_box_patient datepicker">
+						
+				</td>
+			<tr>
+				<th>3.</th>
+				<td colspan="3"><span class="topic" style="width:140px;">อาการและอาการแสดง</span>
+					<hr class="hr1">
+					<ul>
+						<li class="topic">ไข้</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">ปวดศีรษะ</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">ตื่นเต้นกระวนกระวายต่อสิ่งเร้า /แสง /เสียง</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">อาละวาดผุดลุกผุดนั่ง</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">กลืนลำบาก</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">ซึม ไม่รู้สึกตัว</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">ถ่มน้ำลายตลอดเวลา</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">ถอนหายใจเป็นพักๆ</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">กลัวลม</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">ขนลุกบางส่วนหรือทั้งตัว</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">กลัวน้ำ</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">สูญเสียความทรงจำชั่วคราว</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">รูม่านตาไม่ตอบสนองต่อแสง</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+						<li class="topic">แขนขาอ่อนแรง</li><li><?php echo form_checkbox('','1','') ?>มี</li><li><?php echo form_checkbox('','2','') ?>ไม่มี</li><li><?php echo form_checkbox('','3','') ?>ไม่ทราบ</li>
+					</ul>
+				</td>
+			</tr>
+
+		</table>
+	</div><!--section2-->
+	<h3><a href="javascript:void(0)">ส่วนที่ 3 ผลตรวจทางห้องปฏิบัติการในคน</a></h3>
+	<div id="section3">
+		<table class="tbdead">
+			<tr>
+				<th>1.</th>
+				<td>	<span class="topic radio">เนื้องสมอง</span>	
+				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
+				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
+			</tr>
+			<tr>
+				<th>2.</th>
+				<td>	<span class="topic radio">น้ำลายปวดศีรษะ</span>	
+				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
+				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
+			</tr>
+			<tr>
+				<th>3.</th>
+				<td>	<span class="topic radio">น้ำไขสันหลัง</span>	
+				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
+				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
+			</tr>
+			<tr>
+				<th>4.</th>
+				<td>	<span class="topic radio">ปัสสาวะ</span>	
+				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
+				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
+			</tr>
+			<tr>
+				<th>5.</th>
+				<td>	<span class="topic radio">ปมรากผล</span>	
+				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
+				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
+			</tr>
+			<tr>
+				<th>6.</th>
+				<td>	<span class="topic radio">ผิวหนังท้ายทอย</span>	
+				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
+				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
+			</tr>
+			<tr>
+				<th>7.</th>
+				<td>	<span class="topic radio">เซลล์กระจกตา</span>	
+				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
+				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
+			</tr>
+		</table>		
+	</div><!-- section3 -->
+	<h3><a href="javascript:void(0)">ส่วนที่ 4 ประวัติการสัมผัสโรค</a></h3>
+	<div id="section4">
+		<table class="tbdead">
+		</table>
+	</div><!--section4 -->	
+	<h3><a href="javascript:void(0)">ส่วนที่ 5 การปฏิบัติเมื่อถูกกัด/ข่วน/ถูกน้ำลาย/ถูกเลีย</a></h3>
+	<div id="section5">
+		<table class="tbdead">
+			<tr>
+				<th rowspan="2">1.</th>
+				<td><span class="topic radio">ความสะอาดบาดแผล</span>
+					<?php echo form_radio('','1','') ?>ไม่ได้ล้าง เพราะ <input type="text" name="" class="input_box_patient">
+					<?php echo form_radio('','1','') ?>ล้างทันทีที่ถูกกัด
+					<?php echo form_radio('','1','') ?>ล้างหลังจากถูกกัดแล้ว<input type="text" name="" class="input_box_patient auto" size="2"> ชั่วโมง/วัน 
+				</td>
+			</tr>
+			<tr><td colspan="3"><span class="topic radio">วิธีล้างดังนี้</span>
+				<?php echo form_radio('','1','') ?>ล้างด้วยน้ำเปล่า
+				<?php echo form_radio('','1','') ?>สบู่/ผงซักฟอก
+				<?php echo form_radio('','1','') ?>อื่นๆ ระบุ <input type="text" class="input_box_patient">
+			</td></tr>
+			<tr>
+				<th>2.</th>
+				<td><span class="topic radio">การใช้ยาใส่แผล </span><?php echo form_radio('','1','') ?>ไม่ได้ใช้<?php echo form_radio('','2','') ?>ใช้ ระบุชนิด <input type="text" class="input_box_patient"></td>
+			</tr>
+			<tr>
+				<th>3.</th>
+				<td><span class="topic radio">การเย็บแผล </span><?php echo form_radio('','1','') ?>ไม่ได้เย็บแผล<?php echo form_radio('','2','') ?>เย็บแผลที่ รพ./รพ.สต./คลีนิก <input type="text" class="input_box_patient"></td>
+			</tr>
+		</table>
+	</div><!--section5-->	
+	<h3><a href="javascript:void(0)">ส่วนที่ 6 ประวัติการได้รับวัคซีน/อิมมูโนโกบุลิน/อาการแทรกซ้อนหลังการฉีดของผู้เสียชีวิต</a></h3>
+	<div id="section6">
+		<table class="tbdead">
+			<tr>
+				<th>1.</th>
+				<td><span class="topic">ฉีดอิมมูโนโกบุลิน</span></td>
+			</tr>
+			<tr>
+				<th>2.</th>
+			</tr>
+			<tr>
+				<th>3.</th>
+			</tr>
+		</table>
+	</div><!-- section 6-->	
+	<h3><a href="javascript:void(0)">ส่วนที่ 7 ประวัติของสัตว์ที่กัด</a></h3>
+	<div id="section7">
+		<table class="tbdead">
+			<tr>
+				<th>1.</th>
+				<td><span class="topic">อายุของสัตว์</span>
+					<?php $age=array(1=>'น้อยกว่า 3 เดือน',2=>'3-6 เดือน',3=>'6-12 เดือน',4=>'มากกว่า 1 ปี',5=>'ไม่ทราบ'); ?>
+					<?php echo  form_dropdown('age_animal',$age,@$rs['age_animal'],'class="styled-select"');?>
+				</td>
+
+			</tr>
+			<tr>
+				<th>2.</th>
+				<td><span class="topic radio">สถานภาพสัตว์</span>
+					<?php echo form_radio('','1','') ?>มีเจ้าของ
+					<?php echo form_radio('','1','') ?>ไม่มีเจ้าของ
+					<?php echo form_radio('','1','') ?>ไม่ทราบ
+				</td>
+			</tr>
+			<tr>
+				<th>3.</th>
+				<td valign="top"><span class="topic radio">การกักขังติดตามดูอาการสัตว์</span>
+					<?php echo form_checkbox('','1','') ?>ไม่ได้กักขัง
+					<?php echo form_checkbox('','1','') ?>ได้กักขัง/ติดตามพบ
+					<?php echo form_checkbox('','1','') ?>ไม่ตายภายใน 10 วัน
+					<?php echo form_checkbox('','1','') ?>ตายเองภายใน 10 วัน
+					<?php echo form_checkbox('','1','') ?>ถูกฆ่าตาย
+					<?php echo form_checkbox('','1','') ?>สัตว์หายไปติดตามไม่ได้
+				</td>
+			</tr>
+			<tr>
+				<th>4.</th>
+				<td valign="top"><span class="topic radio">สาเหตุที่ถูกกัด</span>
+					<?php echo form_radio('','1','') ?>ถูกกัดโดยไม่มีสาเหตุโน้นำ
+					<?php echo form_radio('','1','') ?>ถูกกัดโดยมีสาเหตุโน้มนำ เนื่องจาก
+					 <ul class="sub">
+					 	<li><?php echo form_checkbox('','1','') ?>ทำร้าย หรือแกล้งสัตว์</li>
+					 	<li><?php echo form_checkbox('','1','') ?>พยายามแยกสัตว์ที่กำลังต่อสู้กัน</li>
+					 	<li><?php echo form_checkbox('','1','') ?>เข้าใกล้สัตว์แม่ลูกอ่อน</li>
+					 	<li><?php echo form_checkbox('','1','') ?>รบกวนสัตว์ขณะกินอาหาร</li>
+					 	<li><?php echo form_checkbox('','1','') ?>อื่นๆ ระบุ <input type="text" class="input_box_patient"></li>					 	
+					 </ul>
+				</td>
+			</tr>
+		</table>
+	</div><!-- section 7-->	
+	<h3><a href="javascript:void(0)">ส่วนที่ 8 ผู้สัมผัสโรครายอื่น</a></h3>
+	<div id="section8">
+		<table class="tbdead">	
+			<tr>
+				<th>1.</th>
+				<td></td>
+			</tr>
+			<tr>
+				<th>2.</th>
+				<td></td>
+			</tr>
+		</table>
+
+	</div><!-- section 8 -->
+	
+</div><!-- cordion -->
+		<table>
+			<tr>
+				<th>ชื่อผู้ให้สัมภาษณ์</th><td></td>
+				<th>ชื่อ-สกุล</th><td></td>
+			</tr>
+			<tr>
+				<th>ความสัมพันธ์กับผู้ป่วย</th><td></td>
+				<th>ผู้สอบสวนตำแหน่ง</th><td></td>
+		   </tr>
+		   <tr>
+				<th>สถานที่ปฏิบัติงาน</th><td></td>
+				<th>โทรศัพท์</th><td></td></tr>
+		 <tr><th>อีเมล์</th><td></td>
+				<th>วันที่สอบสวนโรค</th><td></td></tr>
+			</tr>
+		</table>
+<p id="reference"><strong>ระยะฟักตัวของโรค (Incubation period) ที่เชื่อถือได้สั้นที่สุด 7 วัน ยาวนานที่สุด 3 ปี (โดยเฉลี่ย 30-90 วัน)</strong></p>
+
+
+
+
+
+
+
+
+
  <div class="btn_inline">
       <ul>
       	<li><button class="btn_save" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
