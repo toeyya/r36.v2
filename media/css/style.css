@@ -24,7 +24,7 @@ a:hover {color:#0190fe;}
 .dog1{float:left; /*margin-left:793px; */width:265px; height:142px; background: url(../images/dog1.png) no-repeat; /*position:absolute;*/}
 .logedin{float:left;/*margin-left:280px; */margin-top:45px;}
 .dateTime{float:left; font-size:12px; font-weight:bold; color:#e3138f; margin-top:9px;/*position:relative;margin-top:79px;margin-left:1076px;*/}
-.userlogedin{float:left;position:relative; margin-left:148px; margin-top:-64px; font-size:14px;padding:3px; background-color:white;opacity:0.7;filter:alpha(opacity=70);height:18px;}
+.userlogedin{float:left;position:absolute; margin-left:148px; margin-top:74px; font-size:14px;padding:3px; background-color:white;opacity:0.7;filter:alpha(opacity=70);height:18px;}
 .userlogedin_text1{color:#ed0202; font-weight:bold;}
 .userlogedin.userlogedin_text2{color:#2151b3;}
 .btn_logout{width:122px; height:26px; cursor:pointer; border:none; background: url(../images/btn_logout_reg2.png) no-repeat;display:block;}
@@ -99,27 +99,24 @@ input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; backgrou
 }
 
 
-.tbdead th{
+.tbdead th,.tbdead8 th{
 	text-align:right; padding-right:15px; line-height:40px;
 	border-color: #CCCCCC;
     border-style: dashed solid;
     border-width: 1px 1px 1px 0;
 }
 
-.tbdead td{
-	/*border-color: #CCCCCC;
-    border-style: solid;
-    border-width: 1px 0;*/
-    padding:5px;
-}
+.tbdead td,.tbdead8{padding:5px;}
 .tbdead td span.topic{
-	width:100px;
+	width:132px;
 	display:inline-block;
 	text-align:right;
 }	
 .tbdead td span.topic.radio{
 margin-right:11px;
 }	
+
+
 .tbdead ul{width:600px;}
 .tbdead ul li{
 	list-style: none;
@@ -128,9 +125,39 @@ margin-right:11px;
 	vertical-align: top;
 	padding:5px;
 }
+.tbdead ul.sub{
+	width:377px;
+	float:right;
+	margin-right:748px;
+	display:inline-block;
+}
+
+.tbdead ul.sub li{
+	list-style: none;
+	width:411px;
+	display:inline-block;
+	vertical-align: top;
+	padding:5px;
+}
 .tbdead ul li.topic{
 	width:277px;
 }
+.tbdead8 td span.topic{
+	width:213px;
+	display:inline-block;
+	text-align:right;
+}
+.tbdead8 td span.pad-left{
+	margin-left:61px;
+}
+
+
+
+
+
+
+
+
 .tbvaccine{width:100%;margin:10px 0px;padding:0px;border-collapse: collapse;}
 .tbvaccine th{	
 	border-bottom: solid #CCC 2px;

@@ -2,7 +2,7 @@
 <div id="search">
 	
 </div>
- <form action="<?php echo $_SERVER['PHP_SELF']?>" method="post" enctype="multipart/form-data" name="login" id="login"></form>
+<div id="report">
 <table class="tb_search_Rabies1">
 <tr>
   <th width="17%">HN</th>
@@ -43,6 +43,9 @@
 			
      
     </table>
-	  <input type="button" name="printreport" value="พิมพ์รายงาน" onclick="printout();"  class="Submit" id="printreport">&nbsp;&nbsp;&nbsp;
-      <input type="button" name="closereport" value="ปิดหน้าต่างนี้" onclick="window.close();"  class="Submit" id="closereport">
-    
+		<div id="btn_printout"><a href="report/schedule/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="area_btn_print">
+			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+		</div>    
+</div><!-- report -->

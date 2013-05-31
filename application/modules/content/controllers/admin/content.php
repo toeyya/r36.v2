@@ -15,7 +15,7 @@ class Content extends Admin_Controller
 	
 	function index($category_id=FALSE,$id=FALSE)
 	{
-		//$this->db->debug=TRUE;
+		
 		$data['result'] = $this->content->select('contents.*,userfirstname,usersurname') 
 										->join("INNER JOIN n_user on contents.user_id=uid")
 										->where("category_id='".$category_id."'")
@@ -27,10 +27,10 @@ class Content extends Admin_Controller
 		if($category_id){
 			$data['content']=$this->content->get_row("category_id",$category_id);		
 		}
-		if($category['structure']=="contact"){		
+		if($data['category']['structure']=="contact"){		
 			$this->template->build('admin/content_contact',$data);
 			
-		}else if($category['structure']=="page"){
+		}else if($data['category']['structure']=="page"){
 			$this->template->build('admin/content_page',$data);
 			
 		}else{

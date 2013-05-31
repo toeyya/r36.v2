@@ -100,8 +100,8 @@ class Report extends R36_Controller
 		$this->template->set_layout('blank');	
 		$this->template->build('report4_form');
 	}
-	function schedule()
-	{$this->db->debug=TRUE;
+	function schedule($preview=FALSE)
+	{//$this->db->debug=TRUE;
 				
 			if($this->session->userdata('R36_PROVINCE')!='' && $this->session->userdata('R36_LEVEL')=='02'){
 						$wh="AND provinceid = '".$this->session->userdata('R36_PROVINCE')."'  AND hospitalprovince <>  '".$this->session->userdata('R36_HOSPITAL')."' ";
@@ -124,7 +124,8 @@ class Report extends R36_Controller
 														       ->where("closecase !='2' AND (means  IN (1,2)) AND n_vaccine.vaccine_date!='' $wh 
 														       					AND n_information.total_vaccine!='5' AND date(vaccine_date) BETWEEN '2555-11-25' AND '2555-12-25' 
 																		        GROUP BY n_information.id")->sort("")->order("vaccine_date asc")->get();
-		$this->template->build('report_schedule',$data);
+		if($preview)$this->template->set_layout('print');
+		$this->template->build('report_schedule_demo',$data);
 	}
 	function analyze(){
 		$this->template->build('report_analyze');
