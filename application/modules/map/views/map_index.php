@@ -13,7 +13,6 @@
 
 <script id="mmmap_init_includeobject_script"> 
 var MMMapData = new Object(); MMMapData.IG = new Array() </script>
-
 <script type="text/javascript">
 var mmmap;
 var objectlayers = {};
@@ -43,7 +42,9 @@ function mmmap_client_init() {
   mmmap.hideCenterMark();
   
    mmmap.showObject('เชียงราย', "ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // Chiang Rai, with line and fill colors ภาคเหนือ
-   mmmap.showObject('น่าน', "ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // แดง
+
+   mmmap.showObject('น่าน', "ADM", true, null, null, "DF0101", "DF0101", 0.7, 0.5); // แดง
+
   mmmap.showObject('พะเยา',"ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // แดง
   mmmap.showObject('แพร่',"ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // แดง
   mmmap.showObject('แม่ฮ่องสอน', "ADM", true, null, null, "F70707", "F70707", 0.7, 0.5); // แดง
@@ -54,7 +55,9 @@ function mmmap_client_init() {
   mmmap.showObject('กาฬสินธุ์',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // , Kalasin with line and fill colors ภาคตะวันออกเฉียงเหนือ
   mmmap.showObject('ขอนแก่น',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('ชัยภูมิ',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
+
   mmmap.showObject('นครพนม',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
+
   mmmap.showObject('นครราชสีมา',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('บึงกาฬ',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('บุรีรัมย์',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
@@ -65,10 +68,12 @@ function mmmap_client_init() {
   mmmap.showObject('เลย',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('สกลนคร',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('สุรินทร์',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
+
   mmmap.showObject('ศรีสะเกษ',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('หนองคาย',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('หนองบัวลำภู',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('อุดรธานี',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
+
   mmmap.showObject('อุบลราชธานี',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   mmmap.showObject('อำนาจเจริญ',"ADM", true, null, null, "00FF00", "00FF00", 0.7, 0.5); // เขียว
   
@@ -77,25 +82,32 @@ function mmmap_client_init() {
   mmmap.showObject('ชัยนาท',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('นครนายก',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('นครปฐม',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('นครสวรรค์',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('นนทบุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('ปทุมธานี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('พระนครศรีอยุธยา',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('พิจิตร',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม 
   mmmap.showObject('พิษณุโลก',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('เพชรบูรณ์',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('ลพบุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('สมุทรปราการ',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('สมุทรสงคราม',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม 
   mmmap.showObject('สมุทรสาคร',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
  mmmap.showObject('สิงห์บุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('สุโขทัย',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('สุพรรณบุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+
   mmmap.showObject('สระบุรี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม 
   mmmap.showObject('อ่างทอง',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   mmmap.showObject('อุทัยธานี',"ADM", true, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
   
-  //mmmap.showObject('จันทบุรี', "ADM", false, null, null, "A7FA00", "A7FA00", 0.7, 0.5);// ,  	Chanthaburi with line and fill colors ภาคตะวันออก
+
+
   mmmap.showObject('ฉะเชิงเทรา', "ADM", false, null, null, "A7FA00", "A7FA00", 0.7, 0.5); // เขียวออ่น
   mmmap.showObject('ชลบุรี', "ADM", false, null, null, "A7FA00", "A7FA00", 0.7, 0.5); // เขียวออ่น
   mmmap.showObject('ตราด', "ADM", false, null, null, "A7FA00", "A7FA00", 0.7, 0.5); // เขียวออ่น
@@ -105,10 +117,12 @@ function mmmap_client_init() {
   
   mmmap.showObject('กาญจนบุรี', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // , Kanchanaburi with line and fill colors ภาคตะวันตก
   mmmap.showObject('ตาก', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
+
   mmmap.showObject('ประจวบคีรีขันธ์', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
   mmmap.showObject('เพชรบุรี', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
   mmmap.showObject('ราชบุรี', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
   mmmap.showObject('จันทบุรี', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
+
    
      mmmap.showObject('กระบี่',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // , 	Krabi  with line and fill colors ภาคใต้ 
   mmmap.showObject('ชุมพร',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
@@ -118,7 +132,10 @@ function mmmap_client_init() {
   mmmap.showObject('ปัตตานี',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('พังงา',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('พัทลุง',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
+
+
   mmmap.showObject('ภูเก็ต ',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
+
   mmmap.showObject('ระนอง',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('สตูล',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('สงขลา',"ADM", true, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
