@@ -27,7 +27,7 @@ $(document).ready(function(){
 			}
 		})
 	});
-	$("#provinceidplace").change(function(){
+	$("#prtovinceidplace").change(function(){
 	  ref3=$("#provinceidplace option:selected").val();
 		 $.ajax({
 			url:'<?php echo base_url() ?>district/getAmphur',
