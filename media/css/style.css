@@ -107,8 +107,11 @@ input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; backgrou
 }
 
 .tbdead td,.tbdead8{padding:5px;}
+.tddead td.topic{
+	width:20%
+}
 .tbdead td span.topic{
-	width:132px;
+	width:101px;
 	display:inline-block;
 	text-align:right;
 }	
@@ -125,10 +128,10 @@ margin-right:11px;
 	vertical-align: top;
 	padding:5px;
 }
-.tbdead ul.sub{
+.tbdead ul.sub,.tbdead td .sub{
 	width:377px;
 	float:right;
-	margin-right:748px;
+	margin-right:41%;
 	display:inline-block;
 }
 

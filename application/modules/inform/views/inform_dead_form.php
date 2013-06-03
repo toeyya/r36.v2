@@ -27,7 +27,7 @@ $(document).ready(function(){
 			}
 		})
 	});
-	$("#provinceidplace").change(function(){
+	$("#prtovinceidplace").change(function(){
 	  ref3=$("#provinceidplace option:selected").val();
 		 $.ajax({
 			url:'<?php echo base_url() ?>district/getAmphur',
@@ -352,9 +352,9 @@ $(document).ready(function(){
 		<table class="tbdead">
 			<tr>
 				<th>1. </th>
-				<td><span class="topic">วันเริ่มอาการ</span><input type="text" name="" class="input_box_patient datepicker"></td>
+				<td><span class="topic">วันเริ่มอาการ</span><input type="text" name="" class="input_box_patient datepicker  auto" size="10"></td>
 				<td><span class="topic">รักษาที่</span><input type="text" name="hospitalcode" class="input_box_patient"></td>
-				<td><span class="topic">วันที่</span><input type="text" name="" class="input_box_patient datepicker"></td>
+				<td><span class="topic">วันที่</span><input type="text" name="" class="input_box_patient datepicker  auto" size="10"></td>
 			</tr>
 			<tr>
 				<th>2. </th>
@@ -366,7 +366,7 @@ $(document).ready(function(){
 						
 						<input type="radio" name="patient_type" value="in">กำลังรักษา <input type="text" name="" value="" class="input_box_patient">
 						
-						<input type="radio" name="patient_type" value="out">เสียชีวิต วันที่ <input type="text" name="" class="input_box_patient datepicker">
+						<input type="radio" name="patient_type" value="out">เสียชีวิต วันที่ <input type="text" name="" class="input_box_patient datepicker  auto" size="10">
 						
 				</td>
 			<tr>
@@ -401,7 +401,7 @@ $(document).ready(function(){
 				<th>1.</th>
 				<td>	<span class="topic radio">เนื้องสมอง</span>	
 				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
-				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker  auto" size="10"></td>	
 				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
 				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
 			</tr>
@@ -409,7 +409,7 @@ $(document).ready(function(){
 				<th>2.</th>
 				<td>	<span class="topic radio">น้ำลายปวดศีรษะ</span>	
 				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
-				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker  auto" size="10"></td>	
 				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
 				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
 			</tr>
@@ -417,7 +417,7 @@ $(document).ready(function(){
 				<th>3.</th>
 				<td>	<span class="topic radio">น้ำไขสันหลัง</span>	
 				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
-				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker  auto" size="10"></td>	
 				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
 				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
 			</tr>
@@ -425,7 +425,7 @@ $(document).ready(function(){
 				<th>4.</th>
 				<td>	<span class="topic radio">ปัสสาวะ</span>	
 				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
-				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker  auto" size="10"></td>	
 				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
 				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
 			</tr>
@@ -433,7 +433,7 @@ $(document).ready(function(){
 				<th>5.</th>
 				<td>	<span class="topic radio">ปมรากผล</span>	
 				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
-				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker  auto" size="10"></td>	
 				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
 				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
 			</tr>
@@ -441,7 +441,7 @@ $(document).ready(function(){
 				<th>6.</th>
 				<td>	<span class="topic radio">ผิวหนังท้ายทอย</span>	
 				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
-				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker  auto" size="10"></td>	
 				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
 				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
 			</tr>
@@ -449,7 +449,7 @@ $(document).ready(function(){
 				<th>7.</th>
 				<td>	<span class="topic radio">เซลล์กระจกตา</span>	
 				<td><?php echo form_checkbox('','1','') ?>ไม่ได้ส่ง <?php echo form_checkbox('','2','') ?>ส่ง</td>	
-				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker"></td>	
+				<td>วันที่ส่งตรวจ <input type="text" class="input_box_patient datepicker  auto" size="10"></td>	
 				<td>สถานที่ส่งตรวจ <input type="text" class="input_box_patient"></td>
 				<td><?php echo form_checkbox('','3','') ?>Positive<?php echo form_checkbox('','3','') ?>Negative</td>
 			</tr>
@@ -466,7 +466,7 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<th>2.</th>
-				<td><span class="topic">วันที่สัมผัส</span><input type="text" class="datepicker input_box_patient"> เวลา <input type="text" class="input_box_patient"><small>(ถ้าไม่ทราบวันที่ สามารถระบุเป็นช่วงเวลาได้)</small></td>
+				<td><span class="topic">วันที่สัมผัส</span><input type="text" class="datepicker  auto input_box_patient" size="10"> เวลา <input type="text" class="input_box_patient"><small>(ถ้าไม่ทราบวันที่ สามารถระบุเป็นช่วงเวลาได้)</small></td>
 			</tr>
 			<tr>
 				<th>3.</th>
@@ -489,9 +489,124 @@ $(document).ready(function(){
 			</tr>
 				<tr>
 				<th>5.</th>
-				<td><span class="topic">ลักษณะสถานที่</span>	<?php echo form_checkbox('','1','') ?>ไม่ทราบ
+				<td><span class="topic">การได้รับเชื้อ</span>	<?php echo form_checkbox('','1','') ?>ไม่ทราบ
 					<?php echo form_checkbox('','1','') ?>ถูกน้ำลาย 	<?php echo form_checkbox('','1','') ?>คลุกคลีใกล้ชิดสัตว์ 
 					<?php echo form_checkbox('','1','') ?>ถูกข่วน 	<?php echo form_checkbox('','1','') ?>ถูกกัด</td>
+			</tr>
+			<tr>
+				<th rowspan="3">6.</th>
+				<td style="padding:10px;">บริเวณที่ถูกสัมผัสและความรุนแรง</td>
+			</tr>
+			<tr>
+				<td><strong>โปรดทำเครื่อง x ลงบนภาพร่ายกาย บริเวณที่ถูกกัด/ข่วน/ถูกน้ำลาย/ถูกเลีย ให้ชัดเจน</strong></td>
+			</tr>
+			<tr>
+				<td rowspan="4">
+					<div style="width:100%;height:100%;clear: both;">
+					<div class="wrap_img" style="border:1px solid #E00360;width:50%height:50%">
+						
+					</div>
+					<div class="wrap_table" style="width:50%;float:right;">
+					<table class="tbreport1" style="width:50%">						
+						<tr>
+							<td rowspan="3">ลำดับที่</td>
+							<td  rowspan="3">อวัยวะที่ได้รับการสัมผัส</td>
+							<td colspan="6">ลักษณะการสัมผัส</td>
+						</tr>
+						<tr>
+							<td colspan="2">ถูกกัด</td>
+							<td colspan="2">ถูกข่วน</td>
+							<td colspan="2">ถูกเลีย/ถูกน้ำลาย</td>
+						</tr>
+						<tr>
+							<td>มีเลือดออก</td>
+							<td>ไม่มีเลือดออก</td>
+							<td>มีเลือดออก</td>
+							<td>ไม่มีเลือดออก</td>
+							<td>ที่มีแผล</td>
+							<td>ที่ไม่มีแผล</td>																	
+						</tr>
+						<tr>
+							<td rowspan="4">1</td>
+						</tr>
+						<tr><td>ศีรษะ</td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+						</tr>
+						<tr><td>หน้า</td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>							
+						</tr>
+						<tr><td>ลำคอ</td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>							
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>มือ</td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>	
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>แขน</td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>	
+						</tr>
+						<tr>
+							<td>4</td>
+							<td>ลำตัว</td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>	
+						</tr>
+						<tr>
+							<td>5</td>
+							<td>ขา</td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>	
+						</tr>
+						<tr>
+							<td>6</td>
+							<td>เท้า</td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>
+							<td><?php echo form_checkbox('','1',false); ?></td>	
+						</tr>
+					</table>
+					</div><!-- wrap_table-->
+				</div>
+				</td>
 			</tr>
 	
 		</table>
@@ -529,16 +644,17 @@ $(document).ready(function(){
 				<th>1.</th>
 				<td><span class="topic radio">ฉีดอิมมูโนโกบุลิน</span>					
 						<?php echo form_radio('','1','') ?>ไม่ได้ฉีด 
-						<?php echo form_radio('','1','') ?>ฉีด 											
-							<span class="sub">
-							<?php echo form_radio('','1','') ?>ERIG<?php echo form_radio('','1','') ?>HRIG เมื่อวันที่<input type="text" class="input_box_patient datepicker">
-							จำนวน <input type="text" class="input_box_patient">หน่วยสากล (IU) 
-							Lot.No <input type="text" class="input_box_patient">วันหมดอายุ <input type="text" class="input_box_patient datepicker"></span>
+						<?php echo form_radio('','1','') ?>ฉีด 									
+							<ul class="sub">
+							<li><?php echo form_radio('','1','') ?>ERIG<?php echo form_radio('','1','') ?>HRIG	เมื่อวันที่<input type="text" class="input_box_patient datepicker  auto" size="10"></li>
+							<li>จำนวน <input type="text" class="input_box_patient"> หน่วยสากล (IU) </li>
+							<li>Lot.No <input type="text" class="input_box_patient"> </li>
+							<li>วันหมดอายุ <input type="text" class="input_box_patient datepicker  auto" size="10"></li></ul>
 					</td>
 			</tr>
 			<tr>
 				<th>2.</th>
-				<td><span class="topic radio">ประวัติการฉีดวัคซีนป้องกันโรค</span>
+				<td class="topic"><span class="topic radio">ประวัติการฉีดวัคซีนป้องกันโรค</span>
 						<?php echo form_radio('','1','') ?>ไม่ทราบ
 						<?php echo form_radio('','1','') ?>ไม่ฉีด 	
 						<?php echo form_radio('','1','') ?>ฉีด
@@ -643,9 +759,9 @@ $(document).ready(function(){
 				<td><span class="pad-left">ได้รับการฉีดวัคซีนป้องกันโรคนี้แล้ว</span><input type="text" class="input_box_patient"> คน</td>
 			</tr>
 			<tr>
-				<td><span class="pad-left">จำนวนผู้ถึงแก่กรรมจากสัตว์ตัวเดียวกันนี้กัด</span>
+				<td colspan="2"><span class="pad-left">จำนวนผู้ถึงแก่กรรมจากสัตว์ตัวเดียวกันนี้กัด</span>
 					<?php echo form_radio('','1','') ?>ไม่มี
-					<?php echo form_radio('','1','') ?>มี	
+					<?php echo form_radio('','1','') ?>มี	<span class="">ชื่อ-สกุล <input type="text" class="input_box_patient"> เบอร์โทรศัพท์ญาติ/ผู้เกี่ยวข้อง <input type="text" class="input_box_patient"></span>
 				</td>	
 			</tr>		
 			</tr>
@@ -680,7 +796,7 @@ $(document).ready(function(){
 				<th>สถานที่ปฏิบัติงาน</th><td><input type="text" class="input_box_patient"></td>
 				<th>โทรศัพท์</th><td><input type="text" class="input_box_patient"></td></tr>
 		 <tr><th>อีเมล์</th><td><input type="text" class="input_box_patient"></td>
-				<th>วันที่สอบสวนโรค</th><td><input type="text" class="input_box_patient datepicker"></td>
+				<th>วันที่สอบสวนโรค</th><td><input type="text" class="input_box_patient datepicker  auto" size="10"></td>
 		</tr>
 
 		</table>
