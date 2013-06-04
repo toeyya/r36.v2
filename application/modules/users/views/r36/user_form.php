@@ -27,8 +27,6 @@ var ref1,ref2,ref3;
 	if ($("input[name=userposition]").is(":checked")){ChkShow();	}	
 	
 	
-
-
 	var	checkbox_names;
 	$("input[name=userposition]").click(function(){
 		ChkShow();
@@ -36,7 +34,7 @@ var ref1,ref2,ref3;
 		if(userposition=="03"  || userposition=="04" || userposition=="05"){		
 			$.validator.addMethod('require_one', function(value) {
 			    return $('input[name=userposition]:checked').closest('li').next().find('.require_one:checked').size() > 0;
-			}, 'กรุณาระบุอย่างน้อยหนึ่งค่ะ');	
+			}, 'กรุณาระบุอย่างน้อยหนึ่ง');	
 			$('input[name=userposition]:checked').closest('li').next().find('.require_one').rules("add",{require_one: true});					
 		}else{
 			$('input[name=form_add]').rules("remove", "require_one");
@@ -55,6 +53,7 @@ var ref1,ref2,ref3;
 		rules:{
 				telephone:{required:true,number:true, rangelength: [6, 9]}
 				,mobile:{required:true,number:true, rangelength: [9, 10]}
+				,fax:{required:true,number:true}
 	 			,cardW0:{ required: true, number:true},cardW1:{ required: true, number:true},cardW2:{ required: true, number:true},cardW3:{ required: true, number:true}
 		 		,cardW4:{ required: true, number:true,		
 		 			remote:{
@@ -85,21 +84,22 @@ var ref1,ref2,ref3;
 				}			
 		},
 		messages:{
-			    telephone:{required:"กรุณาระบุค่ะ",number:"กรุณาระบุเฉพาะตัวเลขค่ะ",rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้นค่ะ"}
-			    ,mobile:{required:"กรุณาระบุค่ะ",number:"กรุณาระบุเฉพาะตัวเลขค่ะ",rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้นค่ะ"}
-				,cardW0:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
-		 		,cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
-		 		,cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
-		 		,cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
-		 		,cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}	
-				,userfirstname:" กรุณาระบุด้วยค่ะ",usersurname:" กรุณาระบุด้วยค่ะ"
-				,userprovince:" กรุณาระบุด้วยค่ะ",useramphur:" กรุณาระบุด้วยค่ะ",userdistrict:" กรุณาระบุด้วยค่ะ"
-				,userprovince2:" กรุณาระบุด้วยค่ะ"
-				,usermail:{required:" กรุณาระบุด้วยค่ะ",email:" ระบุไม่ถูกต้องค่ะ"}
-				,h_province:" กรุณาระบุด้วยค่ะ",h_amphur:" กรุณาระบุด้วยค่ะ",h_district:"กรุณาระบุด้วยค่ะ",hospital:" กรุณาระบุด้วยค่ะ"
-				,userpassword:" กรุณาระบุด้วยค่ะ"
-				,repassword:{required:" กรุณาระบุด้วยค่ะ",equalTo: " ระบุ password ไม่ถูกต้องค่ะ"}
-				,username:{required:" กรุณาระบุด้วยค่ะ",remote:" ชื่อ Username ซ้ำ กรุณาตรวจสอบ"}
+			    telephone:{required:"กรุณาระบุ",number:"กรุณาระบุเฉพาะตัวเลข",rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้น"}
+			    ,mobile:{required:"กรุณาระบุ",number:"กรุณาระบุเฉพาะตัวเลข",rangelength:"ระบุความยาวอักษร 6-9 ตัวอักษรเท่านั้น"}
+			    ,fax:{required:"กรุณาระบุ",number:"กรุณาระบุเฉพาะตัวเลข"}
+				,cardW0:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"}
+		 		,cardW1:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"}
+		 		,cardW2:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"}
+		 		,cardW3:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"}
+		 		,cardW4:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข",remote :" ระบุไม่ถูกต้อง"}	
+				,userfirstname:" กรุณาระบุ",usersurname:" กรุณาระบุ"
+				,userprovince:" กรุณาระบุ",useramphur:" กรุณาระบุ",userdistrict:" กรุณาระบุ"
+				,userprovince2:" กรุณาระบุ"
+				,usermail:{required:" กรุณาระบุ",email:" ระบุไม่ถูกต้อง"}
+				,h_province:" กรุณาระบุ",h_amphur:" กรุณาระบุ",h_district:"กรุณาระบุ",hospital:" กรุณาระบุ"
+				,userpassword:" กรุณาระบุ"
+				,repassword:{required:" กรุณาระบุ",equalTo: " ระบุ password ไม่ถูกต้อง"}
+				,username:{required:" กรุณาระบุ",remote:" ชื่อ Username ซ้ำ กรุณาตรวจสอบ"}
 		},
 		errorPlacement: function(error, element){							    
         		 if (element.attr("name") == "cardW0"  || element.attr("name") == "cardW1" 	|| element.attr('name') == "cardW2" || element.attr('name')=="cardW3" || element.attr('name')=="cardW4") error.insertAfter("#cardW4");
@@ -108,21 +108,6 @@ var ref1,ref2,ref3;
 		}						
 	});
 
-		 $('#Show_idcard').children().bind('keydown',function(e){											
-				if(e.keyCode != 46 && e.keyCode!=8){														
-					var txtBox=$('#Show_idcard').children();
-					var key=$(this).index();
-						if(key==0 || key==4)l=1;
-						if(key==1)l=4;
-						if(key==2)l=5;
-						if(key==3)l=2;															
-						if(txtBox.eq(key).val().length==l){			
-							txtBox.eq(key+1).val('');
-							txtBox.eq(key+1).focus();			
-						}																					
-					}							
-		});
-		
 	
 });// document
 </script>
@@ -152,17 +137,21 @@ var ref1,ref2,ref3;
     <td><input name="usermail" type="text" class="input_box_patient " id="usermail" value="<?php echo @$rs['usermail'];?>" size="50" style="width:230px"></td>
   </tr>
   <tr>
-  	<th>เบอร์ออฟฟิต <span class="alertred">*</span></th>
-  	<td><input type="text" name="telephone" value="<?php echo @$rs['tel'] ?>" class="input_box_patient"> <small>ตัวอย่าง 02526666</small>
+  	<th>โทรศัพท์สำนักงาน<span class="alertred">*</span></th>
+  	<td><input type="text" name="telephone" value="<?php echo @$rs['tel'] ?>" class="input_box_patient"> ต่อ<input type="text" name="telphone_extend" value="<?php echo @$rs['tel_extend'] ?>" class="input_box_patient auto" size="5"> <small>ตัวอย่าง 02526666</small>
   	</td>
   </tr>
   <tr>
-  	 <th>เบอร์ต่อ </th>
-  	<td><input type="text" name="telphone_extend" value="<?php echo @$rs['tel_extend'] ?>" class="input_box_patient"></td>
+  	<th>โทรศัพท์มือถือ <span class="alertred">*</span></th>
+  	<td><input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>" class="input_box_patient"> <small>ตัวอย่าง 0811234567</small></td>
   </tr>
   <tr>
-  	<th>เบอร์มือถือ <span class="alertred">*</span></th>
-  	<td><input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>" class="input_box_patient"> <small>ตัวอย่าง 0811234567</small></td>
+  	<th>โทรสาร</th>
+  	<td><input type="text" name="fax" maxlength="7"   class="input_box_patient"> <small>ตัวอย่าง 021234567</small></td>
+  </tr>
+   <tr>
+  	 <th>ตำแหน่ง </th>
+  	<td><?php echo form_dropdown('position',get_option('id','name','n_position'),'','class="styled-select"','--กรุณาระบุ--') ?></td>
   </tr>
   <tr>
     <th valign="top">สิทธิืการใช้งาน</th>

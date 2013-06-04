@@ -9,6 +9,7 @@
 		<link rel="stylesheet" type="text/css" href="media/css/default.css" />
 		<link rel="stylesheet" type="text/css" href="media/css/style.css" />
 		<link rel="stylesheet" type="text/css" href="media/css/print.css"  media="all"/>
+		
 	</head>
 	<body>	
 	<?php echo $template['body']; ?>					

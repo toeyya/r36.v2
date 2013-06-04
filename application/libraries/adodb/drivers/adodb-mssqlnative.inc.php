@@ -398,7 +398,8 @@ class ADODB_mssqlnative extends ADOConnection {
 	function _pconnect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
 		//return null;//not implemented. NOTE: Persistent connections have no effect if PHP is used as a CGI program. (FastCGI!)
-        return $this->_connect($argHostname, $argUsername, $argPassword, $argDatabasename);
+       // return $this->_connect($argHostname, $argUsername, $argPassword, $argDatabasename);
+		
 	}
 	
 	function Prepare($sql)
@@ -406,6 +407,7 @@ class ADODB_mssqlnative extends ADOConnection {
 		return $sql; // prepare does not work properly with bind parameters as bind parameters are managed by sqlsrv_prepare!
 		
 		$stmt = sqlsrv_prepare( $this->_connectionID, $sql);
+
 		if (!$stmt)  return $sql;
 		return array($sql,$stmt);
 	}
@@ -468,6 +470,7 @@ class ADODB_mssqlnative extends ADOConnection {
             $rez = sqlsrv_execute($this->_connectionID,$sql[1]);
 		} else {
 			$rez = sqlsrv_query($this->_connectionID,$sql);
+			
 		}
         if ($this->debug) error_log("<hr>running query: ".var_export($sql,true)."<hr>input array: ".var_export($inputarr,true)."<hr>result: ".var_export($rez,true));
         if(!$rez) $rez = false;

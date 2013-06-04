@@ -36,17 +36,20 @@
 
 $active_group = "default";
 $active_record = TRUE;
-$db['default']['hostname'] = "localhost";
 
+
+
+/*$db['default']['hostname'] = "localhost:8080";
+$db['default']['username'] = "sa";
+$db['default']['password'] = "1234";
+$db['default']['database'] = "R36";
+$db['default']['dbdriver'] = "mssqlnative";*/
+
+$db['default']['hostname'] = "localhost";
 $db['default']['username'] = "root";
 $db['default']['password'] = "";
-$db['default']['database']="c1r36";
+$db['default']['database']="r36";
 $db['default']['dbdriver'] = "mysql";
-
-/*$db['default']['username'] = "sa";
-$db['default']['password'] = "1234";
-$db['default']['database']=	 "R36";
-$db['default']['dbdriver'] = "mssql";*/
 
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;
@@ -55,6 +58,10 @@ $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_unicode_ci";
+
+
+
+
 
 
 /* End of file database.php */

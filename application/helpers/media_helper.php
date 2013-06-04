@@ -147,4 +147,29 @@ if(!function_exists('uppic_mce'))
 		return $js; 
 	}
 }
+if ( ! function_exists('js_idcard')){
+	function js_idcard()
+	{
+		$CI =& get_instance();
+		return "
+			<script>
+				$(function(){
+				 	$('#Show_idcard').children().bind('keydown',function(e){											
+						if(e.keyCode != 46 && e.keyCode!=8){														
+							var txtBox=$('#Show_idcard').children();
+							var key=$(this).index();
+								if(key==0 || key==4)l=1;
+								if(key==1)l=4;
+								if(key==2)l=5;
+								if(key==3)l=2;															
+								if(txtBox.eq(key).val().length==l){			
+									txtBox.eq(key+1).val('');
+									txtBox.eq(key+1).focus();			
+								}																					
+							}							
+					});
+				});
+			</script>";
+	}
+}
 ?>

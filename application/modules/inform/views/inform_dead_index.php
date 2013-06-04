@@ -184,7 +184,7 @@ $(document).ready(function(){
 			  <tr>
 			  <tr>
 					<th width="5%" >ลำดับ</th>
-					<th width="15%" >เลขประจำตัวประชาชน<br />/ เลขที่ passport</th>
+					<th width="15%" >เลขประจำตัวประชาชน</th>
 					<th width="18%" >ชื่อ - นามสกุล</th>
 					<th width="14%" >สถานพยาบาล</th>
 					<th width="10%" >ตำบล</th>
