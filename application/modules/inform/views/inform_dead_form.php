@@ -1,8 +1,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	 $('#multiAccordion').multiAccordion({
-            heightStyle: "content",
-            active:0
+            //heightStyle: "content",
+        	 active: 'none' 
         });
 	var ref1,ref3,ref5,ref6;	
 	$("#provinceid").change(function(){
@@ -113,7 +113,7 @@ $(document).ready(function(){
 		messages:{
 			firstname:"ระบุชื่อ",
 			surname:"ระบุนามสกุล",
-			provinceid:"ระบุจังหวัดะ",
+			provinceid:"ระบุจังหวัด",
 			amphurid:"ระบุอำเภอ",
 			districtid:"ระบุตำบล",
 			provinceidplace:"ระบุจังหวัด",
@@ -502,12 +502,20 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<td rowspan="4">
-					<div style="width:100%;height:100%;clear: both;">
-					<div class="wrap_img" style="border:1px solid #E00360;width:50%height:50%">
-						
-					</div>
-					<div class="wrap_table" style="width:50%;float:right;">
-					<table class="tbreport1" style="width:50%">						
+					<div style="width:994px;height:409px;clear: both;position:relative;">
+					<div  style="position:absolute;width:222px;height:264px;background:url(images/body_man1.gif);float:left; "  id="body_man">
+										<div id="markhead" style="position:absolute; left:160px; top:15px; width:12px; height:12px; z-index:8;"></div>
+										<div id="markface" style="position:absolute; left:57px; top:24px; width:12px; height:12px; z-index:1;"></div>
+										<div id="markneck" style="position:absolute; left:57px; top:45px; width:12px; height:12px; z-index:2;"></div>
+										<div id="markbody" style="position:absolute; left:57px; top:72px; width:12px; height:12px; z-index:3;"></div>
+										<div id="markarm" style="position:absolute; left:25px; top:92px; width:12px; height:12px; z-index:4;"></div>
+										<div id="markhand" style="position:absolute; left:22px; top:135px; width:12px; height:12px; z-index:5;"></div>
+										<div id="markleg" style="position:absolute; left:47px; top:192px; width:12px; height:12px; z-index:6;"></div>								
+										<div id="markfeet" style="position:absolute; left:49px; top:232px; width:12px; height:12px; z-index:7;"></div>									
+						</div>		
+					<div class="wrap_table" style="width:772px;height:300px;float:right;">
+					
+					<table class="tbreport1" style="width:70%">						
 						<tr>
 							<td rowspan="3">ลำดับที่</td>
 							<td  rowspan="3">อวัยวะที่ได้รับการสัมผัส</td>

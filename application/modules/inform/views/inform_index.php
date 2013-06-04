@@ -39,11 +39,10 @@ var province_id,amphur_id,district_id;
 
 // START ####  กรณีเพิ่มรายการ  ####
 		$('.btn_submit').click(function(){
-			alert("ddd");
 			$("#hospitalprovince").rules("remove");
 			$('#hospital_amphur_id').rules('remove');
 			$('#hospital_district_id').rules('remove');
-			$('input[name=hospitalcode]').rules('remove');	
+			$('#hospitalcode').rules('remove');	
 			$('#hn').rules('remove');		
 			$('#cardW0').rules('remove','required');
 			$('#cardW1').rules('remove','required');
@@ -59,8 +58,10 @@ var province_id,amphur_id,district_id;
 			$('#form1').attr('action','inform/addNew');
 			if($('input[name=level]').val()=="05"){
 				// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้
-					$("#hospitalprovince option").filter(function() {return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
-					$("select[name=hospital_province_id]").trigger('change');					
+					$("#hospitalprovince option").filter(function() {
+						return $(this).val() == $('input[name=h_province_id]').val()
+					}).prop('selected', 'selected');
+					//$("select[name=hospital_province_id]").trigger('change');					
 					
 					alert($('input[name=h_amphur_id]').val());
 					$("#hospital_amphur_id option").filter(function(){										

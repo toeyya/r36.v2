@@ -127,7 +127,7 @@
 				border-color: transparent transparent rgb(227,23,136) transparent; border-style: solid;  border-width: 10px;
 				display: inline-block;
 				 margin-top:-27px;
-				 margin-bottom:10px;z-index:99;
+				 margin-bottom:10px;position:relative;z-index:0;
 				 margin-left:64px;}
 			#toplevel > ul ul.submenu8 > li { position: relative;}
 
