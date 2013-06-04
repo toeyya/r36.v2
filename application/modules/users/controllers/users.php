@@ -9,11 +9,11 @@ class Users extends Public_Controller
 		$this->load->model('hospital/hospital_model','hospital');
 		$this->load->model('inform/vaccine_model','vaccine');
 		$this->user->primary_key("uid");
-	}	
+			}	
 
     function inc_login()
-    {
-         $this->load->view('inc_login');      
+    {   $this->db->debug=TRUE;
+		 $this->load->view('inc_login');      
     }
 
   function login()
@@ -29,13 +29,13 @@ class Users extends Public_Controller
             else
             {
                 set_notify('error', 'ชื่อผู้ใช้หรือรหัสผ่านผิดพลาดค่ะ');
-               //redirect($_SERVER['HTTP_REFERER']);
+               redirect($_SERVER['HTTP_REFERER']);
             }   
         }
         else
         {
             set_notify('error', 'กรุณาทำการล็อคอินค่ะ');
-           //redirect($_SERVER['HTTP_REFERER']);
+           redirect($_SERVER['HTTP_REFERER']);
         }       
     }
 	function logout()

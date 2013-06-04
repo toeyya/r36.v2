@@ -39,17 +39,17 @@ $active_record = TRUE;
 
 
 
-$db['default']['hostname'] = "localhost:8080";
+/*$db['default']['hostname'] = "localhost:8080";
 $db['default']['username'] = "sa";
 $db['default']['password'] = "1234";
 $db['default']['database'] = "R36";
-$db['default']['dbdriver'] = "mssqlnative";
+$db['default']['dbdriver'] = "mssqlnative";*/
 
-/*$db['default']['hostname'] = "localhost";
+$db['default']['hostname'] = "localhost";
 $db['default']['username'] = "root";
 $db['default']['password'] = "";
-$db['default']['database']="c1r36";
-$db['default']['dbdriver'] = "mysql";*/
+$db['default']['database']="r36";
+$db['default']['dbdriver'] = "mysql";
 
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;

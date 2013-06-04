@@ -3,7 +3,6 @@
 function login($username=FALSE,$password=FALSE,$remember=FALSE) 
 {
 	$CI =& get_instance();
-	$CI->db->debug=TRUE;
 	if($username=='' && $password=='' && $remember=="1")
 	{	
 		$CI->session->set_userdata('nologin','nologin');
@@ -41,13 +40,13 @@ function login($username=FALSE,$password=FALSE,$remember=FALSE)
 				$CI->session->set_userdata('R36_HOSPITAL_DISTRICT',$rec_hospital['hospital_district_id']);
 			}
 			
-		//return true;
+		return true;
 	}
 	else
 	{				
-		//return false;
+		return false;
 	}
-	//return false;
+	return false;
 }
 
 function admin_login($username=FALSE,$password=FALSE){

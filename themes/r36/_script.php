@@ -16,7 +16,7 @@
 <script type="text/javascript" src="media/js/jquery.datepick/jquery.datepick-th.js"></script>
 <script type="text/javascript" src="media/js/jquery.rowcount-1.0.js"></script>
 <script type="text/javascript" src="media/js/jquery.validate.js"></script>
-<script type="text/javascript" src="media/js/jquery.validate.min.js"></script>
+
 <script type="text/javascript" src="media/js/checkobj.js" ></script>
 <script type="text/javascript" src="media/js/jquery.livequery.js" ></script>
 <link rel="stylesheet" href="media/js/jquery-multi-open-accordion/css/jquery-ui-1.8.9.custom/jquery-ui-1.10.1.custom.css">

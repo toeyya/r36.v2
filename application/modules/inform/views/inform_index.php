@@ -9,7 +9,7 @@ var province_id,amphur_id,district_id;
 			success:function(data){
 				$('#input_amphur').html(data);
 				//$('select[name=hospital_district_id] option:[value=""]').attr('selected',true);
-				$('#input_hospital').html('<select name="hospitalcode" class="input_box_patient" id="hospital"><option value="">-โปรดเลือก-</option></select>');
+				$('#input_hospital').html('<select name="hospitalcode" class="input_box_patient" id="hospitalcode"><option value="">-โปรดเลือก-</option></select>');
 				//$('#input_district').html('<select name="hospital_district_id" class="input_box_patient" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');
 			}
 		});
@@ -37,58 +37,40 @@ var province_id,amphur_id,district_id;
 	});
 
 
-// START ####  กรณีเพิ่มรายการ  ####
-		$('.btn_submit').click(function(){
-			alert("ddd");
-			$("#hospitalprovince").rules("remove");
-			$('#hospital_amphur_id').rules('remove');
-			$('#hospital_district_id').rules('remove');
-			$('input[name=hospitalcode]').rules('remove');	
-			$('#hn').rules('remove');		
-			$('#cardW0').rules('remove','required');
-			$('#cardW1').rules('remove','required');
-			$('#cardW2').rules('remove','required');
-			$('#cardW3').rules('remove','required');
-			$('#cardW4').rules('remove','required');
-			$('#idcard').rules('remove','required remote');
-			$('#title').text("ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า");
-			$('#form1').attr('action','inform/index');
-			return false;
-		});
-		$('.btn_add').click(function(){			
-			$('#form1').attr('action','inform/addNew');
-			if($('input[name=level]').val()=="05"){
-				// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้
-					$("#hospitalprovince option").filter(function() {return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
-					$("select[name=hospital_province_id]").trigger('change');					
-					
-					alert($('input[name=h_amphur_id]').val());
-					$("#hospital_amphur_id option").filter(function(){										
-							return $(this).val()=== $('input[name=h_amphur_id]').val();							
-					}).prop('selected','selected');						
-					$("select[name=hospital_amphur_id]").trigger('change');
-					
-					alert($('input[name=h_district_id]').val());				
-					$("#hospital_district_id option").filter(function(){						
-						return $(this).val() ==$('input[name=h_district_id]').val();
-					}).prop('selected', 'selected');	
-					$("select[name=hospital_district_id]").trigger('change');
-					
-					alert($('input[name=h_code]').val());					
-					$("#hospitalcode option").filter(function(){
-						return $(this).val() == $('input[name=h_code]').val();
-					}).prop('selected', 'selected');											
 
-			}
-			$('#title').text("เพิ่มประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า")			
-			return true;	
-		})
+	$('.btn_submit').click(function(e){
+		 $('#form1').validate({ignore: "#form1 *" });	 
+		 $('input').removeClass('error');
+		 $('label.error').remove();
+		 $('#title').text("ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า");
+		 $('#form1').attr('action','inform/index');
+		 $('input[name=action]').val('search');			 		 		 
+		 document.form1.submit();	
+		 e.preventDefault();	
+	});
+	// START ####  กรณีเพิ่มรายการ  ####
+	$('.btn_add').click(function(){			
+		 $('#form1').attr('action','inform/addNew');	
+		 $('input[name=action]').val('');	
+		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้
+				$("#hospitalprovince option").filter(function(){
+					return $(this).val() == $('input[name=h_province_id]').val()
+				}).prop('selected', 'selected');
+				$('#hospital_amphur_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_amphur_id]').val()+'">'+$('input[name=amphur_name]').val()+'</option>');
+				$('#hospital_district_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_district_id]').val()+'">'+$('input[name=district_name]').val()+'</option>');
+				$('#hospitalcode').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_code]').val()+'">'+$('input[name=h_name]').val()+'</option>');																							
+		}
+		$('#title').text("เพิ่มประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า")			
+		return true;	
+	})
 		
 		 $.validator.setDefaults({
 		 	submitHandler:function(){
-		 	document.form1.submit();}
+		 		document.form1.submit();		 	
+		 	}
 		 });
 		 $('#form1').validate({
+		 	 debug:true,	
 		 	 onkeyup: false,onfocusout:false,
 		 	 groups: {
     				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
@@ -132,38 +114,23 @@ var province_id,amphur_id,district_id;
 
 		 $('#Show_passport').css('display','none');
 		 $('#statusid').change(function(){
-		 	if($('#statusid option:selected').val()=="1"){
-		 		 $('#Show_passport').css('display','none');
-		 		 $('#Show_idcard').css('display','');
-		 	}else{
-		 		$('#Show_passport').css('display','');
-		 		 $('#Show_idcard').css('display','none');
-		 	}
+		 		if($('#statusid option:selected').val()=="1"){		 			
+		 		 	$('#Show_passport').css('display','none');$('#Show_idcard').css('display','');
+		 		}else{$('#Show_passport').css('display',''); $('#Show_idcard').css('display','none');}		 	
 		 })
-		 $('#Show_idcard').children().bind('keydown',function(e){											
-				if(e.keyCode != 46 && e.keyCode!=8){														
-					var txtBox=$('#Show_idcard').children();
-					var key=$(this).index();
-						if(key==0 || key==4)l=1;
-						if(key==1)l=4;
-						if(key==2)l=5;
-						if(key==3)l=2;															
-						if(txtBox.eq(key).val().length==l){			
-							txtBox.eq(key+1).val('');
-							txtBox.eq(key+1).focus();			
-						}																					
-					}							
-		});
+
 		 
 	$('.tb_patient1 tr:eq(5)').nextUntil('tr:eq(8)').hide();
 	$('input[name=search_adv]').click(function(){
 		$('.tb_patient1 tr:eq(5)').nextUntil('tr:eq(8)').toggle('slow');
 	});
+	if($('input[name=search_adv]').is(':checked')){
+		$('input[name=search_adv]').trigger('click');
+	}
 });
 </script>
 <div id="title">ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า</div>
 <div id="search">
-
 <form name="form1"  method="get" id="form1" action="inform/index">		
 <?php 
 	if($this->session->userdata('R36_LEVEL')=="05"){
@@ -179,7 +146,9 @@ var province_id,amphur_id,district_id;
 						,'h_province_id' => $rs['hospital_province_id']
 						,'h_amphur_id' => $rs['hospital_amphur_id']
 						,'h_district_id' => $rs['hospital_district_id']
-						,'h_code' =>$this->session->userdata('R36_HOSPITAL'));
+						,'h_code' =>$hospitalcode
+						,'h_name'=>$rs['hospital_name']
+						,'action'=>'');
 	echo form_hidden($data);
 	}
 ?>
@@ -222,7 +191,7 @@ var province_id,amphur_id,district_id;
 							?>
 					</span> 				
 				  </td>
-				   <th ><span class="alertred">*</span>สถานพยาบาล :</th>
+				   <th ><span class="alertred">*</span>สถานบริการ :</th>
 				  <td> 
 						<span id="input_hospital">											
 								<?php				
@@ -249,17 +218,17 @@ var province_id,amphur_id,district_id;
 						<input name="idcard" type="text" id="idcard" size="30" maxlength="300"  class="input_box_patient" value="<?php echo @$_GET['idcard']?>">
 					</span>
 					<span id="Show_idcard"> 
-							<input name="cardW0" id="cardW0" type="text" class="textbox" size="1" maxlength="1" value="<?php echo @$_GET['cardW0']?>">
+							<input name="cardW0" id="cardW0" type="text" class="input_box_patient auto" size="1" maxlength="1" value="<?php echo @$_GET['cardW0']?>">
 							  -
-							  <input name="cardW1"  id="cardW1" type="text" class="textbox" size="4" maxlength="4"  value="<?php echo @$_GET['cardW1']?>">
+							  <input name="cardW1"  id="cardW1" type="text" class="input_box_patient auto" size="4" maxlength="4"  value="<?php echo @$_GET['cardW1']?>">
 							  -
-							  <input name="cardW2"  id="cardW2" type="text" class="textbox" size="5" maxlength="5"   value="<?php echo @$_GET['cardW2']?>">
+							  <input name="cardW2"  id="cardW2" type="text" class="input_box_patient auto" size="5" maxlength="5"   value="<?php echo @$_GET['cardW2']?>">
 							  -
-							  <input name="cardW3" id="cardW3" type="text" class="textbox" size="2" maxlength="2"  value="<?php echo @$_GET['cardW3']?>">
+							  <input name="cardW3" id="cardW3" type="text" class="input_box_patient auto" size="2" maxlength="2"  value="<?php echo @$_GET['cardW3']?>">
 							  -
-							<input name="cardW4" id="cardW4" type="text" class="textbox" size="1" maxlength="1"  value="<?php echo @$_GET['cardW4'] ?>" >				
+							<input name="cardW4" id="cardW4" type="text" class="input_box_patient auto" size="1" maxlength="1"  value="<?php echo @$_GET['cardW4'] ?>" >				
 					</span>
-								
+		
 				</td>
 			</tr>
 
@@ -300,14 +269,12 @@ var province_id,amphur_id,district_id;
 				  <input type="text" name="report_enddate" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$_GET['report_enddate']; ?>" /> </td>				  
 			  
 			
-			</tr>
-
-			
+			</tr>			
 			<tr>
 				  <th>ประเภทการปิดเคส</th>
 				  <td colspan="3">		<div style="margin:10px 0px 0px 16px">
-				  	<input type="radio" name="closed_type" value="1">ปิดเคสโดยเจ้าหน้าที่
-				    <input type="radio" name="closed_type" value="2">ปิดเคสอัตโนมัติ
+				  	<input type="checkbox" name="close_type[]" value="1">ปิดเคสโดยเจ้าหน้าที่
+				    <input type="checkbox" name="close_type[]" value="2">ปิดเคสอัตโนมัติ
 				 </div>						
 						<ul class="list" >
 							<li><input type="checkbox" name="total_vaccine[]" value="1"<?php if(@$_GET['total_vaccine']){if(in_array('1',$_GET['total_vaccine'])){ echo 'checked="checked"';}} ?>>
@@ -324,15 +291,8 @@ var province_id,amphur_id,district_id;
 				</td>						
 			</tr>				
 	  </table>
-<div class="btn_inline">
-      <ul>
-      	<li><button class="btn_submit" name="btn_submit" type="submit" value="btn_submit">&nbsp;&nbsp;&nbsp;</button></li>
-        <li><button class="btn_cancel" name="btn_cancel" type="button">&nbsp;&nbsp;&nbsp;</button></li></ul>
-</div>
-</div>
-<div id="boxAdd">
-	<button class="btn_add" type="submit" name="btn_add"></button>
-</div>
+<div class="btn_inline"><ul><li><button class="btn_submit cencel" name="btn_submit" type="submit" value="btn_submit">&nbsp;&nbsp;&nbsp;</button></li></ul></div></div>
+<div id="boxAdd"><button class="btn_add" type="submit" name="btn_add"></button></div>
 </form>
 
  <table class="tb_search_Rabies1" >			  			
@@ -347,7 +307,7 @@ var province_id,amphur_id,district_id;
           </tr>                     	
 			<?php
 			if(!empty($result)):
-			$i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 10)-10)+1:1;
+			$i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 20)-20)+1:1;
 			 foreach($result as $key =>$rec): ?>
               <tr> 
                 <td align="center"><?php echo $i++?></td>
@@ -358,7 +318,8 @@ var province_id,amphur_id,district_id;
                 <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
             <td>	
             		<a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" target="_blank" class="btn_view vtip"></a> 			
-				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
+				<?php if($rec['closecase']=="1"): ?>
+				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>=
 					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>" target="_blank" class="btn_edit vtip" ></a>
 					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
 				<?php }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){
@@ -366,11 +327,13 @@ var province_id,amphur_id,district_id;
 													<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" target="_blank" class="btn_edit vtip"></a>
 							<?php	}
 						}  ?>
-				<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine" target="_blank" class="btn_syring vtip" ></a>
+					<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine" target="_blank" class="btn_syring vtip" ></a>
+				<?php endif; ?>
+
 				</td>
               </tr>            
 			  <?php endforeach; ?>
 			 <?php endif; ?>			    
 </table>	
-
+<?php echo (isset($pagination))? $pagination:''; ?>
 

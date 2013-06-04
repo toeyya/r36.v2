@@ -11,14 +11,16 @@ class Inform extends R36_Controller
 		$this->load->model('vaccine_model','vaccine');
 		$this->load->model("history_model",'history');
 		$this->load->model('users/user_model','user');
+		$this->template->append_metadata(js_idcard());
+		
 		
 	}
 	function index()
 	{
-		//$this->db->debug=true;				
-		if(isset($_GET['btn_submit']))
-		{// กดค้นหา					
-		
+		//$this->db->debug=true;
+		//var_dump($_GET);
+		if(!empty($_GET['action']))
+		{// กดค้นหา							
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
 					$where .= " AND  (hospitalcode='".$_GET['hospitalcode']."' and hospitalprovince='".$_GET['hospital_province_id']."' 
@@ -68,13 +70,24 @@ class Inform extends R36_Controller
 						$where.=" AND (idcard='".$_GET['idcard']."' AND statusid='".$_GET['statusid']."') AND idcard!='' and hospitalcode<>''";
 					}
 				}
+				if(!empty($_GET['close_type'])){
+					$closcase=implode(',',$_GET['close_type']);
+					$where.=" AND closecase=2 ";
+					//$where.=" AND close_type IN(".$closcase.")";	
+				}else{
+					//$where.=" AND closecase=1";
+					// ไม่ปิดเคส
+				}
+
 				if(!empty($_GET['total_vaccine'])){
 					$total_vaccine=implode(',',$_GET['total_vaccine']);
-					$where.=" AND (closecase=2 AND total_vaccine in(".$total_vaccine."))";
+					$where.=" AND total_vaccine in(".$total_vaccine.")";
 				}
-		}// $_GET['btn_submit]
-		if(!empty($where)){
-			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out
+		}// $_GET['action]
+
+		if(!empty($where))
+		{
+			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
 					   FROM n_information
 					   LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode				 
 			           INNER JOIN n_history ON n_history.historyid=n_information.information_historyid WHERE id<>'' ".$where;
@@ -103,7 +116,7 @@ class Inform extends R36_Controller
 			$data['in_out']=$in_out;
 			$data['historyid']=$historyid;
 			$data['process'] = $process;
-			$data['value_disabled']=($process=="view")? 'disabled="disabled"':'';
+			$data['value_disabled']=($process=="view")? 'readonly="readonly"':'';
 			$idcard = $this->history->get_one("idcard","historyid",$historyid);
 			$data['cardW0']=substr($idcard,0,1);
 			$data['cardW1']=substr($idcard,1,4);
