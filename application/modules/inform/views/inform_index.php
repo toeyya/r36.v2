@@ -44,7 +44,7 @@ var province_id,amphur_id,district_id;
 		 $('label.error').remove();
 		 $('#title').text("ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า");
 		 $('#form1').attr('action','inform/index');
-		 $('input[name=action]').val('search');			 		 		 
+		 $('input[name=action]').val('search');		 		 
 		 document.form1.submit();	
 		 e.preventDefault();	
 	});

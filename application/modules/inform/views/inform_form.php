@@ -263,7 +263,12 @@ $('select[name=prefix_name]').click(disableChkage);
 	
 	$('.btn_save').click(function(){
 		// #####   ตารางการฉีดวัคซีน    #####
-		var means=$('input[name=means]:checked').val();
+		
+		if($('input[name=means]').is(':checked')){
+			var means=$('input[name=means]:checked').val();
+		}else{
+			return true;
+		}
 		if(means=="1" || means=="2")
 		{	$('.tbvaccine').show();					
 			$('.tbvaccine tr').each(function(index,value){
@@ -277,7 +282,6 @@ $('select[name=prefix_name]').click(disableChkage);
 				 {
 					  if(td2.val()==0 && (td6.val()=='' || td6.val()==null || td6.val()==undefined)){
 					  	//ไม่กรอกทั้งเรคอร์ด
-					  	 //$(this).css('background-color','#eee');
 					  	 td2.removeClass('checkvaccine-cross').next().remove();
 					  	 td6.removeClass('checkvaccine-cross').next().remove();	
 					  	 if(tr_index==2){
@@ -401,7 +405,7 @@ $('select[name=prefix_name]').click(disableChkage);
 		 	cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}			 
 		},
 			errorPlacement: function(error, element){								
-				if((element.attr('name')=='firstname') || (element.attr('name')=='surname') || (element.attr('name')=='age'))
+				if((element.attr('name')=='firstname') || (element.attr('name')=='surname'))
 				{					
 					//element.next().html(error);
 					error.insertAfter("#surname");				
