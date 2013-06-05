@@ -262,8 +262,7 @@ $('select[name=prefix_name]').click(disableChkage);
 	});
 	
 	$('.btn_save').click(function(){
-		// #####   ตารางการฉีดวัคซีน    #####
-		
+		// #####   ตารางการฉีดวัคซีน    #####		
 		if($('input[name=means]').is(':checked')){
 			var means=$('input[name=means]:checked').val();
 		}else{
@@ -342,7 +341,7 @@ $('select[name=prefix_name]').click(disableChkage);
 		   	  		document.form1.submit();	
 		   	  	}else{
 		   	  		$(":disabled").removeAttr('disabled');
-					$("input[type=submit]").attr('disabled',true); 	
+					$(".btn_save").attr('disabled',true); 	
 					document.form1.submit();		
 				}//vaccine		
 			}	//submitHandler			
