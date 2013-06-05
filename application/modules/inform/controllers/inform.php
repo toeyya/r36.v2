@@ -11,7 +11,7 @@ class Inform extends R36_Controller
 		$this->load->model('vaccine_model','vaccine');
 		$this->load->model("history_model",'history');
 		$this->load->model('users/user_model','user');
-		$this->template->append_metadata(js_idcard());
+		
 		
 		
 	}
@@ -19,6 +19,7 @@ class Inform extends R36_Controller
 	{
 		//$this->db->debug=true;
 		//var_dump($_GET);
+		$this->template->append_metadata(js_idcard());
 		if(!empty($_GET['action']))
 		{// กดค้นหา							
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
