@@ -12,7 +12,7 @@ function login($username=FALSE,$password=FALSE,$remember=FALSE)
 
 	$sql="SELECT * FROM n_user 
 				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
-				WHERE n_user.username= ?  AND n_user.userpassword= ? ";
+				WHERE n_user.username=(?)  AND n_user.userpassword= (?) ";
 	$rs = $CI->db->GetRow($sql,array($username,$password));	
 	var_export($rs);
 	if($rs)
