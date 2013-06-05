@@ -385,12 +385,12 @@ class ADODB_mssqlnative extends ADOConnection {
 		$connectionInfo["PWD"]=$argPassword;
         if ($this->debug) error_log("<hr>connecting... hostname: $argHostname params: ".var_export($connectionInfo,true));
         //if ($this->debug) error_log("<hr>_connectionID before: ".serialize($this->_connectionID));
-        if(!($this->_connectionID = sqlsrv_connect($argHostname,$connectionInfo))) { 
+        if(!($this->_connectionID = sqlsrv_connect($argHostname,$connectionInfo))) {          	 
             if ($this->debug) error_log( "<hr><b>errors</b>: ".print_r( sqlsrv_errors(), true));
             return false;
         }
         //if ($this->debug) error_log(" _connectionID after: ".serialize($this->_connectionID));
-        //if ($this->debug) error_log("<hr>defined functions: <pre>".var_export(get_defined_functions(),true)."</pre>");
+        //if ($this->debug) error_log("<hr>defined functions: <pre>".var_export(get_defined_functions(),true)."</pre>");	
 		return true;	
 	}
 	
@@ -398,8 +398,7 @@ class ADODB_mssqlnative extends ADOConnection {
 	function _pconnect($argHostname, $argUsername, $argPassword, $argDatabasename)
 	{
 		//return null;//not implemented. NOTE: Persistent connections have no effect if PHP is used as a CGI program. (FastCGI!)
-       // return $this->_connect($argHostname, $argUsername, $argPassword, $argDatabasename);
-		
+        return $this->_connect($argHostname, $argUsername, $argPassword, $argDatabasename);
 	}
 	
 	function Prepare($sql)
@@ -407,7 +406,6 @@ class ADODB_mssqlnative extends ADOConnection {
 		return $sql; // prepare does not work properly with bind parameters as bind parameters are managed by sqlsrv_prepare!
 		
 		$stmt = sqlsrv_prepare( $this->_connectionID, $sql);
-
 		if (!$stmt)  return $sql;
 		return array($sql,$stmt);
 	}
@@ -470,8 +468,14 @@ class ADODB_mssqlnative extends ADOConnection {
             $rez = sqlsrv_execute($this->_connectionID,$sql[1]);
 		} else {
 			$rez = sqlsrv_query($this->_connectionID,$sql);
-			
 		}
+		foreach( sqlsrv_field_metadata( $rez ) as $fieldMetadata ) {
+		    foreach( $fieldMetadata as $name => $value) {
+		       echo "$name: $value<br />";
+		    }
+		      echo "<br />";
+		}
+		
         if ($this->debug) error_log("<hr>running query: ".var_export($sql,true)."<hr>input array: ".var_export($inputarr,true)."<hr>result: ".var_export($rez,true));
         if(!$rez) $rez = false;
 		return $rez;
