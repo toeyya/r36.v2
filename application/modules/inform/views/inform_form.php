@@ -484,7 +484,7 @@ $('select[name=prefix_name]').click(disableChkage);
 
 <div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($in_out=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($in_out=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
-	<?php 
+	<?php //error_reporting(E_ALL ^ E_NOTICE);
 			@$rs['daterig'] =($rs['daterig'] =='0000-00-00')?'': cld_my2date(@$rs['daterig']);
 			@$rs['datelongfeel']	=(@$rs['datelongfeel']=='0000-00-00')?'':cld_my2date(@$rs['datelongfeel']);
 			@$rs['datetouch'] = (@$rs['datetouch'] =='0000-00-00')? '':cld_my2date(@$rs['datetouch']);	

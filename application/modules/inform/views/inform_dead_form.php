@@ -1,7 +1,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	 $('#multiAccordion').multiAccordion({
-            //heightStyle: "content",
+            heightStyle: "content",
         	 active: 'none' 
         });
 	var ref1,ref3,ref5,ref6;	
@@ -362,12 +362,8 @@ $(document).ready(function(){
 					<input type="radio" name="patient_type" value="in">ผู้ป่วยนอก
 					<input type="radio" name="patient_type" value="out">ผู้ป่วยใน
 				</td>
-				<td colspan="2"><span class="topic radio">ผลการรักษา</span>
-						
-						<input type="radio" name="patient_type" value="in">กำลังรักษา <input type="text" name="" value="" class="input_box_patient">
-						
-						<input type="radio" name="patient_type" value="out">เสียชีวิต วันที่ <input type="text" name="" class="input_box_patient datepicker  auto" size="10">
-						
+				<td><span class="topic radio">วันที่เสียชีวิต</span>
+					 <input type="text" name="" class="input_box_patient datepicker  auto" size="10">					
 				</td>
 			<tr>
 				<th>3.</th>
@@ -477,7 +473,7 @@ $(document).ready(function(){
 							<select><option>จังหวัด</option></select>
 							<select><option>อำเภอ</option></select>
 							<select><option>ตำบล</option></select>
-							สถานที่ <input type="text" class="input_box_patient">
+							
 						</span>
 					<?php echo form_radio('','1','') ?>ต่างประเทศ ระบุ <input type="text" class="input_box_patient">
 				</td>

@@ -122,7 +122,7 @@
 			   -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
 					box-shadow: 0px 1px 3px rgba(0,0,0,.4);}
 
-			#toplevel > ul > li:hover > ul.submenu8 { opacity: 1;  top: 47px; visibility: visible;z-index:10;}
+			#toplevel > ul > li:hover > ul.submenu8 { opacity: 1;  visibility: visible;z-index:10;position:relative;}
 			#toplevel > ul > li > ul.submenu8:before{content: ''; 
 				border-color: transparent transparent rgb(227,23,136) transparent; border-style: solid;  border-width: 10px;
 				display: inline-block;
@@ -175,7 +175,7 @@
 			   -moz-box-shadow: 0px 1px 3px rgba(0,0,0,.4);
 					box-shadow: 0px 1px 3px rgba(0,0,0,.4);}
 
-			#toplevel > ul > li:hover > ul.submenu9 { opacity: 1;  top: 47px; visibility: visible;z-index:10;}
+			#toplevel > ul > li:hover > ul.submenu9 { opacity: 1;visibility: visible;z-index:10;position:relative}
 			#toplevel > ul > li > ul.submenu9:before{content: '';
 				border-color: transparent transparent rgb(227,23,136) transparent; border-style: solid;  border-width: 10px; 
 				display: inline-block;

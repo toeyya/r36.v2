@@ -23,19 +23,19 @@ class Users extends Public_Controller
             if(login($_POST['username'], $_POST['password']))
             {
                 set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบค่ะ');
-              //redirect('inform/index');
+              redirect('inform/index');
                
             }
             else
             {
                 set_notify('error', 'ชื่อผู้ใช้หรือรหัสผ่านผิดพลาดค่ะ');
-               //redirect($_SERVER['HTTP_REFERER']);
+               redirect($_SERVER['HTTP_REFERER']);
             }   
         }
         else
         {
             set_notify('error', 'กรุณาทำการล็อคอินค่ะ');
-          //redirect($_SERVER['HTTP_REFERER']);
+          redirect($_SERVER['HTTP_REFERER']);
         }       
     }
 	function logout()

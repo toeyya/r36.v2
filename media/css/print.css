@@ -3,7 +3,7 @@ background-image:none; color:#000000;font-size:11px;
 line-height: 1.4em; word-spacing:1px; letter-spacing:0.2px;
 font-family: Tahoma, verdana, sans-serif;}
 a{content: " (" attr(href) ")";color:#000000;}
-h3{font-size:13px;margin-bottom:-26px;color:#2A2A2A}
+h3{font-size:13px;margin-bottom:-26px;color:#2A2A2A;padding:0px;margin:0px;}
 
 #title,#search{display:none;}
 div#report{width:842px;}

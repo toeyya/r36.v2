@@ -1,4 +1,8 @@
 <?php
+		### ###################################################			
+		###	 user file  "ajaxreport.js"													    			###
+		###	 report1  --> สรุปข้อมูล r36															    ###
+		###  report4   --->สรุปประวัติคนไข้ในเขตอำเภอและคนไข้นอกเขตอำเภอ   ###	
 class Report extends R36_Controller
 {
 	function __construct()
@@ -12,10 +16,6 @@ class Report extends R36_Controller
 
 	function index($no=FALSE,$preview=FALSE)
 	{
-		### ###################################################			
-		###	 user file  "ajaxreport.js"													    			###
-		###	 report1  --> สรุปข้อมูล r36															    ###
-		###  report4   --->สรุปประวัติคนไข้ในเขตอำเภอและคนไข้นอกเขตอำเภอ   ###	
 		// $this->db->debug=TRUE;
 
 		 $data['textarea'] ="";
@@ -92,8 +92,10 @@ class Report extends R36_Controller
 			
 		
 	}
-	function dead(){
-		$this->template->build('report7_index');
+	function dead($part=FALSE,$preview=FALSE){
+		$data['part']=$part;
+		if($preview) $this->template->set_layout('print');
+		$this->template->build('report7_index',$data);
 	}
 	function form()
 	{
