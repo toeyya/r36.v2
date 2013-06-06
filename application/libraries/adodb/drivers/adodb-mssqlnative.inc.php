@@ -469,13 +469,7 @@ class ADODB_mssqlnative extends ADOConnection {
 		} else {
 			$rez = sqlsrv_query($this->_connectionID,$sql);
 		}
-		foreach( sqlsrv_field_metadata( $rez ) as $fieldMetadata ) {
-		    foreach( $fieldMetadata as $name => $value) {
-		       echo "$name: $value<br />";
-		    }
-		      echo "<br />";
-		}
-		
+				
         if ($this->debug) error_log("<hr>running query: ".var_export($sql,true)."<hr>input array: ".var_export($inputarr,true)."<hr>result: ".var_export($rez,true));
         if(!$rez) $rez = false;
 		return $rez;
