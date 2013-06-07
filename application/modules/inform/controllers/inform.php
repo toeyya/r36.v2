@@ -334,8 +334,7 @@ class Inform extends R36_Controller
 					$idcard_arr[]=substr($_GET['idcard'],$i,1);
 			}		
 			$chk=chk_idcard($idcard_arr,$_GET['digit_last']);		
-		  	echo ($chk=="no")? "false":"true";
-	  
+		  	echo ($chk=="no")? "false":"true";	  
 	}
 	function chk_idcard_edit()
 	{

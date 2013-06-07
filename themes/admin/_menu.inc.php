@@ -16,13 +16,13 @@
 	<li <?php echo menu_active('coverpages','coverpages')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a>
 	<li <?php echo menu_active('users','users')?>><a href="content/admin/content/index/2">สถานที่ชันสูตรตรวจโรคพิษสุนัขบ้า</a></li>	
 	<li <?php echo menu_active('contents','categories')?>><a href="ccontent/admin/content/index/3">สถานที่ให้คำปรึกษาเกี่ยวกับพิษสุนัขบ้า</a></li>
-	<li <?php echo menu_active('calendars','calendars')?>><a href="content/admin/content/index/4">งานศึกษาวิจัย</a></li>
-	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/5">เอกสารเผยแพร่</a></li>
+	<li <?php echo menu_active('calendars','calendars')?>><a href="research/admin/research/index">งานศึกษาวิจัย</a></li>
+	<li <?php echo menu_active('download','download')?>><a href="research/admin/research/index">เอกสารเผยแพร่</a></li>
 	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/6">ข่าวประชาสัมพันธ์</a></li>
 	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/7">สาระน่ารู้</a></li>
 	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/7">ตัววิ่ง</a></li>
 	<li <?php echo menu_active('webboards','webboards')?>><a href="webboards/admin/webboard_categories">เว็บบอร์ด</a></li>
-	<li <?php echo menu_active('contact','contacts')?>><a href="#">ถาม-ตอบ</a></li>
+	<li <?php echo menu_active('contact','contacts')?>><a href="question/admin/question/index">คำถามที่พบบ่อย</a></li>
 	<li <?php echo menu_active('contact','contacts')?>><a href="content/admin/content/index/8">ติดต่อเรา</a></li>
 	<li <?php echo menu_active('dashboards','dashboards')?>><a href="dashboards/admin/dashboards/index">จำนวนคนเข้าเว็บไซต์</a></li> 
 	<!--<li <?php echo menu_active('logs','logs')?>><a href="logs/admin/logs/index">ประวัติเข้าใช้ระบบ</a></li> -->

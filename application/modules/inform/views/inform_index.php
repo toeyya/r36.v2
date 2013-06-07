@@ -70,7 +70,6 @@ var province_id,amphur_id,district_id;
 		 	}
 		 });
 		 $('#form1').validate({
-		 	 debug:true,	
 		 	 onkeyup: false,onfocusout:false,
 		 	 groups: {
     				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"

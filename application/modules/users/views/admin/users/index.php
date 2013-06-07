@@ -77,7 +77,7 @@ var ref1,ref2,ref3;
 		<?php foreach($result as $item): ?>
 		<tr>
 				<!--<<td  align="center"><nput name="chk_del[]" type="checkbox" value="<?php echo $item['uid']?>"  class="chk_del"/></td>-->
-				<td><input type="checkbox"  class="list_check" name="status" value="<?php echo $item['uid'] ?>" <?php echo ($item['status']=="approve")?'checked="checked"':'' ?>  /></td>
+				<td><input type="checkbox"  class="list_check" name="active" value="<?php echo $item['uid'] ?>" <?php echo ($item['active']=="1")?'checked="checked"':'' ?>  /></td>
 				<td><?php echo $item['username'];?></a></td>
 				<td><?php echo $item['userfirstname'];?> <?php echo $item['usersurname'];?></td>
 				<td><?php echo  $item['level_name'];?></td>
