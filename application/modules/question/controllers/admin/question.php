@@ -8,7 +8,13 @@ class Question extends Admin_Controller
 		$this->template->append_metadata(js_checkbox());
 	}
 	function index(){
-		$data['result']=$this->quest->select("n_question.*,userfirstname,usersurname")->join("LEFT JOIN n_user ON user_id=uid")->sort("")->order("id desc")->get();
+		$question_id=(!empty($_GET['question_id'])) ? " and n_question.id=".$_GET['question_id']: '';
+		$data['result']=$this->quest->select("count(n_question_detail.id) as cnt,n_question.*,userfirstname,usersurname")
+														 ->join("LEFT JOIN n_question_detail on n_question.id=n_question_detail.question_id
+																	   LEFT JOIN n_user ON n_question.user_id=uid")
+														->where("1=1 $question_id")
+														->groupby("question_id")
+														->sort("")->order("n_question.id desc")->get();
 		$data['pagination']=$this->quest->pagination();
 		$this->template->build('admin/index',$data);
 	}

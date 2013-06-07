@@ -8,7 +8,13 @@ class Research extends Admin_Controller
 		$this->template->append_metadata(js_checkbox());
 	}
 	function index(){
-		$data['result']=$this->res->select("n_question.*,userfirstname,usersurname")->join("LEFT JOIN n_user ON user_id=uid")->sort("")->order("id desc")->get();
+		$research_id=(!empty($_GET['research_id'])) ? " and n_research.id=".$_GET['research_id']: '';	
+		$data['result']=$this->res->select("count(n_research_detail.id) as cnt,n_research.*,userfirstname,usersurname")
+													->join("LEFT JOIN n_research_detail on n_research.id=n_research_detail.research_id
+																 LEFT JOIN n_user ON n_research.user_id=uid")
+													->where("1=1 $research_id")
+													->groupby("research_id")
+												   ->sort("")->order("n_research.id desc")->get();
 		$data['pagination']=$this->res->pagination();
 		$this->template->build('admin/index',$data);
 	}
@@ -20,8 +26,9 @@ class Research extends Admin_Controller
 		if($type_id){
 			$this->research->delete("id",$id);
 			$this->type->delete($id);
+			set_notify('success', DELETE_DATA_COMPLETE);
 		}
-		redirect('admin/index');
+		redirect('research/admin/research/index');
 	}
 	function save(){
 		if(!empty($_POST)){

@@ -1,9 +1,3 @@
-<!-- Load TinyMCE -->
-<script type="text/javascript" src="media/tiny_mce/tiny_mce.js"></script>
-<script type="text/javascript" src="media/tiny_mce/config.js"></script>
-<script type="text/javascript">
-	tiny('answer');
-</script>
 <h1>งานศึกษาวิจัย</h1>
 <form action="research/admin/research/save" method="post" id="formm">
 <table  class="form">

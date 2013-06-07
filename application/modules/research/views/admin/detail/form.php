@@ -3,7 +3,7 @@
 <table  class="form">
 <tr>
 	<th>ประเภท</th>
-	<td><?php echo form_dropdown('research_id',get_option('id','name','n_question'),$research_id,'','--โปรดเลือก--') ?></td>
+	<td><?php echo form_dropdown('research_id',get_option('id','name','n_research'),$research_id,'','--โปรดเลือก--') ?></td>
 </tr>
 <tr>
 	<th>ชื่อเรื่อง</th>
@@ -11,31 +11,31 @@
 </tr>
 <tr>
 	<th>ชื่อผู้วิจัย</th>
-	<td><textarea  name="researcher_name"  cols="30"  rows="3" style="width:619px;"><?php echo $rs['researcher_name'] ?></textarea></td>
+	<td><textarea  name="researcher"  cols="30"  rows="3" style="width:619px;height:60px;"><?php echo $rs['researcher'] ?></textarea></td>
 </tr>
 <tr>
 	<th>หน่วยงาน</th>
-	<td><textarea name="answer" cols="30"  rows="3" style="width:619px;"><?php echo $rs['answer'] ?></textarea></td>
+	<td><textarea name="agency" cols="30"  rows="3" style="width:619px;height:60px;"><?php echo $rs['agency'] ?></textarea></td>
 </tr>
 <tr>
 	<th>วัตถุประสงค์</th>
-	<td><textarea name="answer" cols="30"  rows="3" style="width:619px;"><?php echo $rs['answer'] ?></textarea></td>
+	<td><textarea name="objective" cols="30"  rows="3" style="width:619px;height:60px;"><?php echo $rs['objective'] ?></textarea></td>
 </tr>
 <tr>
 	<th>วัสดุและวิธีการ</th>
-	<td><textarea name="answer" cols="30"  rows="3" style="width:619px;"><?php echo $rs['answer'] ?></textarea></td>
+	<td><textarea name="method" cols="30"  rows="3" style="width:619px;height:60px;"><?php echo $rs['method'] ?></textarea></td>
 </tr>
 <tr>
 	<th>ผลการศึกษา</th>
-	<td><textarea name="answer" cols="30"  rows="3" style="width:619px;"><?php echo $rs['answer'] ?></textarea></td>
+	<td><textarea name="result" cols="30"  rows="3" style="width:619px;height:60px;"><?php echo $rs['result'] ?></textarea></td>
 </tr>
 <tr>
 	<th>สรุป</th>
-	<td><textarea name="answer" cols="30"  rows="3" style="width:619px;"><?php echo $rs['answer'] ?></textarea></td>
+	<td><textarea name="conclusion" cols="30"  rows="3" style="width:619px;height:60px;"><?php echo $rs['conclusion'] ?></textarea></td>
 </tr>
 <tr>
 	<th>ชื่อเอกสาร</th>
-	<input type="text" name="file_title" value="<?php echo $rs['file_title'] ?>">
+	<td><input type="text" name="file_title" value="<?php echo $rs['file_title'] ?>"></td>
 </tr>
 <tr>
 	<th>เอกสาร</th>

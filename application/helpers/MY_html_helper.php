@@ -168,7 +168,14 @@ function generate_password($length=5) {
       return $password;
  } 
 
-
+function file_extension($val){
+	$ext=array('xlsx','pdf', 'xls', 'doc', 'docx', 'ppt', 'pptx', 'rar','zip' );
+	return in_array($val, $ext);	
+}
+function image_extension($val){
+	$ext=array('gif','jpg', 'jpeg');
+	return in_array($val, $ext);	
+}
 
 
 

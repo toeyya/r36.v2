@@ -1,7 +1,7 @@
 <?php
-class Question_model extends MY_Model
+class Research_model extends MY_Model
 {
-	public $table="n_question";
+	public $table="n_research";
 	
 	function __construct()
 	{
