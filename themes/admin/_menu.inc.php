@@ -3,8 +3,8 @@
 	<?php //if(permission('permissions', 'act_read')): ?>
 	<li <?php echo menu_active('permissions','permissions')?>><a href="permissions/admin/permissions">สิทธิ์การใช้งาน</a></li>
 	<?php //endif; ?>
-	<li <?php echo menu_active('permissions','permissions')?>><a href="users/admin/users">ผู้ใช้ระบบ</a></li>
-	<li <?php echo menu_active('permissions','permissions')?>><a href="users/admin/users">ตั้งค่าระบบโปรแกรมร.36</a>
+	<li <?php echo menu_active('users','users')?>><a href="users/admin/users">ผู้ใช้ระบบ</a></li>
+	<li <a href="javascript:void(0)">ตั้งค่าระบบโปรแกรมร.36</a>
 		<ul class="sublist">
                  <li><a href="area/index">เขตความรับผิดชอบ</a></li>
                 <li><a href="province/index">จังหวัด</a></li>
@@ -13,14 +13,15 @@
 				<li><a href="hospital/index">สถานพยาบาล</a></li>					
 		</ul>
 	</li>
-	<li <?php echo menu_active('coverpages','coverpages')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a>
-	<li <?php echo menu_active('users','users')?>><a href="content/admin/content/index/2">สถานที่ชันสูตรตรวจโรคพิษสุนัขบ้า</a></li>	
-	<li <?php echo menu_active('contents','categories')?>><a href="ccontent/admin/content/index/3">สถานที่ให้คำปรึกษาเกี่ยวกับพิษสุนัขบ้า</a></li>
-	<li <?php echo menu_active('calendars','calendars')?>><a href="research/admin/research/index">งานศึกษาวิจัย</a></li>
-	<li <?php echo menu_active('download','download')?>><a href="research/admin/research/index">เอกสารเผยแพร่</a></li>
+
+	<li <?php echo menu_active('content','content')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a>
+	<li <?php echo menu_active('content','content')?>><a href="content/admin/content/index/2">สถานที่ชันสูตรตรวจโรคพิษสุนัขบ้า</a></li>	
+	<li <?php echo menu_active('contents','content')?>><a href="ccontent/admin/content/index/3">สถานที่ให้คำปรึกษาเกี่ยวกับพิษสุนัขบ้า</a></li>
+	<li <?php echo menu_active('contents','content')?>><a href="content/admin/content/index/4">งานศึกษาวิจัย</a></li>
+	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/5">เอกสารเผยแพร่</a></li>
 	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/6">ข่าวประชาสัมพันธ์</a></li>
-	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/7">สาระน่ารู้</a></li>
-	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/7">ตัววิ่ง</a></li>
+	<li <?php echo menu_active('contents','contents')?>><a href="content/admin/content/index/7">สาระน่ารู้</a></li>
+	<li <?php echo menu_active('contents','contents')?>><a href="content/admin/content/index/8">ตัววิ่ง</a></li>
 	<li <?php echo menu_active('webboards','webboards')?>><a href="webboards/admin/webboard_categories">เว็บบอร์ด</a></li>
 	<li <?php echo menu_active('contact','contacts')?>><a href="question/admin/question/index">คำถามที่พบบ่อย</a></li>
 	<li <?php echo menu_active('contact','contacts')?>><a href="content/admin/content/index/8">ติดต่อเรา</a></li>

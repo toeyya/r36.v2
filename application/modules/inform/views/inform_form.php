@@ -108,9 +108,7 @@ function  disableChkage(){
 
 $(document).ready(function(){
 	/*$( "#accordion" ).accordion({heightStyle: "content" });*/
-     $('#multiAccordion').multiAccordion({
-            heightStyle: "content"
-        });
+ $('#multiAccordion').multiAccordion({ heightStyle: "content",active:0 });
 
 var process='<?php echo $process ?>';
 if(process=='view'){
@@ -331,7 +329,7 @@ $('select[name=prefix_name]').click(disableChkage);
 			return false;
 		}					
 	})// btn_save
-	
+	alert(process);
 		/***********  prevent double submit  ***********/
 	$("input[type=submit]").attr( 'disabled',false); 
 	 $.validator.setDefaults({
@@ -354,7 +352,6 @@ $('select[name=prefix_name]').click(disableChkage);
 	$('#causedetail_other').click(function(){$('input[name=causetext]').valid();});
 		
 	$("#form1").validate({
-		debug:false,
 		groups:{
 				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4",
 				groupname:"firstname surname"         								
@@ -487,7 +484,7 @@ $('select[name=prefix_name]').click(disableChkage);
 
 <div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($in_out=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($in_out=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
-	<?php 
+	<?php //error_reporting(E_ALL ^ E_NOTICE);
 			@$rs['daterig'] =($rs['daterig'] =='0000-00-00')?'': cld_my2date(@$rs['daterig']);
 			@$rs['datelongfeel']	=(@$rs['datelongfeel']=='0000-00-00')?'':cld_my2date(@$rs['datelongfeel']);
 			@$rs['datetouch'] = (@$rs['datetouch'] =='0000-00-00')? '':cld_my2date(@$rs['datetouch']);	

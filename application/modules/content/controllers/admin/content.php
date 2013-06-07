@@ -15,7 +15,6 @@ class Content extends Admin_Controller
 	
 	function index($category_id=FALSE,$id=FALSE)
 	{
-		
 		$data['result'] = $this->content->select('contents.*,userfirstname,usersurname') 
 										->join("INNER JOIN n_user on contents.user_id=uid")
 										->where("category_id='".$category_id."'")

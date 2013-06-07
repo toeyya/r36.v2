@@ -152,3 +152,4 @@
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 		</div>
 </div>	
+</div>

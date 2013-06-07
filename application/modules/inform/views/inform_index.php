@@ -37,7 +37,6 @@ var province_id,amphur_id,district_id;
 	});
 
 
-
 	$('.btn_submit').click(function(e){
 		 $('#form1').validate({ignore: "#form1 *" });	 
 		 $('input').removeClass('error');

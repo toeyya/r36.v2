@@ -469,7 +469,11 @@ class ADODB_mssqlnative extends ADOConnection {
 		} else {
 			$rez = sqlsrv_query($this->_connectionID,$sql);
 		}
+<<<<<<< HEAD
 		
+=======
+				
+>>>>>>> 4d1ceff61137f28f9b03b14b6753e900a4092e0e
         if ($this->debug) error_log("<hr>running query: ".var_export($sql,true)."<hr>input array: ".var_export($inputarr,true)."<hr>result: ".var_export($rez,true));
         if(!$rez) $rez = false;
 		return $rez;
