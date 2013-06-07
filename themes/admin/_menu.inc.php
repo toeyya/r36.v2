@@ -14,7 +14,7 @@
 		</ul>
 	</li>
 
-	<li <?php echo menu_active('content','content')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a>
+	<li <?php echo menu_active('content','content')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a></li>
 	<li <?php echo menu_active('content','content')?>><a href="content/admin/content/index/2">สถานที่ชันสูตรตรวจโรคพิษสุนัขบ้า</a></li>	
 	<li <?php echo menu_active('contents','content')?>><a href="ccontent/admin/content/index/3">สถานที่ให้คำปรึกษาเกี่ยวกับพิษสุนัขบ้า</a></li>
 	<li <?php echo menu_active('contents','content')?>><a href="content/admin/content/index/4">งานศึกษาวิจัย</a></li>
