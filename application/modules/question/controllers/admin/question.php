@@ -13,7 +13,7 @@ class Question extends Admin_Controller
 														 ->join("LEFT JOIN n_question_detail on n_question.id=n_question_detail.question_id
 																	   LEFT JOIN n_user ON n_question.user_id=uid")
 														->where("1=1 $question_id")
-														->groupby("question_id")
+														->groupby("n_question.id")
 														->sort("")->order("n_question.id desc")->get();
 		$data['pagination']=$this->quest->pagination();
 		$this->template->build('admin/index',$data);

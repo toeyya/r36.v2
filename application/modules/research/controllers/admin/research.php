@@ -13,7 +13,7 @@ class Research extends Admin_Controller
 													->join("LEFT JOIN n_research_detail on n_research.id=n_research_detail.research_id
 																 LEFT JOIN n_user ON n_research.user_id=uid")
 													->where("1=1 $research_id")
-													->groupby("research_id")
+													->groupby("n_research.id")
 												   ->sort("")->order("n_research.id desc")->get();
 		$data['pagination']=$this->res->pagination();
 		$this->template->build('admin/index',$data);
