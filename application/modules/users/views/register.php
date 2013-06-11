@@ -1,6 +1,5 @@
 <script type="text/javascript">
 $(document).ready(function(){	
-	alert('ddd');
 	$('input[name=userhospital]').next().addClass('alertred').html('');	
 	$('#form1').validate({
 		debug:true,
@@ -29,7 +28,6 @@ $(document).ready(function(){
 				required:true,
 				remote:{
 					url:'<?php echo base_url(); ?>users/chkHospitalcode',
-<<<<<<< HEAD
 					type:'get',					
 					dataFilter:function(data){
 						var json=JSON.parse(data);
@@ -41,18 +39,7 @@ $(document).ready(function(){
 							return "false";
 						}
 					}			
-=======
-					type:'get',
-					complete: function(data){
-					     if (data.responseText == "false") {
-					        	$('input[name=userhospital]').next().addClass('alertred').html('');
-					      }else{
-					      	    $('input[name=userhospital]').next().removeClass('alertred').html(data.responseText); 
-					      	 
-					      }
-					}
-				
->>>>>>> 4d1ceff61137f28f9b03b14b6753e900a4092e0e
+
 				}
 			},
 			usermail:{
@@ -66,20 +53,13 @@ $(document).ready(function(){
 		},
 		messages:{
 			mobile0:"กรุณาระบุ",mobile1:"กรุณาระบุ",mobile2:"กรุณาระบุ",
-<<<<<<< HEAD
-=======
-			fax0:"กรุณาระบุ",fax1:"กรุณาระบุ",fax2:"กรุณาระบุ",
->>>>>>> 4d1ceff61137f28f9b03b14b6753e900a4092e0e
 			tel0:"กรุณาระบุ",tel1:"กรุณาระบุ",tel2:"กรุณาระบุ",
 			firstname:"กรุณาระบุ",surname:"กรุณาระบุ",			
 			cardW0:"กรุณาระบุ",	cardW1:"กรุณาระบุ",	cardW2:"กรุณาระบุ",	cardW3:"กรุณาระบุ",
 			cardW4:{
 				required:"กรุณาระบุ",
-<<<<<<< HEAD
 				remote:"กรุณาระบุให้ถูกต้อง"
-=======
-				remote:"กรุณาระบุ"
->>>>>>> 4d1ceff61137f28f9b03b14b6753e900a4092e0e
+
 			},
 			userhospital:{
 				required:'กรุณาระบุ',
@@ -93,10 +73,8 @@ $(document).ready(function(){
 				}
 			},
 			password:"กรุณาระบุ",
-<<<<<<< HEAD
+
 			repassword:"กรุณาระบุให้ตรงกัน"
-=======
->>>>>>> 4d1ceff61137f28f9b03b14b6753e900a4092e0e
 		},
 	 	errorPlacement: function(error, element) {
 			if (element.attr("name") == "firstname" || element.attr("name") == "surname" ) {
