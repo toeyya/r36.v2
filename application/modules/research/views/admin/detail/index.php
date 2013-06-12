@@ -19,7 +19,7 @@
 	<tr>		
 		<td width="70"><input type="checkbox"  class="list_check" name="active" value="<?php echo $item['id'] ?>" <?php echo ($item['active']=="1")?'checked="checked"':'' ?>  /></td>
 		<td><?php echo $item['name'] ?></td>
-		<td><div style="width:500px;height:32px;overflow: hidden"><?php echo $item['title'] ?></div></td>
+		<td><?php echo $item['title'] ?></td>
 		<td><?php echo $item['userfirstname'] ?> <?php echo $item['usersurname'] ?></td>
 		<td><a href="research/admin/research_detail/form/<?php echo $research_id ?>/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
 				 <a href="research/admin/research_detail/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ">ลบ</a></td>

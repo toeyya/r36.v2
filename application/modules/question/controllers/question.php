@@ -18,8 +18,9 @@ class Question extends Public_Controller
 	}
 	function detail($question_id)
 	{
-		$data['result']=$this->detail->where("question_id=".$question_id)->sort('')->order('id asc')->get();
+		$data['result']=$this->detail->where("question_id=".$question_id)->sort('')->order('no asc')->limit(5)->get();
 		$data['question_name']=$this->quest->get_one("name","id",$question_id);
+		$data['pagination'] =$this->detail->pagination();
 		$this->template->build('inc_detail',$data);
 	}	
 

@@ -92,3 +92,12 @@ a:hover {color:#0190fe;}
 /********************************        ********************************/
 
 
+ul.question {list-style:decimal;margin-left:30px;}
+ul.question span{margin-left:10px;}
+
+#research ul{list-style:none;margin-left:30px;}
+#research ul li{margin-bottom:20px;}
+#research ul li.title{font-size:16px;font-weight:700;text-align:center;}
+#research ul li label{font-size:14px;font-weight:700;text-align:left;color:#E01B5D;width:250px;}
+#description{margin:10px 0px 30px;text-align:right;}
+

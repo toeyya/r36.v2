@@ -11,6 +11,7 @@ class Research_detail extends Admin_Controller
 		$data['result']=$this->detail->select("n_research_detail.*,name,userfirstname,usersurname")
 														->join("LEFT JOIN n_research ON n_research.id=n_research_detail.research_id
 																	 LEFT JOIN n_user ON n_research_detail.user_id=uid")
+													    ->where("research_id=$research_id")
 														->sort("")->order("n_research_detail.id desc")->get();
 		$data['research_id']=$research_id;
 		$data['pagination']=$this->detail->pagination();

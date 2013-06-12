@@ -22,8 +22,9 @@ class Research extends Public_Controller
 		$data['research_name']=$this->res->get_one("name","id",$research_id);
 		$this->template->build('inc_detail',$data);
 	}
-	function view($id){
+	function view($research_id,$id){
 		$data['rs']=$this->detail->get_row($id);
+		$data['research_name']=$this->res->get_one("name","id",$research_id);
 		$this->template->build('view',$data);
 	}
 }

@@ -1,10 +1,11 @@
 <?php
-class Research extends Admin_Controller
+class Identify extends Public_Controller
 {
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('research_model','quest');
+		$this->load->model('indentify_model','identify');
+		$this->load->model('indenify_detiail_model','detail');
 	
 	}
 	function index($view=FALSE){

@@ -5,7 +5,7 @@
                 <td height="41" background="themes/default/media/images/topMenu_bg.png">
                 <ul>
                     <li><a href="home">หน้าแรก</a></li>
-                    <li><a href="#">เอกสารเผยแพร่</a></li>
+                    <li><a href="document/index">เอกสารเผยแพร่</a></li>
                     <li><a href="weboards">เว็บบอร์ด</a></li>
                     <li><a href="question/index">คำถามที่พบบ่อย</a></li>
                     <li><a href="#">ติดต่อเรา</a></li>

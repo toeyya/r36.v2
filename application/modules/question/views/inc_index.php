@@ -1,9 +1,9 @@
-<h1></h1>
 <ul class="breadcrumb">
     <li><a href="home">หน้าแรก</a> <span class="divider">/</span></li>
     <li>คำถามที่พบบ่อย</li>
 </ul>
-<div id="register">
+<h1><img src="themes/default/media/images/title_faq.png" width="121" height="28"></h1>
+<div>
 <table class="table table-striped">
 	<tr>
 		<th>ประเภทคำถาม</th>

@@ -1,3 +1,17 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.option a[rel=del]').live('click',function(){
+		var id =$('input[name=id]').val();				
+		var url = 'research/admin/research/delete_file/' + id;
+		if(confirm('ยืนยันการลบข้อมูล')){
+			$.post(url,{'id':id},function(data){
+				$('.option').hide();
+			})
+		}
+		return false;
+	})
+})
+</script>
 <h1>งานศึกษาวิจัย</h1>
 <form action="research/admin/research_detail/save" method="post" id="formm"  enctype="multipart/form-data">
 <table  class="form">
@@ -37,15 +51,17 @@
 	<th>ชื่อเอกสาร</th>
 	<td><input type="text" name="file_title" value="<?php echo $rs['file_title'] ?>"></td>
 </tr>
-<tr>
-	<th>เอกสาร</th>
-	<td>
-		<?php if(!empty($rs['file'])): ?>
-			<span><a href="uploads/research/<?php echo $rs['file'] ?>"><?php echo $rs['file_title'] ?></a></span>
-		<?php endif; ?>
-		<input type="file" name="file" >
-	</td>
-
+<tr><th>ไฟล์เอกสาร </th>
+<td>
+	<small>อนุญาติเฉพาะ  pdf, xls, xlsx, doc, docx, ppt, pptx, rar และ zip</small>
+	<br /><input type="file" name="file" />
+	<?php if(!empty($rs['file'])): ?>
+	 <span class="option">
+	 	<a href="research/admin/research/download/<?php echo $rs['id'] ?>">ดาวน์โหลด</a> 
+	 	<a href="#" rel="del">ลบไฟล์</a>
+	 </span>
+	 <?php endif; ?>
+</td>
 </tr>
 <tr>
 	<th></th>

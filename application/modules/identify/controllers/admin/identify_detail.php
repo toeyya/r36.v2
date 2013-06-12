@@ -10,9 +10,10 @@ class Identify_detail extends Admin_Controller
 	function index($identify_id=FALSE){
 		//$this->db->debug=TRUE;	
 		$data['result']=$this->detail->select("n_identify_detail.*,n_identify.name as identify_name,userfirstname,usersurname")
-														->join("LEFT JOIN n_identify ON n_identify.id=n_identify_detail.identify_id
+									 ->join("LEFT JOIN n_identify ON n_identify.id=n_identify_detail.identify_id
 																	 LEFT JOIN n_user ON n_identify_detail.user_id=uid")
-														->sort("")->order("n_identify_detail.id desc")->get();
+									 ->where("identify_id=$identify_id")					
+									 ->sort("")->order("n_identify_detail.id desc")->get();
 		$data['identify_id']=$identify_id;
 		$data['pagination']=$this->detail->pagination();
 		$this->template->build('admin/detail/index',$data);

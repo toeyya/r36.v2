@@ -12,16 +12,17 @@
 	<div class="main">
 	<div class="name"></div>   
     <div class="dog1"></div>
-    <div class="logedin"> 
+     <!-- <div class="logedin"> 
     	<a href="users/logout" class="btn_logout" name="btn_logout" title="ออกจากระบบ"></a>
-    	 <!-- <div class="dateTime">
-    	  	<?php// echo date('H').":".date('i')." น.&nbsp;&nbsp;วันที่ ".date('d').' '.convert_month(date('m'),"shortthai").' '.(date('Y')+543);?></div>-->
-    </div>
+    	<div class="dateTime">
+    	  	<?php// echo date('H').":".date('i')." น.&nbsp;&nbsp;วันที่ ".date('d').' '.convert_month(date('m'),"shortthai").' '.(date('Y')+543);?></div>
+    </div>-->
   
     <div class="userlogedin">
     	<span class="userlogedin_text1">ผู้ใช้:  </span>
     	 <span class="userlogedin_text2"><?php echo $this->session->userdata("R36_FNAME")." ".$this->session->userdata('R36_SURNAME') ?></span>
     	<span class="userlogedin_text1">สิทธิ์ :</span><span class="userlogedin_text2"><?php echo $this->session->userdata('R36_LEVEL_NAME')?></span>
+		<span>| <a href="users/logout">ออกจากระบบ</a></span>
 	</div>
   </div>
  <div class="clr"></div>	
