@@ -11,7 +11,6 @@
               	 <ul>
                     <li><a href="content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a></li>
                     <li><a href="#">สถานที่ตรวจชันสูตรโรคพิษสุนัขบ้า</a></li>
-                    <li><a href="#">สถานที่ให้คำปรึกษาเกี่ยวกับ<br/>โรคพิษสุนัขบ้า</a></li>
                     <li><a href="research/index/">งานศึกษาวิจัย</a></li>
                     <li><a href="document/index">เอกสารเผยแพร่</a></li>
                     <li><a href="webboard">เว็บบอร์ด</a></li>
