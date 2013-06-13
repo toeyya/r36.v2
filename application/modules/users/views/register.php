@@ -1,8 +1,12 @@
 <script type="text/javascript">
 $(document).ready(function(){	
 	$('input[name=userhospital]').next().addClass('alertred').html('');	
+	
 	$('#form1').validate({
-		debug:true,
+	 	submitHandler:function(){
+				alert("ddd");
+		 	 	
+		 },
 		groups:{
 			groupname:'firstname surname',
 			groupidcard:'cardW0 cardW1 cardW2 cardW3 cardW4',
@@ -28,18 +32,18 @@ $(document).ready(function(){
 				required:true,
 				remote:{
 					url:'<?php echo base_url(); ?>users/chkHospitalcode',
-					type:'get',					
+					type:'get',
+					dataType:'json',					
 					dataFilter:function(data){
 						var json=JSON.parse(data);
 						if(json.status=="true"){
 							  $('input[name=userhospital]').next().removeClass('alertred').html(json.texts); 
 							   return "true";
 						}else{
-							 return $('input[name=userhospital]').next().addClass('alertred').html('');
+							 $('input[name=userhospital]').next().addClass('alertred').html('');
 							return "false";
-						}
-					}			
-
+						}						
+					}	
 				}
 			},
 			usermail:{
@@ -59,7 +63,6 @@ $(document).ready(function(){
 			cardW4:{
 				required:"กรุณาระบุ",
 				remote:"กรุณาระบุให้ถูกต้อง"
-
 			},
 			userhospital:{
 				required:'กรุณาระบุ',
@@ -73,7 +76,6 @@ $(document).ready(function(){
 				}
 			},
 			password:"กรุณาระบุ",
-
 			repassword:"กรุณาระบุให้ตรงกัน"
 		},
 	 	errorPlacement: function(error, element) {
@@ -103,41 +105,41 @@ $(document).ready(function(){
 <div class="row">
 		<form action="users/signup" method="post" class="form-horizontal" id="form1">
  			<div class="control-group">
- 				<label class="control-label" for="inputEmail">รหัสหน่วยงาน 9 หลัก</label>
+ 				<label class="control-label" for="inputEmail">รหัสหน่วยงาน 9 หลัก<label class="alertred">*</label></label>
 				<div class="controls">
 					<input type="text" class="input-medium" placeholder="รหัสหน่วยงาน 9 หลัก" name="userhospital"  maxlength="9">
-					<label class="alertred">*</label>		
+						
 							
 				</div>	
 					
- 				<label class="control-label" for="inputEmail">อีเมล์</label>
+ 				<label class="control-label" for="inputEmail">อีเมล์<label class="alertred">*</label></label>
 				<div class="controls">
-					<input type="text"  placeholder="อีเมล์" name="usermail" class="input-large"> <label class="alertred">*</label>
+					<input type="text"  placeholder="อีเมล์" name="usermail" class="input-large"> 
 				</div>
- 				<label class="control-label" for="inputEmail">รหัสผ่าน</label>
+ 				<label class="control-label" for="inputEmail">รหัสผ่าน<label class="alertred">*</label></label>
 				<div class="controls">
-					<input type="password"  placeholder="รหัสผ่าน" class="input-medium"  name="password" id="password" class="input-large"> <label class="alertred">*</label>
+					<input type="password"  placeholder="รหัสผ่าน" class="input-large"  name="password" id="password" class="input-large">
 				</div>
- 				<label class="control-label" for="inputEmail">ยืนยันรหัสผ่าน</label> 
+ 				<label class="control-label" for="inputEmail">ยืนยันรหัสผ่าน<label class="alertred">*</label></label> 
 				<div class="controls">
-					<input type="password"  placeholder="ยืนยันรหัสผ่าน" class="input-medium"  name="repassword" class="input-large"> <label class="alertred">*</label>
+					<input type="password"  placeholder="ยืนยันรหัสผ่าน" class="input-large"  name="repassword" class="input-large">
 				</div>		
  			</div>
  			<hr class="hr1">
  			<div class="control-group">
-				<label class="control-label" for="idcard">เลขประจำตัวประชาชน</label>
+				<label class="control-label" for="idcard">เลขประจำตัวประชาชน<label class="alertred">*</label></label>
 				<div class="controls" id="Show_idcard">
 					<input type="text" id="cardW0"  name="cardW0" style="width:10px;" size="1" maxlength="1">
 					<input type="text" id="cardW1"  name="cardW1" style="width:30px;" size="4" maxlength="4">
 					<input type="text" id="cardW2"  name="cardW2" style="width:40px;" size="5" maxlength="5">
 					<input type="text" id="cardW3"  name="cardW3" style="width:20px;" size="2" maxlength="2">
 					<input type="text" id="cardW4"  name="cardW4" style="width:10px;" size="1" maxlength="1">					
-				<label class="alertred">*</label>
+				
 				</div>			
-				<label class="control-label" for="inputFirstame">ชื่อ -นามสกุล</label>
+				<label class="control-label" for="inputFirstame">ชื่อ -นามสกุล<label class="alertred">*</label></label>
 				<div class="controls">
-					<input type="text" id="firstname" class="input-medium" placeholder="ชื่อ" name="fisrtname"> <label class="alertred">*</label>
-					<input type="text" id="surname" class="input-medium" placeholder="นามสกุล" name="surname"> <label class="alertred">*</label>
+					<input type="text" id="firstname" class="input-medium" placeholder="ชื่อ" name="fisrtname">
+					<input type="text" id="surname" class="input-medium" placeholder="นามสกุล" name="surname"> 
 				</div>				
 				<br/>
 				<label class="control-label" for="inputPostion">ตำแหน่ง</label>
@@ -145,16 +147,16 @@ $(document).ready(function(){
 					<?php echo form_dropdown('position',get_option('id','name','n_position'),'','','--กรุณาระบุ--') ?>
 				</div>
 
-				<label class="control-label" for="inputEmail">โทรศัพท์มือถือ</label>
+				<label class="control-label" for="inputEmail">โทรศัพท์มือถือ<label class="alertred">*</label></label>
 				<div class="controls">
 					<input type="text" name="mobile0"  maxlength="3"  style="width:40px;" placeholder="08x" > -<input type="text" name="mobile1"  maxlength="3"  style="width:50px;"> -<input type="text" name="mobile2"  id="mobile2"  maxlength="4"  style="width:60px;">					
-					 <label class="alertred">*</label>
+					
 				</div>
-				<label class="control-label" for="inputEmail">โทรศัพท์สำนักงาน</label>
+				<label class="control-label" for="inputEmail">โทรศัพท์สำนักงาน<label class="alertred">*</label></label>
 				<div class="controls">
 					<input type="text" name="tel0" maxlength="1"  style="width:15px;"> -<input type="text" name="tel1" maxlength="4" style="width:60px;"> -<input type="text" name="tel2" id="tel2" maxlength="4" style="width:60px;"> 				
 					
-					<label class="alertred">*</label> ต่อ <input type="text" name="telephone_extend" style="width:30px;"> 
+					 ต่อ <input type="text" name="telephone_extend" style="width:30px;"> 
 				</div>
 				<label class="control-label" for="inputEmail">โทรสาร</label>
 				<div class="controls">
@@ -163,7 +165,7 @@ $(document).ready(function(){
 				<div id="boxAdd"><button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
 			</div>	
 			<hr class="hr1">
-		
+			<small><label class="alertred">*</label>รายการที่ต้องกรอก</small>
 		</form>
 </div>
 </div>

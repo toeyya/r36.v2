@@ -99,5 +99,12 @@ ul.question span{margin-left:10px;}
 #research ul li{margin-bottom:20px;}
 #research ul li.title{font-size:16px;font-weight:700;text-align:center;}
 #research ul li label{font-size:14px;font-weight:700;text-align:left;color:#E01B5D;width:250px;}
-#description{margin:10px 0px 30px;text-align:right;}
+ul#description{margin:-13px 0 70px 16px;list-style:none;}
+ul#description li{float:left;width:100px;}
+#brochure{margin-left:10px;}
+#brochure ul{ list-style:none;}
+#brochure ul li{float:left;}
+#brochure ul li.image{width:108px;}
+#brochure ul li.title{width:150px;border-bottom:solid 1px #BBBBBB;}
+
 

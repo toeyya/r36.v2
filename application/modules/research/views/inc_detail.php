@@ -4,6 +4,7 @@
     <li><a href="research/index">งานศึกษาวิจัย</a><span class="divider">/</span></li>
     <li><?php echo $research_name; ?></li>
 </ul>
+<h1><img src="themes/default/media/images/title_research.png" width="101" height="24"></h1>
 <div id="news-pr">
 	<ul>
 		<?php foreach($result as $item): ?>

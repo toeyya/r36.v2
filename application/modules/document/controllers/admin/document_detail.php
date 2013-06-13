@@ -33,7 +33,17 @@ class Document_detail extends Admin_Controller
 		if($_POST){
 			$_POST['user_id']=(!empty($_POST['user_id']))? $_POST['user_id']:$this->session->userdata('R36_UID');
 			$id=$this->detail->save($_POST);
-			if(@$_FILES['file']['name'])
+			if(!empty($_FILES['image']['name']))
+			{					
+				if(image_extension(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION))){	
+				$this->detail->delete_file($id,'uploads/document/','image');
+				$this->detail->delete_file($id,'uploads/document/thumbnail/','image');
+				
+				$this->detail->save(array('id' => $id, 'image' => $this->detail->upload($_FILES['image'],'uploads/document/',792,583)));
+				$this->detail->thumb('uploads/document/thumbnail/',100,80,'x');
+				}				
+			}			
+			if(!empty($_FILES['file']['name']))
 			{
 				if(file_extension(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION))){
 					$this->detail->delete_file($id,'uploads/document','file');

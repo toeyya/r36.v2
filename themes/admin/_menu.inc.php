@@ -16,7 +16,6 @@
 
 	<li <?php echo menu_active('content','content')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a></li>
 	<li <?php echo menu_active('content','content')?>><a href="identify/admin/identify/index">สถานที่ชันสูตรตรวจโรคพิษสุนัขบ้า</a></li>	
-	<li <?php echo menu_active('contents','content')?>><a href="ccontent/admin/content/index/3">สถานที่ให้คำปรึกษาเกี่ยวกับพิษสุนัขบ้า</a></li>
 	<li <?php echo menu_active('contents','content')?>><a href="research/admin/research/index">งานศึกษาวิจัย</a></li>
 	<li <?php echo menu_active('contents','contents')?>><a href="document/admin/document/index">เอกสารเผยแพร่</a></li>
 	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/6">ข่าวประชาสัมพันธ์</a></li>

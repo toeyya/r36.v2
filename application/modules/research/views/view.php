@@ -3,7 +3,7 @@
     <li><a href="research/index">งานศึกษาวิจัย</a><span class="divider">/</span></li>
     <li><?php echo $research_name; ?></li>
 </ul>
-<h1><img src="themes/default/media/images/" width="121" height="28"></h1>
+<h1><img src="themes/default/media/images/title_research.png" width="101" height="24"></h1>
 <hr class="hr1">
 <ul id="description">
 	<li><i class="icon-calendar"></i><?php echo (!empty($rs['upated']))?db_to_th($rs['updated'],false,false):db_to_th($rs['created'],false,false) ; ?></li>

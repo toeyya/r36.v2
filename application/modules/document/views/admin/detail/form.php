@@ -12,7 +12,7 @@ $(document).ready(function(){
 	})
 })
 </script>
-<h1>งานศึกษาวิจัย</h1>
+<h1>เอกสารเผยแพร่</h1>
 <form action="document/admin/document_detail/save" method="post" id="formm"  enctype="multipart/form-data">
 <table  class="form">
 <tr><th>ประเภท</th>
@@ -20,6 +20,9 @@ $(document).ready(function(){
 </tr>
 <tr><th>ชื่อเรื่อง</th>
 <td><input type="text" name="title" value="<?php echo $rs['title'] ?>"></td>
+</tr>
+<tr><th>บทนำ</th>
+	<td><textarea cols="30" rows="20" name="intro"><? echo $rs['intro'] ?></textarea></td>
 </tr>
 <?php if(is_file('uploads/document/thumbnail/'.$rs['image'])): ?>
 <tr><th></th><td><img class="img" src="<?php echo 'uploads/document/thumbnail/'.$rs['image'] ?>"  /></td></tr>
