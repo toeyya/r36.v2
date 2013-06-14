@@ -167,7 +167,7 @@ function generate_password($length=5) {
          $password .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
 		 
       return $password;
- } 
+} 
 
 function file_extension($val){
 	$ext=array('xlsx','pdf', 'xls', 'doc', 'docx', 'ppt', 'pptx', 'rar','zip' );
