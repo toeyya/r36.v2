@@ -2,13 +2,13 @@
 $(document).ready(function(){	
 	$('#form1').validate({	
 		groups:{
-			groupname:'firstname surname',
+			groupname:'userfirstname usersurname',
 			groupidcard:'cardW0 cardW1 cardW2 cardW3 cardW4',
 			grouptel:'tel0 tel1 tel2',
 			groupmobile:'mobile0 mobile1 mobile2'
 		},
 		rules:{
-			firstname:"required",surname:"required",
+			userfirstname:"required",usersurname:"required",
 			tel0:{required:true,number:true},tel1:{required:true,number:true},tel2:{required:true,number:true},
 			mobile0:{required:true,number:true},mobile1:{required:true,number:true},mobile2:{required:true,number:true},
 			cardW0:{required:true,number:true},cardW1:{required:true,number:true},
@@ -42,25 +42,28 @@ $(document).ready(function(){
 					}	
 				}
 			},
-			usermail:{required:true,email:true},
-			password:"required",
-			repassword:{equalTo: "#password"}
+			usermail:{
+				required:true,email:true,
+				remote:{url:'<?php echo base_url()?>users/checkEmail'}
+			},
+			userpassword:"required",
+			repassword:{equalTo: "#userpassword"}
 		},
 		messages:{
 			mobile0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},mobile1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},mobile2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
 			tel0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},tel1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},tel2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
-			firstname:"กรุณาระบุ",surname:"กรุณาระบุ",			
+			userfirstname:"กรุณาระบุ",usersurname:"กรุณาระบุ",			
 			cardW0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},cardW1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},	
 			cardW2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},cardW3:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
 			cardW4:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",remote:"กรุณาระบุให้ถูกต้อง"},
 			userhospital:{required:'กรุณาระบุ',remote:'กรุณาระบุให้ถูกต้อง'},
-			usermail:{required:"กรุณาระบุ",email:"กรุณาระบุให้ถูกต้อง"},
-			password:"กรุณาระบุ",
+			usermail:{required:"กรุณาระบุ",email:"กรุณาระบุให้ถูกต้อง",remote:'อีเมล์ซ้ำ'},
+			userpassword:"กรุณาระบุ",
 			repassword:"กรุณาระบุให้ตรงกัน"
 		},
 	 	errorPlacement: function(error, element) {
-			if (element.attr("name") == "firstname" || element.attr("name") == "surname" ) {
-				error.insertAfter("#surname");
+			if (element.attr("name") == "userfirstname" || element.attr("name") == "usersurname" ) {
+				error.insertAfter("#usersurname");
 			}else if(element.attr("name")=="cardW0" || element.attr("name")=="cardW1" || element.attr("name")=="cardW2" || element.attr("name")=="cardW3" || element.attr("name")=="cardW4"){
 					error.insertAfter("#cardW4");
 			}else if(element.attr('name')=="tel0" || element.attr('name')=="tel1" || element.attr('name')=="tel2"){
@@ -121,7 +124,7 @@ $(document).ready(function(){
 				</div>
  				<label class="control-label" for="inputEmail">รหัสผ่าน<label class="alertred">*</label></label>
 				<div class="controls">
-					<input type="password"  placeholder="รหัสผ่าน" class="input-large"  name="password" id="password" class="input-large">
+					<input type="password"  placeholder="รหัสผ่าน" class="input-large"  name="userpassword" id="userpassword" class="input-large">
 				</div>
  				<label class="control-label" for="inputEmail">ยืนยันรหัสผ่าน<label class="alertred">*</label></label> 
 				<div class="controls">
@@ -141,8 +144,8 @@ $(document).ready(function(){
 				</div>			
 				<label class="control-label" for="inputFirstame">ชื่อ -นามสกุล<label class="alertred">*</label></label>
 				<div class="controls">
-					<input type="text" id="firstname" class="input-medium" placeholder="ชื่อ" name="fisrtname">
-					<input type="text" id="surname" class="input-medium" placeholder="นามสกุล" name="surname"> 
+					<input type="text" id="userfirstname" class="input-medium" placeholder="ชื่อ" name="userfirstname">
+					<input type="text" id="usersurname" class="input-medium" placeholder="นามสกุล" name="usersurname"> 
 				</div>				
 				<br/>
 				<label class="control-label" for="inputPostion">ตำแหน่ง</label>

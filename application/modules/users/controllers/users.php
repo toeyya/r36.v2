@@ -62,35 +62,42 @@ class Users extends Public_Controller
 		$this->template->build('forgetpassword');
 	}
 	function confirm_email(){
-		$this->template->build('confirm_email');
+		$id=clean_url($id);
+		$c=clean_url($c);
+		$result=$this->db->get_one("select uid from n_users  uid= ? and gen_id = ? ",array($id,$c));
+		if($result){
+			$this->user->save(array('uid'=>$id,'confirm_email'=>'1'));
+			$this->template->build('confirm_email');
+		}		
+	}
+	function sendmail(){
+		$subject="";
+		$message="";
+		$address="";
+		$redirect="";
 	}
 	function signup()
 	{
 	   
 	   $_POST['telephone'] =$_POST['tel0'].$_POST['tel1'].$_POST['tel2'];
 	   $_POST['mobile'] = $_POST['mobile0'].$_POST['mobile1'].$_POST['mobile2'];
-	    include("mimemail.inc.php");  // include ฟังก์ชัน เข้ามาใช้งาน	
-	  	
-	  	$mail = new MIMEMAIL("HTML"); // ส่งแบบ HTML  
-	
-	    $mail->senderName ="ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า"; // ชื่อผู้ส่ง  
-	
-	    $mail->senderMail = "r36@favouritedesign.com"; // อีเมลล์ผู้ส่ง  
-	
-	    $mail->bcc = $_POST["usermail"]; // ส่งแบบ bind carbon copy
-	
-	    $mail->subject = "ลงทะเบียนเข้าใช้โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า";// หัวข้ออีเมลล์ 
-	
-	    $mail->body = "tetstssssssssssssssss";   // ข้อความ หรือ HTML ก็ได้
-	
-	    $mail->attachment[] = ''; // ระบุตำแหน่งไฟล์ที่จะแนบ
-	
-	    $mail->create();
-	
-	    $mail->send('clinton_toey@hotmail.com'); // เมลล์ผู้รับ 
-	
-	    //redirect('users/confirm_email');
-
+	   $_POST['fax'] =$_POST['fax0'].$_POST['fax1'].$_POST['fax2'];
+	   $_POST['idcard']=$_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];
+	   $_POST['gen_id']=generate_password(15);
+	   $_POST['userposition']="05";//staff
+	   $id=$this->user->save($_POST);
+	    $subject = "ยืนยันการลงทะเบียน(ระบบรายงานผู้สัมผัสโรค ร.36)";
+		$message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
+		$message.='<hr>';
+		$message.='<p>เรียนคุณ'.$_POST['userfirstname'].' '.$_POST['usersurname'].', </p>';
+		$message.='<p>username :'.$_POST['usermail'].'</p>';
+		$message.='<p>password :'.$_POST['userpassword'].'</p>';
+		$message.='<p>ขอบคุณสำหรับการลงทะเบียนค่ะ  ข้อมูลบัญชีของคุณจะใช้ได้เมื่อคุณยืนยันการลงทะเบียน และผ่านกระบวนการตรวจสอบค่ะ</p>';
+		$message.='<p>กรุณาคลิกลิงค์ด้านล่างเพื่อยืนยันการลงทะเบียน</p>';
+		$message.='<a href="'.base_url().'users/confirm_email?id='.$id.'&c='.$_POST['gen_id'].'">'.base_url().'users/confirm_email?id='.$id.'&c='.$_POST['gen_id'].'</a>';
+		$redirect="users/notice_email";
+		$address=$_POST['usermail'];		
+		//phpmail($subject,$address,$message,$redirect);
 	}
 	public function chkidcard()
 	{			
@@ -99,6 +106,14 @@ class Users extends Public_Controller
 			}		
 			$chk=chk_idcard($idcard_arr,$_GET['digit_last']);				
 		  	echo ($chk=="no")? "false":"true";	  
+	}
+	function checkEmail()
+	{
+		$id=$this->user->get_one("id","usermail",$_GET['usermail']);
+		echo ($id)? "false":"true";	
+	}
+	function notice_email(){
+		$this->template->build('notice_email');
 	}
 	
 

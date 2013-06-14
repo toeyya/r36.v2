@@ -13,7 +13,7 @@
         	<div class="username-field"><input class="input_box" type="text" name="username" value="" /></div>
 			<div class="password-field"><input class="input_box" type="password" name="password" value="" /></div>
             <input class="btn_go" type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;" >
-            <div class="forgot-usr-pwd"><a href="users/register">ลงทะเบียน</a>|<a href="#">ลืมรหัสผ่าน</a></div>
+            <div class="forgot-usr-pwd"><a href="users/register">ลงทะเบียน</a>|<a href="users/forgetPassword">ลืมรหัสผ่าน</a></div>
            
   
          </form>            
