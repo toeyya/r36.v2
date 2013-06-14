@@ -66,22 +66,22 @@ class Users extends Public_Controller
 	}
 	function signup()
 	{
-	   var_dump($_POST);exit;
+	   
 	   $_POST['telephone'] =$_POST['tel0'].$_POST['tel1'].$_POST['tel2'];
 	   $_POST['mobile'] = $_POST['mobile0'].$_POST['mobile1'].$_POST['mobile2'];
 	    include("mimemail.inc.php");  // include ฟังก์ชัน เข้ามาใช้งาน	
 	  	
 	  	$mail = new MIMEMAIL("HTML"); // ส่งแบบ HTML  
 	
-	    $mail->senderName = $_POST["firstname"]; // ชื่อผู้ส่ง  
+	    $mail->senderName ="ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า"; // ชื่อผู้ส่ง  
 	
-	    $mail->senderMail = "clinton.toey@gmail.com"; // อีเมลล์ผู้ส่ง  
+	    $mail->senderMail = "r36@favouritedesign.com"; // อีเมลล์ผู้ส่ง  
 	
 	    $mail->bcc = $_POST["usermail"]; // ส่งแบบ bind carbon copy
 	
 	    $mail->subject = "ลงทะเบียนเข้าใช้โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า";// หัวข้ออีเมลล์ 
 	
-	    $mail->body = "test";   // ข้อความ หรือ HTML ก็ได้
+	    $mail->body = "tetstssssssssssssssss";   // ข้อความ หรือ HTML ก็ได้
 	
 	    $mail->attachment[] = ''; // ระบุตำแหน่งไฟล์ที่จะแนบ
 	
@@ -91,6 +91,14 @@ class Users extends Public_Controller
 	
 	    //redirect('users/confirm_email');
 
+	}
+	public function chkidcard()
+	{			
+			for($i=0;$i<13;$i++){
+					$idcard_arr[]=substr($_GET['idcard'],$i,1);
+			}		
+			$chk=chk_idcard($idcard_arr,$_GET['digit_last']);				
+		  	echo ($chk=="no")? "false":"true";	  
 	}
 	
 

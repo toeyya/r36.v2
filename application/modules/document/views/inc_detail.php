@@ -11,8 +11,7 @@
 		<li class ="title">
 			<a href="document/view/<?php echo $item['document_id'] ?>/<?php echo $item['id'] ?>"><?php echo $item['title'] ?></a>
 			<p><?php echo $item['intro'] ?></p>
-		</li>
-		
+		</li>		
 		<?php endforeach; ?>
 	</ul>
 </div>	

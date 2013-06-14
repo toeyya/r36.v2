@@ -83,7 +83,7 @@ var province_id,amphur_id,district_id;
 		 		cardW4:{
 		 			required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true,	 		
 		 			remote:{
-		 				url:'<?php echo base_url(); ?>inform/chkidcard',
+		 				url:'<?php echo base_url(); ?>users/chkidcard',
 		 				type:'get',
 				        data: {
 				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },

@@ -51,6 +51,8 @@ $route['admin'] = "users/admin/auth";
 
 
 
+
+
 //$route['([^/]+)/admin/([a-zA-Z0-9]+)/([a-zA-Z0-9]+)(/.*)'] = "$1/admin/$2/$4/$3";
 //$route['([^/]+)/admin/([^/]+)(/.*)'] = "$1/admin/$2/index/$3";
 

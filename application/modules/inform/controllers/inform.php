@@ -328,15 +328,7 @@ class Inform extends R36_Controller
 		$rs['district_name']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($rs['provinceid'],$rs['amphurid'],$rs['districtid']));
 		echo json_encode($rs);
 	}
-	public function chkidcard()
-	{//must be true for valid elements   	
-		//var_dump($_GET);	 
-			for($i=0;$i<13;$i++){
-					$idcard_arr[]=substr($_GET['idcard'],$i,1);
-			}		
-			$chk=chk_idcard($idcard_arr,$_GET['digit_last']);		
-		  	echo ($chk=="no")? "false":"true";	  
-	}
+
 	function chk_idcard_edit()
 	{
 			$data['historyid']=$_GET['historyid'];				
