@@ -12,9 +12,8 @@ $(document).ready(function(){
 			tel0:{required:true,number:true},tel1:{required:true,number:true},tel2:{required:true,number:true},
 			mobile0:{required:true,number:true},mobile1:{required:true,number:true},mobile2:{required:true,number:true},
 			cardW0:{required:true,number:true},cardW1:{required:true,number:true},
-			 cardW2:{required:true,number:true},cardW3:{required:true,number:true},
-		 	 cardW4:{
-		 			required:true,number:true,	 		
+			cardW2:{required:true,number:true},cardW3:{required:true,number:true},
+		 	cardW4:{required:true,number:true,	 		
 		 			remote:{
 		 				url:'<?php echo base_url(); ?>users/chkidcard',
 		 				type:'get',
@@ -24,8 +23,7 @@ $(document).ready(function(){
 				        }
 		 			}		 		
 		 	},   
-			userhospital:{
-				required:true,
+			userhospital:{required:true,
 				remote:{
 					url:'<?php echo base_url(); ?>users/chkHospitalcode',
 					type:'get',
@@ -33,17 +31,16 @@ $(document).ready(function(){
 					dataFilter:function(data){
 						var json=JSON.parse(data);
 						if(json.status=="true"){
-							  $('#userhospital').closest('div').find('.shw-name').html(json.texts); 
-							   return "true";
+							$('#userhospital').closest('div').find('.shw-name').html(json.texts); 
+							return "true";
 						}else{
-							 $('#userhospital').closest('div').find('.shw-name').html(''); 
+							$('#userhospital').closest('div').find('.shw-name').html(''); 
 							return "false";
 						}								
 					}	
 				}
 			},
-			usermail:{
-				required:true,email:true,
+			usermail:{required:true,email:true,
 				remote:{url:'<?php echo base_url()?>users/checkEmail'}
 			},
 			userpassword:"required",
@@ -57,7 +54,7 @@ $(document).ready(function(){
 			cardW2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},cardW3:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
 			cardW4:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",remote:"กรุณาระบุให้ถูกต้อง"},
 			userhospital:{required:'กรุณาระบุ',remote:'กรุณาระบุให้ถูกต้อง'},
-			usermail:{required:"กรุณาระบุ",email:"กรุณาระบุให้ถูกต้อง",remote:'อีเมล์ซ้ำ'},
+			usermail:{required:"กรุณาระบุ",email:"กรุณาระบุให้ถูกต้อง",remote:'มีอีเมล์นี้แล้ว'},
 			userpassword:"กรุณาระบุ",
 			repassword:"กรุณาระบุให้ตรงกัน"
 		},
@@ -170,6 +167,7 @@ $(document).ready(function(){
 				<div class="controls">
 					<input type="text" name="fax0" maxlength="1"  style="width:15px;"> -<input type="text" name="fax1" maxlength="4" style="width:60px;"> -<input type="text" name="fax2" id="fax2" maxlength="4" style="width:60px;"> 					
 				</div>
+				<?php echo form_hidden('created',date('Y-m-d H:i:s')); ?>
 				<div id="boxAdd"><button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
 			</div>	
 			<hr class="hr1">

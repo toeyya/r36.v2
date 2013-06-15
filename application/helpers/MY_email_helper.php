@@ -88,7 +88,7 @@ if(!function_exists('phpmail')){
 		  print ('CANNOT SEND EMAIL');
 		}else{
 			//redirect('users/notice_email');
-			redirect($redirect);
+			if($redirect) redirect($redirect);
 		}	
 		return true;    
 	}

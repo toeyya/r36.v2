@@ -70,24 +70,37 @@ class Users extends Public_Controller
 			$this->template->build('confirm_email');
 		}		
 	}
-	function sendmail(){
-		$subject="";
-		$message="";
-		$address="";
-		$redirect="";
+	function sendmail()
+	{
+		$rs=$this->user->get_row("usermail",$_POST['usermail']);
+		if($rs){
+			$subject="ลืมรหัสผ่าน (ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
+			$message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
+			$message.='<hr>';
+			$message.='<p>เรียนคุณ'.$rs['userfirstname'].' '.$rs['usersurname'].', </p>';
+			$message.='<p>รหัสผ่านของคุณคือ '.$rs['userpassword'].'</p>';
+			$address=$_POST['usermail'];
+			$redirect="users/forgetPassword";
+			set_notify('success','ข้อมูลถูกส่งไปที่อีเมล์แล้ว');	
+			phpmail($subject,$address,$message,$redirect);
+					
+		}else{
+			set_notify('error','คุณระบุอีเมล์ไม่ถูกต้อง');
+			redirect('users/forgetPassword');		
+		}
 	}
 	function signup()
 	{
-	   
+
 	   $_POST['telephone'] =$_POST['tel0'].$_POST['tel1'].$_POST['tel2'];
 	   $_POST['mobile'] = $_POST['mobile0'].$_POST['mobile1'].$_POST['mobile2'];
 	   $_POST['fax'] =$_POST['fax0'].$_POST['fax1'].$_POST['fax2'];
 	   $_POST['idcard']=$_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];
-	   $_POST['gen_id']=generate_password(15);
+	   $_POST['gen_id']=generate_password(20);
 	   $_POST['userposition']="05";//staff
 	   $id=$this->user->save($_POST);
-	    $subject = "ยืนยันการลงทะเบียน(ระบบรายงานผู้สัมผัสโรค ร.36)";
-		$message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
+	   $subject = "ยืนยันการลงทะเบียน(ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
+	    $message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
 		$message.='<hr>';
 		$message.='<p>เรียนคุณ'.$_POST['userfirstname'].' '.$_POST['usersurname'].', </p>';
 		$message.='<p>username :'.$_POST['usermail'].'</p>';
@@ -97,15 +110,15 @@ class Users extends Public_Controller
 		$message.='<a href="'.base_url().'users/confirm_email?id='.$id.'&c='.$_POST['gen_id'].'">'.base_url().'users/confirm_email?id='.$id.'&c='.$_POST['gen_id'].'</a>';
 		$redirect="users/notice_email";
 		$address=$_POST['usermail'];		
-		//phpmail($subject,$address,$message,$redirect);
+		phpmail($subject,$address,$message,$redirect);
 	}
 	public function chkidcard()
 	{			
-			for($i=0;$i<13;$i++){
-					$idcard_arr[]=substr($_GET['idcard'],$i,1);
-			}		
-			$chk=chk_idcard($idcard_arr,$_GET['digit_last']);				
-		  	echo ($chk=="no")? "false":"true";	  
+		for($i=0;$i<13;$i++){
+				$idcard_arr[]=substr($_GET['idcard'],$i,1);
+		}		
+		$chk=chk_idcard($idcard_arr,$_GET['digit_last']);				
+	  	echo ($chk=="no")? "false":"true";	  
 	}
 	function checkEmail()
 	{
@@ -115,6 +128,7 @@ class Users extends Public_Controller
 	function notice_email(){
 		$this->template->build('notice_email');
 	}
+
 	
 
 	
