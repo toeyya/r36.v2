@@ -4,13 +4,13 @@ class Identify extends Public_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('indentify_model','identify');
-		$this->load->model('indenify_detiail_model','detail');
+		$this->load->model('identify_model','identify');
+		$this->load->model('identify_detail_model','detail');
 	
 	}
-	function index($view=FALSE){
-		$data['result']=$this->quest->sort("")->get();
-		$data['pagination']=$this->quest->pagination();
-		$this->template->build('question_index',$data);
+	function index(){
+		$data['result']=$this->identify->get();
+		$data['pagination']=$this->identify->pagination();
+		$this->template->build('inc_index',$data);
 	}
 }

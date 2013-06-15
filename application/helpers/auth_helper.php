@@ -20,7 +20,7 @@ function login($username=FALSE,$password=FALSE,$remember=FALSE)
 		$CI->session->set_userdata('R36_UID',$rs['uid']);
 		$CI->session->set_userdata('R36_LEVEL',$rs['userposition']);
 		$CI->session->set_userdata('R36_LEVEL_NAME',$rs['level_name']);
-		$CI->session->set_userdata('R36_USERNAME',$rs['username']);
+		//$CI->session->set_userdata('R36_USERNAME',$rs['username']);
 		$CI->session->set_userdata('R36_FNAME',$rs['userfirstname']);
 		$CI->session->set_userdata('R36_SURNAME', $rs['usersurname']);
 		$CI->session->set_userdata('R36_MAIL', $rs['usermail']);

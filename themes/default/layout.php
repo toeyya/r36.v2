@@ -63,7 +63,24 @@
             <br>
         </div>
         <div id="cols2" style="position:relative; float:left; top:-39px; margin-left:8px; width:710px;">
-        	<?php echo $template['body']; ?>	
+        	        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="22" height="22"><img src="themes/default/media/images/tbCol2_topLeft.png" width="22" height="22" /></td>
+            <td background="themes/default/media/images/tbCol2_top.png">&nbsp;</td>
+            <td width="22" height="22"><img src="themes/default/media/images/tbCol2_topRight.png" width="22" height="22" /></td>
+          </tr>
+          <tr>
+            <td background="themes/default/media/images/tbCol2_left.png">&nbsp;</td>
+ 			 <td bgcolor="#FFFFFF">	<?php echo $template['body']; ?></td>
+           </td>
+            <td background="themes/default/media/images/tbCol2_right.png">&nbsp;</td>
+          </tr>
+          <tr>
+            <td width="22" height="22"><img src="themes/default/media/images/tbCol2_bottomLeft.png" width="22" height="22" /></td>
+            <td background="themes/default/media/images/tbCol2_bottom.png"> </td>
+            <td width="22" height="22"><img src="themes/default/media/images/tbCol2_bottomRight.png" width="22" height="22" /></td>
+          </tr>
+        </table>	
         </div>
          <div class="clr"></div>
            <div id="footer">© Copyright All Right Reserved. ระบบการรายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า</div>     

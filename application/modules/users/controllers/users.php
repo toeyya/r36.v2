@@ -24,7 +24,7 @@ class Users extends Public_Controller
             if(login($_POST['username'], $_POST['password']))
             {
                 set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบค่ะ');
-              redirect('inform/index');
+              	redirect($_SERVER['HTTP_REFERER']);
                
             }
             else
@@ -61,10 +61,10 @@ class Users extends Public_Controller
 	function forgetPassword(){
 		$this->template->build('forgetpassword');
 	}
-	function confirm_email(){
+	function confirm_email($id,$c)
+	{	
 		$id=clean_url($id);
-		$c=clean_url($c);
-		$result=$this->db->get_one("select uid from n_users  uid= ? and gen_id = ? ",array($id,$c));
+		$result=$this->db->GetOne("SELECT uid FROM n_user WHERE uid= ? and gen_id = ? ",array($id,$c));
 		if($result){
 			$this->user->save(array('uid'=>$id,'confirm_email'=>'1'));
 			$this->template->build('confirm_email');
@@ -107,7 +107,7 @@ class Users extends Public_Controller
 		$message.='<p>password :'.$_POST['userpassword'].'</p>';
 		$message.='<p>ขอบคุณสำหรับการลงทะเบียนค่ะ  ข้อมูลบัญชีของคุณจะใช้ได้เมื่อคุณยืนยันการลงทะเบียน และผ่านกระบวนการตรวจสอบค่ะ</p>';
 		$message.='<p>กรุณาคลิกลิงค์ด้านล่างเพื่อยืนยันการลงทะเบียน</p>';
-		$message.='<a href="'.base_url().'users/confirm_email?id='.$id.'&c='.$_POST['gen_id'].'">'.base_url().'users/confirm_email?id='.$id.'&c='.$_POST['gen_id'].'</a>';
+		$message.='<a href="'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'">'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'</a>';
 		$redirect="users/notice_email";
 		$address=$_POST['usermail'];		
 		phpmail($subject,$address,$message,$redirect);
@@ -129,7 +129,17 @@ class Users extends Public_Controller
 		$this->template->build('notice_email');
 	}
 
-	
+	function check_captcha()
+    {
+        if($this->session->userdata('captcha')==$_GET['captcha'])
+        {
+            echo "true";
+        }
+        else
+        {
+            echo "false";
+        }
+    }
 
 	
 

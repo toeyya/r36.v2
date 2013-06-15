@@ -8,15 +8,24 @@
     <td background="themes/default/media/images/tbCol1_left.png">&nbsp;</td>
     <td bgcolor="#FFFFFF" height="180" valign="top">
     <div class="login">
+    	<?php if($this->session->userdata('R36_UID')): ?> 
+    	<span class="text-loginSystem">ลงชื่อเข้าใช้ระบบ</span> 	
+    	<ul>
+    		<li>สวัสดี :<label><?php echo $this->session->userdata('R36_MAIL')?></label></li>
+    		<li>ประเภท :<label><?php echo $this->session->userdata('R36_LEVEL_NAME'); ?></label></li>
+    		<hr class="hr1">
+    		<li><span><a href="inform/index" target="_blank" class="btn btn-mini btn-info">โปรแกรม ร.36</a></span>
+    				  <a href="users/logout" class="btn btn-mini">logout</a></li>
+    	</ul> 
+    	 <?php else: ?>
     	<form action="users/login" method="post">
-		<span class="text-loginSystem">ลงชื่อเข้าใช้ระบบ</span>                  
+		<span class="text-loginSystem">ลงชื่อเข้าใช้ระบบ</span> 			                      	           
         	<div class="username-field"><input class="input_box" type="text" name="username" value="" /></div>
 			<div class="password-field"><input class="input_box" type="password" name="password" value="" /></div>
-            <input class="btn_go" type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;" >
-            <div class="forgot-usr-pwd"><a href="users/register">ลงทะเบียน</a>|<a href="users/forgetPassword">ลืมรหัสผ่าน</a></div>
-           
-  
-         </form>            
+			<input class="btn_go" type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;" >
+            <div class="forgot-usr-pwd"><a href="users/register">ลงทะเบียน</a>|<a href="users/forgetPassword">ลืมรหัสผ่าน</a></div>                        			
+         </form>
+         <?php endif; ?>                            
     </div>
     </td>
     <td background="themes/default/media/images/tbCol1_right.png">&nbsp;</td>

@@ -59,7 +59,10 @@ a:hover {color:#0190fe;}
 	.forgot-usr-pwd{float:left;width:200ppx; margin-left:45px; margin-top:7px;}
 	.forgot-usr-pwd a{color:#dc1992; text-decoration:none; font-size:13px;}
 	.forgot-usr-pwd a:hover, .forgot-usr-pwd a:focus {text-decoration: underline;}
-
+	.login ul{list-style: none;margin-left:10%;margin-top:10%;}
+	.login ul li{font-size:12px;margin:10px 0px 10px 10px;}
+	.login ul li label{width:50px;display:inline;}
+	.login ul li span{margin-right:10px;}
 	
 
 /* col2 */

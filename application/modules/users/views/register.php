@@ -44,7 +44,8 @@ $(document).ready(function(){
 				remote:{url:'<?php echo base_url()?>users/checkEmail'}
 			},
 			userpassword:"required",
-			repassword:{equalTo: "#userpassword"}
+			repassword:{equalTo: "#userpassword"},
+	        captcha:{required: true,remote: "users/check_captcha"}			
 		},
 		messages:{
 			mobile0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},mobile1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},mobile2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
@@ -56,7 +57,8 @@ $(document).ready(function(){
 			userhospital:{required:'กรุณาระบุ',remote:'กรุณาระบุให้ถูกต้อง'},
 			usermail:{required:"กรุณาระบุ",email:"กรุณาระบุให้ถูกต้อง",remote:'มีอีเมล์นี้แล้ว'},
 			userpassword:"กรุณาระบุ",
-			repassword:"กรุณาระบุให้ตรงกัน"
+			repassword:"กรุณาระบุให้ตรงกัน",
+        	captcha:{required: "กรุณากรอกตัวอักษรตัวที่เห็นในภาพ",remote: "กรุณากรอกตัวอักษรให้ตรงกับภาพ"}
 		},
 	 	errorPlacement: function(error, element) {
 			if (element.attr("name") == "userfirstname" || element.attr("name") == "usersurname" ) {
@@ -104,8 +106,10 @@ $(document).ready(function(){
 <ul class="breadcrumb">
     <li><a href="home">หน้าแรก</a> <span class="divider">/</span></li>
     <li>ลงทะเบียน</li>
-</ul>	
+</ul>
+<h1>ลงทะเบียน</h1>	
 <div id="register">
+<div class="alert alert-info"><strong>ประกาศ !! </strong>เมื่อลงทะเบียนแล้ว กรุณายืนยันการลงทะเบียนจากลิงค์ในอีเมล์ และรอการตรวจสอบก่อน จึงจะใช้งานได้</div>
 <div id="span9">
 <div class="row">
 		<form action="users/signup" method="post" class="form-horizontal" id="form1">
@@ -167,8 +171,19 @@ $(document).ready(function(){
 				<div class="controls">
 					<input type="text" name="fax0" maxlength="1"  style="width:15px;"> -<input type="text" name="fax1" maxlength="4" style="width:60px;"> -<input type="text" name="fax2" id="fax2" maxlength="4" style="width:60px;"> 					
 				</div>
-				<?php echo form_hidden('created',date('Y-m-d H:i:s')); ?>
-				<div id="boxAdd"><button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
+            <div class="control-group">
+ 
+              <label class="control-label" for="inputCaptcha">รหัสลับ <span class="alertred">*</span></label>
+                <div class="controls">
+                  <img src="users/captcha" /><Br>
+                  <input class="input-small" type="text" name="captcha" id="inputCaptcha" placeholder="รหัสลับ">
+                </div>
+            </div>
+				
+             <label class="control-label" for="inputCaptcha"></label>
+                <div class="controls">
+ 				<?php echo form_hidden('created',date('Y-m-d H:i:s')); ?>
+				<button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
 			</div>	
 			<hr class="hr1">
 			<small><label class="alertred">*</label>รายการที่ต้องกรอก</small>
