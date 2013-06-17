@@ -17,9 +17,7 @@ class Inform extends R36_Controller
 		
 	}
 	function index()
-	{
-
-		//var_dump($_GET);		
+	{			
 		if(!empty($_GET['action']))
 		{// กดค้นหา							
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';

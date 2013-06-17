@@ -3,7 +3,7 @@
             <div id='toplevel'>
             <ul>
               <li class="line_topmenu4"><a href="home">หน้าแรก</a></li>
-              <li class="line_topmenu4"><a href="users/r36/users/form/<?php echo $this->session->userdata('R36_UID') ?>/profile"><span>ประวัติส่วนตัว</span></a></li> 
+              <li class="line_topmenu4"><a href="users/r36/users/index/<?php echo $this->session->userdata('R36_UID') ?>"><span>ประวัติส่วนตัว</span></a></li> 
               <li class="line_topmenu4"><a href="javascript:void(0);">กรอกแบบฟอร์ม</a>
                 <ul class="submenu4">
                      <li><a href="inform/index">แบบฟอร์มคนไข้ที่สัมผัสโรค</a></li>

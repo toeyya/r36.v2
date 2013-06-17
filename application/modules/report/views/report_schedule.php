@@ -3,26 +3,29 @@
 	
 </div>
 <div id="report">
+	<div id="title">
+		<p>รายงานตารางนัดหมายคนไข้  ประจำวันที่ 31 พ.ค. 2556</p>
+		<p>โรงพยาบาลบางกรวย จังหวัดนนทบุรี อำเภอ บางกรวย ตำบลบางกราย</p>
+	</div>
 <table class="tb_search_Rabies1">
 <tr>
   <th width="17%">HN</th>
-  <th width="12%">ชื่อ</th>
-  <th width="13%">นามสกุล</th>
-  <th width="10%">สถานะ</th>
+  <th width="13%">ชื่อ-นามสกุล</th>
+  <th width="30%">สถานะ</th>
   <th width="10%">ฉีดโดยวิธี</th>
   <th width="8%">จำนวนครั้ง</th> 
-  <th width="15%">ครั้งที่แล้ววันที่</th>
-  <th width="15%">ครั้งต่อไปวันที่</th>
+  <th width="10%">ครั้งที่แล้ววันที่</th>
+  <th width="10%">ครั้งต่อไปวันที่</th>
 </tr>
 <? 					
 	foreach($result as $item){
 			if($item['in_out']=='1'){
-				$inout_name='คนไข้ในเขตอำเภอ';
+				$inout_name='สิทธิการรักษาสถานบริการนี้';
 			}else if($item['in_out']=='2'){
-				$inout_name='คนไข้นอกเขตอำเภอ';
+				$inout_name='สิทธิการรักษาสถานบริการอื่น';
 			}
 			
-			$recinfo=$this->information->get_row($item['id']);
+			$recinfo=$this->inform->get_row($item['id']);
 			$rec_vaccinedate_start=$this->vaccine->where("information_id=".$item['id']." and DATEDIFF('vaccine_date',CURDATE())=3")->sort("")->order("vaccine_id asc")->get();			
 			foreach($rec_vaccinedate_start as $rec){
 ?>
@@ -40,6 +43,8 @@
 		} //end foreach $rec_vaccine
 	} // end foreach result
 ?>
+
+
 			
      
     </table>

@@ -49,12 +49,11 @@ class Users extends Admin_Controller
 	function form($id=FALSE,$profile=FALSE)
 	{
 			$this->template->append_metadata(js_idcard());	
-			$this->user->primary_key("uid");
-	
+			$this->user->primary_key("uid");	
 			if(!$id){$id="?";}				
-			$data['rs']=$this->user->select("n_user.*,level_name, a.province_name as province_name1,a.province_id as province_id1
-																	,b.province_name as province_name2,b.province_id as province_id2,hospital_amphur_id,hospital_district_id,status
-																	,hospital_name")
+			$data['rs']=$this->user->select("n_user.*,level_name, a.province_name as province_name1
+											,b.province_name as province_name2,b.province_id as province_id2,hospital_amphur_id,hospital_district_id,status
+											,hospital_name")
 																->join("INNER JOIN n_level_user  ON  n_user.userposition=n_level_user.level_code
 																			LEFT  JOIN n_province  a   ON  n_user.userprovince=a.province_id
 																			LEFT  JOIN n_hospital_1 	     ON  userhospital =n_hospital_1.hospital_code 								
@@ -71,22 +70,18 @@ class Users extends Admin_Controller
 			$data['cardW3']=substr($data['rs']['idcard'],10,2);
 			$data['cardW4']=substr($data['rs']['idcard'],12,1);
 			$data['title']=($profile)? "ประวัติส่วนตัว":"ข้อมูลผู้ใช้ระบบ (แก้ไข/เพิ่ม)";
+			$data['profile']=$profile;
 			$this->template->build('admin/users/form',$data);					
 	}
-	function save()
+	function save($profile=false)
 	{				
 		if($_POST){
-			if(!empty($_POST['id'])){
-				$_POST['uid']=$_POST['id'];
-			}
-			if(!empty($_POST['idcard'])){
-				$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];
-			}
-					
+			if(!empty($_POST['id']))$_POST['uid']=$_POST['id'];
+			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];					
 			$this->user->save($_POST);
 			set_notify('success',SAVE_DATA_COMPLETE);
 		}
-		redirect('users/admin/users');
+		($profile) ?redirect('users/admin/users/form/'.$_POST['uid'].'/profile'):redirect('users/admin/users');
 	}
 	
 	function delete(){

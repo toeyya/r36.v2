@@ -7,14 +7,14 @@ var ref1,ref2,ref3;
 			url:'<?php echo base_url() ?>district/getAmphur',data:'name=h_amphur&ref1='+ref1,
 			success:function(data)
 			{
-				$("#input_Hamphur").html(data);
+				$("#input_amphur").html(data);
 				$("#hosptal option[value='']").attr('selected','selected');
 			}
 		});
 	});
 	$("#h_amphur").live('change',function(){	
 	 	ref2=$("#h_amphur option:selected").val();
-		$.ajax({url:'<?php echo base_url(); ?>district/getDistrict',data:'name=h_district&ref1='+ref1+'&ref2='+ref2,success:function(data){$("#input_District").html(data);}});	
+		$.ajax({url:'<?php echo base_url(); ?>district/getDistrict',data:'name=h_district&ref1='+ref1+'&ref2='+ref2,success:function(data){$("#input_district").html(data);}});	
 	});			
 	$('#h_district').live('change',function(){
 		ref3=$("#h_district option:selected").val();
@@ -36,13 +36,13 @@ var ref1,ref2,ref3;
 					$('#hospital').hide();
 				}else{
 					$('#hospital').hide();
+					$('#admin_province').hide();
+					
 				}
 	}	
 	u_position();
 	$('select[name=userposition]').change(u_position).click(u_position);
 	
-
-
 	$("#form1").validate({
 		 groups: {
     			groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"   		   
@@ -94,8 +94,7 @@ var ref1,ref2,ref3;
 				,repassword:{required:" กรุณาระบุด้วยค่ะ",equalTo: " ระบุ password ไม่ถูกต้องค่ะ"}
 		},
 		errorPlacement: function(error, element){							    
-        		 if (element.attr("name") == "cardW0"  || element.attr("name") == "cardW1" 	|| element.attr('name') == "cardW2" || element.attr('name')=="cardW3" || element.attr('name')=="cardW4") error.insertAfter("#cardW4");
-        		 else if(element.attr("name")=="form_add" || element.attr("name")=="form_edit" || element.attr('name')=="form_del") $("input[name=form_del]").closest("li").append(error);
+        		 if (element.attr("name") == "cardW0"  || element.attr("name") == "cardW1" 	|| element.attr('name') == "cardW2" || element.attr('name')=="cardW3" || element.attr('name')=="cardW4") error.insertAfter("#cardW4");       		 
         		 else error.insertAfter(element);
 		}						
 	});
@@ -104,7 +103,7 @@ var ref1,ref2,ref3;
 });// document
 </script>
 <h1>ผู้ใช้ระบบ</h1>
-<form name="form1" id="form1" action="users/admin/users/save" enctype="multipart/form-data" method="post" >
+<form name="form1" id="form1" action="users/admin/users/save/<?php echo $profile ?>" enctype="multipart/form-data" method="post" >
 <input name="uid" id="uid" type="hidden" value="<?php echo @$rs['uid']?>" />			
 <table  class="form">
   <tr>
@@ -123,12 +122,13 @@ var ref1,ref2,ref3;
   <tr>
   	<th>เลขที่บัตรประชาชน  <span class="alertred">*</span></th>
   	<td><span  id="Show_idcard">
-  			<input type="text" name="cardW0"   id="cardW0"   value="<?php echo $cardW0; ?>"  size="1" maxlength="1" style="width:15px;">-
-  			<input type="text"  name="cardW1"  id="cardW1"   value="<?php echo $cardW1; ?>"  size="4" maxlength="4" style="width:30px;">-
-  			<input type="text"  name="cardW2"  id="cardW2"   value="<?php echo $cardW2?>"  size="5" maxlength="5" style="width:40px;">-
-  			<input type="text"  name="cardW3"  id="cardW3"  value="<?php echo $cardW3 ?>"  size="2" maxlength="2" style="width:20px;">-
-  			<input type="text"  name="cardW4"  id="cardW4"  value="<?php echo $cardW4?>"  size="1" maxlength="1" style="width:15px;"> 	
-  			</span>					
+  			<input type="text" name="cardW0"  id="cardW0"  value="<?php echo $cardW0; ?>"  size="1" maxlength="1" style="width:15px;">-
+  			<input type="text" name="cardW1"  id="cardW1"  value="<?php echo $cardW1; ?>"  size="4" maxlength="4" style="width:30px;">-
+  			<input type="text" name="cardW2"  id="cardW2"  value="<?php echo $cardW2?>"  size="5" maxlength="5" style="width:40px;">-
+  			<input type="text" name="cardW3"  id="cardW3"  value="<?php echo $cardW3 ?>"  size="2" maxlength="2" style="width:20px;">-
+  			<input type="text" name="cardW4"  id="cardW4"  value="<?php echo $cardW4?>"  size="1" maxlength="1" style="width:15px;"> 	
+  			</span>	
+  						
   	</td>
   </tr>
   <tr>
@@ -136,20 +136,28 @@ var ref1,ref2,ref3;
     <td><input name="usermail" type="text"  id="usermail" value="<?php echo @$rs['usermail'];?>" size="50" style="width:230px"></td>
   </tr>
   <tr>
-  	<th>เบอร์ออฟฟิต <span class="alertred">*</span></th>
+  	<th>โทรศัพท์สำนักงาน <span class="alertred">*</span></th>
   	<td><input type="text" name="telephone" value="<?php echo @$rs['telephone'] ?>"> ต่อ <input type="text" name="telphone_extend" value="<?php echo @$rs['tel_extend'] ?>" class="input_box_patient" style="width:30px;"></td>
   </tr>
   <tr>
-  	<th>เบอร์มือถือ <span class="alertred">*</span></th>
+  	<th>โทรศัพท์มือถือ <span class="alertred">*</span></th>
   	<td><input type="text" name="mobile" value="<?php echo @$rs['mobile'] ?>"> </td>
   </tr> 
+  <tr>
+  	<th>โทรสาร </th>
+  	<td><input type="text" name="fax" value="<?php echo @$rs['fax'] ?>"> </td>
+  </tr> 
+   <tr>
+  	 <th>ตำแหน่ง </th>
+  	<td><?php echo form_dropdown('position',get_option('id','name','n_position'),@$rs['position'],'','--กรุณาระบุ--') ?></td>
+  </tr>
   <tr id="admin_province">
 	<th>จังหวัด <span class="alertred">*</span></th>
-	<td><?php echo form_dropdown('userprovince',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['province_id'],'','-โปรดเลือก-')?></td>  	
+	<td><?php echo form_dropdown('userprovince',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince'],'','-โปรดเลือก-')?></td>  	
   </tr>
 	
-  	<tr  id="hospital" style="display:<? if(@@$rs['userposition']!='05' && @@$rs['userposition']!='03' ){echo 'none';}?>">
-    <th valign="top"  >สถานพยาบาล <span class="alertred">*</span></th>
+  	<tr  id="hospital">
+    <th valign="top">สถานพยาบาล <span class="alertred">*</span></th>
     <td>
 		<ul class="sublist">
 			<li><label>จังหวัด  </label>
@@ -213,11 +221,11 @@ var ref1,ref2,ref3;
   </tr> 
   <tr>
     <th>ยืนยันรหัสผ่าน  <span class="alertred">*</span></th>
-    <td><input type="password" name="repassword" class="input_box_patient " value="<?php echo (empty($rs['userpassword']))?$gen_pass: @$rs['userpassword'];?>">
-       
+    <td><input type="password" name="repassword" class="input_box_patient " value="<?php echo (empty($rs['userpassword']))?$gen_pass: @$rs['userpassword'];?>">      
         <input  id="position" name="position" value="<?php echo @$rs['userposition']?>" type="hidden" />
         </td>
   </tr>
+  <?php if(!$profile): ?>
   <?php if($this->session->userdata('R36_LEVEL')=="00" || $this->session->userdata('R36_LEVEL')=="02"): ?>
    <tr><th>การอนุมัติของผู้ดูแลระดับจังหวัด</th>
   	<td><input type="checkbox" name="confirm_province" value="<?php echo @$rs['confirm_province']; ?>" <?php echo(!empty($rs['confirm_province'])=="1")?'checked="checked"':''; ?>></td>  	
@@ -228,6 +236,7 @@ var ref1,ref2,ref3;
   </tr>
   <?php endif ?>
 <?php endif; ?>
+<? endif; //profile ?>
   <tr>
   	<th></th>
   	<td><input type="submit" class="btn"  name="btn_sumbit" value="ตกลง"></td>

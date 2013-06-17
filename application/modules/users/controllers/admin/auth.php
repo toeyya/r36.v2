@@ -23,7 +23,7 @@ class Auth extends Public_Controller
 			{
 				//Addlog("login","เข้าสู่ระบบ");	
 				set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบ');
-				redirect('users/admin/profiles');
+				redirect('users/admin/users/form/'.$this->session->userdata('R36_UID'));
 			}
 			else
 			{

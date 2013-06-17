@@ -1,5 +1,5 @@
 <ul class="menu">
-	<li <?php echo menu_active('users','profiles')?>><a href="users/admin/profiles">ประวัติส่วนตัว</a></li>
+	<li <?php echo menu_active('users','profiles')?>><a href="users/admin/users/form/<?php echo $this->session->userdata('R36_UID') ?>/profile">ประวัติส่วนตัว</a></li>
 	<?php //if(permission('permissions', 'act_read')): ?>
 	<li <?php echo menu_active('permissions','permissions')?>><a href="permissions/admin/permissions">สิทธิ์การใช้งาน</a></li>
 	<?php //endif; ?>

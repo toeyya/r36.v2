@@ -1,26 +1,15 @@
 <h1>ข้อมูลส่วนตัว</h1>
 <form method="post" action="users/admin/profiles/save" enctype="multipart/form-data">
 <table class="form">
-	<tr>
-		<th>Image</th>
-		<td><?php echo (is_file('uploads/user/'.@$rs['image'])) ? anchor('users/admin/users/remove_image/'.$rs['uid'],'x','class="btn" onclick="return confirm(\'Do you want to remove this image?\')"').br().img('uploads/user/thumb/'.$rs['image']).br() : ''?><input type="file" name="image" /></td>
-	</tr>
+
 	<tr>
 		<th width="150">Level</th>
 		<td><?php echo form_dropdown('userposition',get_option('level_code', 'level_name', 'n_level_user'),$rs['userposition'])?></td>
 	</tr>
 		<tr>
 		<th>อีเมล์</th>
-		<td><input type="text" name="usermail" value="<?php echo $rs['usermail'] ?>"></td>
-	</tr>
-	<tr>
-		<th width="150">Username</th>
 		<td>
-			<?php if($rs['username'] == '' ) : ?>
-				<input type="text" name="username" value="<?php echo $rs['username']?>" size="30" />
-			<?php else : echo $rs['username'] ?>
-			<?php endif; ?>	
-		</td>
+			<input type="text" name="usermail" value="<?php echo $rs['usermail'] ?>"></td>
 	</tr>
 	<tr>
 		<th class="top">Password</th>

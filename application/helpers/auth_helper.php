@@ -9,7 +9,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 	}
 			$sql="SELECT * FROM n_user 
 				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
-				WHERE n_user.username=(?)  AND n_user.userpassword= (?) and active='1' ".$admin;
+				WHERE n_user.usermail=(?)  AND n_user.userpassword= (?) and active='1' ".$admin;
 	
 
 	$rs = $CI->db->GetRow($sql,array($username,$password));	
