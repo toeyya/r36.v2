@@ -161,7 +161,7 @@ var province_id,amphur_id,district_id;
 						<span id="input_amphur">
 							<?php 
 							$whamphur="";
-							 if(@$_GET['hospital_province_id']){
+							 if(!empty($_GET['hospital_province_id'])){
 									$whamphur="AND province_id ='".@$_GET['hospital_province_id']."'";
 								 	$amphur_id="amphur_id <>'' ";									 										
 							 }else{
@@ -179,7 +179,7 @@ var province_id,amphur_id,district_id;
 						<span id="input_district">
 							<?php
 							$wh="";
-							 if(@$_GET['hospital_province_id']){
+							 if(!empty($_GET['hospital_province_id'])){
 									$wh="AND province_id ='".@$_GET['hospital_province_id']."' AND amphur_id='".$_GET['hospital_amphur_id']."'";	
 								 	$whdistrict="  district_id<>''";							 										
 							 }else{

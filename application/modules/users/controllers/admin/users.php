@@ -10,53 +10,75 @@ class Users extends Admin_Controller
 		$this->load->model('inform/vaccine_model','vaccine');
 		$this->user->primary_key("uid");
 	}
+	public $level;
 	function index($show="search",$id=FALSE)
 	{
-		//$this->db->debug=TRUE;
+				//$this->db->debug=TRUE;	
+				$this->level==$this->session->userdata('R36_LEVEL');				
 				$wh="uid <> '' ";
-				if(@$_GET['name']!='')$wh.=" AND (userfirstname LIKE '%".$_GET['name']."%' OR usersurname LIKE '%".$_GET['name']."%' OR usermail LIKE '%".$_GET['name']."%' OR username LIKE '%".$_GET['name']."%')";		
-				if(@$_GET['userposition']!='')	$wh.=" AND userposition = '".$_GET['userposition']."'";
-				if(@$_GET['userprovince']!="") $wh.=" AND userprovince ='".$_GET['userprovince']."'";				
-				if(@$_GET['hospital']!='')$wh.=" AND userhospital ='".$_GET['hospital']."'";					
-				if(isset($_GET['form_add']))$wh.=" AND form_add ='".$_GET['form_add']."'";
-				if(isset($_GET['form_edit']))$wh.=" AND form_edit ='".$_GET['form_edit']."'";	
-				if(isset($_GET['form_del']))$wh.=" AND form_del ='".$_GET['form_del']."'";	
+				if(!empty($_GET['name']))$wh.=" AND (userfirstname LIKE '%".$_GET['name']."%' OR usersurname LIKE '%".$_GET['name']."%' OR usermail LIKE '%".$_GET['name']."%' OR username LIKE '%".$_GET['name']."%')";		
+				if(!empty($_GET['userposition']))	$wh.=" AND userposition = '".$_GET['userposition']."'";		
+				if(!empty($_GET['userhospital'])) $wh.=" AND userhospital ='".$_GET['userhospital']."'";					
+
+				//****************************show data depend on permission
+					if($this->level=="02" || $this->level=="03" || $this->level=="04"){					
+						if($this->level=="02"){
+							$col=" hospital_province_id =".$this->session->userdata('R36_PROVINCE');
+						}elseif($this->level=="03" || $this->level=="04"){						
+							$hospital_name=$this->session->userdata('R36_HOSPITAL');
+							$province=substr($hospital_name,0,2);
+							$amphur=substr($hospital_name,3,2);	
+							$district=substr($hospital_name,4,2);
+							$district_wh=($this->level=="04")?" and hospital_district_id=$district":'';
+							$col=" hospital_province_id =$province and hospital_amphur_id=$amphur".$district_wh;			
+						}
+							$wh.=" and userhospital IN(select hospital_code from n_hospital_1 where ".$col.")";													
+					}
+				//**********************************
 				$data['result'] = $this->user->select("uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition
-									 									 ,province_name,hospital_name,status		")
+									 									 ,province_name,hospital_name,active,confirm_province,confirm_admin")
 														    ->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
 																	   LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
 																	   LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code")
 													      ->where($wh)->sort("")->order("userposition asc")->get();
-					//$data['result']=$this->user->get($sql);
+
 					$data['pagination']=$this->user->pagination();				
 					$this->template->append_metadata(js_checkbox());
 					$this->template->build('admin/users/index',$data);					
 	}
 	function form($id=FALSE,$profile=FALSE)
 	{
-			//$this->db->debug=TRUE;
+			$this->template->append_metadata(js_idcard());	
 			$this->user->primary_key("uid");
+	
 			if(!$id){$id="?";}				
-			$data['rs']=$this->user->select("uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition,level_name,usermail,userpassword
-																	 ,a.province_name as province_name1,a.province_id as province_id1
-																	,b.province_name as province_name2,b.province_id as province_id2,n_district.amphur_id,district_id,status
+			$data['rs']=$this->user->select("n_user.*,level_name, a.province_name as province_name1,a.province_id as province_id1
+																	,b.province_name as province_name2,b.province_id as province_id2,hospital_amphur_id,hospital_district_id,status
 																	,hospital_name")
 																->join("INNER JOIN n_level_user  ON  n_user.userposition=n_level_user.level_code
-																				LEFT  JOIN n_province  a   ON  n_user.userprovince=a.province_id
-																				LEFT  JOIN n_hospital_1 	     ON  userhospital =n_hospital_1.hospital_code 								
-																				LEFT  JOIN n_province  b  ON  n_hospital_1.hospital_province_id=b.province_id 
-																				LEFT  JOIN n_district		 ON  n_hospital_1.hospital_amphur_id=n_district.amphur_id  
+																			LEFT  JOIN n_province  a   ON  n_user.userprovince=a.province_id
+																			LEFT  JOIN n_hospital_1 	     ON  userhospital =n_hospital_1.hospital_code 								
+																			LEFT  JOIN n_province  b  ON  n_hospital_1.hospital_province_id=b.province_id 
+																			LEFT  JOIN n_district		 ON  n_hospital_1.hospital_amphur_id=n_district.amphur_id  
 																															and  n_user.userhospital =n_hospital_1.hospital_code 
 																															and n_district.province_id=n_hospital_1.hospital_province_id 
 																															and n_district.district_id=n_hospital_1.hospital_district_id
 																				")
 																->get_row($id);	
+			$data['cardW0']=substr($data['rs']['idcard'],0,1);
+			$data['cardW1']=substr($data['rs']['idcard'],1,4);
+			$data['cardW2']=substr($data['rs']['idcard'],5,5);
+			$data['cardW3']=substr($data['rs']['idcard'],10,2);
+			$data['cardW4']=substr($data['rs']['idcard'],12,1);
 			$data['title']=($profile)? "ประวัติส่วนตัว":"ข้อมูลผู้ใช้ระบบ (แก้ไข/เพิ่ม)";
 			$this->template->build('admin/users/form',$data);					
 	}
 	function save()
-	{
+	{				
 		if($_POST){
+			if(!empty($_POST['id'])){
+				$_POST['uid']=$_POST['id'];
+			}
 			if(!empty($_POST['idcard'])){
 				$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];
 			}
@@ -64,7 +86,7 @@ class Users extends Admin_Controller
 			$this->user->save($_POST);
 			set_notify('success',SAVE_DATA_COMPLETE);
 		}
-		redirect('users/r36/users');
+		redirect('users/admin/users');
 	}
 	
 	function delete(){
@@ -72,7 +94,7 @@ class Users extends Admin_Controller
 			$this->db->Execute("DELETE FROM n_user WHERE uid in(".$_GET['id'].")");
 			set_notify('success',SAVE_DATA_COMPLETE);		
 		}
-		redirect('users/r36/users');	
+		redirect('users/admin/users');	
 	}
 	function popup(){
 			$this->template->set_layout('blank');		
@@ -107,14 +129,8 @@ class Users extends Admin_Controller
 			$this->template->set_layout('blank');		
 			$this->template->build('popup_list',$data);
 	}
-	public function check_email(){
-		$rs=$this->db->Execute("select * from n_user where usermail = ?  and uid <> ? ",array($_GET['email'],$_GET['uid']));
-		echo ($rs) ? "true" :"false";
-	}
-	public function check_username(){	
-		$rs = $this->db->Execute("select * from n_user where username = ?  and uid <> ? ",array($_GET['username'],$_GET['uid']));
-		echo ($rs) ? "true" : "false";
-	}
+
+
 	
 }
 

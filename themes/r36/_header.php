@@ -3,7 +3,6 @@
             <div id='toplevel'>
             <ul>
               <li class="line_topmenu4"><a href="home">หน้าแรก</a></li>
-              <!--<li class="line_topmenu3"><a href="log/index">ประวัติเข้าใช้ระบบ</a></li>-->
               <li class="line_topmenu4"><a href="users/r36/users/form/<?php echo $this->session->userdata('R36_UID') ?>/profile"><span>ประวัติส่วนตัว</span></a></li> 
               <li class="line_topmenu4"><a href="javascript:void(0);">กรอกแบบฟอร์ม</a>
                 <ul class="submenu4">
@@ -11,17 +10,6 @@
                      <li><a href="inform/index_dead">แบบฟอร์มคนไข้ที่เสียชีวิต</a></li>
                   </ul>
                </li>
-               <!--<li class="line_topmenu4"><a href="javascript:void(0);">ตั้งค่า</a>
-                <ul class="submenu5">                  
-                    <li><a href="area/index">ข้อมูลเขตความรับผิดชอบ</a></li>
-                    <li><a href="province/index">ข้อมูลจังหวัด</a></li>
-                    <li><a href="amphur/index">ข้อมูลอำเภอ</a></li>
-					<li><a href="district/index">ข้อมูลตำบล</a></li>
-					 <li><a href="hospital/index">ข้อมูสถานพยาบาล</a></li>
-					 <li><a href="help/index">เมนู help</a></li>
-					
-                 </ul>
-               </li>-->
                <li class="line_topmenu4"><a href="javascript:void(0);">รายงาน</a>
                 <ul class="submenu8">                 
                      <li class="menu8"><a href="javascript:void(0);">วิเคราะห์เชิงพรรณา</a>

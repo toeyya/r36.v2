@@ -27,7 +27,7 @@ $(function(){
 		clearText: 'ลบ', clearStatus: '',
 		closeText: 'ปิด', closeStatus: '',
 		prevText: '&laquo;&nbsp;ย้อน', prevStatus: '',
-		prevBigText: '&#x3c;&#x3c;', prevBigStatus: '',
+		prevBigText: '&#x3c;&#x3c;', prev BigStatus: '',
 		nextText: 'ถัดไป&nbsp;&raquo;', nextStatus: '',
 		nextBigText: '&#x3e;&#x3e;', nextBigStatus: '',
 		currentText: 'วันนี้', currentStatus: '',

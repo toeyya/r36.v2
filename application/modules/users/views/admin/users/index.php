@@ -1,5 +1,9 @@
+<script type="text/javascript" src="media/js/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.js"></script>
+<link rel="stylesheet" type="text/css" href="media/js/jquery-ui-1.10.3.custom/css/cupertino/jquery-ui-1.10.3.custom.css">
 <script type="text/javascript">
 $(document).ready(function(){
+$( "#check" ).button();
+$( ".format" ).buttonset();
 var ref1,ref2,ref3;
 	$("#h_province").change(function(){	
 		 ref1=$("#h_province option:selected").val();
@@ -55,14 +59,28 @@ var ref1,ref2,ref3;
 	   	 	alert('คุณยังไม่ได้เลือกรายการที่ต้องการลบค่ะ');
 	   }
    });
+
+   	$(".format input:checkbox").click(function(){	
+		var value = this.checked ? 1 : 0;
+		var title=$(this).next().find('span').html();
+		if(title=="ระดับจังหวัด")
+		{
+   			$.post("<?php echo base_url() ?>users/admin/users/save",{uid:this.value ,'confirm_province':value});
+   		}else{
+   			$.post("<?php echo base_url(); ?>users/admin/users/save",{uid:this.value ,'confirm_admin':value});
+   		}
+		
+	}); 
+   
 });// document
 </script>
 <h1>ผู้ใช้ระบบ</h1>
 <div class="search">
 <form name="form1"  action="users/admin/users"  method="get" >
-
 ชื่อ/นามสกุล/username<input type="text" name="name" value="<?php echo @$_GET['name'] ?>">		
-<input type="submit" name="search" value="ค้นหา">		
+<?php echo form_dropdown('userposition',get_option('level_code','level_name','n_level_user'),@$_GET['userposition'],'','เลือกสิทธิ์การใช้งาน') ?>
+<?php echo form_dropdown('userhospital',get_option('hospital_code','hospital_name','n_hospital_1'),@$_GET['userhospital'],'','เลือกสถานบริการ'); ?>
+<button type="submit" name="search"  class="btn">ค้นหา</button>	
 </form>
 </div>
 
@@ -71,17 +89,31 @@ var ref1,ref2,ref3;
 		<th>แสดง</th>
 		<th>Username</th>
 		<th>ชื่อ - นามสกุล</th>
-		<th>สิทธิืการใช้งาน</th>
-		<th><a href="users/admin/users/form" name="btn_add" class="btn">เพิ่มรายการ</a></th>
+		<th>สิทธิ์การใช้งาน</th>
+		<th>การอนุมัติ</th>
+
+		<th width="90"><a href="users/admin/users/form" name="btn_add" class="btn">เพิ่มรายการ</a></th>
 	  </tr>	  
-		<?php foreach($result as $item): ?>
+		<?php foreach($result as $key => $item): ?>
 		<tr>
 				<!--<<td  align="center"><nput name="chk_del[]" type="checkbox" value="<?php echo $item['uid']?>"  class="chk_del"/></td>-->
 				<td><input type="checkbox"  class="list_check" name="active" value="<?php echo $item['uid'] ?>" <?php echo ($item['active']=="1")?'checked="checked"':'' ?>  /></td>
 				<td><?php echo $item['username'];?></a></td>
 				<td><?php echo $item['userfirstname'];?> <?php echo $item['usersurname'];?></td>
-				<td><?php echo  $item['level_name'];?></td>
-				<td><a href="users/admin/users/form/<?php echo $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn">แก้ไข</a>
+				<td><?php echo $item['level_name'];?></td>
+				<td>
+					<div class="format">
+						<?php if($this->session->userdata('R36_LEVEL')=='00' || $this->session->userdata('R36_LEVEL')=="02"): ?>
+						<input type="checkbox"   id="check1<?php echo $key;?>"  value="<?php echo $item['uid'] ?>" <?php echo ($item['confirm_province']=="1") ? 'checked="checked"':'' ; ?> />
+						<label for="check1<?php echo  $key;?>">ระดับจังหวัด</label>
+							<? if($this->session->userdata('R36_LEVEL')=="00"): ?>
+						<input type="checkbox"   id="check2<?php echo $key; ?>"   value="<? echo $item['uid'] ?>" <?php echo ($item['confirm_admin']=="1") ? 'checked="checked"':'' ; ?>/>
+						<label for="check2<?php echo $key; ?>">ระดับกรม</label>
+							<? endif; ?>
+						<? endif; ?>
+					</div>
+				</td>
+				<td><a href="users/admin/users/form/<?php echo  $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn">แก้ไข</a>
 						<a href="users/admin/users/delete/<?php echo $item['uid'] ?>" alt="ลบข้อมูลผู้ใช้"   class="btn">ลบ</a>
 				</td>
 		</tr>

@@ -120,10 +120,13 @@ class Users extends Public_Controller
 		$chk=chk_idcard($idcard_arr,$_GET['digit_last']);				
 	  	echo ($chk=="no")? "false":"true";	  
 	}
-	function checkEmail()
-	{
-		$id=$this->user->get_one("id","usermail",$_GET['usermail']);
-		echo ($id)? "false":"true";	
+	public function checkEmail(){
+		if(!empty($_GET['uid'])){
+			$rs=$this->db->Execute("select * from n_user where usermail = ?  and uid <> ? ",array($_GET['usermail'],$_GET['uid']));			
+		}else{
+			$rs = $this->user->get_one("id","usermail",$_GET['usermail']);
+		}		
+		echo ($rs) ? "true" :"false";
 	}
 	function notice_email(){
 		$this->template->build('notice_email');

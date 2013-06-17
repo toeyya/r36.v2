@@ -1,6 +1,6 @@
 <h1>อำเภอ</h1>
 <div class="search">
-<form action="province/index" method="get" name="form1" >		
+<form action="amphur/index" method="get" name="form1" >		
 	จังหวัด<?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$_GET['province_id'],'class="styled-select"','-ทั้งหมด-')?>
 	อำเภอ <input type="text" class="input_box_patient" name="amphur_name" value="<?php echo @$_GET['amphur_name']?>">
 	<button class="btn" type="submit" name="btn_search" >ค้นหา</button>

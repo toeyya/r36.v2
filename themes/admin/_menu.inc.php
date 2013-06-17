@@ -25,7 +25,7 @@
 	<li <?php echo menu_active('contact','contacts')?>><a href="question/admin/question/index">คำถามที่พบบ่อย</a></li>
 	<li <?php echo menu_active('contact','contacts')?>><a href="content/admin/content/index/8">ติดต่อเรา</a></li>
 	<li <?php echo menu_active('dashboards','dashboards')?>><a href="dashboards/admin/dashboards/index">จำนวนคนเข้าเว็บไซต์</a></li> 
-	<!--<li <?php echo menu_active('logs','logs')?>><a href="logs/admin/logs/index">ประวัติเข้าใช้ระบบ</a></li> -->
+	<li <?php echo menu_active('log','log')?>><a href="log/admin/log/index">ประวัติเข้าใช้ระบบ</a></li>
 
 </ul>
 <script>

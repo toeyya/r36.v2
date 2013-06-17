@@ -1,31 +1,40 @@
-<link rel="stylesheet" type="text/css" href="css/template.css" media="screen"/>
-<!--<link rel="stylesheet" type="text/css" href="css/vtip.css" />-->
-<link rel="stylesheet" type="text/css" href="css/pagination.css" media="screen" />
 
-<!--<link rel="stylesheet" href="css/ui-smoothness/jquery-ui-1.8.20.custom.css" />
-<link rel="stylesheet" href="css/treeview/jquery.treeview.css" />
-<link rel="stylesheet" type="text/css" href="css/atooltip.css"/>-->
-<link rel="stylesheet" media="screen"  href="css/colorbox.css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="js/jquery.datepick/redmond.datepick.css"  media="screen"/>
-<link rel="stylesheet" type="text/css" href="css/print.css" media="print" />
-<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
-<script type="text/javascript" src="js/jquery.colorbox.js"></script>
-<script type="text/javascript" src="js/jquery.datepick/jquery.datepick.js"></script>
-<script type="text/javascript" src="js/jquery.datepick/jquery.datepick-th.js"></script>
-<script type="text/javascript" src="js/jquery.rowcount-1.0.js"></script>
-<script type="text/javascript" src="js/jquery.validate.js"></script>
-<script type="text/javascript" src="js/jquery.validate.min.js"></script>
-<script type="text/javascript" src="js/checkobj.js" ></script>
-<script type="text/javascript" src="js/jquery.livequery.js" ></script>
-<link rel="stylesheet" href="js/jquery-multi-open-accordion/css/jquery-ui-1.8.9.custom/jquery-ui-1.10.1.custom.css">
-<script type="text/javascript"  src="js/jquery-multi-open-accordion/jquery-ui-1.8.13.custom.min.js"></script>
-<script type="text/javascript"  src="js/jquery-multi-open-accordion/jquery.multi-accordion-1.5.3.js"></script>
-<script type="text/javascript" src="js/report.js"></script>
-
+		<link rel="stylesheet" href="media/css/reset.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="media/css/default.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="themes/admin/media/css/pagination.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="media/css/timePicker.css" type="text/css" media="screen" charset="utf-8" />
+		<link rel="stylesheet" href="themes/admin/media/css/stylesheet.css" type="text/css" media="screen" charset="utf-8" /> 
+		<link rel="stylesheet" type="text/css" href="media/js/jquery.datepick/redmond.datepick.css"  media="screen"/>
+		<script type="text/javascript" src="media/js/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="media/js/jquery.validate.js"></script>
+		<script type="text/javascript" src="media/js/jquery.datepick/jquery.datepick.js"></script>
+		<script type="text/javascript" src="media/js/jquery.datepick/jquery.datepick-th.js"></script>
 
 <script>
 $(function(){  
-      $('.datepicker').datepick({format: 'Y-m-d', showOn: 'both', buttonImageOnly: true, buttonImage: 'js/jquery.datepick/calendar.gif'
+	$.datepick.regional['th'] = {
+		clearText: 'ลบ', clearStatus: '',
+		closeText: 'ปิด', closeStatus: '',
+		prevText: '&laquo;&nbsp;ย้อน', prevStatus: '',
+		prevBigText: '&#x3c;&#x3c;', prevBigStatus: '',
+		nextText: 'ถัดไป&nbsp;&raquo;', nextStatus: '',
+		nextBigText: '&#x3e;&#x3e;', nextBigStatus: '',
+		currentText: 'วันนี้', currentStatus: '',
+		monthNames: ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฏาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'],
+		monthNamesShort: ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
+		monthStatus: '', yearStatus: '',
+		weekHeader: 'Sm', weekStatus: '',
+		dayNames: ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'],
+		dayNamesShort: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+		dayNamesMin: ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'],
+		dayStatus: 'DD', dateStatus: 'D, M d',
+		dateFormat: 'yy/mm/dd', firstDay: 0,
+		initStatus: '', isRTL: false,
+		beforeShow: calculateShow,
+		onClose: calculateClose,
+		showMonthAfterYear: false, yearSuffix: ''};		
+		$.datepick.setDefaults($.datepick.regional['th']);			
+      $('.datepicker').datepick({format: 'Y-m-d', showOn: 'both', buttonImageOnly: true, buttonImage: 'media/js/jquery.datepick/calendar.gif'
       },$.datepick.regional['th']);  		
 });
 </script>

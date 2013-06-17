@@ -87,6 +87,7 @@ ul.tab.text li a{padding:5px 10px;}
 table.form{border:1px solid #CCC; width:100%;}
 table.form td{padding:8px;border:1px solid #CCC;}
 table.form th{text-align:left; vertical-align:middle; padding:5px 20px 5px 5px; width:120px;border:1px solid #CCC; border-left:3px solid #44709E; font-weight:normal;}
+
 table.form input[type=text],table.form input[type=password]{width:250px;height:20px;}
 table.form select{width:250px;}
 table.form textarea{width:250px; height:50px;}
@@ -96,6 +97,10 @@ table.form textarea.full{width:500px;}
 table.form td .cirkuitSkin td.mceToolbar{padding:1px 0 2px 0;}
 /*table.form td img{width:100px;}*/
 
+.search table.form,.search table.form th,.search table.form td{border:none;}
+.search table.form td{text-align:left;}
+.search table.form th{width:7%}
+.search table.form input[type=text],.search table.form select{width:150px;}
 .list-icon{display:inline;}
 .list-icon li{display:inline-block;text-align:center;padding:2px;margin-right:10px;}
 

@@ -19,7 +19,7 @@ class Auth extends Public_Controller
 	{
 		if($_POST)
 		{		
-			if(admin_login($_POST['username'], $_POST['password']))
+			if(login($_POST['username'], $_POST['password'],'admin'))
 			{
 				//Addlog("login","เข้าสู่ระบบ");	
 				set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบ');

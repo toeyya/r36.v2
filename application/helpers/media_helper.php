@@ -71,8 +71,8 @@ function js_checkbox($module='admin')
 		<script type="text/javascript" src="media/js/checkbox/jquery.checkbox.min.js"></script>
 		<script>
 			$(function(){
-				$("input:checkbox").checkbox({empty:"media/js/checkbox/empty.png"});
-				$("input:checkbox").click(function(){
+				$(".list_check").checkbox({empty:"media/js/checkbox/empty.png"});
+				$(".list_check").click(function(){
 					var value = this.checked ? 0 : 1;
 					$.post("'.$CI->router->fetch_module().'/'.$module.'/'.$CI->router->fetch_class().'/save",{id:this.value ,active:value}); 
 				});

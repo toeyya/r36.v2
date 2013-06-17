@@ -1,18 +1,17 @@
 <?php
 
-function login($username=FALSE,$password=FALSE,$remember=FALSE) 
+function login($username=FALSE,$password=FALSE,$admin='') 
 {
 	$CI =& get_instance();
-	//$CI->db->debug=true;
-	if($username=='' && $password=='' && $remember=="1")
-	{	
-		$CI->session->set_userdata('nologin','nologin');
-		return true;
-	}
 
-	$sql="SELECT * FROM n_user 
+	if($admin){
+		$admin =" and userposition IN('00','01','02','03','04')";
+	}
+			$sql="SELECT * FROM n_user 
 				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
-				WHERE n_user.username=(?)  AND n_user.userpassword= (?) and active='1' ";
+				WHERE n_user.username=(?)  AND n_user.userpassword= (?) and active='1' ".$admin;
+	
+
 	$rs = $CI->db->GetRow($sql,array($username,$password));	
 	
 	if($rs)
@@ -47,23 +46,7 @@ function login($username=FALSE,$password=FALSE,$remember=FALSE)
 	{				
 		return false;
 	}
-	return false;
-}
 
-function admin_login($username=FALSE,$password=FALSE){
-	// ผู้ดูแลระบบระดับกรม	
-	$CI =& get_instance();	
-	$CI->db->debug=TRUE;
-	$sql="SELECT * FROM n_user	 WHERE  userposition='00' and   username= ?  AND userpassword= ? ";
-	$rs = $CI->db->GetRow($sql,array($username,$password));	
-	if($rs){
-		$CI->session->set_userdata('R36_UID',$rs['uid']);	
-		$CI->session->set_userdata('R36_FNAME',$rs['userfirstname']);
-		$CI->session->set_userdata('R36_SURNAME', $rs['usersurname']);
-		return true;
-	}else{
-		return false;
-	}
 }
 
 function is_login()

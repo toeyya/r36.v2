@@ -268,3 +268,8 @@ table.form2 td {
 }
 #Show_idcard >input[type="text"]{width:100px;}
 .alertred{color:red;}
+ul.list{list-style: none;display:inline-block;float: left;margin-left:-34px;}
+ul.list li{vertical-align: middle;margin-left:10px;float:left;width:150px;}
+ul.sublist li{vertical-align: middle;margin:10px 0px;}
+ul.sublist{list-style:none;width:70%;}
+ul.sublist label{display:inline-block;width:100px;}
