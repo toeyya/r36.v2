@@ -11,10 +11,10 @@ class Users extends R36_Controller
 		$this->user->primary_key("uid");
 	}
 	function index($id=FALSE)
-	{		
+	{ //$this->db->debug=TRUE;
 		if(!$id){$id="?";}				
 			$data['rs']=$this->user->select("n_user.*,level_name, a.province_name as province_name1,a.province_id as province_id1
-											,b.province_name as province_name2,b.province_id as province_id2,hospital_amphur_id,hospital_district_id,status
+											,b.province_name as province_name2,hospital_province_id,hospital_amphur_id,hospital_district_id,status
 											,hospital_name")
 								->join("INNER JOIN n_level_user  ON  n_user.userposition=n_level_user.level_code
 										LEFT  JOIN n_province  a   ON  n_user.userprovince=a.province_id
@@ -36,7 +36,11 @@ class Users extends R36_Controller
 	function save()
 	{
 		if($_POST){
-			
+			if($_POST['userposition']=="00" || $_POST['userposition']=="01" || $_POST['userpostion']=="02"){
+				$_POST['userhospital']="";$_POST['userprovince']="";
+			}else if($_POST['userpostion']!="02"){
+				$_POST['userprovince']="";
+			}
 			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];		
 			$this->user->save($_POST);
 			set_notify('success',SAVE_DATA_COMPLETE);

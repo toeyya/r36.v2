@@ -200,7 +200,7 @@ height:30px;text-align:center;line-height:28px;
 font-size:18px; color:#ca2090;border-bottom:#ca2090 solid 2px;
 }
 ul.list{list-style: none;display:inline-block;float: left;margin-left:-34px;}
-ul.list li{vertical-align: middle;margin-left:10px;float:left;width:150px;}
+ul.list li{vertical-align: middle;margin-left:10px;float:left;width:120px;}
 ul.sublist li{vertical-align: middle;margin:10px 0px;}
 ul.sublist{list-style:none;width:70%;}
 ul.sublist label{display:inline-block;width:100px;}

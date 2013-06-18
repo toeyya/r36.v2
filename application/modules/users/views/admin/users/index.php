@@ -77,9 +77,8 @@ var ref1,ref2,ref3;
 <h1>ผู้ใช้ระบบ</h1>
 <div class="search">
 <form name="form1"  action="users/admin/users"  method="get" >
-ชื่อ/นามสกุล/username<input type="text" name="name" value="<?php echo @$_GET['name'] ?>">		
+ชื่อ/นามสกุล/สถานบริการ <input type="text" name="name" value="<?php echo @$_GET['name'] ?>">		
 <?php echo form_dropdown('userposition',get_option('level_code','level_name','n_level_user'),@$_GET['userposition'],'','เลือกสิทธิ์การใช้งาน') ?>
-<?php echo form_dropdown('userhospital',get_option('hospital_code','hospital_name','n_hospital_1'),@$_GET['userhospital'],'','เลือกสถานบริการ'); ?>
 <button type="submit" name="search"  class="btn">ค้นหา</button>	
 </form>
 </div>
@@ -87,9 +86,9 @@ var ref1,ref2,ref3;
 <table  class="list" >
 	  <tr>		
 		<th>แสดง</th>
-		<th>Username</th>
 		<th>ชื่อ - นามสกุล</th>
 		<th>สิทธิ์การใช้งาน</th>
+		<th>สถานบริการ</th>
 		<th>การอนุมัติ</th>
 
 		<th width="90"><a href="users/admin/users/form" name="btn_add" class="btn">เพิ่มรายการ</a></th>
@@ -97,10 +96,10 @@ var ref1,ref2,ref3;
 		<?php foreach($result as $key => $item): ?>
 		<tr>
 				<!--<<td  align="center"><nput name="chk_del[]" type="checkbox" value="<?php echo $item['uid']?>"  class="chk_del"/></td>-->
-				<td><input type="checkbox"  class="list_check" name="active" value="<?php echo $item['uid'] ?>" <?php echo ($item['active']=="1")?'checked="checked"':'' ?>  /></td>
-				<td><?php echo $item['username'];?></a></td>
+				<td><input type="checkbox"  class="list_check" name="active" value="<?php echo $item['uid'] ?>" <?php echo ($item['active']=="1")?'checked="checked"':'' ?>  /></td>				
 				<td><?php echo $item['userfirstname'];?> <?php echo $item['usersurname'];?></td>
 				<td><?php echo $item['level_name'];?></td>
+				<td><?php echo  $item['hospital_name']?></td>
 				<td>
 					<div class="format">
 						<?php if($this->session->userdata('R36_LEVEL')=='00' || $this->session->userdata('R36_LEVEL')=="02"): ?>

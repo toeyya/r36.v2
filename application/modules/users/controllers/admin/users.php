@@ -16,10 +16,9 @@ class Users extends Admin_Controller
 				//$this->db->debug=TRUE;	
 				$this->level==$this->session->userdata('R36_LEVEL');				
 				$wh="uid <> '' ";
-				if(!empty($_GET['name']))$wh.=" AND (userfirstname LIKE '%".$_GET['name']."%' OR usersurname LIKE '%".$_GET['name']."%' OR usermail LIKE '%".$_GET['name']."%' OR username LIKE '%".$_GET['name']."%')";		
+				if(!empty($_GET['name']))$wh.=" AND (userfirstname LIKE '%".$_GET['name']."%' OR usersurname LIKE '%".$_GET['name']."%' OR hospital_name LIKE '%".$_GET['name']."%' OR username LIKE '%".$_GET['name']."%')";		
 				if(!empty($_GET['userposition']))	$wh.=" AND userposition = '".$_GET['userposition']."'";		
-				if(!empty($_GET['userhospital'])) $wh.=" AND userhospital ='".$_GET['userhospital']."'";					
-
+						
 				//****************************show data depend on permission
 					if($this->level=="02" || $this->level=="03" || $this->level=="04"){					
 						if($this->level=="02"){

@@ -24,7 +24,12 @@ class Users extends Public_Controller
             if(login($_POST['username'], $_POST['password']))
             {
                 set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบค่ะ');
-              	redirect($_SERVER['HTTP_REFERER']);
+				if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"){
+						redirect($_SERVER['HTTP_REFERER']);
+				}else{
+					 redirect('users/r36/users/index/'.$this->session->userdata('R36_UID'));
+				}
+              
                
             }
             else
@@ -113,20 +118,28 @@ class Users extends Public_Controller
 		phpmail($subject,$address,$message,$redirect);
 	}
 	public function chkidcard()
-	{			
+	{	//$this->db->debug=true;		
 		for($i=0;$i<13;$i++){
-				$idcard_arr[]=substr($_GET['idcard'],$i,1);
+			$idcard_arr[]=substr($_GET['idcard'],$i,1);
 		}		
-		$chk=chk_idcard($idcard_arr,$_GET['digit_last']);				
-	  	echo ($chk=="no")? "false":"true";	  
+		$chk=chk_idcard($idcard_arr,$_GET['digit_last']);
+		$dup1=($chk=="no")? TRUE:FALSE;
+
+		if(!empty($_GET['uid'])){
+			$dup = $this->db->GetOne("select uid from n_user where idcard= ? and uid<> ? ",array($_GET['idcard'],$_GET['uid']));
+		}else{
+			$dup = $this->user->get_one("uid",'idcard',$_GET['idcard']);
+		}
+		echo ($dup1 || $dup)? "false":"true";
+		
 	}
 	public function checkEmail(){
 		if(!empty($_GET['uid'])){
-			$rs=$this->db->Execute("select * from n_user where usermail = ?  and uid <> ? ",array($_GET['usermail'],$_GET['uid']));			
+			$rs=$this->db->GetOne("select uid from n_user where usermail = ?  and uid <> ? ",array($_GET['usermail'],$_GET['uid']));			
 		}else{
-			$rs = $this->user->get_one("id","usermail",$_GET['usermail']);
+			$rs = $this->user->get_one("uid","usermail",$_GET['usermail']);
 		}		
-		echo ($rs) ? "true" :"false";
+		echo ($rs) ? "false" :"true";
 	}
 	function notice_email(){
 		$this->template->build('notice_email');
