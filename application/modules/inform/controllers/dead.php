@@ -56,4 +56,5 @@ class Dead extends R36_Controller
 		redirect('inform/dead');
 	}
 
+
 }

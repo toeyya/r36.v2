@@ -260,7 +260,8 @@ $('select[name=prefix_name]').click(disableChkage);
 	});
 	
 	$('.btn_save').click(function(){
-		// #####   ตารางการฉีดวัคซีน    #####		
+		// #####   ตารางการฉีดวัคซีน    #####	
+		 var pass;	
 		if($('input[name=means]').is(':checked')){
 			var means=$('input[name=means]:checked').val();
 		}else{
@@ -268,17 +269,17 @@ $('select[name=prefix_name]').click(disableChkage);
 		}
 		if(means=="1" || means=="2")
 		{	$('.tbvaccine').show();					
-			$('.tbvaccine tr').each(function(index,value){
+			$('.tbvaccine tr').each(function(){
 				 var information_id = $('input[name=information_id]');
 				 var tr_index =$(this).index();
 				 var td2=$(this).find('td:eq(2)').children('select');
 				 var td6=$(this).find('td:eq(6)').children('input');
 				 var td7=$(this).find('td:eq(7)').children('input');
-				 var pass;
+				
 				 if(tr_index>0)
-				 {
+				 { 
 					  if(td2.val()==0 && (td6.val()=='' || td6.val()==null || td6.val()==undefined)){
-					  	//ไม่กรอกทั้งเรคอร์ด
+					  	//ไม่กรอกทั้งเรคอร์ด					  
 					  	 td2.removeClass('checkvaccine-cross').next().remove();
 					  	 td6.removeClass('checkvaccine-cross').next().remove();	
 					  	 if(tr_index==2){
@@ -287,8 +288,9 @@ $('select[name=prefix_name]').click(disableChkage);
 			 				 pass=false;
 			 			 }else{
 			 			 	 pass=true;	
-			 			 }					  		  	
+			 			 }	  		  	
 					   }else{
+
 							 $('.checkvaccine').trigger('blur');
 							 if(td2.val()!=0 && td6.val()!=''){
 							 	// กรอกครบทั้งเรคอร์ด			
@@ -296,14 +298,12 @@ $('select[name=prefix_name]').click(disableChkage);
 							 		td7.val($('select[name=hospital] option:selected').text());
 							 	}	
 							 	pass=true;					 					 	   	
-						   	  	//$(this).css('background-color','blue');
 						  	}else{
 						  		// กรอกไม่ครบทั้งเรคอร์ด
 						  		alert("กรุณากรอกข้อมูลการฉีดวัคซีนให้ครบถ้วนค่ะ");
 						  		//$(this).css('background-color','red');
 						  		pass=false;
-					  		}
-					  		
+					  		}					
 			  		}
 			  }		
 			})	//foreach	
@@ -327,20 +327,21 @@ $('select[name=prefix_name]').click(disableChkage);
 			return true;
 		}else{
 			return false;
-		}					
+		}	
+		 
 	})// btn_save
-	alert(process);
+
 		/***********  prevent double submit  ***********/
 	$("input[type=submit]").attr( 'disabled',false); 
 	 $.validator.setDefaults({
 		   	  submitHandler: function(){
 		   	  	if(process=='vaccine')
 		   	  	{
-		   	  		document.form1.submit();	
+		   	  		//document.form1.submit();	
 		   	  	}else{
 		   	  		$(":disabled").removeAttr('disabled');
 					$(".btn_save").attr('disabled',true); 	
-					document.form1.submit();		
+					//document.form1.submit();		
 				}//vaccine		
 			}	//submitHandler			
 	  });// validator.setDefaults		
@@ -475,8 +476,6 @@ $('select[name=prefix_name]').click(disableChkage);
 	if($('input[name=idcard]').val()!=""){
 		$('#cardW0,#cardW1,#cardW2,#cardW3,#cardW4').attr('disabled',true)	
 	}
-
-
 	
 });
 

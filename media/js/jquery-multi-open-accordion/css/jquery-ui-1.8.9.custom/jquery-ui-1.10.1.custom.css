@@ -68,7 +68,8 @@
 
 /* states and images */
 .ui-icon {
-	display: block;
+	/*display: block;*/
+	display: inline-block;
 	text-indent: -99999px;
 	overflow: hidden;
 	background-repeat: no-repeat;
@@ -164,7 +165,7 @@
 	cursor: pointer;
 	position: relative;
 	margin-top: 2px;
-	/*padding: .5em .5em .5em .7em;*/
+	padding: .5em .5em .5em .7em;
 	min-height: 0; /* support: IE7 */
 }
 .ui-accordion .ui-accordion-icons {

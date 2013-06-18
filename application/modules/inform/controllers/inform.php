@@ -12,13 +12,12 @@ class Inform extends R36_Controller
 		$this->load->model("history_model",'history');
 		$this->load->model('users/user_model','user');
 		$this->template->append_metadata(js_idcard());
-		
-		
-		
+		$this->history->primary_key('historyid');
+						
 	}
 	function index()
 	{
-		//var_dump($_GET);				
+		$this->db->debug=TRUE;		
 		if(!empty($_GET['action']))
 		{// กดค้นหา							
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
@@ -83,6 +82,8 @@ class Inform extends R36_Controller
 					$total_vaccine=implode(',',$_GET['total_vaccine']);
 					$where.=" AND total_vaccine in(".$total_vaccine.")";
 				}
+				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
+				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
 		}// $_GET['action]
 
 		if(!empty($where))
@@ -104,7 +105,7 @@ class Inform extends R36_Controller
 			/** กรณี user staff   **/
 			$data['idcard']=(!empty($_GET['idcard']))?@$_GET['idcard']:'';
 			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';		
-			$this->template->build('inform_index',$data);
+			$this->template->build('index',$data);
 		}else{			
 			$this->template->build('index');
 		}		
@@ -175,9 +176,7 @@ class Inform extends R36_Controller
 
 	function save(){
 		/*  ป้องกันการบันทึกข้อมูลผู้สัมผัสโรคซ้ำ : ตรวจสอบรหัสบัตรประชาชนก่อนบันทึกลง n_history ถ้ามีแล้วให้ update ถ้าไม่มี insert  	
-		 *   ที่ยอมให้บันทึกได้หลายเรคอร์ด - ไมได้ตรวจสอบก่อนบันทึก, ผู้สัมผัสโรคอาจย้ายที่อยู่ และสถานที่สัมผัสโรคคนละที่-				
-		 * 
-		 */	
+		 *   ที่ยอมให้บันทึกได้หลายเรคอร์ด - ไมได้ตรวจสอบก่อนบันทึก, ผู้สัมผัสโรคอาจย้ายที่อยู่ และสถานที่สัมผัสโรคคนละที่-					*/	
 		//$this->db->debug=TRUE;			
 		if($_POST['statusid']=='1'){ 
 					$_POST['idcard']=$_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];						
@@ -209,7 +208,7 @@ class Inform extends R36_Controller
 	
 		$_POST['updatetime']=(is_null(@$_POST['updatedtime']))? '0000-00-00 00:00:00':@$_POST['updatetime'];
 		//  n_history
-		$this->history->primary_key('historyid');
+		
 		$_POST['information_historyid']=$this->history->save($_POST);
 		
 		$head_lick_noblood=@$_POST['head_lick_noblood'];
@@ -270,17 +269,9 @@ class Inform extends R36_Controller
 		$_POST['daterig']=(is_null($_POST['daterig'])|| $_POST['daterig']=='')? '0000-00-00':$_POST['daterig'];
 		$_POST['datelongfeel']=(is_null($_POST['datelongfeel'])|| $_POST['datelongfeel']=='')? '0000-00-00':$_POST['datelongfeel'];
 		$_POST['after_vaccine_date']=(is_null($_POST['after_vaccine_date'])|| $_POST['after_vaccine_date']=='')? '0000-00-00':$_POST['after_vaccine_date'];
-		
-
-		
+			
 		$_POST['hospitalcode']=$_POST['hospital'];
-		$_POST['id']=$_POST['information_id'];
-		
-		/*echo '<pre>';
-		var_dump($_POST);	
-		echo '</pre>';	
-		exit;*/
-				
+		$_POST['id']=$_POST['information_id'];			
 		$information_id=$this->inform->save($_POST);
 		//   ------++++------    table n_vaccine	------++++------ 	
 		$this->vaccine->primary_key('vaccine_id');
@@ -307,13 +298,6 @@ class Inform extends R36_Controller
 		//  ------++++------    End n_vaccine  ------++++------ 
 		set_notify('success', SAVE_DATA_COMPLETE);		
 		redirect('inform/index');
-	}
-	function  save_vaccine()
-	{
-		echo'<pre>';
-		print_r($_POST);
-		echo '</pre>';		
-		//var_dump($_POST);	
 	}
 
 	function addContactTime()
@@ -354,49 +338,11 @@ class Inform extends R36_Controller
 		redirect('inform/index');
 		
 	}
-	function dead_delete($id){
-		if($id){
-			$this->dead->delete($id);
-		}
-		redirect('inform/index_dead');
-	}
-	function index_dead()
+	function checkDatetouch()
 	{
-		  	//$this->db->debug=TRUE;	  	  	
-			$wh='';
-			if(!empty($_GET['startdate']))				$wh.=" AND n_historydead.datetouch >='".cld_date2my($_GET['startdate'])."'";			
-			if(!empty($_GET['enddate']))				$wh.=" AND n_historydead.datetouch <='".cld_date2my($_GET['endate'])."'";			
-			if(!empty($_GET['hospitalprovince']))	$wh.=" AND n_historydead.hospitalprovince='".$_GET['hospitalprovince']."'";		
-		  	if(!empty($_GET['hospitaldistrct']))		$wh.=" AND n_historydead.hospitalamphur='".$hospitalamphur."'";		
-		  	if(!empty($_GET['hospital']))				$wh.=" AND n_information.hospitalcode='".$_GET['hospital']."'";			
-			if(!empty($_GET['name']))$wh.=" AND (firstname LIKE '%".$_GET['name']."%' OR surname LIKE '%".$_GET['name']."%' OR idcard LIKE '%".$_GET['name']."%')";			
-			if(!empty($_GET['provinceidplace']))	$wh.=" AND provinceidplace='".$_GET['provinceidplace']."'";
-			if(!empty($_GET['amphuridplace']))	$wh.=" AND amphuridplace='".$_GET['amphuridplace']."'";
-			if(!empty($_GET['districtidplace']))		$wh.=" AND districtidplace ='".$_GET['districtidplace']."'";
-			
-			if(empty($_GET['btn_save'])){
-				$data['result']=$this->dead->where(" id<>'' $wh")->sort("")->order("id desc")->limit(20)->get();			
-			}
-		$data['pagination']=$this->dead->pagination();			
-		$this->template->build('inform_dead_index',$data);
-	}
-	function form_dead($id=FALSE)
-	{			
-		$data['rs']=$this->dead->get_row($id);		
-		$this->template->build('inform_dead_form',$data);
-	}
-	function form_dead1($id=FALSE)
-	{			
-		$data['rs']=$this->dead->get_row($id);		
-		$this->template->build('inform_dead_form1',$data);
-	}
-	function save_dead()
-	{
-		$_POST['endate']=(empty($_POST['enddate'])) ? "":cld_date2my($_POST['endate']);
-		$_POST['startdate']=(empty($_POST['startdate'])) ? "":cld_date2my($_POST['startdate']);
-		$_POST['reportdate']=cld_date2my($_POST['reportdate']);
-		$this->head->save($_POST);
-		redirect('inform/index_dead');
+		$datetouch=strtotime(DateTH2DB($_GET['datetouch']));
+		$now=strtotime(date("Y-m-d H:i:s"));
+		echo ($datetouch >$now)? "false":"true";					
 	}
 
 }

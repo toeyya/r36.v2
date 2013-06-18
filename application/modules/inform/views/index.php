@@ -146,9 +146,10 @@ var province_id,amphur_id,district_id;
 						,'h_district_id' => $rs['hospital_district_id']
 						,'h_code' =>$hospitalcode
 						,'h_name'=>$rs['hospital_name']
-						,'action'=>'');
+						);
 	echo form_hidden($data);
 	}
+	echo form_hidden('action','');
 ?>		
 	<table class="tb_patient1">				
 			<tr> 
@@ -314,7 +315,7 @@ var province_id,amphur_id,district_id;
             <td>	
             		<a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" target="_blank" class="btn_view vtip"></a> 			
 				<?php if($rec['closecase']=="1"): ?>
-				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>=
+				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
 					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>" target="_blank" class="btn_edit vtip" ></a>
 					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
 				<?php }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){
