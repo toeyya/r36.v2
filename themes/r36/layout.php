@@ -31,8 +31,7 @@
 		<div id="content">	
 		<?php echo $template['body']; ?>	
 		</div> 	
-	</div>	
-	
+	</div>		
 	<div class="clr"></div>	
 	<div class="footer">Copyright © 2013 Department Disease Control. All Right Reserved.</div>
  	

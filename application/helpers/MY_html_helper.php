@@ -132,6 +132,7 @@ function currency_rate($price)
 			}
 			function save_log($action,$title=FALSE,$new=FALSE,$old=FALSE){			
 				$CI->load->model('district/district_model','district');
+				$CI->load->model('amphur/amphur_model','amphur');
 				$arr_action=array('save'=>'เพิ่ม','insert'=>'เพิ่ม','update'=>'แก้ไข','delete'=>'ลบ','view'=>'ดู','login'=>'เข้าใช้ระบบ','logout'=>'ออกจากระบบ');
 				if($action=="edit"){
 					 $detail=$arr_action[$action].$title." จาก ".$old." เป็น ".$new;
@@ -139,13 +140,8 @@ function currency_rate($price)
 				 	$detail=$arr_action[$action];
 				}else if($action=="insert"){
 					if($this->session->userdata('R36_HOSPITAL')!=''){
-						$rs=$DB->FETCHARRAY($DB->QUERY("SELECT amphur_name,province_name FROM n_amphur 
-													LEFT JOIN n_province on n_amphur.province_id=n_province.province_id												
-													WHERE n_amphur.province_id='".$_SESSION['R36_HOSPITAL_PROVINCE']."' and amphur_id='".$_SESSION['R36_HOSPITAL_AMPHUR']."'"));					
-						
-					/*$rs=$DB->district->select("amphur_name,province_name,district_name")
-														 ->join("LEFT JOIN n_province  on n_district.province_id=n_province.province_id
-														 			  LEFT JOIN n_amphur on n_district.amphur_id=n_amphur.amphur_id and n_amphur.province_id=n_a")->get();*/
+						$rs=$this->amphur->select("amphur_name,province_name")->join("LEFT JOIN n_province on n_amphur.province_id=n_province.province_id")
+												  ->where("n_amphur.province_id='".$_SESSION['R36_HOSPITAL_PROVINCE']."' and amphur_id='".$_SESSION['R36_HOSPITAL_AMPHUR']."'")->get();
 					
 						$detail=$arr_action[$action].$title.$new.$old."<br/>" .$_SESSION['R36_HOSPITAL_NAME']." อ.".$rs['amphur_name']." จ.".$rs['province_name'];
 					}

@@ -621,15 +621,15 @@ function selectType_id(type){
 	if(type==1){
 			document.getElementById ('Show_idpassport').style.display='none'; 
 			document.getElementById ('Show_idcard').style.display=''; 
-		    document.getElementById ('idpassport').value=''; 
+		    //document.getElementById ('idpassport').value=''; 
 	}else if(type==2){
 			document.getElementById ('Show_idpassport').style.display=''; 
 			document.getElementById ('Show_idcard').style.display='none'; 
-		    document.getElementById ('cardW0').value=''; 
-		    document.getElementById ('cardW1').value=''; 
-		    document.getElementById ('cardW2').value=''; 
-		    document.getElementById ('cardW3').value=''; 
-		    document.getElementById ('cardW4').value=''; 
+		    //document.getElementById ('cardW0').value=''; 
+		    //document.getElementById ('cardW1').value=''; 
+		   // document.getElementById ('cardW2').value=''; 
+		    //document.getElementById ('cardW3').value=''; 
+		   // document.getElementById ('cardW4').value=''; 
 	}
 }
 

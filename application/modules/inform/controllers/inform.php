@@ -17,7 +17,8 @@ class Inform extends R36_Controller
 		
 	}
 	function index()
-	{			
+	{
+		//var_dump($_GET);				
 		if(!empty($_GET['action']))
 		{// กดค้นหา							
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
@@ -105,7 +106,7 @@ class Inform extends R36_Controller
 			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';		
 			$this->template->build('inform_index',$data);
 		}else{			
-			$this->template->build('inform_index');
+			$this->template->build('index');
 		}		
 	}
 	
@@ -134,7 +135,7 @@ class Inform extends R36_Controller
 					$data['rs']['hospital_amphur_id']=$data['hp']['hospital_amphur_id'];
 					$data['rs']['hospital_district_id']=$data['hp']['hospital_district_id'];
 			}							
-			$this->template->build('inform_form',$data);
+			$this->template->build('form',$data);
 				
 	}		
 	function addnew()
@@ -168,7 +169,7 @@ class Inform extends R36_Controller
 		$data['in_out']=$_GET['in_out'];		
 		$data['value_disabled']='';	
 		$data['process']="";
-		$this->template->build('inform_form',$data);
+		$this->template->build('form',$data);
 	}
 
 
@@ -350,7 +351,7 @@ class Inform extends R36_Controller
 			$this->vaccine->delete("information_id",$id);
 			set_notify('success', DELETE_DATA_COMPLETE);				
 		}
-		redirect('inform');
+		redirect('inform/index');
 		
 	}
 	function dead_delete($id){
@@ -397,5 +398,6 @@ class Inform extends R36_Controller
 		$this->head->save($_POST);
 		redirect('inform/index_dead');
 	}
+
 }
 ?>

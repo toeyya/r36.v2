@@ -130,8 +130,12 @@ class Users extends Public_Controller
 		}else{
 			$dup = $this->user->get_one("uid",'idcard',$_GET['idcard']);
 		}
-		echo ($dup1 || $dup)? "false":"true";
 		
+		if(empty($_GET['uid'])){
+			echo ($chk=="no")? "false":"true";
+		}else{
+			echo ($dup1 || $dup)? "false":"true";
+		}
 	}
 	public function checkEmail(){
 		if(!empty($_GET['uid'])){

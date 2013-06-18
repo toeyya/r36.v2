@@ -7,8 +7,9 @@
               <?php if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"):  ?>
               <li class="line_topmenu4"><a href="javascript:void(0);">กรอกแบบฟอร์ม</a>
                 <ul class="submenu4">
+                	<li><a href="inform/patient/index">แบบฟอร์มประวัติคนไข้</a></li>
                      <li><a href="inform/index">แบบฟอร์มคนไข้ที่สัมผัสโรค</a></li>
-                     <li><a href="inform/index_dead">แบบฟอร์มคนไข้ที่เสียชีวิต</a></li>
+                     <li><a href="inform/dead/index_dead">แบบฟอร์มคนไข้ที่เสียชีวิต</a></li>
                   </ul>
                </li>
                <li class="line_topmenu4"><a href="javascript:void(0);">รายงาน</a>
