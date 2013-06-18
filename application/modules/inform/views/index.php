@@ -242,7 +242,7 @@ var province_id,amphur_id,district_id;
 			<tr>
 				<th></th>
 				<td colspan="4">
-					<p style="margin-left:13px;"><input type="checkbox" name="search_adv" value="1" <?php echo (!empty($_GET['search_adv'])=="1")? "checked='checked'":''  ?>>
+					<p style="margin-left:13px;"><input type="checkbox" name="search_adv" value="1" <?php echo (!empty($_GET['search_adv']))? "checked='checked'":''  ?>>
 						<span class="bold blue">ค้นหาขั้นสูง (advanced search)</span></p>
 			  </td>
 			</tr>

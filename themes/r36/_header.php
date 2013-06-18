@@ -9,7 +9,7 @@
                 <ul class="submenu4">
                 	<li><a href="inform/patient/index">แบบฟอร์มประวัติคนไข้</a></li>
                      <li><a href="inform/index">แบบฟอร์มคนไข้ที่สัมผัสโรค</a></li>
-                     <li><a href="inform/dead/index_dead">แบบฟอร์มคนไข้ที่เสียชีวิต</a></li>
+                     <li><a href="inform/dead/index">แบบฟอร์มคนไข้ที่เสียชีวิต</a></li>
                   </ul>
                </li>
                <li class="line_topmenu4"><a href="javascript:void(0);">รายงาน</a>

@@ -144,7 +144,7 @@ $(document).ready(function(){
 });
 </script>
 <div id="title">แบบฟอร์มผู้เสียชีวิตด้วยโรคพิษสุนัขบ้า</div>
-<form id="form1" name="form1" method="post"  action="inform/save_dead" > 
+<form id="form1" name="form1" method="post"  action="inform/dead/save" > 
 <div id="multiAccordion">
 	<h3><a href="javascript:void(0)">ส่วนที่ 1 ข้อมูลทั่วไป</a></h3>
 	<div id="section1">

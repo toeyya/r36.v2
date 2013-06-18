@@ -77,7 +77,7 @@ $(document).ready(function(){
 </script>
 <div id="title">ค้นหาข้อมูลคนไข้ที่เสียชีวิต</div>
 <div id="search">
-<form name="form1"  method="get" action="inform/index_dead">		
+<form name="form1"  method="get" action="inform/dead/index">		
 	<table class="tb_patient1">				
 			<input name="process" type="hidden" value="view" />
 			<tr> 

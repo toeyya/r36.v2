@@ -1,6 +1,6 @@
 <div id="title">แบบฟอร์มประวัติคนไข้</div>
 <div id="search">
-<form name="form1"  method="get" id="form1" action="inform/patient">
+<form name="form1"  method="get" id="form1" action="inform/patient/index">
 	<table>
 		<tr><th>ชื่อ / นามสกุล / บัตรประชาชน / บัตร passport </th>
 		<td colspan="2"><input type="text" name="name" value="<?php echo  @$_GET['name']?>"></td>
