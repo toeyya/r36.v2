@@ -28,9 +28,7 @@ class Users extends Public_Controller
 						redirect($_SERVER['HTTP_REFERER']);
 				}else{
 					 redirect('users/r36/users/index/'.$this->session->userdata('R36_UID'));
-				}
-              
-               
+				}                             
             }
             else
             {

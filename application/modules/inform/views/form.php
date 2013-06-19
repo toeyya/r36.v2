@@ -110,7 +110,7 @@ $('input[name=means]').change(show_hide_clear_means);
 $('input[name=chkage]').attr('disabled',true);
 $('select[name=prefix_name]').change(disableChkage);
 $('select[name=prefix_name]').click(disableChkage);
-
+	
 	if(process=="vaccine")
 	{				
 		$('#form1').find('input,select,textarea').attr('disabled','disabled');
@@ -118,12 +118,8 @@ $('select[name=prefix_name]').click(disableChkage);
 		total_vaccine=parseInt(total_vaccine)+1;
 		$('#meanstr tr').slice(total_vaccine).find('input,select').attr('disabled',false);
 		$('input[name=save],input[name=button]').attr('disabled',false);	
-	}else if(process=="addnew"){			
-		$("#part6").find('input').slice(0,3).val('');		
-	}else{
-		//$('#form1').find('input,select').attr('disabled','disabled');
-		// ต้องให้การให้แสดง ค่าเริ่มต้น ของvaccine_ccของแต่วิธีการฉีด
-		//show_hide_clear_means();
+	}else if(process=="view"){
+		$('#form1').find('input,select,textarea').attr('disabled','disabled');
 	}
 
 
@@ -474,7 +470,7 @@ $('select[name=prefix_name]').click(disableChkage);
 
 <div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($in_out=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($in_out=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
-	<?php error_reporting(E_NOTICE);
+	<?php error_reporting(E_ERROR);
 			@$rs['daterig'] =($rs['daterig'] =='0000-00-00')?'': cld_my2date(@$rs['daterig']);
 			@$rs['datelongfeel']	=(@$rs['datelongfeel']=='0000-00-00')?'':cld_my2date(@$rs['datelongfeel']);
 			@$rs['datetouch'] = (@$rs['datetouch'] =='0000-00-00')? '':cld_my2date(@$rs['datetouch']);	
@@ -493,7 +489,7 @@ $('select[name=prefix_name]').click(disableChkage);
 		<input type="hidden" name="idcard"  id="idcard" value="<?php echo @$rs['idcard'] ?>"  />
 		<input type="hidden" name="in_out"  value="<?php echo $in_out?>" />
 		<?php echo form_hidden('h_name',$h_name);
-					echo form_hidden('total_vaccine',$rs['total_vaccine']); ?>
+			  echo form_hidden('total_vaccine',$rs['total_vaccine']); ?>
 
 		<table width="100%"  border="0" cellspacing="0" cellpadding="3" class="tbchild">
               <tr>
@@ -567,7 +563,7 @@ $('select[name=prefix_name]').click(disableChkage);
                 <th>
 				<div align="center">
 					HN <span class="alertred">*</span> &nbsp;
-					<?php $hn=(isset($hn))?$hn:@$rs['hn']; ?>
+					<?php echo $rs['hn']; ?>
 					<input name="hn_s" type="text" class="input_box_patient " value="<?php echo $rs['hn'] ?>" size="20" disabled="disabled"> - 					
 					<input type="text" name="hn_no" size="2"  disabled="disabled"  value="<?php echo $rs['hn_no']; ?>" class="input_box_patient nowidth " onKeyPress="return NumberOnly();" style="text-align:center" 
 					<?php echo (@$rs['id'])? '':'disabled="disabled"'; ?> <?php if($process=='vaccine'){echo 'disabled="disabled"';} ?>>
@@ -588,30 +584,18 @@ $('select[name=prefix_name]').click(disableChkage);
 						<option value="2" <? if(@$rs['statusid']=='2'){ echo 'checked';}?>>เลขที่ passport</option>
 						
 					</select>
-					&nbsp;&nbsp;
 					<span id="Show_idpassport" <? if(@$rs['statusid']=='2'){print "style='display:'";}else{print "style='display:none'";}?>>
 						<input name="idpassport" type="text" class="input_box_patient " value="<?php echo @$rs['idcard'];?>" size="20" maxlength="50" <?php echo $value_disabled?>>
 					</span>
 					<span id="Show_idcard" <? if(@$rs['statusid']=='2'){print 'style = "display:none"';  }?>> 
-						<input name="cardW0" id="cardW0" type="text" class="input_box_patient nowidth" size="1" maxlength="1" value="<?php echo @$cardW0?>"
-						 onKeyPress="return NumberOnly();" onKeyUp=" if(this.value.length==1) {this.form.cardW1.value='';this.form.cardW1.focus();}" <?php echo $value_disabled?> />
-						  -
-						  <input name="cardW1"  id="cardW1" type="text" class="input_box_patient nowidth" size="4" maxlength="4"  value="<?php echo @$cardW1?>" 
-						  onKeyPress="return NumberOnly();" onKeyUp="if(this.value.length==4){this.form.cardW2.value='';this.form.cardW2.focus();}" <?php echo $value_disabled?>/>
-						  -
-						  <input name="cardW2"  id="cardW2" type="text" class="input_box_patient nowidth" size="5" maxlength="5"   value="<?php echo @$cardW2?>"
-						   onKeyPress="return NumberOnly();" onKeyUp="if(this.value.length==5){this.form.cardW3.value='';this.form.cardW3.focus();}" <?php echo $value_disabled?>/>
-						  -
-						  <input name="cardW3" id="cardW3" type="text" class="input_box_patient nowidth" size="2" maxlength="2"  value="<?php echo @$cardW3?>" 
-						  onKeyPress="return NumberOnly();" onKeyUp="if(this.value.length==2){this.form.cardW4.value='';this.form.cardW4.focus();}" <?php echo $value_disabled?>/>
-						  -
-						<input name="cardW4" id="cardW4" type="text" class="input_box_patient nowidth" size="1" maxlength="1"  value="<?php echo @$cardW4?>"  
-						onKeyPress="return NumberOnly();" onKeyUp="if(this.value.length==1){FChkCardID(this.form);}" <?php echo $value_disabled?>/>				
-					</span>&nbsp;&nbsp;
-					 					
+						<input name="cardW0" id="cardW0" type="text" class="input_box_patient nowidth" size="1" maxlength="1" value="<?php echo @$cardW0?>" <?php echo $value_disabled?>/> -
+						<input name="cardW1" id="cardW1" type="text" class="input_box_patient nowidth" size="4" maxlength="4" value="<?php echo @$cardW1?>" <?php echo $value_disabled?>/> -
+						<input name="cardW2" id="cardW2" type="text" class="input_box_patient nowidth" size="5" maxlength="5" value="<?php echo @$cardW2?>"<?php echo $value_disabled?>/> -
+						<input name="cardW3" id="cardW3" type="text" class="input_box_patient nowidth" size="2" maxlength="2" value="<?php echo @$cardW3?>" <?php echo $value_disabled?>/> -
+						<input name="cardW4" id="cardW4" type="text" class="input_box_patient nowidth" size="1" maxlength="1" value="<?php echo @$cardW4?>" <?php echo $value_disabled?>/>				
+					</span>				 					
 					<!-- กรณีข้อมูลเดิมไม่สมบูรณ์ จะทำให้บรรทึกไม่ผ่าน 
-					<button name="editidcard" id="editidcard" title="กดเพื่อแก้ไขรหัสในกรณีกรอกผิด" class="btn_press"></button>-->
-			
+					<button name="editidcard" id="editidcard" title="กดเพื่อแก้ไขรหัสในกรณีกรอกผิด" class="btn_press"></button>-->			
 				</th>
               </tr>
             </table>	
@@ -635,13 +619,13 @@ $('select[name=prefix_name]').click(disableChkage);
 							 </select>							
 							 ชื่อ<span class="alertred">*</span> :
                                <input name="firstname" type="text" class="input_box_patient " id="firstname" value="<?php echo @$rs['firstname'];?>" size="20" />
-							   <span></span> &nbsp;&nbsp;
+							   <span></span>
 							  นามสกุล<span class="alertred">*</span> :
                               <input name="surname" id="surname" type="text" value="<?php echo @$rs['surname'];?>" size="20"  class="input_box_patient ">
-							  <span></span>&nbsp;&nbsp;
+							  <span></span>
 							อายุ<span class="alertred">*</span> :
                             <input name="age" id="age"  type="text" size="2" maxlength="2" value="<?php echo @$rs['age'];?>" class="input_box_patient auto"  onKeyUp="chk_than15(this.value);">
-							<span></span> &nbsp;&nbsp;
+							<span></span>
 							 ปี (
                              <input name="chkage" type="checkbox" value="Y" <? if(@$chkage=='Y'){echo "checked";}?> onClick="chk_than1(document.form1);"/>
                         ต่ำกว่า 1 ปี  ) </p>
@@ -1914,16 +1898,16 @@ $('select[name=prefix_name]').click(disableChkage);
 										$max=(@$rs['means']=="2")? 4:5;
 										  for($i=0;$i<$max;$i++){
 												$j=$i;$j=$j+1;
-												if($process=="vaccine") $disabled=($j<=$rs['total_vaccine'])? 'disabled="disabled"':''; 																
+												if($process=="vaccine") $disabled_vac=($j<=$rs['total_vaccine'])? 'disabled="disabled"':''; 																
 												echo form_hidden('vaccine_id',$vaccine_id[$i]);
 										  ?>
 										  <tr>										  		
 												<td><?php echo $i+1;?></td>
 												<td>
-													<input name="vaccine_date[<?php echo $i?>]" <?php echo $disabled; ?> id="vaccine_date[<?php echo $i?>]" type="text" class="input_box_patient auto datepicker"  value="<? echo $vaccine_date[$i];?>" size="10"/>
+													<input name="vaccine_date[<?php echo $i?>]" <?php echo $disabled_vac; ?> id="vaccine_date[<?php echo $i?>]" type="text" class="input_box_patient auto datepicker"  value="<? echo $vaccine_date[$i];?>" size="10"/>
 												</td>
 												<td>
-													<select name="vaccine_name[<?php echo $i?>]" class="styled-select checkvaccine"  <?php echo $disabled?> id="vaccine_name[<?php echo $i?>]"/>
+													<select name="vaccine_name[<?php echo $i?>]" class="styled-select checkvaccine"  <?php echo $disabled_vac?> id="vaccine_name[<?php echo $i?>]"/>
 														<option value="0" selected="selected"<? if($vaccine_name[$i]=='0'){ echo 'selected';}?>>เลือกชนิด</option>
 														<option value="1" <? if($vaccine_name[$i]=='1'){ echo 'selected';}?>>PVRV</option>
 														<option value="2" <? if($vaccine_name[$i]=='2'){ echo 'selected';}?>>PCEC</option>
@@ -1937,23 +1921,22 @@ $('select[name=prefix_name]').click(disableChkage);
 												</td>													
 												<td>																									
 													<?php $arr_vaccine_cc=array("0.1"=>"0.1","0.5"=>"0.5","1.0"=>'1.0'); 													
-													echo form_dropdown('vaccine_cc['.$i.']',$arr_vaccine_cc,$vaccine_cc[$i],'class="vaccine_cc"'.$disabled);
+													echo form_dropdown('vaccine_cc['.$i.']',$arr_vaccine_cc,$vaccine_cc[$i],'class="vaccine_cc"'.$disabled_vac);
 													?>	
 												</td>
 												<td>																								 													
 													<?php $arr_vaccine_point=array("1"=>"1","2"=>"2"); 													
-													echo form_dropdown('vaccine_point['.$i.']',$arr_vaccine_point,$vaccine_point[$i],'class="vaccine_point"'.$disabled);
+													echo form_dropdown('vaccine_point['.$i.']',$arr_vaccine_point,$vaccine_point[$i],'class="vaccine_point"'.$disabled_vac);
 													?>											
 												</td>
 												<td>
-													<input name="byname[<?php echo $i?>]"  type="text" class="checkvaccine"  value="<?php echo $byname[$i]?>"  <? if($byname[$i]!='' && $process=='vaccine'){echo 'disabled';} ?>>
+													<input name="byname[<?php echo $i?>]"  type="text" class="checkvaccine"  value="<?php echo $byname[$i]?>" <?php echo $disabled_vac ?>/>
 												</td>
 												<td class="byplace">
 													<input name="byplace[<?php echo $i?>]" type="text" disabled='disabled'   value="<?php echo $byplace[$i] ?>">
 												</td>
 												<td>
-													<?php 		
-													//$this->db->debug=TRUE;								
+													<?php 															
 													$user_name =($user_id[$i]) ? $this->user->get_one("concat(userfirstname,' ',usersurname)",'uid',$user_id[$i]):'';
 													$shw_user=($user_name)? "online":"offline"; ?>
 													<p class="vtip user-<?php echo $shw_user ?>" title="<?php echo $user_name ?>"></p>
@@ -2120,6 +2103,7 @@ $('select[name=prefix_name]').click(disableChkage);
 			  </table>
     </div>    
 </div>
+ <?php if($process!="view"): ?>
  <div class="btn_inline">
       <ul>
       	<li></li>
@@ -2132,6 +2116,7 @@ $('select[name=prefix_name]').click(disableChkage);
       	<li><button class="btn_cancel" type="button" name="btn_cancel"  onclick="window.location='inform/index'"></button></li>
       </ul>
 </div> 
+<?php endif; ?>
 </form>
 
 <? if(!empty($rs['head_bite_blood'])){ echo "<script language='javascript'>show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>

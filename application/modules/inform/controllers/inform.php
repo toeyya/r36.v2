@@ -16,13 +16,13 @@ class Inform extends R36_Controller
 						
 	}
 	function index()
-	{	$this->db->debug=TRUE;
+	{		
 		if(!empty($_GET['action']))
 		{// กดค้นหา							
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
 					$where .= " AND  (hospitalcode='".$_GET['hospitalcode']."' and hospitalprovince='".$_GET['hospital_province_id']."' 
-												 and hospitalamphur='".$_GET['hospital_amphur_id']."' and hospital_district_id='".$_GET['hospital_district_id']."')";
+										and hospitalamphur='".$_GET['hospital_amphur_id']."' and hospital_district_id='".$_GET['hospital_district_id']."')";
 				}else{
 					$where.=(!empty($_GET['hospitalcode']))? " and hospitalcode='".$_GET['hospitalcode']."'":"";
 					$where.=(!empty($_GET['hospital_province_id']))? " and hospitalprovince='".$_GET['hospital_province_id']."'":"";
@@ -79,12 +79,16 @@ class Inform extends R36_Controller
 
 		if(!empty($where))
 		{
+			/*$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
+				  FROM n_information
+				  LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode				 
+			      INNER JOIN n_history ON n_history.historyid=n_information.information_historyid WHERE 1=1 ".$where;*/
 			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
-					   FROM n_information
-					   LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode				 
-			           INNER JOIN n_history ON n_history.historyid=n_information.information_historyid WHERE id<>'' ".$where;
+				FROM n_history
+				LEFT JOIN n_information ON n_history.historyid=n_information.information_historyid
+				LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
 
-			$data['result']=$this->inform->where("id<>'' $where")->sort("")->order("created desc")->limit(20)->get($sql);
+			$data['result']=$this->inform->limit(20)->get($sql);
 			$data['pagination']=$this->inform->pagination();			
 
 			$data['hospitalprovince']=@$_GET['hospital_province_id'];
@@ -107,26 +111,27 @@ class Inform extends R36_Controller
 			$data['in_out']=$in_out;
 			$data['historyid']=$historyid;
 			$data['process'] = $process;
-			$data['value_disabled']=($process=="view" || $process=="vaccine")? 'disabled="disabled"':'';
+			//$data['value_disabled']=($process=="view" || $process=="vaccine")? 'disabled="disabled"':'';
 			$idcard = $this->history->get_one("idcard","historyid",$historyid);
 			$data['cardW0']=substr($idcard,0,1);
 			$data['cardW1']=substr($idcard,1,4);
 			$data['cardW2']=substr($idcard,5,5);
 			$data['cardW3']=substr($idcard,10,2);
 			$data['cardW4']=substr($idcard,12,13);	
-			$data['h_name'] = $this->session->userdata('R36_HOSPITAL_NAME');
+			$data['h_name'] =$this->session->userdata('R36_HOSPITAL_NAME');
 			## กดเลือก 	view หรือ เรคอร์ดที่ถูกบันทึกในฐานข้อมูลแล้ว กรณีผู้ที่มีสิทธิ์สามารถดูได้ทั้งหมด
 			$data['rs']=$this->inform->select("n_information.*,n_history.*,n_hospital_1.*")										
-													->join("INNER JOIN n_history ON n_history.historyid=information_historyid
-																INNER JOIN n_hospital_1 ON n_hospital_1.hospital_code=n_information.hospitalcode")
-													->get_row($id);	
-				if($this->session->userdata('R36_LEVEL')=="05"){
-					$data['hp']=$this->hospital->get_row("hospital_code",$this->session->userdata('R36_HOSPITAL'));
-					$data['rs']['hospital_code']=$data['hp']['hospital_code'];
-					$data['rs']['hospital_province_id']=$data['hp']['hospital_province_id'];
-					$data['rs']['hospital_amphur_id']=$data['hp']['hospital_amphur_id'];
-					$data['rs']['hospital_district_id']=$data['hp']['hospital_district_id'];
-			}							
+									->join("INNER JOIN n_history ON n_history.historyid=information_historyid
+											INNER JOIN n_hospital_1 ON n_hospital_1.hospital_code=n_information.hospitalcode")
+									->get_row($id);	
+			if($this->session->userdata('R36_LEVEL')=="05"){
+				$data['rs']['hospital_code']=$this->session->userdata('R36_HOSPITAL');
+				$data['rs']['hospital_province_id']=$this->session->userdata('R36_HOSPITAL_PROVINCE');
+				$data['rs']['hospital_amphur_id']=$this->session->userdata('R36_HOSPITAL_AMPHUR');
+				$data['rs']['hospital_district_id']=$this->session->userdata('R36_HOSPITAL_DISTRICT');	
+			}
+							
+										
 			$this->template->build('form',$data);
 				
 	}		
@@ -135,14 +140,9 @@ class Inform extends R36_Controller
 		$idcard=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
 		$historyid=$this->db->GetOne("select historyid from n_history where idcard= ? ",$idcard);
 		if(!empty($historyid)){
-			$hn_no=$this->db->GetOne('SELECT max(hn_no)+1 as cnt from n_information where information_historyid= ? ',$historyid);
-			$h=$this->history->get_row("historyid",$historyid);
-			$data=array('rs'=>array('firstname'=>$h['firstname'],'surname' => $h['surname'],'age' =>$h['age'],'gender' => $h['gender']
-													   ,'marryname' => $h['marryname'],'nationalityname'=>$h['nationalityname'],'othernationalityname' => $h['othernationalityname']
-													   ,'nohome' =>$h['nohome'],'moo' =>$h['moo'],'villege' =>$h['villege'],'soi' =>$h['soi'],'road'=>$h['road']
-													   ,'provinceid' =>$h['provinceid'],'amphurid'=>$h['amphurid'],'districtid'=>$h['districtid'],'hn_no'=>$hn_no
-													   ,'telephone' => $h['telephone'])) ;
-													   	
+			$data['rs'] = $this->history->get_row("historyid",$historyid);			
+			$data['rs']['hn_no']=$this->db->GetOne('SELECT hn_no+1 as cnt from n_information where information_historyid= ? order by id desc',$historyid);
+																   	
 		}else{
 			$data['rs']['hn_no']=1;
 		}			
@@ -161,6 +161,7 @@ class Inform extends R36_Controller
 		$data['in_out']=$_GET['in_out'];		
 		$data['value_disabled']='';	
 		$data['process']="";
+		$data['h_name'] =$this->session->userdata('R36_HOSPITAL_NAME');	
 		$this->template->build('form',$data);
 	}
 
