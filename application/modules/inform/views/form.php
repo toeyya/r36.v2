@@ -7,20 +7,12 @@ function show_hide_clear_means()
 		if(means=="2" || means=="1"){		
 				if(means=="2"){
 					$("#meanstr tr:eq(5)").hide();
-					$(".vaccine_cc option").filter(function() {
-    						return $(this).text() == "0.1"; 
-					}).attr('selected', true);
-					$(".vaccine_point option").filter(function() {
-    						return $(this).text() == "2"; 
-					}).attr('selected', true);
+					$(".vaccine_cc option").filter(function() {return $(this).text() == "0.1"; }).attr('selected', true);
+					$(".vaccine_point option").filter(function() {return $(this).text() == "2"; }).attr('selected', true);
 				}else{					
 					$("#meanstr tr:eq(5)").show();
-					$(".vaccine_cc option").filter(function() {
-    						return $(this).text() == "0.5"; 
-					}).attr('selected', true);
-					$(".vaccine_point option").filter(function() {
-    						return $(this).text() == "1"; 
-					}).attr('selected', true);
+					$(".vaccine_cc option").filter(function() {return $(this).text() == "0.5"; }).attr('selected', true);
+					$(".vaccine_point option").filter(function() {return $(this).text() == "1"; }).attr('selected', true);
 				}
 				if(information_id==''){
 					for(clear=0;clear<5;clear++)
@@ -108,31 +100,28 @@ function  disableChkage(){
 
 $(document).ready(function(){
 	/*$( "#accordion" ).accordion({heightStyle: "content" });*/
+	
+	var ref1,ref3;
+	var process=$('input[name=process]').val();
  $('#multiAccordion').multiAccordion({ heightStyle: "content",active:0 });
 
-var process='<?php echo $process ?>';
-if(process=='view'){
-	$('#form1').find('input,select').attr('disabled','disabled');
-}
-// ต้องให้การให้แสดง ค่าเริ่มต้น ของvaccine_ccของแต่วิธีการฉีด
 show_hide_clear_means();
 $('input[name=means]').change(show_hide_clear_means);		
 $('input[name=chkage]').attr('disabled',true);
 $('select[name=prefix_name]').change(disableChkage);
 $('select[name=prefix_name]').click(disableChkage);
-	var ref1,ref3;
-	var process=$('input[name=process]').val();
-	//alert(process);
+
 	if(process=="vaccine")
 	{				
-		$('input[name=checkerHN]').css('display','none');
-		$('#part1 :input,#part2 :input,#part3 :input,#part4 :input,#part6 :input,input[name=means],#after_symptom_vaccine :input,#closecasemaintr :input').attr('disabled',true);
+		$('#form1').find('input,select,textarea').attr('disabled','disabled');
+		var total_vaccine=$('input[name=total_vaccine]').val();		
+		total_vaccine=parseInt(total_vaccine)+1;
+		$('#meanstr tr').slice(total_vaccine).find('input,select').attr('disabled',false);
 		$('input[name=save],input[name=button]').attr('disabled',false);	
 	}else if(process=="addnew"){			
-		$('#part3 :input[type=radio],#part4 :input[type=radio],#part2 :input[type=checkbox],#part5 :input[type=radio]').removeAttr('checked');
-		$("#part5 :input[type=text]").val('');
 		$("#part6").find('input').slice(0,3).val('');		
 	}else{
+		//$('#form1').find('input,select').attr('disabled','disabled');
 		// ต้องให้การให้แสดง ค่าเริ่มต้น ของvaccine_ccของแต่วิธีการฉีด
 		//show_hide_clear_means();
 	}
@@ -275,6 +264,7 @@ $('select[name=prefix_name]').click(disableChkage);
 				 var td2=$(this).find('td:eq(2)').children('select');
 				 var td6=$(this).find('td:eq(6)').children('input');
 				 var td7=$(this).find('td:eq(7)').children('input');
+		
 				
 				 if(tr_index>0)
 				 { 
@@ -295,7 +285,11 @@ $('select[name=prefix_name]').click(disableChkage);
 							 if(td2.val()!=0 && td6.val()!=''){
 							 	// กรอกครบทั้งเรคอร์ด			
 							 	if(information_id.val()!='' || information_id.val()!=null || information_id.val()!=undefined){
-							 		td7.val($('select[name=hospital] option:selected').text());
+							 		// ใส่ byplace
+							 		if(td7.val()==""){
+							 			td7.val($('input[name=h_name]').val());
+							 		}
+							 		
 							 	}	
 							 	pass=true;					 					 	   	
 						  	}else{
@@ -332,19 +326,14 @@ $('select[name=prefix_name]').click(disableChkage);
 	})// btn_save
 
 		/***********  prevent double submit  ***********/
-	$("input[type=submit]").attr( 'disabled',false); 
+	$(".btn_save").attr( 'disabled',false); 
 	 $.validator.setDefaults({
 		   	  submitHandler: function(){
-		   	  	if(process=='vaccine')
-		   	  	{
-		   	  		//document.form1.submit();	
-		   	  	}else{
-		   	  		$(":disabled").removeAttr('disabled');
-					$(".btn_save").attr('disabled',true); 	
-					//document.form1.submit();		
-				}//vaccine		
-			}	//submitHandler			
-	  });// validator.setDefaults		
+		   	  	$(".btn_save").attr('disabled','disabled'); 	
+		   	  	$(":disabled").removeAttr('disabled');	
+				document.form1.submit();			
+			}		
+	  });	
 	$('#headanimal').click(function(){ $("#headanimalplace").valid();}); 
 	$('#putdrug').click(function(){$('input[name=putdrugdetail]').valid();});
 	$('#historyprotect').click(function(){ $('input[name=historyprotectdetail]').valid();});
@@ -369,21 +358,21 @@ $('select[name=prefix_name]').click(disableChkage);
 			headanimalplace:{required: "#headanimal:checked" },putdrugdetail:{required: "#putdrug:checked"},
 			historyprotectdetail:{required:'#historyprotect:checked'},washbeforedetail:{required:'#washbefore:checked'},
 			causedetail:{required:'#reasonbite:checked'},causetext:{required:'#causedetail_other:checked'},	
-			cardW0:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
+			/*cardW0:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
 		 	cardW1:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
 		 	cardW2:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
 		 	cardW3:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
 		 	cardW4:{
 		 			required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true,	 		
 		 			remote:{
-		 				url:'<?php echo base_url(); ?>inform/chkidcard',
+		 				url:'users/chkidcard',
 		 				type:'get',
 				        data: {
 				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
 				          digit_last:function(){return $('#cardW4').val(); }
 				        }
 		 			}		 		
-		 		}       						
+		 		}  */     						
 		},
 		messages:{
 			firstname:"ระบุด้วยค่ะ",surname:"ระบุด้วยค่ะ",
@@ -397,11 +386,11 @@ $('select[name=prefix_name]').click(disableChkage);
 			 placetouch:"ระบุสถานที่สัมผัสโรค",
 			 headanimalplace:"ระบุสถานที่ด้วยค่ะ",putdrugdetail:"ระบุการใส่ยาด้วยค่ะ", historyprotectdetail:"ระบุการฉีดด้วยค่ะ", washbeforedetail:'ระบุการล้างแผลด้วยค่ะ',
 			 causedetail:'ระบุสาเหตุที่ถูกกัดด้วยค่ะ',causetext:'ระบุสาเหตุอื่นๆด้วยค่ะ',
-		 	cardW0:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
+		 	/*cardW0:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
 		 	cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
 		 	cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
 		 	cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 	cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}			 
+		 	cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}	*/		 
 		},
 			errorPlacement: function(error, element){								
 				if((element.attr('name')=='firstname') || (element.attr('name')=='surname'))
@@ -485,7 +474,7 @@ $('select[name=prefix_name]').click(disableChkage);
 
 <div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($in_out=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($in_out=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
-	<?php //error_reporting(E_ALL ^ E_NOTICE);
+	<?php error_reporting(E_NOTICE);
 			@$rs['daterig'] =($rs['daterig'] =='0000-00-00')?'': cld_my2date(@$rs['daterig']);
 			@$rs['datelongfeel']	=(@$rs['datelongfeel']=='0000-00-00')?'':cld_my2date(@$rs['datelongfeel']);
 			@$rs['datetouch'] = (@$rs['datetouch'] =='0000-00-00')? '':cld_my2date(@$rs['datetouch']);	
@@ -503,6 +492,8 @@ $('select[name=prefix_name]').click(disableChkage);
 		<input type="hidden" name="historyid"  value="<?php echo @$rs['historyid'] ?>"/>
 		<input type="hidden" name="idcard"  id="idcard" value="<?php echo @$rs['idcard'] ?>"  />
 		<input type="hidden" name="in_out"  value="<?php echo $in_out?>" />
+		<?php echo form_hidden('h_name',$h_name);
+					echo form_hidden('total_vaccine',$rs['total_vaccine']); ?>
 
 		<table width="100%"  border="0" cellspacing="0" cellpadding="3" class="tbchild">
               <tr>
@@ -577,9 +568,9 @@ $('select[name=prefix_name]').click(disableChkage);
 				<div align="center">
 					HN <span class="alertred">*</span> &nbsp;
 					<?php $hn=(isset($hn))?$hn:@$rs['hn']; ?>
-					<input name="hn_s" type="text" class="input_box_patient " value="<?php echo $rs['hn'] ?>" size="20" readonly=""> - 					
-					<input type="text" name="hn_no" size="2"  readonly=""  value="<?php echo $rs['hn_no']; ?>" class="input_box_patient nowidth " onKeyPress="return NumberOnly();" style="text-align:center" 
-					<?php echo (@$rs['id'])? '':'readonly'; ?> <?php if($process=='vaccine'){echo 'disabled';} ?>>
+					<input name="hn_s" type="text" class="input_box_patient " value="<?php echo $rs['hn'] ?>" size="20" disabled="disabled"> - 					
+					<input type="text" name="hn_no" size="2"  disabled="disabled"  value="<?php echo $rs['hn_no']; ?>" class="input_box_patient nowidth " onKeyPress="return NumberOnly();" style="text-align:center" 
+					<?php echo (@$rs['id'])? '':'disabled="disabled"'; ?> <?php if($process=='vaccine'){echo 'disabled="disabled"';} ?>>
 					<input name="hospitalprovince" type="hidden"value="<?php echo @$rs['hospitalprovince']?>" >
 					<input name="hospitalamphur" type="hidden"value="<?php echo @$rs['hospitalamphur']?>" >
 					<input name="hospital" type="hidden"value="<?php echo @$rs['hospitalcode']?>" >
@@ -938,7 +929,7 @@ $('select[name=prefix_name]').click(disableChkage);
 				  <tr>
 				    <td>1.3</td>
 				    <td>วันที่สัมผัสโรค : <span class="alertred">*</span>
-						<input name="datetouch" type="text" size="10"  id="datetouch" class="input_box_patient auto datepicker" readonly=""  value="<?php echo @$rs['datetouch']; ?>" />
+						<input name="datetouch" type="text" size="10"  id="datetouch" class="input_box_patient auto datepicker" <?php echo $value_disabled ?>  value="<?php echo @$rs['datetouch']; ?>" />
 					</td>
 			      </tr>
 			      
@@ -1776,7 +1767,7 @@ $('select[name=prefix_name]').click(disableChkage);
 					<input name="quantityiu" id="quantityiu" type="text" class="input_box_patient auto" size="5" value="<?php echo @$rs['quantityiu'];?>"  onKeyUp="chkFormatNam (this.value,this.name);" > IU&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;น้ำหนักคนไข้&nbsp; <!-- onBlur="check_ui(this);" -->
 					<input name="weight_patient" id="weight_patient" type="text" size="5" class="input_box_patient auto" value="<?php echo @$rs['weight_patient'];?>"  onKeyUp="chkFormatNam (this.value,this.name);" >
 
-					<input name="daterig" type="text" size="10" class="input_box_patient auto datepicker" readonly=""  value="<?php echo @$rs['daterig'] ?>" />
+					<input name="daterig" type="text" size="10" class="input_box_patient auto datepicker" <?php echo $value_disabled ?> value="<?php echo @$rs['daterig'] ?>" />
 					</td>
                   </tr>
                   <tr id="use_rigtr4" <? if(@$rs['use_rig']!='2'){print 'style = "display:none"';  }?>>
@@ -1842,7 +1833,7 @@ $('select[name=prefix_name]').click(disableChkage);
 							<td colspan="2">&nbsp;&nbsp;&nbsp;
 							  <input name="longfeel" type="radio" value="2" <? if(@$rs['longfeel']=='2'){ print "checked";}?>>
 							  หลัง 2 ชม. <span class="alertred">(ระบุวันที่)&nbsp;
-								<input name="datelongfeel" id="datelongfeel" type="text" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$rs['datelongfeel'];?>" />
+								<input name="datelongfeel" id="datelongfeel" type="text" size="10" class="input_box_patient auto datepicker" <?php  echo $value_disabled ?> value="<?php echo @$rs['datelongfeel'];?>" />
 							  </span></td>
 							<td>&nbsp;</td>
 						  </tr>
@@ -1903,13 +1894,7 @@ $('select[name=prefix_name]').click(disableChkage);
 										$byname=array('','','','','');
 										$byplace=array('','','','','');
 										$user_id =array('','','','','');
-										if($process=='vaccine'){											
-											//$disabled='disabled="disabled"';									
-										}else if($process=='addnew' || $process=='' ||$process="view"){
-											$hospital_name=$this->session->userdata('R36_HOSPITAL_NAME');
-											$disabled='';									
-										}
-										
+														
 										if($result){
 											foreach($result as $key=>$rec_vaccine){
 														$vaccine_id[$key] = $rec_vaccine['vaccine_id'];
@@ -1929,16 +1914,16 @@ $('select[name=prefix_name]').click(disableChkage);
 										$max=(@$rs['means']=="2")? 4:5;
 										  for($i=0;$i<$max;$i++){
 												$j=$i;$j=$j+1;
-												if($process=="vaccine") $disabled=($j==$rs['total_vaccine'])? 'disabled="disabled"':''; 																
+												if($process=="vaccine") $disabled=($j<=$rs['total_vaccine'])? 'disabled="disabled"':''; 																
 												echo form_hidden('vaccine_id',$vaccine_id[$i]);
 										  ?>
 										  <tr>										  		
 												<td><?php echo $i+1;?></td>
 												<td>
-													<input name="vaccine_date[<?php echo $i?>]" <?php echo $disabled; ?> type="text" size="10" class="input_box_patient auto datepicker" id="vaccine_date[<?php echo $i?>]" readonly="" value="<?php echo $vaccine_date[$i];?>" />
+													<input name="vaccine_date[<?php echo $i?>]" <?php echo $disabled; ?> id="vaccine_date[<?php echo $i?>]" type="text" class="input_box_patient auto datepicker"  value="<? echo $vaccine_date[$i];?>" size="10"/>
 												</td>
 												<td>
-													<select name="vaccine_name[<?php echo $i?>]" class="styled-select checkvaccine" id="vaccine_name[<?php echo $i?>]" <?php echo $disabled?>/>
+													<select name="vaccine_name[<?php echo $i?>]" class="styled-select checkvaccine"  <?php echo $disabled?> id="vaccine_name[<?php echo $i?>]"/>
 														<option value="0" selected="selected"<? if($vaccine_name[$i]=='0'){ echo 'selected';}?>>เลือกชนิด</option>
 														<option value="1" <? if($vaccine_name[$i]=='1'){ echo 'selected';}?>>PVRV</option>
 														<option value="2" <? if($vaccine_name[$i]=='2'){ echo 'selected';}?>>PCEC</option>
@@ -1947,28 +1932,24 @@ $('select[name=prefix_name]').click(disableChkage);
 												  </select> 
 												</td>
 												<td>
-													<input name="vaccine_no[<?php echo $i?>]"    type="text" id="vaccine_no[<?php echo $i?>]" size="10" value="<?php echo $vaccine_no[$i]?>" 
-													<? if($vaccine_no[$i]!="" && $process=="vaccine"){echo 'disabled';} ?> >											
+													<input name="vaccine_no[<?php echo $i?>]"   type="text"  value="<?php echo $vaccine_no[$i]?>" id="vaccine_no[<?php echo $i?>]"
+													<? if($vaccine_no[$i]!="" && $process=="vaccine"){echo 'disabled';} ?> >										
 												</td>													
-												<td>
-																									
+												<td>																									
 													<?php $arr_vaccine_cc=array("0.1"=>"0.1","0.5"=>"0.5","1.0"=>'1.0'); 													
 													echo form_dropdown('vaccine_cc['.$i.']',$arr_vaccine_cc,$vaccine_cc[$i],'class="vaccine_cc"'.$disabled);
 													?>	
 												</td>
-												<td>											
-													 
-													
+												<td>																								 													
 													<?php $arr_vaccine_point=array("1"=>"1","2"=>"2"); 													
 													echo form_dropdown('vaccine_point['.$i.']',$arr_vaccine_point,$vaccine_point[$i],'class="vaccine_point"'.$disabled);
 													?>											
 												</td>
 												<td>
-													<input name="byname[<?php echo $i?>]" type="text" class="checkvaccine" id="byname[<?php echo $i?>]" value="<?php echo $byname[$i]?>" size="10"  <? if($byname[$i]!='' && $process=='vaccine'){echo 'disabled';} ?>>
+													<input name="byname[<?php echo $i?>]"  type="text" class="checkvaccine"  value="<?php echo $byname[$i]?>"  <? if($byname[$i]!='' && $process=='vaccine'){echo 'disabled';} ?>>
 												</td>
-
 												<td class="byplace">
-													<input name="byplace[<?php echo $i?>]" type="text"  readonly="readonly" id="byplace[<?php echo $i?>]" value="<?php echo $byplace[$i] ?>" size="20" <? if($byplace[$i]!="" && $process=='vaccine'){echo 'disabled';} ?>>
+													<input name="byplace[<?php echo $i?>]" type="text" disabled='disabled'   value="<?php echo $byplace[$i] ?>">
 												</td>
 												<td>
 													<?php 		
@@ -1981,8 +1962,7 @@ $('select[name=prefix_name]').click(disableChkage);
 										  <?  
 										  }
 										  ?>
-									</table>
-								
+									</table>								
 								</td>
                                 </tr>
                               <tr id="after_symptom_vaccine">
@@ -2031,7 +2011,7 @@ $('select[name=prefix_name]').click(disableChkage);
                                     <td width="22%">วันที่มีอาการ</td>
                                     <td width="78%">
                                     
-									<input name="after_vaccine_date" type="text" size="10" class="input_box_patient auto datepicker" readonly="" value="<?php echo @$rs['after_vaccine_date'];?>" />
+									<input name="after_vaccine_date" type="text" size="10" class="input_box_patient auto datepicker" <?php echo $value_disabled ?> value="<?php echo @$rs['after_vaccine_date'];?>" />
 									</td>
                                   </tr>
                                   <tr>
@@ -2133,7 +2113,7 @@ $('select[name=prefix_name]').click(disableChkage);
 						$datedeflaut=date("-m-d");
 						$reportdate=cld_my2date($Ydate.$datedeflaut);
 					?>
-			        <input name="reportdate" type="text" size="10" class="input_box_patient " readonly="" value="<?php echo (@$rs['reportdate'])? cld_my2date(@$rs['reportdate']):$reportdate;?>"> 
+			        <input name="reportdate" type="text" size="10" class="input_box_patient " readonly="readonly" value="<?php echo (@$rs['reportdate'])? cld_my2date(@$rs['reportdate']):$reportdate;?>"> 
 
 				    </td>
 				  </tr>
@@ -2154,61 +2134,51 @@ $('select[name=prefix_name]').click(disableChkage);
 </div> 
 </form>
 
-<? if(@$rs['head_bite_blood']=='1'){ echo "<script language='javascript'>show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
-<? if(@$rs['head_bite_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
-<? if(@$rs['head_claw_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
-<? if(@$rs['head_claw_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
-<? if(@$rs['head_lick_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
-<? if(@$rs['head_lick_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
-<? if(@$rs['face_bite_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
-<? if(@$rs['face_bite_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
-<? if(@$rs['face_claw_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
-<? if(@$rs['face_claw_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
-<? if(@$rs['face_lick_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
-<? if(@$rs['face_lick_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
-<? if(@$rs['neck_bite_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
-<? if(@$rs['neck_bite_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
-<? if(@$rs['neck_claw_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
-<? if(@$rs['neck_claw_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
-<? if(@$rs['neck_lick_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
-<? if(@$rs['neck_lick_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
-<? if(@$rs['hand_bite_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
-<? if(@$rs['hand_bite_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
-<? if(@$rs['hand_claw_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
-<? if(@$rs['hand_claw_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
-<? if(@$rs['hand_lick_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
-<? if(@$rs['hand_lick_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
-<? if(@$rs['arm_bite_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
-<? if(@$rs['arm_bite_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
-<? if(@$rs['arm_claw_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
-<? if(@$rs['arm_claw_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
-<? if(@$rs['arm_lick_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
-<? if(@$rs['arm_lick_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
-<? if(@$rs['body_bite_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
-<? if(@$rs['body_bite_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
-<? if(@$rs['body_claw_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
-<? if(@$rs['body_claw_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
-<? if(@$rs['body_lick_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
-<? if(@$rs['body_lick_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
-<? if(@$rs['leg_bite_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
-<? if(@$rs['leg_bite_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
-<? if(@$rs['leg_claw_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
-<? if(@$rs['leg_claw_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
-<? if(@$rs['leg_lick_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
-<? if(@$rs['leg_lick_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
-<? if(@$rs['feet_bite_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
-<? if(@$rs['feet_bite_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
-<? if(@$rs['feet_claw_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
-<? if(@$rs['feet_claw_noblood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
-<? if(@$rs['feet_lick_blood']=='1'){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
-<? if(@$rs['feet_lick_noblood']=='1'){
-	 echo "<script language=\"javascript\">
-					show_mark(document.getElementById('feet_bite_blood').checked
-										,document.getElementById('feet_bite_noblood').checked
-										,document.getElementById('feet_claw_blood').checked
-										,document.getElementById('feet_claw_noblood').checked
-										,document.getElementById('feet_lick_blood').checked
-										,document.getElementById('feet_lick_noblood').checked
-										,document.getElementById('markfeet')
-										);
-				</script>";}?>
+<? if(!empty($rs['head_bite_blood'])){ echo "<script language='javascript'>show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
+<? if(!empty($rs['head_bite_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
+<? if(!empty($rs['head_claw_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
+<? if(!empty($rs['head_claw_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
+<? if(!empty($rs['head_lick_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
+<? if(!empty($rs['head_lick_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>
+<? if(!empty($rs['face_bite_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
+<? if(!empty($rs['face_bite_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
+<? if(!empty($rs['face_claw_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
+<? if(!empty($rs['face_claw_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
+<? if(!empty($rs['face_lick_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
+<? if(!empty($rs['face_lick_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'));</script>";}?>
+<? if(!empty($rs['neck_bite_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
+<? if(!empty($rs['neck_bite_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
+<? if(!empty($rs['neck_claw_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
+<? if(!empty($rs['neck_claw_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
+<? if(!empty($rs['neck_lick_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
+<? if(!empty($rs['neck_lick_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'));</script>";}?>
+<? if(!empty($rs['hand_bite_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
+<? if(!empty($rs['hand_bite_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
+<? if(!empty($rs['hand_claw_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
+<? if(!empty($rs['hand_claw_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
+<? if(!empty($rs['hand_lick_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
+<? if(!empty($rs['hand_lick_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'));</script>";}?>
+<? if(!empty($rs['arm_bite_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
+<? if(!empty($rs['arm_bite_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
+<? if(!empty($rs['arm_claw_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
+<? if(!empty($rs['arm_claw_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
+<? if(!empty($rs['arm_lick_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
+<? if(!empty($rs['arm_lick_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'));</script>";}?>
+<? if(!empty($rs['body_bite_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
+<? if(!empty($rs['body_bite_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
+<? if(!empty($rs['body_claw_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
+<? if(!empty($rs['body_claw_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
+<? if(!empty($rs['body_lick_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
+<? if(!empty($rs['body_lick_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'));</script>";}?>
+<? if(!empty($rs['leg_bite_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
+<? if(!empty($rs['leg_bite_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
+<? if(!empty($rs['leg_claw_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
+<? if(!empty($rs['leg_claw_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
+<? if(!empty($rs['leg_lick_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
+<? if(!empty($rs['leg_lick_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'));</script>";}?>
+<? if(!empty($rs['feet_bite_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
+<? if(!empty($rs['feet_bite_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
+<? if(!empty($rs['feet_claw_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
+<? if(!empty($rs['feet_claw_noblood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
+<? if(!empty($rs['feet_lick_blood'])){ echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>
+<? if(!empty($rs['feet_lick_noblood'])){echo "<script language=\"javascript\">show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'));</script>";}?>

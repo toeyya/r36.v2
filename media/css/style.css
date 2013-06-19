@@ -384,3 +384,17 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 #btn_printout{float:right;margin-top:10px;}
 #report #multiAccordion  #reference{font-size:11px;}
 .page-break{margin:-1px 0px; padding:0px;height:0px;}
+.btn_search1{
+width:32px;
+height:26px;
+border: none;
+background: transparent url(../images/comment_user_search.png) no-repeat center;
+overflow: hidden;
+text-indent: -999px;
+line-height: 0px;
+display:inline-block;
+color: #a63606;
+cursor: pointer; /* hand-shaped cursor */
+cursor: hand; /* for IE 5.x */
+vertical-align:top
+}

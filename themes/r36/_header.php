@@ -7,7 +7,6 @@
               <?php if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"):  ?>
               <li class="line_topmenu4"><a href="javascript:void(0);">กรอกแบบฟอร์ม</a>
                 <ul class="submenu4">
-                	<li><a href="inform/patient/index">แบบฟอร์มประวัติคนไข้</a></li>
                      <li><a href="inform/index">แบบฟอร์มคนไข้ที่สัมผัสโรค</a></li>
                      <li><a href="inform/dead/index">แบบฟอร์มคนไข้ที่เสียชีวิต</a></li>
                   </ul>
@@ -33,7 +32,9 @@
                      <li><a href="report/export/export_rabies">ส่งออก ข้อมูลคนไข้ที่สัมผัสโรค</a></li>
                      <li><a href="javascript:void(0);">ส่งออก ข้อมูลโรงพยาบาล</a></li>
                      <li><a href="javascript:void(0);">ส่งออก ข้อมูลตำบล</a></li>
+                     <?php if($this->session->userdata('schedule')): ?>
                      <li><a href="report/schedule">ตารางนัดหมายคนไข้</a></li>
+                     <?php endif; ?>
                  </ul>
                 </li>
                <li class="line_topmenu9"><a href="javascript:void(0);">Help</a>

@@ -80,17 +80,9 @@ class Report extends R36_Controller
 		    $data['cond']=$cond;
 
 				  	
-			if($preview) $this->template->set_layout('print');
-			
-			if($no=="4"){
-				//$this->template->build('report4_demo',$data);
-				$this->template->build("report".$no."_index",$data);
-			}else{
-				$this->template->build("report".$no."_index",$data);
-			}
-
-			
-		
+			if($preview) $this->template->set_layout('print');				
+			$this->template->build("report".$no."_index",$data);
+						
 	}
 	function dead($part=FALSE,$preview=FALSE){
 		$data['part']=$part;
@@ -105,24 +97,17 @@ class Report extends R36_Controller
 	function schedule($preview=FALSE)
 	{//$this->db->debug=TRUE;
 			$wh="";	
-			if($this->session->userdata('R36_PROVINCE')!='' && $this->session->userdata('R36_LEVEL')=='02'){
-						//$wh="AND provinceid = '".$this->session->userdata('R36_PROVINCE')."'  AND hospitalprovince <>  '".$this->session->userdata('R36_HOSPITAL')."' ";
-			}
-			if($this->session->userdata('R36_HOSPITAL')){
-						//$rechospital=$DB->FETCHARRAY($DB->QUERY("SELECT hospital_amphur_id,hospital_province_id FROM n_hospital WHERE hospital_code='".$this->session->userdata('R36_HOSPITAL')."'"));				
-					
-						//$wh="AND hospitalcode ='".$this->session->userdata('R36_HOSPITAL')."'";
-						//$wh="AND hospitalcode ='60080003'";
-			}
-			/*if($this->session->userdata('R36_LEVEL')=='00'){
-						$wh="AND ((provinceid = '10'  AND hospitalprovince <>  '10') OR (typeforeign='3' AND nationalityname!='1')) ";
-			}*/			
-			$nextday=date ("Y-m-d", mktime (0,0,0,date('m')+1,date('d'),date('Y')));		
+			
+			//$nextday=date ("Y-m-d", mktime (0,0,0,date('m'),date('d')+1,date('Y')));
+			$today=DBdate(date('Y-m-d'));
+			$nextday=DBdate(date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d")))));	
+			echo $today.'  '.$nextday;
+		
  			$data['result']=$this->inform->select("hospitalcode,hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid")
 										 ->join("INNER JOIN n_history ON n_information.information_historyid = n_history.historyid
 												 INNER JOIN n_vaccine ON n_information.id = n_vaccine.information_id ")		
-										 ->where("closecase !='2' AND (means  IN (1,2)) AND n_vaccine.vaccine_date!='' $wh 
-												  AND n_information.total_vaccine!='5' AND date(vaccine_date) BETWEEN '2555-11-25' AND '2555-12-25' 
+										 ->where("closecase !='2' AND means <> '' AND n_vaccine.vaccine_date!='' $wh 
+												  AND n_information.total_vaccine!='5' AND vaccine_date BETWEEN '".$nextday."' AND '".$today."' 
 												  GROUP BY n_information.id")->sort("")->order("vaccine_date asc")->get();
 		if($preview)$this->template->set_layout('print');
 		$this->template->build('report_schedule',$data);

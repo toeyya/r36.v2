@@ -16,8 +16,7 @@ class Inform extends R36_Controller
 						
 	}
 	function index()
-	{
-		$this->db->debug=TRUE;		
+	{	$this->db->debug=TRUE;
 		if(!empty($_GET['action']))
 		{// กดค้นหา							
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
@@ -30,26 +29,19 @@ class Inform extends R36_Controller
 					$where.=(!empty($_GET['hospital_amphur_id']))? " and hospitalamphur='".$_GET['hospital_amphur_id']."'":"";
 					$where.=(!empty($_GET['hospital_district_id']))? " and hospital_district_id='".$_GET['hospital_district_id']."'":"";					
 				}
-				if(empty($_GET['enddate']) && !empty($_GET['startdate'])){
-					$_GET['enddate']=$_GET['startdate'];
-					$where.=" and datetouch BETWEEN '".DBdate($_GET['startdate'])."' AND  '".DBdate($_GET['endtdate'])."' ";
-				}else if(!empty($_GET['report_enddate']) && !empty($_GET['report_startdate'])){
-					$_GET['report_enddate']=$_GET['report_startdate'];
+				if(!empty($_GET['enddate']) && !empty($_GET['startdate'])){
+					$where.=" and datetouch BETWEEN '".DBdate($_GET['startdate'])."' AND  '".DBdate($_GET['enddate'])."' ";
+				}else if(!empty($_GET['enddate'])){
+					$where.=" and datetouch BETWEEN '".DBdate($_GET['startdate'])."' and '".DBdate($_GET['startdate'])."'";	
 				}
-				if(!empty($_GET['startdate']) && !empty($_GET['enddate'])){
-					$startdate=cld_date2my($_GET['startdate']);		
-					$enddate=cld_date2my($_GET['enddate']);
-					$where.=" and datetouch BETWEEN '".$startdate."' AND '".$enddate."'";
-				}elseif(!empty($_GET['startdate'])){
-						$where.=(@$_GET['startdate']!='')?" and datetouch BETWEEN '".$startdate."' and '".$startdate."'":"";		
-				}
+
 		
 				if(!empty($_GET['report_startdate']) && !empty($_GET['report_enddate'])){
 					$startdate=cld_date2my($_GET['report_startdate']);		
 					$enddate=cld_date2my($_GET['report_enddate']);
 					$where.=" and reportdate BETWEEN '".$startdate."' and '".$enddate."'";
 				}elseif(!empty($_GET['report_startdate'])){
-						$where.=(@$_GET['report_startdate']!='')?" and reportdate BETWEEN '".$startdate."' and '".$startdate."'":"";		
+						$where.=" and reportdate BETWEEN '".$startdate."' and '".$startdate."'";		
 				}
 						
 				if(!empty($_GET['statusid'])=="1"){
@@ -60,8 +52,7 @@ class Inform extends R36_Controller
 					$where.="AND  hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
 				}else{
 					if(!empty($_GET['hn'])){
-						$where.=" AND hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."'";
-						
+						$where.=" AND hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."'";					
 						$sql="SELECT  information_historyid FROM n_information WHERE id=(select max(id) from n_information WHERE hospitalcode =?  AND hn= ? )";
 						// ให้มีปุ่มเพิ่มเฉพาะ historyid ล่าสุด
 						$data['historyid']=$this->db->GetOne($sql,array($_GET['hospitalcode'],$_GET['hn']));
@@ -102,7 +93,7 @@ class Inform extends R36_Controller
 			/** กรณี user staff   **/
 			$data['hn']=@$_GET['hn'];
 			$data['in_out']=@$_GET['in_out'];
-			/** กรณี user staff   **/
+			/**************************/
 			$data['idcard']=(!empty($_GET['idcard']))?@$_GET['idcard']:'';
 			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';		
 			$this->template->build('index',$data);
@@ -112,18 +103,18 @@ class Inform extends R36_Controller
 	}
 	
 	function form($id=FALSE,$historyid=FALSE,$in_out=FALSE,$process=FALSE)
-	{
-			//$this->db->debug=TRUE;							
+	{		
 			$data['in_out']=$in_out;
 			$data['historyid']=$historyid;
 			$data['process'] = $process;
-			$data['value_disabled']=($process=="view")? 'readonly="readonly"':'';
+			$data['value_disabled']=($process=="view" || $process=="vaccine")? 'disabled="disabled"':'';
 			$idcard = $this->history->get_one("idcard","historyid",$historyid);
 			$data['cardW0']=substr($idcard,0,1);
 			$data['cardW1']=substr($idcard,1,4);
 			$data['cardW2']=substr($idcard,5,5);
 			$data['cardW3']=substr($idcard,10,2);
 			$data['cardW4']=substr($idcard,12,13);	
+			$data['h_name'] = $this->session->userdata('R36_HOSPITAL_NAME');
 			## กดเลือก 	view หรือ เรคอร์ดที่ถูกบันทึกในฐานข้อมูลแล้ว กรณีผู้ที่มีสิทธิ์สามารถดูได้ทั้งหมด
 			$data['rs']=$this->inform->select("n_information.*,n_history.*,n_hospital_1.*")										
 													->join("INNER JOIN n_history ON n_history.historyid=information_historyid
@@ -289,7 +280,7 @@ class Inform extends R36_Controller
 									$this->vaccine->save($data);
 									//var_dump($data);exit;	
 								}	
-								if($_POST['vaccine_date'][$i]){
+								if($_POST['vaccine_date'][$i] &&  $_POST['vaccine_name'][$i]=="0"){
 									$data=$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>cld_date2my($_POST['vaccine_date'][$i]));
 									$this->vaccine->save($data);
 								}
@@ -311,7 +302,26 @@ class Inform extends R36_Controller
 		$rs['district_name']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($rs['provinceid'],$rs['amphurid'],$rs['districtid']));
 		echo json_encode($rs);
 	}
+	public function chkidcard()
+	{
+		for($i=0;$i<13;$i++){
+			$idcard_arr[]=substr($_GET['idcard'],$i,1);
+		}		
+		$chk=chk_idcard($idcard_arr,$_GET['digit_last']);
+		$dup1=($chk=="no")? TRUE:FALSE;
 
+		if(!empty($_GET['uid'])){
+			$dup = $this->db->GetOne("select historyid from n_history where idcard= ? and historyid<> ? ",array($_GET['idcard'],$_GET['historyid']));
+		}else{
+			$dup = $this->user->get_one("historyid",'idcard',$_GET['historyid']);
+		}
+		
+		if(empty($_GET['uid'])){
+			echo ($chk=="no")? "false":"true";
+		}else{
+			echo ($dup1 || $dup)? "false":"true";
+		}
+	}
 	function chk_idcard_edit()
 	{
 			$data['historyid']=$_GET['historyid'];				
@@ -346,4 +356,4 @@ class Inform extends R36_Controller
 	}
 
 }
-?>
+

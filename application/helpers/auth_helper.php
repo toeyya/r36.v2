@@ -9,7 +9,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 	}
 	$sql="SELECT * FROM n_user 
 				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
-				WHERE n_user.usermail=(?)  AND n_user.userpassword= (?) and active='1' ".$admin;
+				WHERE n_user.usermail=?  AND n_user.userpassword= ? and active='1' ".$admin;
 	
 	$rs = $CI->db->GetRow($sql,array($username,$password));	
 	
@@ -29,10 +29,9 @@ function login($username=FALSE,$password=FALSE,$admin='')
 		$CI->session->set_userdata('confirm_admin',$rs['confirm_admin']);
 		
 				
-			if($rs['userhospital']!=''){
-				$sql="SELECT hospital_name,hospital_province_id,hospital_amphur_id,hospital_district_id FROM n_hospital WHERE hospital_code= ? ";
-				$rec_hospital=$CI->db->GetRow($sql,$rs['userhospital']);			
-				$CI->session->set_userdata('R36_HOSPITAL_NAME', $rec_hospital['hospital_name']);
+			if(!empty($rs['userhospital'])){
+				$rec_hospital=$CI->db->GetRow("SELECT hospital_name,hospital_province_id,hospital_amphur_id,hospital_district_id FROM n_hospital_1 WHERE hospital_code= ? ",$rs['userhospital']);			
+				$CI->session->set_userdata('R36_HOSPITAL_NAME', $rec_hospital['hospital_name']);			
 				$CI->session->set_userdata('R36_HOSPITAL_PROVINCE',$rec_hospital['hospital_province_id']);
 				$CI->session->set_userdata('R36_HOSPITAL_AMPHUR',$rec_hospital['hospital_amphur_id']);
 				$CI->session->set_userdata('R36_HOSPITAL_DISTRICT',$rec_hospital['hospital_district_id']);

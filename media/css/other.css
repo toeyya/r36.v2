@@ -89,14 +89,14 @@ cursor: hand; /* for IE 5.x */
 }
 
 .btn_search1{
-width:63px;
-height:22px;
+width:32px;
+height:32px;
 border: none;
-background: transparent url(../images/btn_search.png) no-repeat center;
+background: transparent url(../images/comment_user_search.png) no-repeat center;
 overflow: hidden;
 text-indent: -999px;
 line-height: 0px;
-display:inline;
+display:inline-block;
 color: #a63606;
 cursor: pointer; /* hand-shaped cursor */
 cursor: hand; /* for IE 5.x */
