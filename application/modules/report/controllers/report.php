@@ -105,9 +105,9 @@ class Report extends R36_Controller
 		
  			$data['result']=$this->inform->select("hospitalcode,hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid")
 										 ->join("INNER JOIN n_history ON n_information.information_historyid = n_history.historyid
-												 INNER JOIN n_vaccine ON n_information.id = n_vaccine.information_id ")		
-										 ->where("closecase !='2' AND means <> '' AND n_vaccine.vaccine_date!='' $wh 
-												  AND n_information.total_vaccine!='5' AND vaccine_date BETWEEN '".$nextday."' AND '".$today."' 
+												 	  INNER JOIN n_vaccine ON n_information.id = n_vaccine.information_id ")		
+										 ->where("closecase ='1' AND means <> ''  $wh 
+												   AND vaccine_date BETWEEN '".$nextday."' AND '".$today."' 
 												  GROUP BY n_information.id")->sort("")->order("vaccine_date asc")->get();
 		if($preview)$this->template->set_layout('print');
 		$this->template->build('report_schedule',$data);
