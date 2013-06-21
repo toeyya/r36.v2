@@ -8,8 +8,9 @@ var province_id,amphur_id,district_id;
 			data:'name=hospital_amphur_id&ref1='+province_id,
 			success:function(data){
 				$('#input_amphur').html(data);
+				//$('select[name=hospital_district_id] option:[value=""]').attr('selected',true);
 				$('#input_hospital').html('<select name="hospitalcode" class="styled-select" id="hospitalcode"><option value="">-โปรดเลือก-</option></select>');
-				
+				//$('#input_district').html('<select name="hospital_district_id" class="input_box_patient" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');
 			}
 		});
 	});
@@ -39,20 +40,39 @@ var province_id,amphur_id,district_id;
  var province,amphur,district;
 
 	$("select[name=province_id]").change(function(){
-		var province=$("select[name=province_id] option:selected").val();
+		province=$("select[name=province_id] option:selected").val();
 		$.ajax({
 			url:'<?php echo base_url() ?>district/getAmphur',
 			data:'ref1='+province,
 			success:function(data){
 				$('#amphur').html(data);
-				
+				//$('select[name=hospital_district_id] option:[value=""]').attr('selected',true);
 				$('#hospital').html('<select name="hospital_id" class="styled-select" id="hospital_id"><option value="">-โปรดเลือก-</option></select>');
-				
+				//$('#input_district').html('<select name="hospital_district_id" class="input_box_patient" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');
 			}
 		});
 	});
 
-	
+	$("select[name=amphur_id]").live('change',function(){
+		amphur=$("select[name=amphur_id] option:selected").val();
+		$.ajax({
+			url:'<?php echo base_url() ?>district/getDistrict',
+			data:'ref1='+province+'&ref2='+amphur,
+			success:function(data){
+				$("#district").html(data);
+			}
+		});
+	});
+	$('select[name=district_id]').live('change',function(){
+		district =$('select[name=district_id] option:selected').val();
+		$.ajax({
+			url:'<?php echo base_url()?>users/getHospitalId',
+			data:'name=hospital_id&ref1='+province+'&ref2='+amphur+'&ref3='+district,
+			success:function(data){
+					$('#hospital').html(data);
+			}
+		});
+	});
 
 
 	$('.btn_submit').click(function(e){
@@ -92,6 +112,7 @@ var province_id,amphur_id,district_id;
     				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
   			},
 		 	rules:{
+		 		hospital_id: { required: {depends: function(element) {	return $('input[name=in_out]:checked').val() == '2' }}},   
 		 		hospital_province_id:"required",hospital_amphur_id:"required",hospital_district_id:"required",hospitalcode:"required",hn:"required",
 				idcard:  { required: {depends: function(element) {	return $('#statusid option:selected').val() == '2' }}, number:true},   
 		 		cardW0:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
@@ -112,13 +133,14 @@ var province_id,amphur_id,district_id;
 		 		}       			 		
 		 	},
 		 	messages:{
-		 		hospital_province_id:" กรุณาระบุจังหวัดค่ะ",hospital_amphur_id:" กรุณาระบุอำเภอค่ะ",hospital_district_id:" กรุณาระบุตำบลค่ะ",hospitalcode:" กรุณาระบุสถานพยาบาลค่ะ",
-		 		hn:" กรุณาระบุ hn ค่ะ",idcard:"กรุณาระบุ passport ด้วยค่ะ",
-		 		cardW0:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 		cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 		cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 		cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 		cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}		 		
+		 		hospital_id:"กรุณาระบุ",
+		 		hospital_province_id:" กรุณาระบุ",hospital_amphur_id:" กรุณาระบุ",hospital_district_id:" กรุณาระบุ",hospitalcode:" กรุณาระบุ",
+		 		hn:" กรุณาระบุ",idcard:"กรุณาระบุ",
+		 		cardW0:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
+		 		cardW1:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
+		 		cardW2:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
+		 		cardW3:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
+		 		cardW4:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข",remote :" ระบุไม่ถูกต้อง"}		 		
 		 	},
 		 	errorPlacement: function(error, element) {
 		     if (element.attr("name") == "cardW0"  || element.attr("name") == "cardW1" 	|| element.attr('name') == "cardW2" || element.attr('name')=="cardW3" || element.attr('name')=="cardW4")
@@ -144,6 +166,13 @@ var province_id,amphur_id,district_id;
 	if($('input[name=search_adv]').is(':checked')){
 		$('input[name=search_adv]').trigger('click');
 	}
+	
+	function shw_hospital(){		
+		($('input[name=in_out]:checked').val()=="2") ? $('#shw_hospital').fadeIn():$('#shw_hospital').fadeOut();
+	}
+	shw_hospital();
+	$('input[name=in_out]').change(shw_hospital).click(shw_hospital);
+	
 });
 </script>
 <div id="title">ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า</div>
@@ -253,8 +282,8 @@ var province_id,amphur_id,district_id;
 						<input type="radio" name="in_out" value="1" checked="checked" <?php echo (@$_GET['in_out']=="1")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการนี้
 						<input type="radio" name="in_out" value="2" <?php echo (@$_GET['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการอื่น
 					</span>
-					<span>
-						<?php echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$_GET['province_id'],'class="styled-select"'); ?>
+					<span id="shw_hospital">
+						<?php echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$_GET['province_id'],'class="styled-select"','--กรุณาเลือก--'); ?>
 						<span id="amphur"><select name="amphur_id" class="styled-select"><option value="" >--กรุณาเลือก--</option></select></span>
 						<span id="district"><select name="district_id" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
 						<span id="hospital"><select name="hospital_id" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
