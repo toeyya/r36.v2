@@ -32,19 +32,19 @@ function show_hide_clear_means()
 				$('#after_symptom_vaccine').css('display','');
 			}else{
 					/** กรณีไม่ฉีดแล้ว ต้องไม่แสดงข้อมูลอาการหลังฉีดวัคซีน */
-							c =document.form1;
-							document.getElementById("after_vaccinetr").style.display='none';
-							document.getElementById("otherafter_vaccinedetail7").style.display='none';
-							c.after_vaccine_detail1.checked=false;
-							c.after_vaccine_detail2.checked=false;
-							c.after_vaccine_detail3.checked=false;
-							c.after_vaccine_detail4.checked=false;
-							c.after_vaccine_detail5.checked=false;
-							c.after_vaccine_detail6.checked=false;
-							c.after_vaccine_detail7.checked=false;
-							c.after_vaccine_text.value='';
-							c.after_vaccine_date.value='';
-							c.after_vaccine_cure_comment.value='';					
+					c =document.form1;
+					document.getElementById("after_vaccinetr").style.display='none';
+					document.getElementById("otherafter_vaccinedetail7").style.display='none';
+					c.after_vaccine_detail1.checked=false;
+					c.after_vaccine_detail2.checked=false;
+					c.after_vaccine_detail3.checked=false;
+					c.after_vaccine_detail4.checked=false;
+					c.after_vaccine_detail5.checked=false;
+					c.after_vaccine_detail6.checked=false;
+					c.after_vaccine_detail7.checked=false;
+					c.after_vaccine_text.value='';
+					c.after_vaccine_date.value='';
+					c.after_vaccine_cure_comment.value='';					
 					/***************************************************/
 					$("#meanstr").css('display','none');
 					$('#after_symptom_vaccine').css('display','none');
@@ -317,7 +317,8 @@ $('select[name=prefix_name]').click(disableChkage);
 			return true;
 		}else{
 			return false;
-		}	
+		}
+			
 		 
 	})// btn_save
 
@@ -330,12 +331,13 @@ $('select[name=prefix_name]').click(disableChkage);
 				document.form1.submit();			
 			}		
 	  });	
-	$('#headanimal').click(function(){ $("#headanimalplace").valid();}); 
-	$('#putdrug').click(function(){$('input[name=putdrugdetail]').valid();});
-	$('#historyprotect').click(function(){ $('input[name=historyprotectdetail]').valid();});
+	
+	//$('#putdrug').click(function(){$('input[name=putdrugdetail]').valid();});
+	//$('#historyprotect').click(function(){ $('input[name=historyprotectdetail]').valid();});
 	$('#washbefore').click(function(){$('input[name=washbeforedetail]').valid();});
-	$('#reasonbite').click(function(){$('input[name=causedetail]').valid();});
+
 	$('#causedetail_other').click(function(){$('input[name=causetext]').valid();});
+	
 		
 	$("#form1").validate({
 		groups:{
@@ -346,29 +348,23 @@ $('select[name=prefix_name]').click(disableChkage);
 			firstname:"required",surname:"required",
 			age:{required:true,number:true},
 			provinceid:"required",amphurid:"required",districtid:"required", doctorname:"required",reportname:"required",
-			 positionname:"required", reportdate:"required",
-			 telephone:{required:true,minlength:6,maxlength:10},
-			 datetouch:{required:true,remote:{url:'<?php echo base_url();?>inform/checkDatetouch'}},
+			positionname:"required", reportdate:"required",
+			telephone:{required:true,minlength:6,maxlength:10},
+			datetouch:{required:true,remote:{url:'<?php echo base_url();?>inform/checkDatetouch'}},
 			provinceidplace:"required", typeanimal:"required", ageanimal:"required",
-			statusanimal:"required",historyvacine:"required",historyprotect:"required",use_rig:"required",means:"required",placetouch:"required"	,
-			headanimalplace:{required: "#headanimal:checked" },putdrugdetail:{required: "#putdrug:checked"},
-			historyprotectdetail:{required:'#historyprotect:checked'},washbeforedetail:{required:'#washbefore:checked'},
-			causedetail:{required:'#reasonbite:checked'},causetext:{required:'#causedetail_other:checked'},	
-			/*cardW0:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
-		 	cardW1:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
-		 	cardW2:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
-		 	cardW3:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
-		 	cardW4:{
-		 			required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true,	 		
-		 			remote:{
-		 				url:'users/chkidcard',
-		 				type:'get',
-				        data: {
-				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
-				          digit_last:function(){return $('#cardW4').val(); }
-				        }
-		 			}		 		
-		 		}  */     						
+			statusanimal:"required",
+			historyvacine:"required",
+			historyprotect:"required",
+			use_rig:"required",
+			means:"required",
+			placetouch:"required",	
+			causedetail:{required:{depends:function(element){return $('input[name=reasonbite]:checked').val() == '2' }}},
+			causetext:{required:'#causedetail_other:checked'},
+			erig_hrig:{required:{depends:function(element){return $('input[name=use_rig]:checked').val() == '2' }}},
+			headanimalplace:{required:{depends:function(element){return $('input[name=headanimal]:checked').val() == '2' }}},
+			historyprotectdetail:{required:{depends:function(element){return $('input[name=historyprotect]:checked').val() == '2' }}},
+			putdrugdetail:{required:{depends:function(element){return $('input[name=putdrug]:checked').val() == '2' }}},
+	  						
 		},
 		messages:{
 			firstname:"ระบุด้วยค่ะ",surname:"ระบุด้วยค่ะ",
@@ -376,19 +372,15 @@ $('select[name=prefix_name]').click(disableChkage);
 			provinceid:"ระบุจังหวัด",amphurid:"ระบุอำเภอ",districtid:"ระบุตำบล",doctorname:"ระบุแพทย์", reportname:"ระบุผู้รายงาน",
 			 positionname:"ระบุตำแหน่ง", reportdate:"ระบุวันที่รายงาน",
 			 telephone:{required:"ระบุเบอร์โทร",minlength:"ระบุอย่างน้อย 6 หลัก",maxlength:"ระบุเกินกว่า 10 หลัก"},
-			 datetouch:{required:"ระบุวันที่สัมผัสโรค",remote:"ระบุวันที่เกินกว่าวันที่ปัจจุบัน"}
-			 ,provinceidplace:"ระบุจังหวัด", typeanimal:"ระบุชนิดสัตว์",ageanimal:"ระบุอายุสัตว์",
+			 datetouch:{required:"ระบุวันที่สัมผัสโรค",remote:"ระบุวันที่เกินกว่าวันที่ปัจจุบัน"},
+			 provinceidplace:"ระบุจังหวัด", typeanimal:"ระบุชนิดสัตว์",ageanimal:"ระบุอายุสัตว์",
 			 statusanimal:"ระบุสถานภาพสัตว์",historyvacine:"ระบุประวัติฉีดวัคซีน",historyprotect:"ระบุประวัติฉีดวัคซีน",use_rig:"ระบุการฉีดอิมมูโนโกลบูลิน",means:"ระบุการฉีดโดยวิธี"	,
 			 placetouch:"ระบุสถานที่สัมผัสโรค",
 			 headanimalplace:"ระบุสถานที่ด้วยค่ะ",putdrugdetail:"ระบุการใส่ยาด้วยค่ะ", historyprotectdetail:"ระบุการฉีดด้วยค่ะ", washbeforedetail:'ระบุการล้างแผลด้วยค่ะ',
-			 causedetail:'ระบุสาเหตุที่ถูกกัดด้วยค่ะ',causetext:'ระบุสาเหตุอื่นๆด้วยค่ะ',
-		 	/*cardW0:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 	cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 	cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 	cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"},
-		 	cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}	*/		 
+			 causedetail:'ระบุสาเหตุที่ถูกกัดด้วยค่ะ',causetext:'ระบุสาเหตุอื่นๆด้วยค่ะ',erig_hrig:"ระบุชนิด RIG "
+	 
 		},
-			errorPlacement: function(error, element){								
+		errorPlacement: function(error, element){								
 				if((element.attr('name')=='firstname') || (element.attr('name')=='surname'))
 				{					
 					//element.next().html(error);
@@ -400,7 +392,8 @@ $('select[name=prefix_name]').click(disableChkage);
 						$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").next().find('span').html(error);
 						if(name=='use_rig' || name =='means')$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);
 						if(name=="causedetail") $('input[name='+name+']').closest('table').closest("tr").prev().find('td').eq(4).find('span').eq(1).html(error);
-					
+						if(name=="erig_hrig")$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);
+						
 					}else{
 					error.appendTo(element.parent());
 					}
@@ -562,8 +555,7 @@ $('select[name=prefix_name]').click(disableChkage);
               <tr>
                 <th>
 				<div align="center">
-					HN <span class="alertred">*</span> &nbsp;
-					<?php echo $rs['hn']; ?>
+					HN <span class="alertred">*</span> &nbsp;					
 					<input name="hn_s" type="text" class="input_box_patient " value="<?php echo $rs['hn'] ?>" size="20" disabled="disabled"> - 					
 					<input type="text" name="hn_no" size="2"  disabled="disabled"  value="<?php echo $rs['hn_no']; ?>" class="input_box_patient nowidth " onKeyPress="return NumberOnly();" style="text-align:center" 
 					<?php echo (@$rs['id'])? '':'disabled="disabled"'; ?> <?php if($process=='vaccine'){echo 'disabled="disabled"';} ?>>
@@ -1483,7 +1475,7 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td width="3%" align="center"><input name="reasonbite" type="radio" value="1" <? if(@$rs['reasonbite']=='1'){ print "checked";}?> onClick="show_hide_clear_cousedetail(document.form1);"></td>
                         <td width="24%">ถูกกัดโดย<span class="alertred"><b>ไม่มี</b></span>สาเหตุโน้มนำ</td>
                         <td width="3%" align="center"><div align="left">
-                          <input name="reasonbite"  id="reasonbite" type="radio" value="2"  <? if(@$rs['reasonbite']=='2'){ print "checked";}?> onClick="show_hide_clear_cousedetail(document.form1);">
+                          <input name="reasonbite"  type="radio" value="2"  <? if(@$rs['reasonbite']=='2'){ print "checked";}?> onClick="show_hide_clear_cousedetail(document.form1);">
                         </div></td>
                         <td width="44%">ถูกกัดโดย<span class="alertred"><b>มี</b></span>สาเหตุโน้มนำ  <span></span></td>
                       </tr>
@@ -1540,7 +1532,7 @@ $('select[name=prefix_name]').click(disableChkage);
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
-                        <td><input name="headanimal" id="headanimal" type="radio" value="2" <? if(@$rs['headanimal']=='2'){ print "checked";}?> onClick="show_hide_clear_headanimalplace(document.form1);"></td>
+                        <td><input name="headanimal"  type="radio" value="2" <? if(@$rs['headanimal']=='2'){ print "checked";}?> onClick="show_hide_clear_headanimalplace(document.form1);"></td>
                         <td>ส่งที่</td>
                       </tr>
                       <tr>
@@ -1562,7 +1554,7 @@ $('select[name=prefix_name]').click(disableChkage);
                             </tr>
                           <tr>
                             <td width="4%"><input name="batteria" type="radio" value="1" <? if(@$rs['batteria']=='1'){ print "checked";}?>></td>
-                            <td width="96%">พบเชื้อ</td>
+                            <td>พบเชื้อ</td>
                           </tr>
                           <tr>
                             <td><input name="batteria" type="radio" value="2" <? if(@$rs['batteria']=='2'){ print "checked";}?> /></td>
@@ -1632,11 +1624,11 @@ $('select[name=prefix_name]').click(disableChkage);
                   <tr>
                     <td width="30%" valign="top">การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</td>
                     <td width="3%"><input name="putdrug"  type="radio" value="1" <? if(@$rs['putdrug']=='1'){print "checked";}?> onClick="show_hide_clear_putdrug(document.form1);"></td>
-                    <td width="18%">ไม่ได้ใส่ยา</td>
+                    <td width="18%">ไม่ได้ใส่ยา </td>
                     <td width="3%"><div align="center">
-                      <input name="putdrug" id="putdrug" type="radio" value="2" <? if(@$rs['putdrug']=='2'){print "checked";}?> onClick="show_hide_clear_putdrug(document.form1);">
+                      <input name="putdrug"  type="radio" value="2" <? if(@$rs['putdrug']=='2'){print "checked";}?> onClick="show_hide_clear_putdrug(document.form1);">
                     </div></td>
-                    <td width="46%">ใส่ยา</td>
+                    <td width="46%">ใส่ยา  <span></span></td>
                     </tr>
                   <tr >
                     <td>&nbsp;</td>
@@ -1683,7 +1675,7 @@ $('select[name=prefix_name]').click(disableChkage);
                   </tr>
                   <tr>
                     <td>&nbsp;</td>
-                    <td><div align="center"><input name="historyprotect"  id="historyprotect" type="radio" value="2" <? if(@$rs['historyprotect']=='2'){ print "checked";}?> onClick="show_hide_clear_historyprotect(document.form1);"></div></td>
+                    <td><div align="center"><input name="historyprotect"   type="radio" value="2" <? if(@$rs['historyprotect']=='2'){ print "checked";}?> onClick="show_hide_clear_historyprotect(document.form1);"></div></td>
                     <td>เคยฉีด 3 เข็มหรือมากกว่า<span></span> </td>
                   </tr>
                   <tr id="historyprotecttr" <? if(@$rs['historyprotect']!='2'){print 'style = "display:none"'; }?>>
@@ -1733,6 +1725,7 @@ $('select[name=prefix_name]').click(disableChkage);
 						</td>
                   </tr>
                   <tr id="use_rigtr1" <? if(@$rs['use_rig']!='2'){ echo 'style="display:none"'; }?>>
+                   
                     <td height="22">&nbsp;&nbsp;<input name="erig_hrig" type="radio" value="1" <? if(@$rs['erig_hrig']=='1'){ print "checked";}?> onClick="show_hide_clear_erig_hrig(document.form1);">
                       ERIG Lot. No. 
 					  <span class="alertred" id="erig_hrig_input_box_patient 1" <? if(@$rs['erig_hrig']!='1'){ echo 'style="display:none"';}?>>
@@ -1744,7 +1737,9 @@ $('select[name=prefix_name]').click(disableChkage);
                       HRIG Lot. No. 
 					  <span class="alertred"  id="erig_hrig_input_box_patient 2" <? if(@$rs['erig_hrig']!='2'){ echo 'style="display:none"';}?>>
                       <input name="hrig_no" type="text" class="input_box_patient auto" size="20" value="<?php echo @$rs['hrig_no'];?>" >
-                      </span></td>
+                      </span>
+                      <span></span></td>
+                      
                   </tr>
                   <tr id="use_rigtr3" <? if(@$rs['use_rig']!='2'){print 'style = "display:none"';  }?>>
                     <td>ปริมาณที่ฉีด&nbsp;
@@ -1867,7 +1862,7 @@ $('select[name=prefix_name]').click(disableChkage);
 												<th>ผู้บันทึก</th>												
 										  </tr>
 										  <? 						
-										$result=(!empty($rs['id'])) ? $this->db->Execute("select * from n_vaccine where information_id='".$rs['id']."' ORDER BY vaccine_id ASC"):"";																																		
+										$result=(!empty($rs['id'])) ? $this->db->Execute("select * from n_vaccine where information_id='".$rs['id']."' ORDER BY vaccine_date ASC"):"";																																		
 										$key=4;
 										$vaccine_id=array('','','','','');
 										$vaccine_date=array('','','','','');
@@ -1881,8 +1876,11 @@ $('select[name=prefix_name]').click(disableChkage);
 														
 										if($result){
 											foreach($result as $key=>$rec_vaccine){
+												
 														$vaccine_id[$key] = $rec_vaccine['vaccine_id'];
 														$vaccine_date[$key] = cld_my2date($rec_vaccine['vaccine_date']);
+														$vaccine_date_now[$key] =strtotime(DateTime2DB($rec_vaccine['vaccine_date']));
+														$disable_vac[$key]=($vaccine_date_now[$key]>$now)? 'disabled="disabled"':'';
 														$vaccine_name[$key] = $rec_vaccine['vaccine_name'];
 														$vaccine_no[$key] = $rec_vaccine['vaccine_no'];
 														$vaccine_cc [$key]= $rec_vaccine['vaccine_cc'];
@@ -1893,21 +1891,22 @@ $('select[name=prefix_name]').click(disableChkage);
 											}
 											$max_rec=$result->Recordcount();
 										}	
-																				
-										
+										//var_dump($disable_vac);									
+									
 										$max=(@$rs['means']=="2")? 4:5;
 										  for($i=0;$i<$max;$i++){
 												$j=$i;$j=$j+1;
-												if($process=="vaccine") $disabled_vac=($j<=$rs['total_vaccine'])? 'disabled="disabled"':''; 																
-												echo form_hidden('vaccine_id',$vaccine_id[$i]);
+												//if($process=="vaccine") $disabled_vac=($j<=$rs['total_vaccine'])? 'disabled="disabled"':''; 																
+												//echo form_hidden('vaccine_id',$vaccine_id[$i]);
+								
 										  ?>
 										  <tr>										  		
 												<td><?php echo $i+1;?></td>
 												<td>
-													<input name="vaccine_date[<?php echo $i?>]" <?php echo $disabled_vac; ?> id="vaccine_date[<?php echo $i?>]" type="text" class="input_box_patient auto datepicker"  value="<? echo $vaccine_date[$i];?>" size="10"/>
+													<input name="vaccine_date[<?php echo $i?>]" <?php echo $disabled_vac[$i]; ?> id="vaccine_date[<?php echo $i?>]" type="text" class="input_box_patient auto datepicker"  value="<? echo $vaccine_date[$i];?>" size="10"/>
 												</td>
 												<td>
-													<select name="vaccine_name[<?php echo $i?>]" class="styled-select checkvaccine"  <?php echo $disabled_vac?> id="vaccine_name[<?php echo $i?>]"/>
+													<select name="vaccine_name[<?php echo $i?>]" class="styled-select checkvaccine"  <?php echo $disabled_vac[$i]?> id="vaccine_name[<?php echo $i?>]"/>
 														<option value="0" selected="selected"<? if($vaccine_name[$i]=='0'){ echo 'selected';}?>>เลือกชนิด</option>
 														<option value="1" <? if($vaccine_name[$i]=='1'){ echo 'selected';}?>>PVRV</option>
 														<option value="2" <? if($vaccine_name[$i]=='2'){ echo 'selected';}?>>PCEC</option>
@@ -1916,21 +1915,20 @@ $('select[name=prefix_name]').click(disableChkage);
 												  </select> 
 												</td>
 												<td>
-													<input name="vaccine_no[<?php echo $i?>]"   type="text"  value="<?php echo $vaccine_no[$i]?>" id="vaccine_no[<?php echo $i?>]"
-													<? if($vaccine_no[$i]!="" && $process=="vaccine"){echo 'disabled';} ?> >										
+													<input name="vaccine_no[<?php echo $i?>]"   type="text"  value="<?php echo $vaccine_no[$i]?>" id="vaccine_no[<?php echo $i?>]" <? echo $disabled_vac[$i]?>/>										
 												</td>													
 												<td>																									
 													<?php $arr_vaccine_cc=array("0.1"=>"0.1","0.5"=>"0.5","1.0"=>'1.0'); 													
-													echo form_dropdown('vaccine_cc['.$i.']',$arr_vaccine_cc,$vaccine_cc[$i],'class="vaccine_cc"'.$disabled_vac);
+													echo form_dropdown('vaccine_cc['.$i.']',$arr_vaccine_cc,$vaccine_cc[$i],'class="vaccine_cc"'.$disabled_vac[$i]);
 													?>	
 												</td>
 												<td>																								 													
 													<?php $arr_vaccine_point=array("1"=>"1","2"=>"2"); 													
-													echo form_dropdown('vaccine_point['.$i.']',$arr_vaccine_point,$vaccine_point[$i],'class="vaccine_point"'.$disabled_vac);
+													echo form_dropdown('vaccine_point['.$i.']',$arr_vaccine_point,$vaccine_point[$i],'class="vaccine_point"'.$disabled_vac[$i]);
 													?>											
 												</td>
 												<td>
-													<input name="byname[<?php echo $i?>]"  type="text" class="checkvaccine"  value="<?php echo $byname[$i]?>" <?php echo $disabled_vac ?>/>
+													<input name="byname[<?php echo $i?>]"  type="text" class="checkvaccine"  value="<?php echo $byname[$i]?>" <?php echo $disabled_vac[$i] ?>/>
 												</td>
 												<td class="byplace">
 													<input name="byplace[<?php echo $i?>]" type="text" disabled='disabled'   value="<?php echo $byplace[$i] ?>">

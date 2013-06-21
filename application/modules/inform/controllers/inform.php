@@ -16,7 +16,8 @@ class Inform extends R36_Controller
 						
 	}
 	function index()
-	{		
+	{
+					
 		if(!empty($_GET['action']))
 		{// กดค้นหา							
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
@@ -130,7 +131,7 @@ class Inform extends R36_Controller
 				$data['rs']['hospital_amphur_id']=$this->session->userdata('R36_HOSPITAL_AMPHUR');
 				$data['rs']['hospital_district_id']=$this->session->userdata('R36_HOSPITAL_DISTRICT');	
 			}
-							
+			$data['now']=strtotime(date("Y-m-d H:i:s"));				
 										
 			$this->template->build('form',$data);
 				
@@ -274,10 +275,10 @@ class Inform extends R36_Controller
 								if($_POST['vaccine_name'][$i]!='0'){
 									$user_id=(!empty($_POST['user_id'][$i]))? $_POST['user_id'][$i]:$this->session->userdata('R36_UID');
 									$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>cld_date2my($_POST['vaccine_date'][$i])
-														 ,'vaccine_name'=>$_POST['vaccine_name'][$i],'vaccine_no'=> $_POST['vaccine_no'][$i]
-														 , 'vaccine_cc'=>$_POST['vaccine_cc'][$i] ,'vaccine_point'=>$_POST['vaccine_point'][$i]
-														 ,'byname'=> $_POST['byname'][$i],'byplace'=> $_POST['byplace'][$i],'user_id'=>$user_id
-														,'updatetime'=>@$_POST['updatetime'],'created'=>@$_POST['created']);									
+											   ,'vaccine_name'=>$_POST['vaccine_name'][$i],'vaccine_no'=> $_POST['vaccine_no'][$i]
+											   ,'vaccine_cc'=>$_POST['vaccine_cc'][$i] ,'vaccine_point'=>$_POST['vaccine_point'][$i]
+											   ,'byname'=> $_POST['byname'][$i],'byplace'=> $_POST['byplace'][$i],'user_id'=>$user_id
+											,'updatetime'=>@$_POST['updatetime'],'created'=>@$_POST['created']);									
 									$this->vaccine->save($data);
 									//var_dump($data);exit;	
 								}	

@@ -8,19 +8,19 @@ class Users extends Admin_Controller
 		$this->load->model('inform/inform_model','inform');
 		$this->load->model('hospital/hospital_model','hospital');
 		$this->load->model('inform/vaccine_model','vaccine');
-		$this->user->primary_key("uid");
+		$this->user->primary_key("uid");	
 	}
 	public $level;
 	function index($show="search",$id=FALSE)
-	{
-				//$this->db->debug=TRUE;	
-				$this->level==$this->session->userdata('R36_LEVEL');				
+	{	
+				$this->level=$this->session->userdata('R36_LEVEL');				
 				$wh="uid <> '' ";
 				if(!empty($_GET['name']))$wh.=" AND (userfirstname LIKE '%".$_GET['name']."%' OR usersurname LIKE '%".$_GET['name']."%' OR hospital_name LIKE '%".$_GET['name']."%' OR username LIKE '%".$_GET['name']."%')";		
 				if(!empty($_GET['userposition']))	$wh.=" AND userposition = '".$_GET['userposition']."'";		
 						
 				//****************************show data depend on permission
-					if($this->level=="02" || $this->level=="03" || $this->level=="04"){					
+					if($this->level=="02" || $this->level=="03" || $this->level=="04"){
+						
 						if($this->level=="02"){
 							$col=" hospital_province_id =".$this->session->userdata('R36_PROVINCE');
 						}elseif($this->level=="03" || $this->level=="04"){						
@@ -39,28 +39,28 @@ class Users extends Admin_Controller
 														    ->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
 																	   LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
 																	   LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code")
-													      ->where($wh)->sort("")->order("userposition asc")->get();
+													      ->where($wh)->sort("")->order("uid desc")->get();
 
 					$data['pagination']=$this->user->pagination();				
 					$this->template->append_metadata(js_checkbox());
 					$this->template->build('admin/users/index',$data);					
 	}
 	function form($id=FALSE,$profile=FALSE)
-	{
+	{		
 			$this->template->append_metadata(js_idcard());	
 			$this->user->primary_key("uid");	
 			if(!$id){$id="?";}				
 			$data['rs']=$this->user->select("n_user.*,level_name, a.province_name as province_name1
 											,b.province_name as province_name2,b.province_id as province_id2,hospital_amphur_id,hospital_district_id,status
 											,hospital_name")
-																->join("INNER JOIN n_level_user  ON  n_user.userposition=n_level_user.level_code
-																			LEFT  JOIN n_province  a   ON  n_user.userprovince=a.province_id
-																			LEFT  JOIN n_hospital_1 	     ON  userhospital =n_hospital_1.hospital_code 								
-																			LEFT  JOIN n_province  b  ON  n_hospital_1.hospital_province_id=b.province_id 
-																			LEFT  JOIN n_district		 ON  n_hospital_1.hospital_amphur_id=n_district.amphur_id  
-																															and  n_user.userhospital =n_hospital_1.hospital_code 
-																															and n_district.province_id=n_hospital_1.hospital_province_id 
-																															and n_district.district_id=n_hospital_1.hospital_district_id
+									->join("LEFT JOIN n_level_user  ON  n_user.userposition=n_level_user.level_code
+											LEFT  JOIN n_province  a   ON  n_user.userprovince=a.province_id
+											LEFT  JOIN n_hospital_1 	     ON  n_user.userhospital =n_hospital_1.hospital_code								
+											LEFT  JOIN n_province  b  ON  n_hospital_1.hospital_province_id=b.province_id 
+											LEFT  JOIN n_district		 ON  n_hospital_1.hospital_amphur_id=n_district.amphur_id  
+													and  n_user.userhospital =n_hospital_1.hospital_code
+													and n_district.province_id=n_hospital_1.hospital_province_id 
+													and n_district.district_id=n_hospital_1.hospital_district_id
 																				")
 																->get_row($id);	
 			$data['cardW0']=substr($data['rs']['idcard'],0,1);
@@ -73,22 +73,39 @@ class Users extends Admin_Controller
 			$this->template->build('admin/users/form',$data);					
 	}
 	function save($profile=false)
-	{				
+	{		
 		if($_POST){
 			if(!empty($_POST['id']))$_POST['uid']=$_POST['id'];
-			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];					
+			// กรณีติ๊กจาก เช็คบ็อค ถ้าไม่ใส่ if จะทำให้ข้อมูลบัตรประชาชนหาย			
+			if(!empty($_POST['cardW0']))$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];								
+			if($_POST['userposition']=="00" || $_POST['userposition']=="01" || $_POST['userpostion']=="02"){
+				$_POST['userhospital']="";$_POST['userprovince']="";
+			}else if($_POST['userpostion']!="02"){
+				$_POST['userprovince']="";
+			}			
 			$this->user->save($_POST);
+			if(!empty($_POST['send_mail'])){
+				$subject="อนุมัติการใช้งาน(ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
+				$message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
+				$message.='<hr>';
+				$message.='<p>เรียนคุณ'.$_POST['userfirstname'].' '.$_POST['usersurname'].', </p>';
+				$message.='<p>เจ้าหน้าที่ตรวจสอบและอนุมัติการใช้งานระบบรายงานผู้สัมผัสโรคสุนัขบ้า ร.36 ของคุณแล้วค่ะ</p>';
+				$message.='<p>username : '.$_POST['usermail'].'</p>';
+				$message.='<p>password : '.$_POST['userpassword'].'</p>';								
+				$address=$_POST['usermail'];
+				phpmail($subject,$address,$message);
+			}
 			set_notify('success',SAVE_DATA_COMPLETE);
 		}
 		($profile) ?redirect('users/admin/users/form/'.$_POST['uid'].'/profile'):redirect('users/admin/users');
 	}
 	
-	function delete(){
-		if(!empty($_GET['id'])){
-			$this->db->Execute("DELETE FROM n_user WHERE uid in(".$_GET['id'].")");
-			set_notify('success',SAVE_DATA_COMPLETE);		
+	function delete($id){
+		if($id){
+			$this->user->delete("uid",$id);
+			set_notify('success',DELETE_DATA_COMPLETE);		
 		}
-		redirect('users/admin/users');	
+		//redirect('users/admin/users');	
 	}
 	function popup(){
 			$this->template->set_layout('blank');		

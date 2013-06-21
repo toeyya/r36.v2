@@ -8,6 +8,10 @@ class Users extends Public_Controller
 		$this->load->model('inform/inform_model','inform');
 		$this->load->model('hospital/hospital_model','hospital');
 		$this->load->model('inform/vaccine_model','vaccine');
+		$this->load->model('district/district_model','district');
+		$this->load->model("province/province_model",'province');
+		$this->load->model("amphur/amphur_model",'amphur');	
+		$this->load->model('hospital/hospital_model','hospital');
 		$this->user->primary_key("uid");
 		$this->template->append_metadata(js_idcard());	
 	}	
@@ -94,28 +98,29 @@ class Users extends Public_Controller
 	}
 	function signup()
 	{
-
 	   $_POST['telephone'] =$_POST['tel0'].$_POST['tel1'].$_POST['tel2'];
 	   $_POST['mobile'] = $_POST['mobile0'].$_POST['mobile1'].$_POST['mobile2'];
 	   $_POST['fax'] =$_POST['fax0'].$_POST['fax1'].$_POST['fax2'];
 	   $_POST['idcard']=$_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];
 	   $_POST['gen_id']=generate_password(20);
-	   $_POST['userposition']="05";//staff
+	   $_POST['hospital_id']=$this->hospital->get_one("hospital_id","hospital_code_healthoffice",$_POST['userhospital']);
+	   $_POST['userposition']="05";
 	   $id=$this->user->save($_POST);
+	   
 	   $subject = "ยืนยันการลงทะเบียน(ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
 	    $message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
 		$message.='<hr>';
 		$message.='<p>เรียนคุณ'.$_POST['userfirstname'].' '.$_POST['usersurname'].', </p>';
-		$message.='<p>username :'.$_POST['usermail'].'</p>';
-		$message.='<p>password :'.$_POST['userpassword'].'</p>';
-		$message.='<p>ขอบคุณสำหรับการลงทะเบียนค่ะ  ข้อมูลบัญชีของคุณจะใช้ได้เมื่อคุณยืนยันการลงทะเบียน และผ่านกระบวนการตรวจสอบค่ะ</p>';
+		$message.='<p>ขอบคุณสำหรับการลงทะเบียนค่ะ  ข้อมูลบัญชีของคุณจะใช้ได้เมื่อ</p>';
+		$message.="<p>1. ยืนยันการลงทะเบียน </p>";
+		$message.="<p>2. ผ่านการตรวจสอบและอนุมัติจากผู้ดูแลระบบ </p>";
 		$message.='<p>กรุณาคลิกลิงค์ด้านล่างเพื่อยืนยันการลงทะเบียน</p>';
 		$message.='<a href="'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'">'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'</a>';
 		$redirect="users/notice_email";
 		$address=$_POST['usermail'];		
 		phpmail($subject,$address,$message,$redirect);
 	}
-	public function chkidcard()
+	public function chkidcard($patient=FALSE)
 	{	//$this->db->debug=true;		
 		for($i=0;$i<13;$i++){
 			$idcard_arr[]=substr($_GET['idcard'],$i,1);
@@ -126,14 +131,22 @@ class Users extends Public_Controller
 		if(!empty($_GET['uid'])){
 			$dup = $this->db->GetOne("select uid from n_user where idcard= ? and uid<> ? ",array($_GET['idcard'],$_GET['uid']));
 		}else{
-			$dup = $this->user->get_one("uid",'idcard',$_GET['idcard']);
+			if($patient){
+				$dup=true;
+			}else{
+				$dup = $this->user->get_one("uid",'idcard',$_GET['idcard']);
+			}
+			
 		}
 		
 		if(empty($_GET['uid'])){
 			echo ($chk=="no")? "false":"true";
-		}else{
+		}else{						
 			echo ($dup1 || $dup)? "false":"true";
 		}
+		//echo ($dup1 || $dup)? "false":"true";
+			
+		
 	}
 	public function checkEmail(){
 		if(!empty($_GET['uid'])){
@@ -158,8 +171,84 @@ class Users extends Public_Controller
             echo "false";
         }
     }
+	function getProvince(){
+		$name=(isset($_GET['name']))?$_GET['name']:'province_id';
+		if($_GET['ref1']){
+			$wh=($name=="provinceidplace")?" WHERE province_id='".$_GET['ref1']."'":"";	
+		}else{$wh="";}
+			
+		echo form_dropdown($name,get_option('province_id','province_name','n_province '.$wh.' ORDER BY province_name ASC'),@$_GET['ref1'],' class="styled-select" id="'.$name.'"','-โปรดเลือก-');
+	}
+	function getAmphur(){		
+		$name=(isset($_GET['name']))? $_GET['name']:"amphur_id";
+		$mode=(isset($_GET['mode']))?$_GET['mode']:'';		
+		$class=(isset($_GET['class']))?" styled-select ".$_GET['class']:"styled-select";
+		
+		$default=(isset($_GET['default']))?"ทั้งหมด":'-โปรดเลือก-';
+		if($_GET['ref1']){
+			if($mode=="place_amppattaya")
+			{
+				echo '<select class="styled-select" name="amphuridplace"  id="amphuridplace">';
+				echo '<option value="" selected="selected">เมืองพัทยา</option>';
+				echo  '</select>';				
+			}else{											
+				echo form_dropdown($name,get_option('amphur_id','amphur_name'," n_amphur where province_id='".$_GET['ref1']."' ORDER BY amphur_name ASC"),'',' class="'.$class.'" id="'.$name.'"',$default);		
+			}
+		}else{
+				echo '<select class="'.$class.'" name="'.$name.'"  id="'.$name.'">';
+				echo '<option value="" selected="selected">'.$default.'</option>';
+				echo  '</select>';				
+		}// $_GET['ref1']				
+	}
+	function getDistrict()
+	{
+		$name=(isset($_GET['name']))? $_GET['name']:"district_id";	
+		$class=(isset($_GET['class']))?" styled-select ".$_GET['class']:"styled-select";			
+		$special=' class="'.$class.'" id="'.$name.'"';	
 
-	
+		$default=(isset($_GET['default']))?"ทั้งหมด":'-โปรดเลือก-';
+		if($_GET['ref1'] && $_GET['ref2']){
+			echo form_dropdown($name,get_option('district_id','district_name'," n_district WHERE province_id='".$_GET['ref1']."' AND amphur_id ='".$_GET['ref2']."' ORDER BY district_name ASC"),'',$special,$default);
+		}else{
+				echo '<select class="'.$class.'" name="'.$name.'"  id="'.$name.'">';
+				echo '<option value="" selected="selected">'.$default.'</option>';
+				echo  '</select>';	
+		}		
+	}
+	function getHospital()
+	{
+		$name=(isset($_GET['name']))?$_GET['name']:'hospital';
+		$class=(isset($_GET['class']))?" styled-select ".$_GET['class']:"styled-select";			
+		$special=' class="'.$class.'" id="'.$name.'"';		
+		$default=(isset($_GET['default']))?"ทั้งหมด":'-โปรดเลือก-';
+		if($_GET['ref1'] || $_GET['ref2'])
+		{
+			$wh="WHERE hospital_province_id='".$_GET['ref1']."' and hospital_amphur_id='".$_GET['ref2']."' and hospital_district_id='".$_GET['ref3']."' ORDER BY hospital_name ASC";				
+			echo form_dropdown($name,get_option('hospital_code','hospital_name',"n_hospital_1 $wh"),'',$special,$default);
+		}else{
+			$output = '<select name="'.$name.'" class="'.$class.'" id="'.$name.'">';
+	   		$output.= '<option value="" selected="selected">'.$default.'</option>';
+	   		$output.='</select>';
+	   		echo $output;			
+		}
+	}
+	function getHospitalId()
+	{
+		$name=(isset($_GET['name']))?$_GET['name']:'hospital';
+		$class=(isset($_GET['class']))?" styled-select ".$_GET['class']:"styled-select";			
+		$special=' class="'.$class.'" id="'.$name.'"';		
+		$default=(isset($_GET['default']))?"ทั้งหมด":'-โปรดเลือก-';
+		if($_GET['ref1'] || $_GET['ref2'])
+		{
+			$wh="WHERE hospital_province_id='".$_GET['ref1']."' and hospital_amphur_id='".$_GET['ref2']."' and hospital_district_id='".$_GET['ref3']."' ORDER BY hospital_name ASC";				
+			echo form_dropdown($name,get_option('hospital_id','hospital_name',"n_hospital_1 $wh"),'',$special,$default);
+		}else{
+			$output = '<select name="'.$name.'" class="'.$class.'" id="'.$name.'">';
+	   		$output.= '<option value="" selected="selected">'.$default.'</option>';
+	   		$output.='</select>';
+	   		echo $output;			
+		}
+	}	
 
 }  
 ?>

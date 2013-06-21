@@ -1,5 +1,28 @@
 <script type="text/javascript">
-$(document).ready(function(){	
+$(document).ready(function(){
+var ref1,ref2,ref3;
+	$("#h_province").change(function(){	
+		 ref1=$("#h_province option:selected").val();
+		 $('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
+		$.ajax({
+			url:'<?php echo base_url() ?>users/getAmphur',data:'name=h_amphur&ref1='+ref1,
+			success:function(data)
+			{
+				$("#input_amphur").html(data);
+				$("#hosptal option[value='']").attr('selected','selected');
+			}
+		});
+	});
+	$("#h_amphur").live('change',function(){	
+	 	ref2=$("#h_amphur option:selected").val();
+	 	$('#input_district').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
+		$.ajax({url:'<?php echo base_url(); ?>users/getDistrict',data:'name=h_district&ref1='+ref1+'&ref2='+ref2,success:function(data){$("#input_district").html(data);}});	
+	});			
+	$('#h_district').live('change',function(){
+		ref3=$("#h_district option:selected").val();
+		$('#input_hospital').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
+		$.ajax({url:'<?php echo base_url(); ?>users/getHospital',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
+	});		
 	$('#form1').validate({	
 		groups:{
 			groupname:'userfirstname usersurname',
@@ -8,6 +31,7 @@ $(document).ready(function(){
 			groupmobile:'mobile0 mobile1 mobile2'
 		},
 		rules:{
+			userhospital:"required",
 			userfirstname:"required",usersurname:"required",
 			tel0:{required:true,number:true},tel1:{required:true,number:true},tel2:{required:true,number:true},
 			mobile0:{required:true,number:true},mobile1:{required:true,number:true},mobile2:{required:true,number:true},
@@ -23,9 +47,9 @@ $(document).ready(function(){
 				        }
 		 			}		 		
 		 	},   
-			userhospital:{required:true,
+			/*userhospital:{required:true,
 				remote:{
-					url:'<?php echo base_url(); ?>users/chkHospitalcode',
+					url:'users/chkHospitalcode',
 					type:'get',
 					dataType:'json',					
 					dataFilter:function(data){
@@ -35,11 +59,13 @@ $(document).ready(function(){
 							return "true";
 						}else{
 							$('#userhospital').closest('div').find('.shw-name').html(''); 
-							return "false";
+							return
+							 "false";
 						}								
 					}	
 				}
-			},
+			},*/
+			
 			usermail:{required:true,email:true,
 				remote:{url:'<?php echo base_url()?>users/checkEmail'}
 			},
@@ -48,13 +74,14 @@ $(document).ready(function(){
 	        captcha:{required: true,remote: "users/check_captcha"}			
 		},
 		messages:{
+			userhospital:"กรุณาระบุ",
 			mobile0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},mobile1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},mobile2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
 			tel0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},tel1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},tel2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
 			userfirstname:"กรุณาระบุ",usersurname:"กรุณาระบุ",			
 			cardW0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},cardW1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},	
 			cardW2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},cardW3:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
-			cardW4:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",remote:"กรุณาระบุให้ถูกต้อง"},
-			userhospital:{required:'กรุณาระบุ',remote:'กรุณาระบุให้ถูกต้อง'},
+			cardW4:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",remote:"กรุณาระบุให้ถูกต้อง หรือมีอยู่แล้วในระบบ"},
+			userhospital:'กรุณาระบุ',
 			usermail:{required:"กรุณาระบุ",email:"กรุณาระบุให้ถูกต้อง",remote:'มีอีเมล์นี้แล้ว'},
 			userpassword:"กรุณาระบุ",
 			repassword:"กรุณาระบุให้ตรงกัน",
@@ -72,6 +99,7 @@ $(document).ready(function(){
 			}			
 			else {
 				error.insertAfter(element);
+				$('.shw-name').html('');
 			}
 		}
 	});
@@ -101,6 +129,19 @@ $(document).ready(function(){
 				}																					
 			}							
 	});
+ 	$('#fax').children().bind('keydown',function(e){											
+		if(e.keyCode != 46 && e.keyCode!=8){														
+			var txtBox=$('#fax').children();
+			var key=$(this).index();
+				if(key==0)l=1;
+				if(key==1)l=4;
+				if(key==2)l=4;															
+				if(txtBox.eq(key).val().length==l){			
+					txtBox.eq(key+1).val('');
+					txtBox.eq(key+1).focus();			
+				}																					
+			}							
+	});
 });
 </script>
 <ul class="breadcrumb">
@@ -112,41 +153,52 @@ $(document).ready(function(){
 <div class="alert alert-info"><strong>ประกาศ !! </strong>เมื่อลงทะเบียนแล้ว กรุณายืนยันการลงทะเบียนจากลิงค์ในอีเมล์ และรอการตรวจสอบก่อน จึงจะใช้งานได้</div>
 <div id="span9">
 <div class="row">
-		<form action="users/signup" method="post" class="form-horizontal" id="form1">
+		<form action="users/signup"  method="post"  class="form-horizontal" id="form1">
  			<div class="control-group">
- 				<label class="control-label" for="inputEmail">รหัสหน่วยงาน 9 หลัก<label class="alertred">*</label></label>
+ 				<label class="control-label" for="inputEmail">สถานบริการ<label class="alertred">*</label></label>
 				<div class="controls">
-					<input type="text" class="input-medium" placeholder="รหัสหน่วยงาน 9 หลัก" name="userhospital"  maxlength="9" id="userhospital">	
-					<label class="shw-name" style="display:inline"></label>												
-				</div>						
- 				<label class="control-label" for="inputEmail">อีเมล์<label class="alertred">*</label></label>
+				 <?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),'','id="h_province"','--กรุณาเลือกจังหวัด--'); ?>								 											
+				</div>
+				<label class="control-label" for="inputEmail">&nbsp;</label>
 				<div class="controls">
-					<input type="text"  placeholder="อีเมล์" name="usermail" class="input-large"> 
+					 <span id="input_amphur"><select name="amphur_id"><option value="">--กรุณาเลือกอำเภอ--</option></select></span>	
+				</div>
+				<label class="control-label" for="inputEmail">&nbsp;</label>
+				<div class="controls">
+					 <span id="input_district"><select name="district_id"><option value="">--กรุณาเลือกตำบล--</option></select></span>
+				</div>
+				<label class="control-label" for="inputEmail">&nbsp;</label>
+				<div class="controls">
+					 <span id="input_hospital"><select name="userhospital"><option value="">--กรุณาเลือกสถานบริการ--</option></select></span>
+				</div>								
+ 				<label class="control-label" for="inputEmail">อีเมล์<label class="alertred">*</label></label>				
+				<div class="controls">
+					<input type="text"  placeholder="อีเมล์" name="usermail" class="input-large" value=""> 
 				</div>
  				<label class="control-label" for="inputEmail">รหัสผ่าน<label class="alertred">*</label></label>
 				<div class="controls">
-					<input type="password"  placeholder="รหัสผ่าน" class="input-large"  name="userpassword" id="userpassword" class="input-large">
+					<input type="password"  placeholder="รหัสผ่าน" class="input-large"  name="userpassword" id="userpassword" class="input-large" value="">
 				</div>
  				<label class="control-label" for="inputEmail">ยืนยันรหัสผ่าน<label class="alertred">*</label></label> 
 				<div class="controls">
-					<input type="password"  placeholder="ยืนยันรหัสผ่าน" class="input-large"  name="repassword" class="input-large">
+					<input type="password"  placeholder="ยืนยันรหัสผ่าน" class="input-large"  name="repassword" class="input-large" value="">
 				</div>		
  			</div>
  			<hr class="hr1">
  			<div class="control-group">
 				<label class="control-label" for="idcard">เลขประจำตัวประชาชน<label class="alertred">*</label></label>
 				<div class="controls" id="Show_idcard">
-					<input type="text" id="cardW0"  name="cardW0" style="width:10px;" size="1" maxlength="1">
-					<input type="text" id="cardW1"  name="cardW1" style="width:30px;" size="4" maxlength="4">
-					<input type="text" id="cardW2"  name="cardW2" style="width:40px;" size="5" maxlength="5">
-					<input type="text" id="cardW3"  name="cardW3" style="width:20px;" size="2" maxlength="2">
-					<input type="text" id="cardW4"  name="cardW4" style="width:10px;" size="1" maxlength="1">					
+					<input type="text" id="cardW0"  name="cardW0" style="width:10px;" size="1" maxlength="1" value="">
+					<input type="text" id="cardW1"  name="cardW1" style="width:30px;" size="4" maxlength="4" value="">
+					<input type="text" id="cardW2"  name="cardW2" style="width:40px;" size="5" maxlength="5" value="">
+					<input type="text" id="cardW3"  name="cardW3" style="width:20px;" size="2" maxlength="2" value="">
+					<input type="text" id="cardW4"  name="cardW4" style="width:10px;" size="1" maxlength="1" value="">					
 				
 				</div>			
 				<label class="control-label" for="inputFirstame">ชื่อ -นามสกุล<label class="alertred">*</label></label>
 				<div class="controls">
-					<input type="text" id="userfirstname" class="input-medium" placeholder="ชื่อ" name="userfirstname">
-					<input type="text" id="usersurname" class="input-medium" placeholder="นามสกุล" name="usersurname"> 
+					<input type="text" id="userfirstname" class="input-medium" placeholder="ชื่อ" name="userfirstname" value="">
+					<input type="text" id="usersurname" class="input-medium" placeholder="นามสกุล" name="usersurname" value=""> 
 				</div>				
 				<br/>
 				<label class="control-label" for="inputPostion">ตำแหน่ง</label>
@@ -157,7 +209,7 @@ $(document).ready(function(){
 				<label class="control-label" for="inputEmail">โทรศัพท์มือถือ<label class="alertred">*</label></label>
 				<div class="controls">
 					<span id="mobile">
-					<input type="text" name="mobile0"  maxlength="3"  style="width:40px;" placeholder="08x" > -<input type="text" name="mobile1"  maxlength="3"  style="width:50px;"> -<input type="text" name="mobile2"  id="mobile2"  maxlength="4"  style="width:60px;">										
+					<input type="text" name="mobile0"  maxlength="3"  style="width:40px;" placeholder="08x"> -<input type="text" name="mobile1"  maxlength="3"  style="width:50px;"> -<input type="text" name="mobile2"  id="mobile2"  maxlength="4"  style="width:60px;">										
 					</span>
 				</div>
 				<label class="control-label" for="inputEmail">โทรศัพท์สำนักงาน<label class="alertred">*</label></label>
@@ -169,7 +221,9 @@ $(document).ready(function(){
 				</div>
 				<label class="control-label" for="inputEmail">โทรสาร</label>
 				<div class="controls">
+					<span id="fax">
 					<input type="text" name="fax0" maxlength="1"  style="width:15px;"> -<input type="text" name="fax1" maxlength="4" style="width:60px;"> -<input type="text" name="fax2" id="fax2" maxlength="4" style="width:60px;"> 					
+					</span>
 				</div>
             <div class="control-group">
  

@@ -443,7 +443,7 @@ $(function () {
   <div class="btn_inline">
       <ul>
       	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      	<li><button class="btn_cancel" type="button">&nbsp;&nbsp;&nbsp;</button></li>
+      
       </ul>
 </div>	
 </form>

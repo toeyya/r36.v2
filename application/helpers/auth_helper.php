@@ -5,7 +5,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 	$CI =& get_instance();
 
 	if($admin){
-		$admin =" and userposition IN('00','01','02','03','04')";
+		$admin =" and userposition IN('00','01','02')";
 	}
 	$sql="SELECT * FROM n_user 
 				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
