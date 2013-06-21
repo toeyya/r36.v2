@@ -222,6 +222,47 @@ $('select[name=prefix_name]').click(disableChkage);
 		 });
 	});
 
+ var province,amphur,district;
+
+	$("select[name=province_id]").change(function(){
+		province=$("select[name=province_id] option:selected").val();
+ 		$('#amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');		
+		$.ajax({
+			url:'<?php echo base_url() ?>district/getAmphur',		
+			data:'ref1='+province,
+			success:function(data){
+				$('#amphur').html(data);
+				//$('select[name=hospital_district_id] option:[value=""]').attr('selected',true);
+				$('#hospital').html('<select name="hospital_id_other" class="styled-select" id="hospital_id_other"><option value="">-โปรดเลือก-</option></select>');
+				//$('#input_district').html('<select name="hospital_district_id" class="input_box_patient" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');
+			}
+		});
+	});
+
+	$("select[name=amphur_id]").live('change',function(){
+		amphur=$("select[name=amphur_id] option:selected").val();
+		 $('#district').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
+		$.ajax({
+			url:'<?php echo base_url() ?>district/getDistrict',
+			data:'ref1='+province+'&ref2='+amphur,
+			success:function(data){
+				$("#district").html(data);
+			}
+		});
+	});
+	$('select[name=district_id]').live('change',function(){
+		district =$('select[name=district_id] option:selected').val();
+		 $('#hospital').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
+		$.ajax({
+			url:'<?php echo base_url()?>users/getHospitalId',
+			data:'name=hospital_id_other&ref1='+province+'&ref2='+amphur+'&ref3='+district,
+			success:function(data){
+					$('#hospital').html(data);
+			}
+		});
+	});
+
+
 	$('.checkvaccine').blur(function(){
 			var selectVacc=$(this).closest('tr').find('td:eq(2)').children('select');
 			$(this).removeClass('checkvaccine-cross').removeClass('checkvaccine-check');	
@@ -345,6 +386,7 @@ $('select[name=prefix_name]').click(disableChkage);
 				groupname:"firstname surname"         								
 		},
 		rules:{
+			hospital_id_other: { required: {depends: function(element) {	return $('input[name=in_out]:checked').val() == '2' }}},   
 			firstname:"required",surname:"required",
 			age:{required:true,number:true},
 			provinceid:"required",amphurid:"required",districtid:"required", doctorname:"required",reportname:"required",
@@ -367,6 +409,7 @@ $('select[name=prefix_name]').click(disableChkage);
 	  						
 		},
 		messages:{
+			hospital_id_other:"กรุณาระบุ",
 			firstname:"ระบุด้วยค่ะ",surname:"ระบุด้วยค่ะ",
 			age:{required:"ระบุอายุ",number:"ระบุตัวเลขเท่านั้น"},	
 			provinceid:"ระบุจังหวัด",amphurid:"ระบุอำเภอ",districtid:"ระบุตำบล",doctorname:"ระบุแพทย์", reportname:"ระบุผู้รายงาน",
@@ -454,6 +497,12 @@ $('select[name=prefix_name]').click(disableChkage);
 	if($('input[name=idcard]').val()!=""){
 		$('#cardW0,#cardW1,#cardW2,#cardW3,#cardW4').attr('disabled',true)	
 	}
+
+	function shw_hospital(){		
+		($('input[name=in_out]:checked').val()=="2") ? $('#shw_hospital').fadeIn():$('#shw_hospital').fadeOut();
+	}
+	shw_hospital();
+	$('input[name=in_out]').change(shw_hospital).click(shw_hospital);
 	
 });
 
@@ -461,7 +510,7 @@ $('select[name=prefix_name]').click(disableChkage);
 
 
 
-<div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($in_out=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($in_out=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
+<div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($rs['in_out']=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($rs['in_out']=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
 	<?php error_reporting(E_ERROR);
 			@$rs['daterig'] =($rs['daterig'] =='0000-00-00')?'': cld_my2date(@$rs['daterig']);
@@ -480,7 +529,7 @@ $('select[name=prefix_name]').click(disableChkage);
 		<input type="hidden" name="information_id" value="<?php echo @$rs['id'] ?>"  />
 		<input type="hidden" name="historyid"  value="<?php echo @$rs['historyid'] ?>"/>
 		<input type="hidden" name="idcard"  id="idcard" value="<?php echo @$rs['idcard'] ?>"  />
-		<input type="hidden" name="in_out"  value="<?php echo $in_out?>" />
+		
 		<?php echo form_hidden('h_name',$h_name);
 			  echo form_hidden('total_vaccine',$rs['total_vaccine']); ?>
 
@@ -562,7 +611,7 @@ $('select[name=prefix_name]').click(disableChkage);
 					<input name="hospitalprovince" type="hidden"value="<?php echo @$rs['hospitalprovince']?>" >
 					<input name="hospitalamphur" type="hidden"value="<?php echo @$rs['hospitalamphur']?>" >
 					<input name="hospital" type="hidden"value="<?php echo @$rs['hospitalcode']?>" >
-					<input name="hn" type="hidden"value="<?php echo @$rs['hn']?>" >
+					
 				</div>
 				</th>
               </tr>
@@ -662,6 +711,21 @@ $('select[name=prefix_name]').click(disableChkage);
 						</span>
 						</td>
                       </tr>
+                      <tr>
+                      	<td>สิทธิการรักษาพยาบาล :
+                      	<span style="margin-left:12px;"> 
+							<input type="radio" name="in_out" value="1" disabled="disabled" <?php echo ($rs['in_out']=="1")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการนี้
+							<input type="radio" name="in_out" value="2" disabled="disabled" <?php echo ($rs['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการอื่น
+						</span>
+                      	<span id="shw_hospital">
+						<?php echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$rs['province_id'],'class="styled-select"','--กรุณาเลือก--'); ?>
+							<span id="amphur"><select name="amphur_id" class="styled-select"><option value="" >--กรุณาเลือก--</option></select></span>
+							<span id="district"><select name="district_id" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
+							<span id="hospital"><select name="hospital_id_other" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
+					</span>
+                      	</td>
+                      </tr>
+                      
                       <tr>
                         <td height="30">&nbsp;
 						<span id="nationality_tr2" <? if(@$rs['nationalityname']!='2'){ print 'style = "display:none"';}?>>

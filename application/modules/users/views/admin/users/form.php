@@ -109,10 +109,10 @@ var ref1,ref2,ref3;
 <table  class="form">
   <tr>
   	<th>สิทธิ์การใช้งาน</th>
-  	<?php if(!$profile): ?>
-  	<td><?php echo form_dropdown('userposition',get_option("level_code",'level_name','n_level_user'),@$rs['userposition'],'',''); ?></td>
-  	<?php else: ?>
+  	<?php if($profile): ?>
   	<td><?php echo $level_name; ?></td>
+  	<?php else: ?>
+  	<td><?php echo form_dropdown('userposition',get_option("level_code",'level_name','n_level_user'),@$rs['userposition'],'',''); ?></td>
   	<?php endif; ?>
   </tr>
 

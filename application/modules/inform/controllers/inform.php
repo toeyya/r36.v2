@@ -159,10 +159,11 @@ class Inform extends R36_Controller
 		$data['cardW2']=$_GET['cardW2'];
 		$data['cardW3']=$_GET['cardW3'];
 		$data['cardW4']=$_GET['cardW4'];
-		$data['in_out']=$_GET['in_out'];		
+		$data['rs']['in_out']=$_GET['in_out'];		
 		$data['value_disabled']='';	
 		$data['process']="";
 		$data['h_name'] =$this->session->userdata('R36_HOSPITAL_NAME');	
+		$data['rs']['hosital_id_other']=$_GET['hospital_id_other'];
 		$this->template->build('form',$data);
 	}
 

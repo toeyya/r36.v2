@@ -105,7 +105,7 @@ class Users extends Admin_Controller
 			$this->user->delete("uid",$id);
 			set_notify('success',DELETE_DATA_COMPLETE);		
 		}
-		//redirect('users/admin/users');	
+		redirect('users/admin/users');	
 	}
 	function popup(){
 			$this->template->set_layout('blank');		

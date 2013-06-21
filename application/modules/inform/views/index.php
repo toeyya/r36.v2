@@ -2,7 +2,8 @@
 $(document).ready(function(){
 var province_id,amphur_id,district_id;	
 	$("select[name=hospital_province_id]").change(function(){
-		 province_id=$("select[name=hospital_province_id] option:selected").val();
+		province_id=$("select[name=hospital_province_id] option:selected").val();
+		$('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	
 		$.ajax({
 			url:'<?php echo base_url() ?>district/getAmphur',
 			data:'name=hospital_amphur_id&ref1='+province_id,
@@ -17,6 +18,7 @@ var province_id,amphur_id,district_id;
 
 	$("select[name=hospital_amphur_id]").live('change',function(){
 		amphur_id=$("select[name=hospital_amphur_id] option:selected").val();
+		$('#input_district').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	
 		$.ajax({
 			url:'<?php echo base_url() ?>district/getDistrict',
 			data:'name=hospital_district_id&ref1='+province_id+'&ref2='+amphur_id,
@@ -27,6 +29,7 @@ var province_id,amphur_id,district_id;
 	});
 	$('select[name=hospital_district_id]').live('change',function(){
 		district_id =$('select[name=hospital_district_id] option:selected').val();
+		$('#input_hospital').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	
 		$.ajax({
 			url:'<?php echo base_url()?>hospital/getHospital',
 			data:'name=hospitalcode&ref1='+province_id+'&ref2='+amphur_id+'&ref3='+district_id,
@@ -37,42 +40,7 @@ var province_id,amphur_id,district_id;
 	});
 
 
- var province,amphur,district;
 
-	$("select[name=province_id]").change(function(){
-		province=$("select[name=province_id] option:selected").val();
-		$.ajax({
-			url:'<?php echo base_url() ?>district/getAmphur',
-			data:'ref1='+province,
-			success:function(data){
-				$('#amphur').html(data);
-				//$('select[name=hospital_district_id] option:[value=""]').attr('selected',true);
-				$('#hospital').html('<select name="hospital_id" class="styled-select" id="hospital_id"><option value="">-โปรดเลือก-</option></select>');
-				//$('#input_district').html('<select name="hospital_district_id" class="input_box_patient" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');
-			}
-		});
-	});
-
-	$("select[name=amphur_id]").live('change',function(){
-		amphur=$("select[name=amphur_id] option:selected").val();
-		$.ajax({
-			url:'<?php echo base_url() ?>district/getDistrict',
-			data:'ref1='+province+'&ref2='+amphur,
-			success:function(data){
-				$("#district").html(data);
-			}
-		});
-	});
-	$('select[name=district_id]').live('change',function(){
-		district =$('select[name=district_id] option:selected').val();
-		$.ajax({
-			url:'<?php echo base_url()?>users/getHospitalId',
-			data:'name=hospital_id&ref1='+province+'&ref2='+amphur+'&ref3='+district,
-			success:function(data){
-					$('#hospital').html(data);
-			}
-		});
-	});
 
 
 	$('.btn_submit').click(function(e){
@@ -112,7 +80,7 @@ var province_id,amphur_id,district_id;
     				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
   			},
 		 	rules:{
-		 		hospital_id: { required: {depends: function(element) {	return $('input[name=in_out]:checked').val() == '2' }}},   
+		 		
 		 		hospital_province_id:"required",hospital_amphur_id:"required",hospital_district_id:"required",hospitalcode:"required",hn:"required",
 				idcard:  { required: {depends: function(element) {	return $('#statusid option:selected').val() == '2' }}, number:true},   
 		 		cardW0:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
@@ -133,7 +101,7 @@ var province_id,amphur_id,district_id;
 		 		}       			 		
 		 	},
 		 	messages:{
-		 		hospital_id:"กรุณาระบุ",
+		 		
 		 		hospital_province_id:" กรุณาระบุ",hospital_amphur_id:" กรุณาระบุ",hospital_district_id:" กรุณาระบุ",hospitalcode:" กรุณาระบุ",
 		 		hn:" กรุณาระบุ",idcard:"กรุณาระบุ",
 		 		cardW0:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
@@ -167,11 +135,7 @@ var province_id,amphur_id,district_id;
 		$('input[name=search_adv]').trigger('click');
 	}
 	
-	function shw_hospital(){		
-		($('input[name=in_out]:checked').val()=="2") ? $('#shw_hospital').fadeIn():$('#shw_hospital').fadeOut();
-	}
-	shw_hospital();
-	$('input[name=in_out]').change(shw_hospital).click(shw_hospital);
+
 	
 });
 </script>
@@ -286,7 +250,7 @@ var province_id,amphur_id,district_id;
 						<?php echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$_GET['province_id'],'class="styled-select"','--กรุณาเลือก--'); ?>
 						<span id="amphur"><select name="amphur_id" class="styled-select"><option value="" >--กรุณาเลือก--</option></select></span>
 						<span id="district"><select name="district_id" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
-						<span id="hospital"><select name="hospital_id" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
+						<span id="hospital"><select name="hospital_id_other" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
 					</span>
 				</td>
 			</tr>
