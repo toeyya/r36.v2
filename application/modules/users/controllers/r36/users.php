@@ -31,6 +31,7 @@ class Users extends R36_Controller
 		$data['cardW2']=substr($data['rs']['idcard'],5,5);
 		$data['cardW3']=substr($data['rs']['idcard'],10,2);
 		$data['cardW4']=substr($data['rs']['idcard'],12,1);
+		
 		$this->template->build('r36/user_index',$data);					
 	}
 	function save()

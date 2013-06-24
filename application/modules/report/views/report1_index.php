@@ -14,7 +14,7 @@ $(document).ready(function(){
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - ภาพรวม</div>
 <div id="search">
-<form action="report/index/4" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/index/1" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	  <tr>
 			<th>เขตความรับผิดชอบ</th>
@@ -130,7 +130,7 @@ $(document).ready(function(){
   <div class="btn_inline">
       <ul>
       	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      	<li><button class="btn_cancel" type="button">&nbsp;&nbsp;&nbsp;</button></li>
+      
       </ul>
 </div>	
 </form>

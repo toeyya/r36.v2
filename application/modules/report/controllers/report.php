@@ -17,7 +17,6 @@ class Report extends R36_Controller
 	function index($no=FALSE,$preview=FALSE)
 	{
 		// $this->db->debug=TRUE;
-
 		 $data['textarea'] ="";
 		 $data['textprovince'] = "ทั้งหมด";
 		 $data['textamphur'] = "ทั้งหมด";
@@ -94,9 +93,12 @@ class Report extends R36_Controller
 		$this->template->set_layout('blank');	
 		$this->template->build('report4_form');
 	}
-	function schedule($preview=FALSE)
-	{
-			$wh="";				
+
+	function schedule1($preview=FALSE)
+	{//$this->db->debug=TRUE;
+			$wh="";	
+			
+
 			//$nextday=date ("Y-m-d", mktime (0,0,0,date('m'),date('d')+1,date('Y')));
 			$today=DBdate(date('Y-m-d'));
 			$nextday=DBdate(date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d")))));	
@@ -110,6 +112,9 @@ class Report extends R36_Controller
 												  GROUP BY n_information.id")->sort("")->order("vaccine_date asc")->get();
 		if($preview)$this->template->set_layout('print');
 		$this->template->build('report_schedule',$data);
+	}
+	function schedule($preview=FALSE){
+		
 	}
 	function analyze(){
 		$this->template->build('report_analyze');

@@ -113,7 +113,7 @@ var ref1,ref2,ref3;
 					</div>
 				</td>
 				<td><a href="users/admin/users/form/<?php echo  $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn">แก้ไข</a>
-						<a href="users/admin/users/delete/<?php echo $item['uid'] ?>" alt="ลบข้อมูลผู้ใช้"   class="btn">ลบ</a>
+				    <a href="users/admin/users/delete/<?php echo $item['uid'] ?>" alt="ลบข้อมูลผู้ใช้" onclick="confirm('ยืนบันการลยข้อมูล')"  class="btn">ลบ</a>
 				</td>
 		</tr>
 		<?php endforeach; ?>

@@ -1,6 +1,6 @@
 <div id="title">ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบุลิน </div>
 <div id="search">
-<form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/index/8" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	  <tr>
 			<th>เขตความรับผิดชอบ</th>
@@ -144,7 +144,7 @@
   <div class="btn_inline">
       <ul>
       	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      	<li><button class="btn_cancel" type="button">&nbsp;&nbsp;&nbsp;</button></li>
+      	
       </ul>
 </div>
 </form>

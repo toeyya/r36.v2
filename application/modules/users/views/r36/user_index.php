@@ -144,7 +144,7 @@ var ref1,ref2,ref3;
   </tr>
   <tr>
   	<th>โทรสาร</th>
-  	<td><input type="text" name="fax" maxlength="7" value="<?php echo $rs['fax'] ?>"  class="input_box_patient"> <small>ตัวอย่าง 021234567</small></td>
+  	<td><input type="text" name="fax"  value="<?php echo $rs['fax'] ?>"  class="input_box_patient"> <small>ตัวอย่าง 021234567</small></td>
   </tr>
    <tr>
   	 <th>ตำแหน่ง </th>
@@ -224,5 +224,5 @@ var ref1,ref2,ref3;
     </td>
   </tr>
 </table>
- <div class="btn_inline"><ul><li><button class="btn_save" name="btn_save" type="submit"></button></li><li><button class="btn_cancel" name="btn_cancel"></button></li></ul></div>   
+ <div class="btn_inline"><ul><li><button class="btn_save" name="btn_save" type="submit"></button></li></ul></div>   
 </form>

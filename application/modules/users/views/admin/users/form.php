@@ -56,7 +56,8 @@ var ref1,ref2,ref3;
 		 				url:'<?php echo base_url(); ?>users/chkidcard',
 				        data: {
 				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
-				          digit_last:function(){return $('#cardW4').val(); }
+				          digit_last:function(){return $('#cardW4').val();},
+				          uid:function(){return $('#uid').val();}
 				        }
 		 			}		 		
 		 		}			 					
@@ -108,7 +109,11 @@ var ref1,ref2,ref3;
 <table  class="form">
   <tr>
   	<th>สิทธิ์การใช้งาน</th>
+  	<?php if($profile): ?>
+  	<td><?php echo $level_name; ?></td>
+  	<?php else: ?>
   	<td><?php echo form_dropdown('userposition',get_option("level_code",'level_name','n_level_user'),@$rs['userposition'],'',''); ?></td>
+  	<?php endif; ?>
   </tr>
 
   <tr>
@@ -228,11 +233,14 @@ var ref1,ref2,ref3;
   <?php if(!$profile): ?>
   <?php if($this->session->userdata('R36_LEVEL')=="00" || $this->session->userdata('R36_LEVEL')=="02"): ?>
    <tr><th>การอนุมัติของผู้ดูแลระดับจังหวัด</th>
-  	<td><input type="checkbox" name="confirm_province" value="<?php echo @$rs['confirm_province']; ?>" <?php echo(!empty($rs['confirm_province'])=="1")?'checked="checked"':''; ?>></td>  	
+  	<td><input type="checkbox" name="confirm_province" value="1"  <?php echo(!empty($rs['confirm_province']))?'checked="checked"':''; ?>></td>  	
   </tr>
    <?php if($this->session->userdata('R36_LEVEL')=="00"): ?> 
   <tr><th>การอนุมัติของผู้ดูแลระดับกรม</th>
-  	<td><input type="checkbox" name="confirm_admin" value="<?php echo @$rs['confirm_admin']; ?>" <?php echo(!empty($rs['confirm_admin'])=="1")?'checked="checked"':''; ?>></td>
+  	<td><input type="checkbox" name="confirm_admin"  value="1"  <?php echo(!empty($rs['confirm_admin']))?'checked="checked"':''; ?>></td>
+  </tr>
+  <tr><th>ส่งอีเมล์แจ้งอนุมัติ</th>
+  	<td><input type="checkbox" name="send_mail" value="1"></td>
   </tr>
   <?php endif ?>
 <?php endif; ?>
