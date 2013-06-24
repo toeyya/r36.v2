@@ -334,7 +334,7 @@ var province_id,amphur_id,district_id;
 					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
 				<?php }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){
 											//if($this->session->userdata('R36_FROMEDIT')=='Y'){ ?>
-													<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>
+									<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>
 							<?php	//}
 						}  ?>
 					<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine"  class="btn_syring vtip"  target="_blank"></a>
