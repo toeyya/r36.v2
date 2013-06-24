@@ -1,15 +1,15 @@
 <script type="text/javascript">
 $(document).ready(function(){
-   $('.datepicker').datepick({format: 'Y-m-d', showOn: 'both', buttonImageOnly: true, buttonImage: 'js/jquery/jquery.datepick/calendar.gif' },$.datepick.regional['th']);
    var ref1,ref2;
    $('select[name=province_id]').change(function(){
 		$('#amphur_id option[value=""]').attr("selected",true);
 		$('#district_id option[value=""]').attr("selected",true);
 		$('#hospital option[value=""]').attr("selected",true);
 		ref1=$('select[name=province_id] option:selected').val();
+		$('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px">');
 		$.ajax({
 			url:'<?php echo base_url() ?>district/getAmphur',
-			data:'ref1='+ref1,
+			data:'name=amphur_id&ref1='+ref1,
 			success:function(data)
 			{
 				$("#input_amphur").html(data);
@@ -18,9 +18,11 @@ $(document).ready(function(){
 	});	//select name=province
 	$("select[name=amphur_id]").live('change',function(){
 		ref2=$('select[name=amphur_id] option:selected').val();
+		$("#input_district").html('<img src="media/images/loader.gif" width="16px" height="11px">');
 		$.ajax({
 			url:'<?php echo base_url() ?>district/getDistrict',
-			data:'ref1='+ref1+'&ref2='+ref2,
+			data:'name=district_id&ref1='+ref1+'&ref2='+ref2,
+			
 			success:function(data)
 			{
 				$("#input_district").html(data);
@@ -30,9 +32,11 @@ $(document).ready(function(){
 
 	$('select[name=district_id]').live('change',function(){
 		ref3=$('select[name=district_id] option:selected').val();
+			$("#input_hospital").html('<img src="media/images/loader.gif" width="16px" height="11px">');
 		$.ajax({
 			url:'<?php echo base_url() ?>hospital/getHospital',
-			data:'ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,
+			data:'name=hospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,
+		
 			success:function(data){
 				$('#input_hospital').html(data);
 			}
@@ -67,19 +71,22 @@ $(document).ready(function(){
 				</tr>
 				<tr>													
 							<th>จังหวัด </th>
-							<td><?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$_GET['province_id'],'class="styled-select" id="province_id"','-ทั้งหมด-'); ?>
-									<?php $wh=(@$_GET['province_id'])?" where province_id='".$_GET['province_id']."'":'';  
+							<td>
+								
+								<?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$_GET['province_id'],'class="styled-select" id="province_id"','-ทั้งหมด-'); ?>
+									<?php $wh=(@$_GET['province_id']!='' && $_GET['amphur_id']!='')? " WHERE province_id='".@$_GET['province_id']."' and amphur_id='".@$_GET['amphur_id']."'":""; 
 												$class='id="amphur_id"';?>
+												
 							</td>
 							<th>อำเภอ</th>
-							<td><span id="input_amphur"><?php echo form_dropdown('amphur_id',get_option('amphur_id','amphur_name',"n_amphur".$wh),@$_GET['amphur'],$class,'-ทั้งหมด-'); ?></span>
-									<?php $wh=(@$_GET['province_id']!='' && $_GET['amphur_id']!='')? " WHERE hospital_province_id='".@$_GET['province_id']."' and hospital_amphur_id='".@$_GET['amphur_id']."'":""; 
-												$class='id="district" ';?>	
+							<td><span id="input_amphur"><?php echo form_dropdown('amphur_id',get_option('amphur_id','amphur_name',"n_amphur".$wh),@$_GET['amphur_id'],$class,'-ทั้งหมด-'); ?></span>
+									<?php $wh=(@$_GET['province_id']!='' && $_GET['amphur_id']!='')? " WHERE province_id='".@$_GET['province_id']."' and amphur_id='".@$_GET['amphur_id']."' ":""; 
+												$class='id="district"';?>	
 							</td>
 							<th>ตำบล</th>
-							<td><span id="input_district"><?php echo form_dropdown('district',get_option('district_id','district_name','n_district'),@$_GET['district'],$class,'-ทั้งหมด-') ?></span>
+							<td><span id="input_district"><?php echo form_dropdown('district_id',get_option('district_id','district_name','n_district'.$wh),@$_GET['district_id'],$class,'-ทั้งหมด-') ?></span>
 									<?php if(@$_GET['province_id']!='' && $_GET['amphur_id']!='' && $_GET['hospital']){
-													$wh=" WHERE hospital_province_id='".@$_GET['province_id']."' and hospital_amphur_id='".@$_GET['amphur_id']."' and hospital_district_id='".$_GET['district_id']."' ";
+													$wh=" WHERE hospital_province_id='".@$_GET['province_id']."' and hospital_amphur_id='".@$_GET['amphur_id']."' and hospital_district_id='".@$_GET['district_id']."' ";
 												}else{$wh="";}
 												$class=' id="hospital" style="width:130px;"';?>	
 							</td>								

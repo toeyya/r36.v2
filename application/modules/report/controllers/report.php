@@ -95,9 +95,8 @@ class Report extends R36_Controller
 		$this->template->build('report4_form');
 	}
 	function schedule($preview=FALSE)
-	{//$this->db->debug=TRUE;
-			$wh="";	
-			
+	{
+			$wh="";				
 			//$nextday=date ("Y-m-d", mktime (0,0,0,date('m'),date('d')+1,date('Y')));
 			$today=DBdate(date('Y-m-d'));
 			$nextday=DBdate(date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d")))));	
