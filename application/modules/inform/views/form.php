@@ -2072,16 +2072,16 @@ $('select[name=prefix_name]').click(disableChkage);
                   </tr>
                 </table></td>
               </tr>
-			  <? if($in_out=='1'){?>
-              <tr id="closecasemaintr"  <? // if((@$rs['hospitalprovince']!=@$rs['provinceid']) || (@$rs['hospitalamphur']!=@$rs['amphurid'])){print 'style = "display:none"'; }?>>
+			  
+              <tr id="closecasemaintr">
                 <td valign="top"  align="center">5.3</td>
                 <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td width="15%">ท่านต้องการปิด Case หรือไม่ </td>
                     <td width="67%">
-					<input name="closecase" type="radio" value="1" checked="cheecked" <? if(@$rs['closecase']=='1'){print "checked";}?>  onclick="show_hide_closecase_chk(document.form1);">
+					<input name="closecase" type="radio" value="1" <?php if($rs['closecase']=='1'){echo 'checked="checked"';}?>  onclick="show_hide_closecase_chk(document.form1);">
                       ไม่ต้องการ&nbsp;&nbsp;&nbsp;
-                      <input name="closecase" type="radio" value="2" <? if(@$rs['closecase']=='2'){print "checked";}?>  onclick="if(confirm('คุณแน่ใจหรือไม่ที่ต้องการปิดเคสข้อมูลนี้')){show_hide_closecase_chk(document.form1);}else{document.form1.closecase[1].checked=false;}">
+                    <input name="closecase" type="radio" value="2" <?php if($rs['closecase']=='2'){echo 'checked="checked"';}?>  onclick="if(confirm('คุณแน่ใจหรือไม่ที่ต้องการปิดเคสข้อมูลนี้')){show_hide_closecase_chk(document.form1);}else{document.form1.closecase[1].checked=false;}">
                       ต้องการ</td>
                   </tr>
                   <tr>
@@ -2090,19 +2090,19 @@ $('select[name=prefix_name]').click(disableChkage);
                       <tr>
                         <td width="25%">&nbsp;</td>
                         <td width="4%">สาเหตุ</td>
-                        <td><input name="closecase_reason" type="radio" value="1" <? if(@$rs['closecase_reason']=='1'){ print "checked";}?> onClick="show_hide_closecase_reason(document.form1);">
+                        <td><input name="closecase_reason" type="radio" value="1" <? if(@$rs['closecase_reason']=='1'){ echo 'checked="checked"';}?> onClick="show_hide_closecase_reason(document.form1);">
                           ฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าครบตามมาตรฐาน</td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td><input name="closecase_reason" type="radio" value="2" <? if(@$rs['closecase_reason']=='2'){ print "checked";}?>  onclick="show_hide_closecase_reason(document.form1);">
+                        <td><input name="closecase_reason" type="radio" value="2" <? if(@$rs['closecase_reason']=='2'){ echo 'checked="checked"';}?>  onclick="show_hide_closecase_reason(document.form1);">
                           ฉีดวัคซีนกระตุ้นครบตามมาตรฐาน</td>
                       </tr>
                       <tr>
                         <td>&nbsp;</td>
                         <td>&nbsp;</td>
-                        <td><input name="closecase_reason" type="radio" value="3" <? if(@$rs['closecase_reason']=='3'){ print "checked";}?>  onclick="show_hide_closecase_reason(document.form1);">
+                        <td><input name="closecase_reason" type="radio" value="3" <? if(@$rs['closecase_reason']=='3'){ echo 'checked="checked"';}?>  onclick="show_hide_closecase_reason(document.form1);">
                           ฉีดวัคซีนไม่ครบ</td>
                       </tr>
                       <tr>
@@ -2129,7 +2129,7 @@ $('select[name=prefix_name]').click(disableChkage);
                     </tr>
                 </table></td>
               </tr>
-			  <? }?>			  
+			  			  
             </table>
 				<table width="50%" border="0" align="right" cellpadding="3" cellspacing="0" id="part6">
 				  <tr>

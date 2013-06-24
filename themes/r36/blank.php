@@ -10,10 +10,11 @@
 		<script  type="text/javascript"src="media/js/jquery.datepick/jquery.datepick-th.js"></script>
 		<script type="text/javascript" src="media/js/checkobj.js" ></script>
 		<link type="text/css"  href="media/js/jquery.datepick/redmond.datepick.css" rel="stylesheet"  media="screen"/>	
-		<link rel="stylesheet" type="text/css" href="media/css/default.css" media="screen"/>
+		
 		<link rel="stylesheet" type="text/css" href="media/css/template.css" media="screen"/>
+		<link rel="stylesheet" type="text/css" href="media/css/bootstrap.css" media="screen"/>
 		<link rel="stylesheet" media="screen"  href="media/css/colorbox.css" media="screen" />
-		<link rel="stylesheet" type="text/css" href="media/css/print.css" media="print" />
+		<link rel="stylesheet" type="text/css" href="themes/admin/media/css/pagination.css" media="screen">
 		
 
 		<?php echo $template['metadata']; ?>	

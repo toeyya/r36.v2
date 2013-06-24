@@ -15,32 +15,76 @@ class Inform extends R36_Controller
 		$this->history->primary_key('historyid');
 						
 	}
-	public $closecase=TRUE;
-	function closecase()
-	{ 
-		$sql="SELECT hn,idcard,hn_no,firstname,surname,information_historyid FROM n_information 
-					LEFT JOIN n_history ON historyid=information_historyid 
-					WHERE closecase=1 and datediff(now(),date(n_information.created)) >=90 
-					and hospitalcode='".$this->session->userdata('R36_HOSPITAL')."' order by n_information.created asc";
-		$data['result'] = $this->inform->get($sql);
-		$this->closecase=FALSE;
-		$data['closecase'] = $this->closecase;
+	function closecase_person($idcard){
+		$sql="SELECT id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch 
+			  FROM n_information 
+			  LEFT JOIN n_history ON historyid=information_historyid 
+			  WHERE closecase=1 and idcard='".$idcard."' order by n_information.datetouch asc";	
+		$result=$this->inform->get($sql);
+		if($result){
+			$tb = '<div class="alert alert-info">มีเคสนี้อยู่แล้วในระบบ คุณต้องปิดเคสนี้ก่อนจึงสามารถเพิ่มครั้งที่สัผมัสโรคได้</div>';
+			$tb.='<table class="tb_search_Rabies1">';
+			$tb.= '<tr>';
+			$tb.= '<th>วันที่สัมผัสโรค</th>';
+			$tb.= '<th>HN</th>';
+			$tb.= '<th>ครั้งที่สัมผัสโรค</th>';
+			$tb.= '<th>ชื่อ-นามสกุล</th>';
+			$tb.= '<th>บัตรประชาชน/passport</th>';
+			$tb.= '<th></th>';
+			$tb.= '</tr>';
+			foreach($result as $item){
+				$tb.= '<tr>';
+				$tb.= '<td>'.$item['datetouch'].'</td>';
+				$tb.= '<td>'.$item['hn'].'</td>';
+				$tb.= '<td>'.$item['hn_no'].'</td>';
+				$tb.= '<td>'.$item['firstname'].' '.$item['surname'].'</td>';
+				$tb.= '<td>'.$item['idcard'].'</td>';
+				$tb.= '<td><a href="inform/form/'.$item['id'].'/'.$item['information_historyid'].'" class="btn btn-mini btn-info" target="_blank">แก้ไข</a>';
+				$tb.= '</td>';
+				$tb.= '</tr>';
+			}
+			$tb.= '</table>';
+			$data['tb']=$tb;
+			$data['chk']="yes";
+		}else{
+			$data['chk']="no";
+		}
+		echo json_encode($data);
+		
+	}
+	function closecase($chk=FALSE)
+	{							 
+		$sql="SELECT id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch 
+			  FROM n_information 
+			  LEFT JOIN n_history ON historyid=information_historyid 
+			  WHERE closecase=1 and datediff(now(),date(n_information.created)) >=90 
+			  and hospitalcode='".$this->session->userdata('R36_HOSPITAL')."' order by n_information.datetouch asc";
+		$result=$this->inform->get($sql);
+		$data['chk']=(sizeof($result)>0) ?"yes":"no";	
+		if($chk){
+			echo json_encode($data);
+			return true;
+		}
+		$data['result'] = $result;		
 		$data['pagination']=$this->inform->pagination();
 		$this->template->set_layout('blank');
 		$this->template->build('view_closecase',$data);
 	}
-
 	function index()
-	{			
-		$data['closecase'] = $this->closecase;		
+	{				
+		
+		$this->template->set_layout('layout');
+		$where="";			
 		if(!empty($_GET['action']))
-		{// กดค้นหา		
-				
-						
+		{//กดค้นหา												
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
+				if(!empty($_GET['statusid'])=="1"){
+					$_GET['idcard']=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
+				}
+							
 				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
 					$where .= " AND  (hospitalcode='".$_GET['hospitalcode']."' and hospitalprovince='".$_GET['hospital_province_id']."' 
-										and hospitalamphur='".$_GET['hospital_amphur_id']."' and hospital_district_id='".$_GET['hospital_district_id']."')";
+									  and hospitalamphur='".$_GET['hospital_amphur_id']."' and hospital_district_id='".$_GET['hospital_district_id']."')";
 				}else{
 					$where.=(!empty($_GET['hospitalcode']))? " and hospitalcode='".$_GET['hospitalcode']."'":"";
 					$where.=(!empty($_GET['hospital_province_id']))? " and hospitalprovince='".$_GET['hospital_province_id']."'":"";
@@ -61,9 +105,7 @@ class Inform extends R36_Controller
 						$where.=" and reportdate BETWEEN '".$startdate."' and '".$startdate."'";		
 				}
 						
-				if(!empty($_GET['statusid'])=="1"){
-					$_GET['idcard']=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
-				}
+
 				
 				if(!empty($_GET['hn']) && !empty($_GET['idcard']))	{
 					$where.="AND  hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
@@ -93,15 +135,14 @@ class Inform extends R36_Controller
 				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
 				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
 		}// $_GET['action]
-
+		
 		if(!empty($where))
 		{
 			/*$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
 				  FROM n_information
 				  LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode				 
 			      INNER JOIN n_history ON n_history.historyid=n_information.information_historyid WHERE 1=1 ".$where;*/
-			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
-									  ,hospital_id_other
+			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase									
 				FROM n_history
 				LEFT JOIN n_information ON n_history.historyid=n_information.information_historyid
 				LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
@@ -148,8 +189,7 @@ class Inform extends R36_Controller
 				$data['rs']['hospital_amphur_id']=$this->session->userdata('R36_HOSPITAL_AMPHUR');
 				$data['rs']['hospital_district_id']=$this->session->userdata('R36_HOSPITAL_DISTRICT');	
 			}
-			$data['now']=strtotime(date("Y-m-d H:i:s"));				
-										
+			$data['now']=strtotime(date("Y-m-d H:i:s"));														
 			$this->template->build('form',$data);
 				
 	}		
