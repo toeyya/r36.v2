@@ -1,6 +1,6 @@
-<div class="alert alert-info">ไม่สามารถเพิ่มข้อมูลได้ !!! กรุณาปิดเคส จึงสามารถเพิ่มข้อมูลผู้สัมผัสโรครายต่อไปได้</div>
+<div class="alert alert-warning"><span class="label label-warning">ไม่สามารถเพิ่มข้อมูลได้</span> กรุณาปิดเคส จึงสามารถเพิ่มข้อมูลผู้สัมผัสโรครายต่อไปได้</div>
 
-<table class="table table-striped">
+<table class="tb_search_Rabies1">
 	<tr>
     <th>วันที่สัมผัสโรค</th>
 	<th>HN</th>
@@ -17,7 +17,7 @@
 		<td><?php echo $item['hn_no'] ?></td>
 		<td><?php echo $item['firstname'].' '.$item['surname']?></td>
 		<td><?php echo $item['idcard'] ?></td>
-		<td><a href="inform/form/<?php echo $item['id'] ?>/<?php echo $item['information_historyid'] ?>" class="btn btn-mini btn-info" target="_blank">แก้ไข</a>			
+		<td><a href="inform/form/<?php echo $item['id'] ?>/<?php echo $item['information_historyid'] ?>" class="btn_edit vtip" target="_blank"></a>			
 		</td>
 	</tr>
 	<?php endforeach; ?>

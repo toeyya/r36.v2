@@ -14,7 +14,7 @@
 		<link rel="stylesheet" type="text/css" href="media/css/template.css" media="screen"/>
 		<link rel="stylesheet" type="text/css" href="media/css/bootstrap.css" media="screen"/>
 		<link rel="stylesheet" media="screen"  href="media/css/colorbox.css" media="screen" />
-		<link rel="stylesheet" type="text/css" href="themes/admin/media/css/pagination.css" media="screen">
+		<link rel="stylesheet" type="text/css" href="media/css/pagination.css" media="screen">
 		
 
 		<?php echo $template['metadata']; ?>	
