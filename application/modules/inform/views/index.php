@@ -38,8 +38,9 @@ var province_id,amphur_id,district_id;
 			}
 		});
 	});
-
-
+	if($('input[name=level]').val()=="05"){
+		$.colorbox({width:"70%", height:"80%", inline:true,href:"#closecase"});
+	}
 
 
 
@@ -246,12 +247,7 @@ var province_id,amphur_id,district_id;
 						<input type="radio" name="in_out" value="1" checked="checked" <?php echo (@$_GET['in_out']=="1")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการนี้
 						<input type="radio" name="in_out" value="2" <?php echo (@$_GET['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการอื่น
 					</span>
-					<span id="shw_hospital">
-						<?php echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$_GET['province_id'],'class="styled-select"','--กรุณาเลือก--'); ?>
-						<span id="amphur"><select name="amphur_id" class="styled-select"><option value="" >--กรุณาเลือก--</option></select></span>
-						<span id="district"><select name="district_id" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
-						<span id="hospital"><select name="hospital_id_other" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
-					</span>
+
 				</td>
 			</tr>
 			<tr>
@@ -350,4 +346,10 @@ var province_id,amphur_id,district_id;
 			 <?php endif; ?>			    
 </table>	
 <?php echo (isset($pagination))? $pagination:''; ?>
+
+<div style="display:none;">
+<div id="closecase" style="height:100%;width:100%;">
+	<iframe name="ifm" src="inform/closecase" ALIGN="top" HSPACE="0" VSPACE="0" frameborder="0" style="height:100%;width:100%;" ></iframe>
+</div>
+</div>
 

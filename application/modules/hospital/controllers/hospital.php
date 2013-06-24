@@ -13,13 +13,13 @@ class Hospital extends Admin_Controller
 		$province=@$_GET['province_id'];
 		$district=@$_GET['district_id'];
 		$hospital_name=mysql_real_escape_string(@$_GET['hospital_name']);
-		$hospital_code_healthoffice=mysql_real_escape_string(@$_GET['hospital_code_healthoffice']);
+		$hospital=mysql_real_escape_string(@$_GET['hospital']);
 		$wh='';
 		 if($amphur!=''){			$wh=" AND  hospital_amphur_id = '".$amphur."' AND hospital_province_id ='".$province."'";
 		  }else if($province!=''){$wh=" AND hospital_province_id ='".$province."'"; }
 		  if($district!=''){$wh .=" AND hospital_district_id ='".$district."'"; }
 		  if($hospital_name!=''){$wh .=" AND hospital_name LIKE'%".$hospital_name."%'";}	
-		  if($hospital_code_healthoffice){$wh.=" AND hospital_code_healthoffice LIKE'".$hospital_code_healthoffice."%'";}  
+		  if($hospital){$wh.=" AND hospital_code_healthoffice LIKE'".$hospital."%' OR hospital_name like'%".$hospital."%'";}  
 		  if($view){$wh=" AND hospital_id='$view'";}
 		  
 		  $data['wh']=$wh;		  

@@ -62,7 +62,8 @@ $(document).ready(function(){
 										echo form_dropdown('hospitalcode',get_option('hospital_code','hospital_name',"n_hospital_1 where $whhospital ORDER BY hospital_name ASC"),@$_GET['hospitalcode'],'id="hospitalcode"','-โปรดเลือก-');
 					  			 ?>
 						</span> 
-โค้ดสถานพยาบาล <input name="hospital_code_healthoffice" type="text" id="hospital_code_healthoffice" size="20" maxlength="10"  class="input_box_patient"  value="<?php echo @$_GET['hospital_code_healthoffice']?>" />
+รหัส / ชื่อ สถานพยาบาล <input name="hospital" type="text" id="hospital" size="20"   class="input_box_patient"  value="<?php echo @$_GET['hospital']?>" />
+
 <input  class="btn" type="submit" value="ค้นหา">
 </form>
 </div>	  

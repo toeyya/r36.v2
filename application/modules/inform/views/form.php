@@ -512,16 +512,16 @@ $('select[name=prefix_name]').click(disableChkage);
 
 <div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($rs['in_out']=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($rs['in_out']=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
-	<?php error_reporting(E_ERROR);
+	<?php error_reporting(E_ERROR); 
 			@$rs['daterig'] =($rs['daterig'] =='0000-00-00')?'': cld_my2date(@$rs['daterig']);
 			@$rs['datelongfeel']	=(@$rs['datelongfeel']=='0000-00-00')?'':cld_my2date(@$rs['datelongfeel']);
 			@$rs['datetouch'] = (@$rs['datetouch'] =='0000-00-00')? '':cld_my2date(@$rs['datetouch']);	
 			@$rs['after_vaccine_date']=($rs['after_vaccine_date']=='0000-00-00')?'': cld_my2date($rs['after_vaccine_date']);
-
 			
-			$datetoday=date('Y')+543;
-			$datetoday=$datetoday.'-'.date('m-d H:i:s');
-			echo (@$rs['id']) ? form_hidden('updatetime',$datetoday) : form_hidden('created',$datetoday);
+			//$datetoday=date('Y')+543;
+			//$datetoday=$datetoday.'-'.date('m-d H:i:s');
+			$datetoday=date('Y-m-d H:i:s');
+			echo (!empty($rs['id'])) ? form_hidden('updatetime',$datetoday) : form_hidden('created',$datetoday);
 						
 	?>
 

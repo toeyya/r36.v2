@@ -15,11 +15,28 @@ class Inform extends R36_Controller
 		$this->history->primary_key('historyid');
 						
 	}
+	public $closecase=TRUE;
+	function closecase()
+	{ 
+		$sql="SELECT hn,idcard,hn_no,firstname,surname,information_historyid FROM n_information 
+					LEFT JOIN n_history ON historyid=information_historyid 
+					WHERE closecase=1 and datediff(now(),date(n_information.created)) >=90 
+					and hospitalcode='".$this->session->userdata('R36_HOSPITAL')."' order by n_information.created asc";
+		$data['result'] = $this->inform->get($sql);
+		$this->closecase=FALSE;
+		$data['closecase'] = $this->closecase;
+		$data['pagination']=$this->inform->pagination();
+		$this->template->set_layout('blank');
+		$this->template->build('view_closecase',$data);
+	}
+
 	function index()
-	{
-					
+	{			
+		$data['closecase'] = $this->closecase;		
 		if(!empty($_GET['action']))
-		{// กดค้นหา							
+		{// กดค้นหา		
+				
+						
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
 					$where .= " AND  (hospitalcode='".$_GET['hospitalcode']."' and hospitalprovince='".$_GET['hospital_province_id']."' 
@@ -35,7 +52,6 @@ class Inform extends R36_Controller
 				}else if(!empty($_GET['enddate'])){
 					$where.=" and datetouch BETWEEN '".DBdate($_GET['startdate'])."' and '".DBdate($_GET['startdate'])."'";	
 				}
-
 		
 				if(!empty($_GET['report_startdate']) && !empty($_GET['report_enddate'])){
 					$startdate=cld_date2my($_GET['report_startdate']);		
@@ -85,6 +101,7 @@ class Inform extends R36_Controller
 				  LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode				 
 			      INNER JOIN n_history ON n_history.historyid=n_information.information_historyid WHERE 1=1 ".$where;*/
 			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
+									  ,hospital_id_other
 				FROM n_history
 				LEFT JOIN n_information ON n_history.historyid=n_information.information_historyid
 				LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
@@ -162,8 +179,7 @@ class Inform extends R36_Controller
 		$data['rs']['in_out']=$_GET['in_out'];		
 		$data['value_disabled']='';	
 		$data['process']="";
-		$data['h_name'] =$this->session->userdata('R36_HOSPITAL_NAME');	
-		$data['rs']['hosital_id_other']=$_GET['hospital_id_other'];
+		$data['h_name'] =$this->session->userdata('R36_HOSPITAL_NAME');		
 		$this->template->build('form',$data);
 	}
 

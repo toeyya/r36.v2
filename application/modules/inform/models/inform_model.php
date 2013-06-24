@@ -7,5 +7,8 @@ class Inform_model extends MY_Model
 	{
 		parent::__construct();
 	}
+	function testss(){
+		echo "ddd";
+	}
 }
 ?>
