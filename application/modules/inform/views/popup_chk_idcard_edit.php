@@ -1,6 +1,5 @@
 <script language="javascript">
 $(document).ready(function(){
-
 	$("div#show").css('display','none');
 	$('[name=submit]').click(function(e){
 		$('#Show_idcard').next().html('');
@@ -38,17 +37,23 @@ $(document).ready(function(){
 	});
 	
 	$('[name=submit1]').click(function(){
+		parent.$("#statusid").removeAttr('selected');
+		parent.$("#statusid option").filter(function(){return $(this).val() == $('#statusid option:selected').val()}).prop('selected', 'selected');		
+		parent.$('#statusid,input[name=idpassport]').attr('disabled','disabled');
 		if($('#statusid option:selected').val()=="1"){
+			parent.$('#Show_idpassport').hide();			
+			parent.$('#Show_idcard').show();
 			parent.$('#cardW0').val($('#cardW0').val());
 			parent.$('#cardW1').val($('#cardW1').val());
 			parent.$('#cardW2').val($('#cardW2').val());
 			parent.$('#cardW3').val($('#cardW3').val());
 			parent.$('#cardW4').val($('#cardW4').val());
-		}else{
-			parent.$("#statusid option").filter(function(){return $(this).val() == $('#statusid option:selected').val()}).prop('selected', 'selected');
+		}else{					
+			parent.$('#Show_idpassport').show();			
+			parent.$('#Show_idcard').hide();						
 			parent.$('input[name=idpasspost]').val($('input[name=idpassport]').val());
 		}
-		//parent.$.colorbox.close();
+		parent.$.colorbox.close();
 	});
 });
 </script>

@@ -228,10 +228,10 @@ class Inform extends R36_Controller
 		}
 		$historyid=$this->db->GetOne("select historyid from n_history where idcard= ?  and statusid= ? and idcard<>0",array($_POST['idcard'],$_POST['statusid']));
 		//table n_history
-						if(isset($_POST['chkage'])=='Y'){			$_POST['age']=0;$_POST['age_group']=1;
-						}else if($_POST['age'] < 1){			$_POST['age']=0;$_POST['age_group']=1;
-						}else if($_POST['age']>=1    && $_POST['age'] <=5){$_POST['age_group']=2;
-						}else if($_POST['age']>=6 	&& $_POST['age'] <=10){$_POST['age_group']=3;
+						if(isset($_POST['chkage'])=='Y'){$_POST['age']=0;$_POST['age_group']=1;
+						}else if($_POST['age'] < 1){$_POST['age']=0;$_POST['age_group']=1;
+						}else if($_POST['age']>=1  && $_POST['age'] <=5){$_POST['age_group']=2;
+						}else if($_POST['age']>=6  && $_POST['age'] <=10){$_POST['age_group']=3;
 						}else if($_POST['age']>=11 && $_POST['age'] <=15){$_POST['age_group']=4;
 						}else if($_POST['age']>=16 && $_POST['age'] <=25){$_POST['age_group']=5;
 						}else if($_POST['age']>=26 && $_POST['age'] <=35){$_POST['age_group']=6;

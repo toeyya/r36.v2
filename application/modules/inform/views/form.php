@@ -620,7 +620,7 @@ $('select[name=prefix_name]').click(disableChkage);
 				<? 
 				 if(@$rs['statusid']==''){@$rs['statusid']=1;}?>
 					เลขประจำตัวประชาชน/เลขที่ passport: 
-					<select name="statusid"  class="styled-select " onChange="return selectType_id(this.value);" <?php echo $value_disabled?>>
+					<select name="statusid" id="statusid"  class="styled-select " onChange="return selectType_id(this.value);" <?php echo $value_disabled?>>
 						<option value="1" <? if(@$rs['statusid']=='1'){ echo 'selected';}?>>เลขประจำตัวประชาชน</option>
 						<option value="2" <? if(@$rs['statusid']=='2'){ echo 'selected';}?>>เลขที่ passport</option>
 						
