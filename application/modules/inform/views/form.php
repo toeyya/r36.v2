@@ -492,7 +492,7 @@ $('select[name=prefix_name]').click(disableChkage);
 	});
 
 	/***  กดเพื่อแก้ไขรหัสในกรณีกรอกผิด  ***/
-	$('#editidcard').colorbox({iframe:true, innerWidth:500, innerHeight:425,href:'inform/chk_idcard_edit?historyid='+$('input[name=historyid]').val()});
+	$('#editidcard').colorbox({iframe:true, innerWidth:500, innerHeight:320,href:'inform/chk_idcard_edit?historyid='+$('input[name=historyid]').val()});
 
 	if($('input[name=idcard]').val()!=""){
 		$('#cardW0,#cardW1,#cardW2,#cardW3,#cardW4').attr('disabled',true)	
@@ -621,8 +621,8 @@ $('select[name=prefix_name]').click(disableChkage);
 				 if(@$rs['statusid']==''){@$rs['statusid']=1;}?>
 					เลขประจำตัวประชาชน/เลขที่ passport: 
 					<select name="statusid"  class="styled-select " onChange="return selectType_id(this.value);" <?php echo $value_disabled?>>
-						<option value="1" <? if(@$rs['statusid']=='1'){ echo 'checked';}?>>เลขประจำตัวประชาชน</option>
-						<option value="2" <? if(@$rs['statusid']=='2'){ echo 'checked';}?>>เลขที่ passport</option>
+						<option value="1" <? if(@$rs['statusid']=='1'){ echo 'selected';}?>>เลขประจำตัวประชาชน</option>
+						<option value="2" <? if(@$rs['statusid']=='2'){ echo 'selected';}?>>เลขที่ passport</option>
 						
 					</select>
 					<span id="Show_idpassport" <? if(@$rs['statusid']=='2'){print "style='display:'";}else{print "style='display:none'";}?>>
@@ -635,8 +635,8 @@ $('select[name=prefix_name]').click(disableChkage);
 						<input name="cardW3" id="cardW3" type="text" class="input_box_patient nowidth" size="2" maxlength="2" value="<?php echo @$cardW3?>" <?php echo $value_disabled?>/> -
 						<input name="cardW4" id="cardW4" type="text" class="input_box_patient nowidth" size="1" maxlength="1" value="<?php echo @$cardW4?>" <?php echo $value_disabled?>/>				
 					</span>				 					
-					<!-- กรณีข้อมูลเดิมไม่สมบูรณ์ จะทำให้บรรทึกไม่ผ่าน 
-					<button name="editidcard" id="editidcard" title="กดเพื่อแก้ไขรหัสในกรณีกรอกผิด" class="btn_press"></button>-->			
+					<!-- กรณีข้อมูลเดิมไม่สมบูรณ์ จะทำให้บรรทึกไม่ผ่าน -->
+					<button name="editidcard" id="editidcard" title="กดเพื่อแก้ไขรหัสในกรณีกรอกผิด" class="btn_press"></button>					
 				</th>
               </tr>
             </table>	

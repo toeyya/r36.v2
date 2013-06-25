@@ -1,5 +1,4 @@
 <div class="alert alert-warning"><span class="label label-warning">ไม่สามารถเพิ่มข้อมูลได้</span> กรุณาปิดเคส จึงสามารถเพิ่มข้อมูลผู้สัมผัสโรครายต่อไปได้</div>
-
 <table class="tb_search_Rabies1">
 	<tr>
     <th>วันที่สัมผัสโรค</th>
