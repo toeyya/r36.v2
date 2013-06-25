@@ -90,7 +90,7 @@ var province_id,amphur_id,district_id;
 		$('#form1').attr('action','inform/addNew');	
 		$('input[name=action]').val('');	
 		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้	
-				chk_closecase();					
+				//chk_closecase();					
 				$("#hospitalprovince option").filter(function(){return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
 				$('#hospital_amphur_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_amphur_id]').val()+'">'+$('input[name=amphur_name]').val()+'</option>');
 				$('#hospital_district_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_district_id]').val()+'">'+$('input[name=district_name]').val()+'</option>');
@@ -102,8 +102,9 @@ var province_id,amphur_id,district_id;
 		 	submitHandler:function(){
 		 	  chk_closecase_person();
 		 	  var chk_p=$('input[name=closecase_person]').val();
+		 	  alert(chk_p);
 		 	  if(chk_p==''){
-		 	  	document.form1.submit();
+		 	  	//document.form1.submit();
 		 	  }		 				 	
 		 	}
 		 });

@@ -39,7 +39,7 @@ class Inform extends R36_Controller
 				$tb.= '<td>'.$item['hn_no'].'</td>';
 				$tb.= '<td>'.$item['firstname'].' '.$item['surname'].'</td>';
 				$tb.= '<td>'.$item['idcard'].'</td>';
-				$tb.= '<td><a href="inform/form/'.$item['id'].'/'.$item['information_historyid'].'" class="btn btn-mini btn-info" target="_blank">แก้ไข</a>';
+				$tb.= '<td><a href="inform/form/'.$item['id'].'/'.$item['information_historyid'].'" class="btn_edit vtip" target="_blank"></a>';
 				$tb.= '</td>';
 				$tb.= '</tr>';
 			}
