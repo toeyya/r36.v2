@@ -1,62 +1,61 @@
 <script type="text/javascript">
-function show_hide_clear_means()
-{
+function show_hide_clear_means(){
 	var means=$('#means:checked').val();
 	var information_id=$('input[name=information_id]').val();	
 	var tomorrow,clear;
-		if(means=="2" || means=="1"){		
-				if(means=="2"){
-					$("#meanstr tr:eq(5)").hide();
-					$(".vaccine_cc option").filter(function() {return $(this).text() == "0.1"; }).attr('selected', true);
-					$(".vaccine_point option").filter(function() {return $(this).text() == "2"; }).attr('selected', true);
-				}else{					
-					$("#meanstr tr:eq(5)").show();
-					$(".vaccine_cc option").filter(function() {return $(this).text() == "0.5"; }).attr('selected', true);
-					$(".vaccine_point option").filter(function() {return $(this).text() == "1"; }).attr('selected', true);
-				}
-				if(information_id==''){
-					for(clear=0;clear<5;clear++)
-					{
-								if(means=="2" && clear==3){continue;}					
-								if($("#vaccine_date["+clear+"]").val() == '' || typeof $("#vaccine_date["+clear+"]").val() == "undefined"){											
-										var tomorrow=increment_vaccine_date($('#datetouch').val(),clear);																	
-										if( means=="2" && clear==4){  
-											document.getElementById("vaccine_date[3]").value=tomorrow;
-										}else{
-											document.getElementById("vaccine_date["+clear+"]").value=tomorrow;	
-										}	
-								}//vaccine_date							
-					 }//for
-				}// information_id 
-				$("#meanstr").css('display','');
-				$('#after_symptom_vaccine').css('display','');
-			}else{
-					/** กรณีไม่ฉีดแล้ว ต้องไม่แสดงข้อมูลอาการหลังฉีดวัคซีน */
-					c =document.form1;
-					document.getElementById("after_vaccinetr").style.display='none';
-					document.getElementById("otherafter_vaccinedetail7").style.display='none';
-					c.after_vaccine_detail1.checked=false;
-					c.after_vaccine_detail2.checked=false;
-					c.after_vaccine_detail3.checked=false;
-					c.after_vaccine_detail4.checked=false;
-					c.after_vaccine_detail5.checked=false;
-					c.after_vaccine_detail6.checked=false;
-					c.after_vaccine_detail7.checked=false;
-					c.after_vaccine_text.value='';
-					c.after_vaccine_date.value='';
-					c.after_vaccine_cure_comment.value='';					
-					/***************************************************/
-					$("#meanstr").css('display','none');
-					$('#after_symptom_vaccine').css('display','none');
-					for(clear=0;clear<5;clear++){
-						$("#vaccine_date["+clear+"]").val('');
-						$("#vaccine_name["+clear+"]").val('0');
-						$("#vaccine_no["+clear+"]").val('');						
-						$("#vaccine_cc["+clear+"]").val('');
-						$("#vaccine_point["+clear+"]").val('');
-						$("#byname["+clear+"]").val('');
-					}
-			}
+	if(means=="2" || means=="1"){		
+		if(means=="2"){
+			$("#meanstr tr:eq(5)").hide();
+			$(".vaccine_cc option").filter(function() {return $(this).text() == "0.1"; }).attr('selected', true);
+			$(".vaccine_point option").filter(function() {return $(this).text() == "2"; }).attr('selected', true);
+		}else{					
+			$("#meanstr tr:eq(5)").show();
+			$(".vaccine_cc option").filter(function() {return $(this).text() == "0.5"; }).attr('selected', true);
+			$(".vaccine_point option").filter(function() {return $(this).text() == "1"; }).attr('selected', true);
+		}
+			if(information_id==''){
+				for(clear=0;clear<5;clear++)
+				{
+							if(means=="2" && clear==3){continue;}					
+							if($("#vaccine_date["+clear+"]").val() == '' || typeof $("#vaccine_date["+clear+"]").val() == "undefined"){											
+									var tomorrow=increment_vaccine_date($('#datetouch').val(),clear);																	
+									if( means=="2" && clear==4){  
+										document.getElementById("vaccine_date[3]").value=tomorrow;
+									}else{
+										document.getElementById("vaccine_date["+clear+"]").value=tomorrow;	
+									}	
+							}//vaccine_date							
+				 }//for
+			}// information_id 
+			$("#meanstr").css('display','');
+			$('#after_symptom_vaccine').css('display','');
+	}else{
+		/** กรณีไม่ฉีดแล้ว ต้องไม่แสดงข้อมูลอาการหลังฉีดวัคซีน */
+		c =document.form1;
+		document.getElementById("after_vaccinetr").style.display='none';
+		document.getElementById("otherafter_vaccinedetail7").style.display='none';
+		c.after_vaccine_detail1.checked=false;
+		c.after_vaccine_detail2.checked=false;
+		c.after_vaccine_detail3.checked=false;
+		c.after_vaccine_detail4.checked=false;
+		c.after_vaccine_detail5.checked=false;
+		c.after_vaccine_detail6.checked=false;
+		c.after_vaccine_detail7.checked=false;
+		c.after_vaccine_text.value='';
+		c.after_vaccine_date.value='';
+		c.after_vaccine_cure_comment.value='';					
+		/***************************************************/
+		$("#meanstr").css('display','none');
+		$('#after_symptom_vaccine').css('display','none');
+		for(clear=0;clear<5;clear++){
+			$("#vaccine_date["+clear+"]").val('');
+			$("#vaccine_name["+clear+"]").val('0');
+			$("#vaccine_no["+clear+"]").val('');						
+			$("#vaccine_cc["+clear+"]").val('');
+			$("#vaccine_point["+clear+"]").val('');
+			$("#byname["+clear+"]").val('');
+		}
+	}
 }//function
 function calculateClose(dateText, inst)
 {
@@ -99,11 +98,10 @@ function  disableChkage(){
 }
 
 $(document).ready(function(){
-	/*$( "#accordion" ).accordion({heightStyle: "content" });*/
-	
+	/*$( "#accordion" ).accordion({heightStyle: "content" });*/	
 	var ref1,ref3;
 	var process=$('input[name=process]').val();
- $('#multiAccordion').multiAccordion({ heightStyle: "content",active:0 });
+ $('#multiAccordion').multiAccordion({ heightStyle: "content" });
 
 show_hide_clear_means();
 $('input[name=means]').change(show_hide_clear_means);		
@@ -373,10 +371,7 @@ $('select[name=prefix_name]').click(disableChkage);
 			}		
 	  });	
 	
-	//$('#putdrug').click(function(){$('input[name=putdrugdetail]').valid();});
-	//$('#historyprotect').click(function(){ $('input[name=historyprotectdetail]').valid();});
 	$('#washbefore').click(function(){$('input[name=washbeforedetail]').valid();});
-
 	$('#causedetail_other').click(function(){$('input[name=causetext]').valid();});
 	
 		

@@ -65,13 +65,13 @@ input[type="reset"],.btn_cancel{display:block; width:88px; height:26px; backgrou
 .btn_save{display:block; width:88px; height:26px; background-image: url(../images/btn_save_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;}
 .btn_save:hover{background-image: url(../images/btn_save_hot.png); background-position:no-repeat;}
 .btn_press{display:inline-block; width:275px; height:26px; 
-				  background-image: url(../images/btn_press_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;
-				  vertical-align:super;
+			background-image: url(../images/btn_press_reg.png); background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;
+			vertical-align:bottom;padding-bottom:3px;
 				  }
 .btn_press:hover{background-image: url(../images/btn_press_hot.png); background-position:no-repeat;}
 .btn_del{display:inline-block; width:88px; height:26px; 
-				  background: url(../images/btn_del_reg.png) no-repeat; background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;
-				  vertical-align:super;
+		 background: url(../images/btn_del_reg.png) no-repeat; background-position:no-repeat; cursor:pointer; border:none; background-color:transparent;
+		 vertical-align:super;
 				  }
 .btn_del:hover{background: url(../images/btn_del_hot.png) no-repeat; background-position:no-repeat;}
 .btn_inline {/*width:70%; */height:26px;text-align:center;margin-top:15px;}
