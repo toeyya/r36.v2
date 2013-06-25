@@ -285,7 +285,7 @@ $('select[name=prefix_name]').click(disableChkage);
 	
 	$('.btn_save').click(function(){
 		// #####   ตารางการฉีดวัคซีน    #####	
-		 var pass;	
+		 var pass,information_id,tr_index,td2,td6,td7;	
 		if($('input[name=means]').is(':checked')){
 			var means=$('input[name=means]:checked').val();
 		}else{
@@ -294,20 +294,18 @@ $('select[name=prefix_name]').click(disableChkage);
 		if(means=="1" || means=="2")
 		{	$('.tbvaccine').show();					
 			$('.tbvaccine tr').each(function(){
-				 var information_id = $('input[name=information_id]');
-				 var tr_index =$(this).index();
-				 var td2=$(this).find('td:eq(2)').children('select');
-				 var td6=$(this).find('td:eq(6)').children('input');
-				 var td7=$(this).find('td:eq(7)').children('input');
-		
-				
+				 information_id = $('input[name=information_id]');
+				 tr_index =$(this).index();
+				 td2=$(this).find('td:eq(2)').children('select');
+				 td6=$(this).find('td:eq(6)').children('input');
+				 td7=$(this).find('td:eq(7)').children('input');						
 				 if(tr_index>0)
 				 { 
 					  if(td2.val()==0 && (td6.val()=='' || td6.val()==null || td6.val()==undefined)){
 					  	//ไม่กรอกทั้งเรคอร์ด					  
 					  	 td2.removeClass('checkvaccine-cross').next().remove();
 					  	 td6.removeClass('checkvaccine-cross').next().remove();	
-					  	 if(tr_index==2){
+					  	 if(tr_index==1){
 					  	 	// ถ้าคลิกเลือกฉีดวัคซีน อย่างน้องต้องกรอกหนึ่งเรคอร์ด
 			 				 $('.checkvaccine').trigger('blur');
 			 				 pass=false;
@@ -323,14 +321,12 @@ $('select[name=prefix_name]').click(disableChkage);
 							 		// ใส่ byplace
 							 		if(td7.val()==""){
 							 			td7.val($('input[name=h_name]').val());
-							 		}
-							 		
+							 		}							 		
 							 	}	
 							 	pass=true;					 					 	   	
 						  	}else{
 						  		// กรอกไม่ครบทั้งเรคอร์ด
 						  		alert("กรุณากรอกข้อมูลการฉีดวัคซีนให้ครบถ้วนค่ะ");
-						  		//$(this).css('background-color','red');
 						  		pass=false;
 					  		}					
 			  		}
@@ -341,27 +337,17 @@ $('select[name=prefix_name]').click(disableChkage);
 			pass=true
 			//return true;
 		}// เช็คเลือกการฉีดวัคซีน		
-		// #####   ตารางการตำแหน่งที่ถูกกัด(bite)    #####
-		var pass_bite;		
-		if($('#tbposition_bite').find('td').css('background-color','white').children('input').is(':checked')){
-			$('#tbposition_bite').next('label').remove();
-			pass_bite=true;
-			
-		}else{	
-			$('#tbposition_bite').next('label').remove();
-			$('<label class="alertred">กรุณาระบุอย่างหน้าหนึ่งรายการ</label>').insertAfter($('#tbposition_bite'));
-			pass_bite=false;
-		}	
-		if(pass==true && pass_bite==true){
-			return true;
-		}else{
-			return false;
-		}
-			
-		 
+				
+		return pass;				 
 	})// btn_save
 
 		/***********  prevent double submit  ***********/
+	$('#washbefore').click(function(){$('input[name=washbeforedetail]').valid();});
+	$('#causedetail_other').click(function(){$('input[name=causetext]').valid();});
+
+	$.validator.addMethod("one_required", function() {
+	    return $("#form1").find(".one_required:checked").length > 0;
+	},'');	
 	$(".btn_save").attr( 'disabled',false); 
 	 $.validator.setDefaults({
 		   	  submitHandler: function(){
@@ -369,16 +355,16 @@ $('select[name=prefix_name]').click(disableChkage);
 		   	  	$(":disabled").removeAttr('disabled');	
 				document.form1.submit();			
 			}		
-	  });	
-	
-	$('#washbefore').click(function(){$('input[name=washbeforedetail]').valid();});
-	$('#causedetail_other').click(function(){$('input[name=causetext]').valid();});
-	
-		
+	  });
+	var g_chk="head_bite_blood head_bite_noblood head_claw_blood head_claw_blood head_claw_noblood\
+		      head_lick_blood head_lick_noblood  face_bite_blood face_bite_noblood head_lick_blood";		
 	$("#form1").validate({
 		groups:{
 				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4",
-				groupname:"firstname surname"         								
+				groupname:"firstname surname",
+				groupcheckbox:" head_bite_blood head_bite_noblood head_claw_blood head_claw_blood head_claw_noblood head_lick_blood head_lick_noblood "+
+		      				  " face_bite_blood face_bite_noblood head_lick_blood"
+				
 		},
 		rules:{
 			hospital_id_other: { required: {depends: function(element) {	return $('input[name=in_out]:checked').val() == '2' }}},   
@@ -424,6 +410,9 @@ $('select[name=prefix_name]').click(disableChkage);
 					//element.next().html(error);
 					error.insertAfter("#surname");				
 				}else{
+					if(element.hasClass('one_required')){
+						$('<label class="alertred">กรุณาระบุอย่างหน้าหนึ่งรายการ</label>').insertAfter('#tbposition_bite');
+					}
 					if(element.is(':radio'))
 					{ 
 						var name=element.attr('name');
@@ -1079,17 +1068,21 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center">ศีรษะ</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#E60000"> <input name="head_bite_blood"  id="head_bite_blood" <? if(@$rs['head_bite_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1"  onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
+                        <td align="center" bgcolor="#E60000"> <input name="head_bite_blood"  id="head_bite_blood" class="one_required"  <? if(!empty($rs['head_bite_blood'])){ echo 'checked';}?> type="checkbox" 	value="1" onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#FF777A"> <input name="head_bite_noblood" id="head_bite_noblood" <? if(@$rs['head_bite_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
+                        <td align="center" bgcolor="#FF777A"> <input name="head_bite_noblood"id="head_bite_noblood" class="one_required" <? if(!empty($rs['head_bite_noblood'])){ echo 'checked';}?> type="checkbox" value="1" 	onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#669966"> <input name="head_claw_blood" id="head_claw_blood" <? if(@$rs['head_claw_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
+                        <td align="center" bgcolor="#669966"> <input name="head_claw_blood"  id="head_claw_blood" class="one_required" <? if(!empty($rs['head_claw_blood'])){ echo 'checked';}?> type="checkbox" 	value="1" 	
+                        	onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#36CF74"> <input name="head_claw_noblood"  id="head_claw_noblood" <? if(@$rs['head_claw_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
+                        <td align="center" bgcolor="#36CF74"> <input name="head_claw_noblood" id="head_claw_noblood"class="one_required"  <? if(!empty($rs['head_claw_noblood'])){ echo 'checked';}?> type="checkbox" value="1" 
+                        	onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#6394bd"> <input name="head_lick_blood" id="head_lick_blood" <? if(@$rs['head_lick_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
+                        <td align="center" bgcolor="#6394bd"> <input name="head_lick_blood"   id="head_lick_blood"class="one_required"  <? if(!empty($rs['head_lick_blood'])){ echo 'checked';}?> type="checkbox" 	value="1" 	
+                        	onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#35ADF4"> <input name="head_lick_noblood" id="head_lick_noblood" <? if(@$rs['head_lick_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
+                        <td align="center" bgcolor="#35ADF4"> <input name="head_lick_noblood" id="head_lick_noblood"class="one_required"  <? if(!empty($rs['head_lick_noblood'])){ echo 'checked';}?> type="checkbox" value="1" 
+                        	onClick="show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'))"></td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
                       <tr> 
@@ -1117,17 +1110,17 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center">หน้า</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#E60000"> <input name="face_bite_blood" id="face_bite_blood" <? if(@$rs['face_bite_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
+                        <td align="center" bgcolor="#E60000"> <input name="face_bite_blood" id="face_bite_blood" class="one_required" <? if(!empty($rs['face_bite_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#FF777A"> <input name="face_bite_noblood"  id="face_bite_noblood" <? if(@$rs['face_bite_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
+                        <td align="center" bgcolor="#FF777A"> <input name="face_bite_noblood"  id="face_bite_noblood"class="one_required"  <? if(!empty($rs['face_bite_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#669966"> <input name="face_claw_blood" id="face_claw_blood" <? if(@$rs['face_claw_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
+                        <td align="center" bgcolor="#669966"> <input name="face_claw_blood" id="face_claw_blood"class="one_required"  <? if(!empty($rs['face_claw_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#36CF74"> <input name="face_claw_noblood" id="face_claw_noblood" <? if(@$rs['face_claw_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
+                        <td align="center" bgcolor="#36CF74"> <input name="face_claw_noblood" id="face_claw_noblood" class="one_required" <? if(!empty($rs['face_claw_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#6394bd"> <input name="face_lick_blood"  id="face_lick_blood" <? if(@$rs['face_lick_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
+                        <td align="center" bgcolor="#6394bd"> <input name="face_lick_blood"  id="face_lick_blood" class="one_required" <? if(!empty($rs['face_lick_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#35ADF4"> <input name="face_lick_noblood"  id="face_lick_noblood" <? if(@$rs['face_lick_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
+                        <td align="center" bgcolor="#35ADF4"> <input name="face_lick_noblood"  id="face_lick_noblood"class="one_required"  <? if(!empty($rs['face_lick_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('face_bite_blood').checked,document.getElementById('face_bite_noblood').checked,document.getElementById('face_claw_blood').checked,document.getElementById('face_claw_noblood').checked,document.getElementById('face_lick_blood').checked,document.getElementById('face_lick_noblood').checked,document.getElementById('markface'))"></td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
                       <tr> 
@@ -1155,17 +1148,17 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center">ลำคอ</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#E60000"> <input name="neck_bite_blood"  id="neck_bite_blood" <? if(@$rs['neck_bite_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
+                        <td align="center" bgcolor="#E60000"> <input name="neck_bite_blood"  id="neck_bite_blood" class="one_required"  <? if(!empty($rs['neck_bite_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#FF777A"> <input name="neck_bite_noblood"  id="neck_bite_noblood" <? if(@$rs['neck_bite_noblood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
+                        <td align="center" bgcolor="#FF777A"> <input name="neck_bite_noblood"  id="neck_bite_noblood"class="one_required"  <? if(!empty($rs['neck_bite_noblood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#669966"> <input name="neck_claw_blood"  id="neck_claw_blood" <? if(@$rs['neck_claw_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
+                        <td align="center" bgcolor="#669966"> <input name="neck_claw_blood"  id="neck_claw_blood"class="one_required"  <? if(!empty($rs['neck_claw_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#36CF74"> <input name="neck_claw_noblood" id="neck_claw_noblood" <? if(@$rs['neck_claw_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
+                        <td align="center" bgcolor="#36CF74"> <input name="neck_claw_noblood" id="neck_claw_noblood"class="one_required"  <? if(!empty($rs['neck_claw_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#6394bd"> <input name="neck_lick_blood" id="neck_lick_blood" <? if(@$rs['neck_lick_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
+                        <td align="center" bgcolor="#6394bd"> <input name="neck_lick_blood" id="neck_lick_blood"class="one_required"  <? if(!empty($rs['neck_lick_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#35ADF4"> <input name="neck_lick_noblood" id="neck_lick_noblood" <? if(@$rs['neck_lick_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
+                        <td align="center" bgcolor="#35ADF4"> <input name="neck_lick_noblood" id="neck_lick_noblood" class="one_required" <? if(!empty($rs['neck_lick_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('neck_bite_blood').checked,document.getElementById('neck_bite_noblood').checked,document.getElementById('neck_claw_blood').checked,document.getElementById('neck_claw_noblood').checked,document.getElementById('neck_lick_blood').checked,document.getElementById('neck_lick_noblood').checked,document.getElementById('markneck'))"></td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
                       <tr> 
@@ -1177,17 +1170,17 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center">มือ</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#E60000"> <input name="hand_bite_blood" id="hand_bite_blood" <? if(@$rs['hand_bite_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
+                        <td align="center" bgcolor="#E60000"> <input name="hand_bite_blood" id="hand_bite_blood"class="one_required"  <? if(!empty($rs['hand_bite_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#FF777A"> <input name="hand_bite_noblood" id="hand_bite_noblood" <? if(@$rs['hand_bite_noblood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
+                        <td align="center" bgcolor="#FF777A"> <input name="hand_bite_noblood" id="hand_bite_noblood"class="one_required"  <? if(!empty($rs['hand_bite_noblood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#669966"> <input name="hand_claw_blood" id="hand_claw_blood" <? if(@$rs['hand_claw_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
+                        <td align="center" bgcolor="#669966"> <input name="hand_claw_blood" id="hand_claw_blood"class="one_required"  <? if(!empty($rs['hand_claw_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#36CF74"> <input name="hand_claw_noblood"  id="hand_claw_noblood" <? if(@$rs['hand_claw_noblood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
+                        <td align="center" bgcolor="#36CF74"> <input name="hand_claw_noblood"  id="hand_claw_noblood"class="one_required"  <? if(!empty($rs['hand_claw_noblood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#6394bd"> <input name="hand_lick_blood"  id="hand_lick_blood" <? if(@$rs['hand_lick_blood']=='1'){ echo 'checked';}?>  type="checkbox" value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
+                        <td align="center" bgcolor="#6394bd"> <input name="hand_lick_blood"  id="hand_lick_blood"class="one_required"  <? if(!empty($rs['hand_lick_blood'])){ echo 'checked';}?>  type="checkbox" value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#35ADF4"> <input name="hand_lick_noblood" id="hand_lick_noblood" <? if(@$rs['hand_lick_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
+                        <td align="center" bgcolor="#35ADF4"> <input name="hand_lick_noblood" id="hand_lick_noblood"class="one_required"  <? if(!empty($rs['hand_lick_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('hand_bite_blood').checked,document.getElementById('hand_bite_noblood').checked,document.getElementById('hand_claw_blood').checked,document.getElementById('hand_claw_noblood').checked,document.getElementById('hand_lick_blood').checked,document.getElementById('hand_lick_noblood').checked,document.getElementById('markhand'))"></td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
                       <tr> 
@@ -1199,17 +1192,17 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center">แขน</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#E60000"> <input name="arm_bite_blood" id="arm_bite_blood" <? if(@$rs['arm_bite_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
+                        <td align="center" bgcolor="#E60000"> <input name="arm_bite_blood" id="arm_bite_blood"class="one_required"  <? if(!empty($rs['arm_bite_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#FF777A"> <input name="arm_bite_noblood"  id="arm_bite_noblood" <? if(@$rs['arm_bite_noblood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
+                        <td align="center" bgcolor="#FF777A"> <input name="arm_bite_noblood"  id="arm_bite_noblood"class="one_required"  <? if(!empty($rs['arm_bite_noblood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#669966"> <input name="arm_claw_blood" id="arm_claw_blood"  <? if(@$rs['arm_claw_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
+                        <td align="center" bgcolor="#669966"> <input name="arm_claw_blood" id="arm_claw_blood" class="one_required"  <? if(!empty($rs['arm_claw_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#36CF74"> <input name="arm_claw_noblood" id="arm_claw_noblood"  <? if(@$rs['arm_claw_noblood']=='1'){ echo 'checked';}?>  type="checkbox" value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
+                        <td align="center" bgcolor="#36CF74"> <input name="arm_claw_noblood" id="arm_claw_noblood"class="one_required"   <? if(!empty($rs['arm_claw_noblood'])){ echo 'checked';}?>  type="checkbox" value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#6394bd"> <input name="arm_lick_blood" id="arm_lick_blood" <? if(@$rs['arm_lick_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
+                        <td align="center" bgcolor="#6394bd"> <input name="arm_lick_blood" id="arm_lick_blood"class="one_required"  <? if(!empty($rs['arm_lick_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#35ADF4"> <input name="arm_lick_noblood" id="arm_lick_noblood" <? if(@$rs['arm_lick_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
+                        <td align="center" bgcolor="#35ADF4"> <input name="arm_lick_noblood" id="arm_lick_noblood"class="one_required"  <? if(!empty($rs['arm_lick_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('arm_bite_blood').checked,document.getElementById('arm_bite_noblood').checked,document.getElementById('arm_claw_blood').checked,document.getElementById('arm_claw_noblood').checked,document.getElementById('arm_lick_blood').checked,document.getElementById('arm_lick_noblood').checked,document.getElementById('markarm'))"></td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
                       <tr> 
@@ -1221,17 +1214,17 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center">ลำตัว</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#E60000"> <input name="body_bite_blood" id="body_bite_blood" <? if(@$rs['body_bite_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
+                        <td align="center" bgcolor="#E60000"> <input name="body_bite_blood" id="body_bite_blood"class="one_required"  <? if(!empty($rs['body_bite_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#FF777A"> <input name="body_bite_noblood" id="body_bite_noblood" <? if(@$rs['body_bite_noblood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
+                        <td align="center" bgcolor="#FF777A"> <input name="body_bite_noblood" id="body_bite_noblood"class="one_required"  <? if(!empty($rs['body_bite_noblood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#669966"> <input name="body_claw_blood" id="body_claw_blood" <? if(@$rs['body_claw_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
+                        <td align="center" bgcolor="#669966"> <input name="body_claw_blood" id="body_claw_blood"class="one_required"  <? if(!empty($rs['body_claw_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#36CF74"> <input name="body_claw_noblood" id="body_claw_noblood"  <? if(@$rs['body_claw_noblood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
+                        <td align="center" bgcolor="#36CF74"> <input name="body_claw_noblood" id="body_claw_noblood"class="one_required"   <? if(!empty($rs['body_claw_noblood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#6394bd"> <input name="body_lick_blood" id="body_lick_blood" <? if(@$rs['body_lick_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
+                        <td align="center" bgcolor="#6394bd"> <input name="body_lick_blood" id="body_lick_blood"class="one_required"  <? if(!empty($rs['body_lick_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
-                        <td align="center" bgcolor="#35ADF4"> <input name="body_lick_noblood"  id="body_lick_noblood" <? if(@$rs['body_lick_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
+                        <td align="center" bgcolor="#35ADF4"> <input name="body_lick_noblood"  id="body_lick_noblood" class="one_required" <? if(!empty($rs['body_lick_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('body_bite_blood').checked,document.getElementById('body_bite_noblood').checked,document.getElementById('body_claw_blood').checked,document.getElementById('body_claw_noblood').checked,document.getElementById('body_lick_blood').checked,document.getElementById('body_lick_noblood').checked,document.getElementById('markbody'))"></td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
                       <tr> 
@@ -1244,27 +1237,27 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td align="center">ขา</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#E60000"> 
-                        	<input name="leg_bite_blood"  id="leg_bite_blood" <? if(@$rs['leg_bite_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
+                        	<input name="leg_bite_blood"  id="leg_bite_blood" class="one_required"  <? if(!empty($rs['leg_bite_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
                         	</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#FF777A"> 
-                        	<input name="leg_bite_noblood"  id="leg_bite_noblood" <? if(@$rs['leg_bite_noblood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
+                        	<input name="leg_bite_noblood"  id="leg_bite_noblood"class="one_required"  <? if(!empty($rs['leg_bite_noblood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
                         	</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#669966"> 
-                        	<input name="leg_claw_blood" id="leg_claw_blood" <? if(@$rs['leg_claw_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
+                        	<input name="leg_claw_blood" id="leg_claw_blood"class="one_required"  <? if(!empty($rs['leg_claw_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
                         	</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#36CF74"> 
-                        	<input name="leg_claw_noblood" id="leg_claw_noblood"  <? if(@$rs['leg_claw_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
+                        	<input name="leg_claw_noblood" id="leg_claw_noblood"class="one_required"   <? if(!empty($rs['leg_claw_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
                         	</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#6394bd"> 
-                        	<input name="leg_lick_blood"  id="leg_lick_blood" <? if(@$rs['leg_lick_blood']=='1'){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
+                        	<input name="leg_lick_blood"  id="leg_lick_blood"class="one_required"  <? if(!empty($rs['leg_lick_blood'])){ echo 'checked';}?> type="checkbox"  value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
                         </td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#35ADF4"> 
-                        	<input name="leg_lick_noblood"  id="leg_lick_noblood"<? if(@$rs['leg_lick_noblood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
+                        	<input name="leg_lick_noblood"  id="leg_lick_noblood"class="one_required"  <? if(!empty($rs['leg_lick_noblood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('leg_bite_blood').checked,document.getElementById('leg_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('leg_claw_noblood').checked,document.getElementById('leg_lick_blood').checked,document.getElementById('leg_lick_noblood').checked,document.getElementById('markleg'))">
                         	</td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
@@ -1278,27 +1271,27 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td align="center">เท้า</td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#E60000"> 
-                        	<input name="feet_bite_blood"  id="feet_bite_blood"<? if(@$rs['feet_bite_blood']=='1'){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
+                        	<input name="feet_bite_blood"  id="feet_bite_blood" class="one_required" <? if(!empty($rs['feet_bite_blood'])){ echo 'checked';}?> type="checkbox" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
                         </td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#FF777A"> 
-                        	<input name="feet_bite_noblood" <? if(@$rs['feet_bite_noblood']=='1'){ echo 'checked';}?> type="checkbox" id="feet_bite_noblood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
+                        	<input name="feet_bite_noblood"class="one_required"  <? if(!empty($rs['feet_bite_noblood'])){ echo 'checked';}?> type="checkbox" id="feet_bite_noblood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('leg_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
                         </td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#669966"> 
-                        	<input name="feet_claw_blood"  <? if(@$rs['feet_claw_blood']=='1'){ echo 'checked';}?> type="checkbox" id="feet_claw_blood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
+                        	<input name="feet_claw_blood" class="one_required"  <? if(!empty($rs['feet_claw_blood'])){ echo 'checked';}?> type="checkbox" id="feet_claw_blood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
                         </td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#36CF74"> 
-                        	<input name="feet_claw_noblood" <? if(@$rs['feet_claw_noblood']=='1'){ echo 'checked';}?> type="checkbox" id="feet_claw_noblood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
+                        	<input name="feet_claw_noblood"class="one_required"  <? if(!empty($rs['feet_claw_noblood'])){ echo 'checked';}?> type="checkbox" id="feet_claw_noblood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
                         </td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#6394bd"> 
-                        	<input name="feet_lick_blood" <? if(@$rs['feet_lick_blood']=='1'){ echo 'checked';}?> type="checkbox" id="feet_lick_blood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
+                        	<input name="feet_lick_blood" class="one_required" <? if(!empty($rs['feet_lick_blood'])){ echo 'checked';}?> type="checkbox" id="feet_lick_blood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">
                         </td>
                         <td width="1" align="center" background="images/pixel.gif"></td>
                         <td align="center" bgcolor="#35ADF4">
-                        	 <input name="feet_lick_noblood" <? if(@$rs['feet_lick_noblood']=='1'){ echo 'checked';}?> type="checkbox" id="feet_lick_noblood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">                     	
+                        	 <input name="feet_lick_noblood" class="one_required" <? if(!empty($rs['feet_lick_noblood'])){ echo 'checked';}?> type="checkbox" id="feet_lick_noblood" value="1" onClick="show_mark(document.getElementById('feet_bite_blood').checked,document.getElementById('feet_bite_noblood').checked,document.getElementById('feet_claw_blood').checked,document.getElementById('feet_claw_noblood').checked,document.getElementById('feet_lick_blood').checked,document.getElementById('feet_lick_noblood').checked,document.getElementById('markfeet'))">                     	
                         </td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
@@ -1307,7 +1300,7 @@ $('select[name=prefix_name]').click(disableChkage);
                       </tr>
                       <tr> 
                         <td width="1" background="images/pixel.gif"></td>
-                        <td height="20" colspan="15"><input type="checkbox" name="food_dangerous" value="1" id="food_dangerous" <? if(@$rs['food_dangerous']=='1'){ echo 'checked';}?>>
+                        <td height="20" colspan="15"><input type="checkbox" name="food_dangerous" value="1" id="food_dangerous" <? if(!empty($rs['food_dangerous'])){ echo 'checked';}?>>
                           กินอาหารดิบหรือดื่มน้ำที่สัมผัสเชื้อโรคพิษสุนัขบ้า</td>
                         <td width="1" background="images/pixel.gif"></td>
                       </tr>
