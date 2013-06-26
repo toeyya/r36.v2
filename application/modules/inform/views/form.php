@@ -282,14 +282,13 @@ $('select[name=prefix_name]').click(disableChkage);
 				}								
 			}		
 	});
-	function shw_error_vaccine()
-	{
-	 var pass,information_id,tr_index,td2,td6,td7;	
-		if($('input[name=means]').is(':checked')){
-			var means=$('input[name=means]:checked').val();
-		}else{
-			return true;
-		}
+
+	$('.btn_save').click(function()
+	{	
+	 	var pass,information_id,tr_index,td2,td6,td7;	
+		if($('input[name=means]').is(':checked')) var means=$('input[name=means]:checked').val();
+		else return true;
+		
 		if(means=="1" || means=="2")
 		{	$('.tbvaccine').show();					
 			$('.tbvaccine tr').each(function(){
@@ -298,14 +297,12 @@ $('select[name=prefix_name]').click(disableChkage);
 				 td2=$(this).find('td:eq(2)').children('select');
 				 td6=$(this).find('td:eq(6)').children('input');
 				 td7=$(this).find('td:eq(7)').children('input');						
-				 if(tr_index>0)
-				 { 
+				 if(tr_index>0) { 
 					  if(td2.val()==0 && (td6.val()=='' || td6.val()==null || td6.val()==undefined)){//ไม่กรอกทั้งเรคอร์ด					  
-					  	 td2.removeClass('checkvaccine-cross').next().remove();
-					  	 td6.removeClass('checkvaccine-cross').next().remove();	
+					  	 	td2.removeClass('checkvaccine-cross').next().remove();
+					  	 	td6.removeClass('checkvaccine-cross').next().remove();	
 					  	 if(tr_index==1){// ถ้าคลิกเลือกฉีดวัคซีน อย่างน้องต้องกรอกหนึ่งเรคอร์ด
-			 				 $('.checkvaccine').trigger('blur');
-			 				 pass=false;
+			 				 $('.checkvaccine').trigger('blur');pass=false;
 			 			 }else{
 			 			 	 pass=true;	
 			 			 }	  		  	
@@ -327,13 +324,8 @@ $('select[name=prefix_name]').click(disableChkage);
 			})	//foreach	
 		}else{
 			pass=true
-		}// เช็คเลือกการฉีดวัคซีน		
-				
-		return pass;				 		
-	}
-	$('.btn_save').click(function(){
-		// #####   ตารางการฉีดวัคซีน    #####	
-		shw_error_vaccine();
+		}// เช็คเลือกการฉีดวัคซีน						
+		return pass;				
 	})// btn_save
 
 		/***********  prevent double submit  ***********/
@@ -374,44 +366,38 @@ $('select[name=prefix_name]').click(disableChkage);
 			headanimalplace:{required:{depends:function(element){return $('input[name=headanimal]:checked').val() == '2' }}},
 			historyprotectdetail:{required:{depends:function(element){return $('input[name=historyprotect]:checked').val() == '2' }}},
 			putdrugdetail:{required:{depends:function(element){return $('input[name=putdrug]:checked').val() == '2' }}},
-	  						
+			typeother:{required:{depends:function(element){return $('input[name=typeanimal]:checked').val() == '6' }}},	  						
 		},
 		messages:{
 			hospital_id_other:"กรุณาระบุ",
-			firstname:"ระบุด้วยค่ะ",surname:"ระบุด้วยค่ะ",
-			age:{required:"ระบุอายุ",number:"ระบุตัวเลขเท่านั้น"},	
-			provinceid:"ระบุจังหวัด",amphurid:"ระบุอำเภอ",districtid:"ระบุตำบล",doctorname:"ระบุแพทย์", reportname:"ระบุผู้รายงาน",
-			 positionname:"ระบุตำแหน่ง", reportdate:"ระบุวันที่รายงาน",
-			 telephone:{required:"ระบุเบอร์โทร",minlength:"ระบุอย่างน้อย 6 หลัก",maxlength:"ระบุเกินกว่า 10 หลัก"},
-			 datetouch:{required:"ระบุวันที่สัมผัสโรค",remote:"ระบุวันที่เกินกว่าวันที่ปัจจุบัน"},
-			 provinceidplace:"ระบุจังหวัด", typeanimal:"ระบุชนิดสัตว์",ageanimal:"ระบุอายุสัตว์",
-			 statusanimal:"ระบุสถานภาพสัตว์",historyvacine:"ระบุประวัติฉีดวัคซีน",historyprotect:"ระบุประวัติฉีดวัคซีน",use_rig:"ระบุการฉีดอิมมูโนโกลบูลิน",means:"ระบุการฉีดโดยวิธี"	,
-			 placetouch:"ระบุสถานที่สัมผัสโรค",
-			 headanimalplace:"ระบุสถานที่ด้วยค่ะ",putdrugdetail:"ระบุการใส่ยาด้วยค่ะ", historyprotectdetail:"ระบุการฉีดด้วยค่ะ", washbeforedetail:'ระบุการล้างแผลด้วยค่ะ',
-			 causedetail:'ระบุสาเหตุที่ถูกกัดด้วยค่ะ',causetext:'ระบุสาเหตุอื่นๆด้วยค่ะ',erig_hrig:"ระบุชนิด RIG "
+			firstname:"กรุณาระบุ",surname:"กรุณาระบุ",
+			age:{required:"กรุณาระบุ",number:"ระบุตัวเลขเท่านั้น"},	
+			provinceid:"กรุณาระบุ",amphurid:"กรุณาระบุ",districtid:"กรุณาระบุ",doctorname:"กรุณาระบุ", reportname:"กรุณาระบุ",
+			 positionname:"กรุณาระบุ", reportdate:"กรุณาระบุ",
+			 telephone:{required:"กรุณาระบุ",minlength:"ระบุอย่างน้อย 6 หลัก",maxlength:"ระบุเกินกว่า 10 หลัก"},
+			 datetouch:{required:"กรุณาระบุ",remote:"ระบุวันที่เกินกว่าวันที่ปัจจุบัน"},
+			 provinceidplace:"กรุณาระบุ", typeanimal:"กรุณาระบุ",ageanimal:"กรุณาระบุ",
+			 statusanimal:"กรุณาระบุ",historyvacine:"กรุณาระบุ",historyprotect:"กรุณาระบุ",use_rig:"กรุณาระบุ",means:"กรุณาระบุ"	,
+			 placetouch:"กรุณาระบุ",
+			 headanimalplace:"กรุณาระบุ",putdrugdetail:"กรุณาระบุ", historyprotectdetail:"กรุณาระบุ", washbeforedetail:'กรุณาระบุ',
+			 causedetail:'กรุณาระบุ',causetext:'กรุณาระบุ',erig_hrig:"กรุณาระบุ",
+			 typeother:"กรุณาระบุ"
 	 
 		},
 		errorPlacement: function(error, element){								
-				if((element.attr('name')=='firstname') || (element.attr('name')=='surname'))
-				{					
+				if((element.attr('name')=='firstname') || (element.attr('name')=='surname')){					
 					error.insertAfter("#surname");				
-				}else{
-					if(element.hasClass('one_required')){						
-						if($('#tbposition_bite').next('label').length==0)$('<label class="alertred">กรุณาระบุอย่างหน้าหนึ่งรายการ</label>').insertAfter('#tbposition_bite');						
-					}
-					else if(element.is(':radio'))
-					{ 
+				}else if(element.hasClass('one_required')){						
+						 if($('#tbposition_bite').next('label').length==0)$('<label class="alertred">กรุณาระบุอย่างน้อยหนึ่งรายการ</label>').insertAfter('#tbposition_bite');						
+				}else if(element.is(':radio')){ 
 						var name=element.attr('name');
-						$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").next().find('span').html(error);
-						if(name=='use_rig' || name =='means')$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);
-						if(name=="causedetail") $('input[name='+name+']').closest('table').closest("tr").prev().find('td').eq(4).find('span').eq(1).html(error);
-						if(name=="erig_hrig")$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);						
-					}else if(element.attr('name')=="age"){
-						error.insertAfter(element);
-					}else{
-						error.appendTo(element.parent());
-					}
-				}						
+						$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").next().find('span:eq(0)').html(error);
+						if(name=='use_rig' || name =='means')	$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);
+						if(name=="causedetail") 								$('input[name='+name+']').closest('table').closest("tr").prev().find('td').eq(4).find('span').eq(1).html(error);
+						if(name=="erig_hrig")									$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);						
+				}else if(element.attr('name')=="age"){error.insertAfter(element);
+				}else if(element.attr('name')=="typeother"){alert(error);
+				}else{ error.appendTo(element.parent());}					
 			},
 		invalidHandler: function(form, validator) {
 	        if (validator.numberOfInvalids() > 0) {
@@ -1319,9 +1305,9 @@ $('select[name=prefix_name]').click(disableChkage);
                           <input name="typeanimal"  id="typeanimal_other" type="radio" value="6" <? if(@$rs['typeanimal']=='6'){ print "checked";}?> onClick="show_hide_clear_typeanimal(document.form1);">
                         </div></td>
                         <td colspan="5">อื่นๆ <span></span>
-                        <span class="alertred" id="typeotherspan" <? if(@$rs['typeanimal']!='6'){echo 'style="display:none"';}?>>
+                        <span id="typeotherspan" <? if(@$rs['typeanimal']!='6'){echo 'style="display:none"';}?>>
 						<select name="typeother" class="styled-select" id="typeother">
-							  <option value="0" <? if(@$rs['typeother']=='0'){echo 'selected';}?> selected="selected">กรุณาเลือก</option>
+							  <option value="0" <? if(@$rs['typeother']=='0'){echo 'selected';}?> >กรุณาเลือก</option>
 							  <option value="1" <? if(@$rs['typeother']=='1'){echo 'selected';}?>>คน</option>
 							  <option value="2" <? if(@$rs['typeother']=='2'){echo 'selected';}?>>วัว</option>
 							  <option value="3" <? if(@$rs['typeother']=='3'){echo 'selected';}?>>กระบือ</option>
@@ -1335,7 +1321,7 @@ $('select[name=prefix_name]').click(disableChkage);
 							  <option value="11" <? if(@$rs['typeother']=='11'){echo 'selected';}?>>กระต่าย</option>
 							  <option value="12" <? if(@$rs['typeother']=='12'){echo 'selected';}?>>สัตว์ป่า (สัตว์ที่อยู่ในป่าแล้วกัด)</option>
 							  <option value="13" <? if(@$rs['typeother']=='13'){echo 'selected';}?>>ไม่ทราบ</option>
-						</select></span>
+						</select>
 						<span></span>
 						</td>
                       </tr>
