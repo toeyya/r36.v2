@@ -366,7 +366,8 @@ $('select[name=prefix_name]').click(disableChkage);
 			headanimalplace:{required:{depends:function(element){return $('input[name=headanimal]:checked').val() == '2' }}},
 			historyprotectdetail:{required:{depends:function(element){return $('input[name=historyprotect]:checked').val() == '2' }}},
 			putdrugdetail:{required:{depends:function(element){return $('input[name=putdrug]:checked').val() == '2' }}},
-			typeother:{required:{depends:function(element){return $('input[name=typeanimal]:checked').val() == '6' }}},	  						
+			typeother:{required:{depends:function(element){return $('input[name=typeanimal]:checked').val() == '6' }}},
+			dataindate:	{required:{depends:function(element){return $('input[name=datain]:checked').val() == '1' }}}						
 		},
 		messages:{
 			hospital_id_other:"กรุณาระบุ",
@@ -381,7 +382,7 @@ $('select[name=prefix_name]').click(disableChkage);
 			 placetouch:"กรุณาระบุ",
 			 headanimalplace:"กรุณาระบุ",putdrugdetail:"กรุณาระบุ", historyprotectdetail:"กรุณาระบุ", washbeforedetail:'กรุณาระบุ',
 			 causedetail:'กรุณาระบุ',causetext:'กรุณาระบุ',erig_hrig:"กรุณาระบุ",
-			 typeother:"กรุณาระบุ"
+			 typeother:"กรุณาระบุ",dataindate:"กรุณาระบุ"
 	 
 		},
 		errorPlacement: function(error, element){								

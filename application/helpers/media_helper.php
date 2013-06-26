@@ -64,6 +64,9 @@ function js_syntax()
 				SyntaxHighlighter.all();
 			</script>';
 }
+function js_report(){
+	return '<script type="text/javascript" src="media/js/report.js"></script>';
+}
 function js_checkbox($module='admin')
 {
 	$CI =& get_instance();

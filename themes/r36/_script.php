@@ -18,7 +18,6 @@
 <script type="text/javascript" src="media/js/jquery.livequery.js" ></script>
 <script type="text/javascript"  src="media/js/jquery-multi-open-accordion/jquery-ui-1.8.13.custom.min.js"></script>
 <script type="text/javascript"  src="media/js/jquery-multi-open-accordion/jquery.multi-accordion-1.5.3.js"></script>
-<!--<script type="text/javascript" src="media/js/report.js"></script>-->
 <script type="text/javascript" src="media/js/vtip.js"></script>
 
 <script>

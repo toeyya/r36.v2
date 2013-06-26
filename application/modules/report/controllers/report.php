@@ -12,6 +12,7 @@ class Report extends R36_Controller
 		$this->load->model('province/province_model','province');
 		$this->load->model('inform/inform_model','inform');
 		$this->load->model('inform/vaccine_model','vaccine');
+		$this->template->append_metadata(js_report());
 	}
 
 	function index($no=FALSE,$preview=FALSE)
@@ -36,7 +37,7 @@ class Report extends R36_Controller
 				$data['textamphur']=$this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id= ? ",array($_GET['province'],$_GET['amphur']));
 		  }elseif(!empty($_GET['district'])){
 		  		$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$province."' and hospitaldistrict='".$_GET['district']."'";
-				$data['texthospital']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district']));
+				$data['textdistrict']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district']));
 		  }elseif(!empty($_GET['province'])){
 			  	$cond = " AND hospitalprovince='".$_GET['province']."'";
 				$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
@@ -77,46 +78,83 @@ class Report extends R36_Controller
 			$current = date('Ymdhis');
 			$data['current']=$current;
 		    $data['cond']=$cond;
+			switch($no){
+				case "1":$this->report1($cond,$preview,$data);break;
+				case "2":$this->report2($cond,$preview,$data);break;
+				case "3":$this->report3($cond,$preview,$data);break;
+				case "4":$this->report4($cond,$preview,$data);break;
+				case "5":$this->report5($cond,$preview,$data);break;
+				case "6":$this->report6($cond,$preview,$data);break;
+				case "8":$this->report8($cond,$preview,$data);break;
+			}
+			//if($preview) $this->template->set_layout('print');				
+			//$this->template->build("report".$no."_index",$data);				  	
 
-				  	
-			if($preview) $this->template->set_layout('print');				
-			$this->template->build("report".$no."_index",$data);
 						
+	}
+	function report1($cond= FALSE,$preview=FALSE,$data){
+		if($preview)$this->template->set_layout('print');	
+		$this->template->build("report1_index",$data);		
+	}
+	function report2($cond= FALSE,$preview=FALSE,$data){
+		if($preview)$this->template->set_layout('print');	
+		$this->template->build("report2_index",$data);			
+	}
+	function report3($cond= FALSE,$preview=FALSE,$data){
+		if($preview)$this->template->set_layout('print');	
+		$this->template->build("report3_index",$data);			
+	}
+	function report4($cond= FALSE,$preview=FALSE,$data){
+		if($preview)$this->template->set_layout('print');	
+		$this->template->build("report4_index",$data);		
+	}
+	function report5($cond= FALSE,$preview=FALSE,$data){
+		$this->db->debug=True;
+		$data['result_1']= $this->inform->select("count(total_vaccine) as cnt,total_vaccine")->join("LEFT JOIN n_vaccine ON n_information.id=information_id")
+												->where("historyprotect=2 and total_vaccine<>0 ".$cond)->groupby("total_vaccine")->sort("")->order("total_vaccine asc")->get();
+		if($preview)$this->template->set_layout('print');	
+		$this->template->build("report5_index",$data);			
+	}
+	function report6($cond= FALSE,$preview=FALSE,$data){
+		if($preview)$this->template->set_layout('print');	
+		$this->template->build("report6_index",$data);			
 	}
 	function dead($part=FALSE,$preview=FALSE){
 		$data['part']=$part;
 		if($preview) $this->template->set_layout('print');
 		$this->template->build('report7_index',$data);
+	}			
+	function report8($cond= FALSE,$preview=FALSE){
+			//echo $cond;
+			//if($preview) $this->template->set_layout('print');				
+			$this->template->build("report8_index");			
 	}
-	function form()
-	{
-		$this->template->set_layout('blank');	
-		$this->template->build('report4_form');
-	}
-
-	function schedule1($preview=FALSE)
-	{//$this->db->debug=TRUE;
-			$wh="";	
-			
-
-			//$nextday=date ("Y-m-d", mktime (0,0,0,date('m'),date('d')+1,date('Y')));
-			$today=DBdate(date('Y-m-d'));
-			$nextday=DBdate(date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d")))));	
-			echo $today.'  '.$nextday;
-		
- 			$data['result']=$this->inform->select("hospitalcode,hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid")
-										 ->join("INNER JOIN n_history ON n_information.information_historyid = n_history.historyid
-												 	  INNER JOIN n_vaccine ON n_information.id = n_vaccine.information_id ")		
-										 ->where("closecase ='1' AND means <> ''  $wh 
-												   AND vaccine_date BETWEEN '".$nextday."' AND '".$today."' 
-												  GROUP BY n_information.id")->sort("")->order("vaccine_date asc")->get();
+	function schedule($preview=FALSE)
+	{ ## ต้องมาแก้ ให้  n_vaccine.hospital_id=n_hospital_1.hospital_id ##
+		//$this->db->debug=true;
+		$today=DBdate(date('Y-m-d'));
+		$nextday=DBdate(date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d")))));			
+		//$hospital_name =$this->hospital->get_one('hospital_name','hospital_code',$this->session->userdata('R36_HOSPITAL'));	
+		$data['hospital'] = $this->db->GetRow("SELECT province_name,amphur_name,district_name,hospital_name FROM n_hospital_1
+																   LEFT JOIN n_province on hospital_province_id=n_province.province_id
+																   LEFT JOIN n_amphur on  hospital_amphur_id =n_amphur.amphur_id and n_amphur.province_id=n_province.province_id
+																   LEFT JOIN n_district on hospital_district_id = n_district.district_id and  n_district.amphur_id =n_amphur.amphur_id and n_district.province_id=n_province.province_id
+																   WHERE hospital_code = ? ",$this->session->userdata('R36_HOSPITAL'));
+		$sql="SELECT hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,vaccine_date,datetouch,idcard
+					FROM n_information
+					INNER JOIN n_history   ON n_information.information_historyid = n_history.historyid
+					INNER JOIN n_vaccine  ON n_information.id = n_vaccine.information_id		
+					WHERE closecase ='1' AND means <> '' AND (vaccine_date BETWEEN '$today' AND '$nextday' AND vaccine_name=0)  
+								and (hospitalcode='".$this->session->userdata('R36_HOSPITAL')."' OR byplace='".$data['hospital']['hospital_name']."')
+					ORDER BY  vaccine_date asc";	
+ 		$data['result']=$this->inform->get($sql);
+		$data['pagination'] = $this->inform->pagination();
 		if($preview)$this->template->set_layout('print');
 		$this->template->build('report_schedule',$data);
 	}
-	function schedule($preview=FALSE){
-		
-	}
-	function analyze(){
+
+	function analyze()
+	{
 		$this->template->build('report_analyze');
 	}
 

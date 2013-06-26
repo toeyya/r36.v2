@@ -74,7 +74,7 @@ class Inform extends R36_Controller
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
-	{	//$this->db->debug=true;exit;							
+	{							
 		$where="";			
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
@@ -138,7 +138,7 @@ class Inform extends R36_Controller
 				LEFT JOIN n_information ON n_history.historyid=n_information.information_historyid
 				LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
 
-			$data['result']=$this->inform->limit(20)->get($sql);
+			//$data['result']=$this->inform->limit(20)->get($sql);
 			$data['pagination']=$this->inform->pagination();			
 
 			$data['hospitalprovince']=@$_GET['hospital_province_id'];

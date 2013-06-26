@@ -1,53 +1,40 @@
-<div id="title">ตารางนัดหมายคนไข้  ประจำวันที่<?php echo date("d")?>-<?php echo date("m")?>-<?php echo date('Y')+543;?></div>
-<div id="search">
-	
-</div>
+<div id="title">ตารางนัดหมายคนไข้  ประจำวันที่<?php  echo db_to_th(date('Y-m-d')); ?></div>
 <div id="report">
 	<div id="title">
-		<p>รายงานตารางนัดหมายคนไข้  ประจำวันที่ 31 พ.ค. 2556</p>
-		<p>โรงพยาบาลบางกรวย จังหวัดนนทบุรี อำเภอ บางกรวย ตำบลบางกราย</p>
+		<p>รายงานตารางนัดหมายคนไข้  ประจำวันที่ <?php  echo db_to_th(date('Y-m-d')); ?></p>
+		<p><?php echo $this->session->userdata('R36_HOSPITAL_NAME')?> 
+				จังหวัด <?php echo $hospital['province_name'] ?>
+				อำเภอ <?php echo $hospital['amphur_name'] ?> 
+				ตำบล <?php echo $hospital['district_name'] ?></p>
 	</div>
-<table class="tb_search_Rabies1">
-<tr>
-  <th width="17%">HN</th>
-  <th width="13%">ชื่อ-นามสกุล</th>
-  <th width="30%">สถานะ</th>
-  <th width="10%">ฉีดโดยวิธี</th>
-  <th width="8%">จำนวนครั้ง</th> 
-  <th width="10%">ครั้งที่แล้ววันที่</th>
-  <th width="10%">ครั้งต่อไปวันที่</th>
-</tr>
-<? 					
-	foreach($result as $item){
-			if($item['in_out']=='1'){
-				$inout_name='สิทธิการรักษาสถานบริการนี้';
-			}else if($item['in_out']=='2'){
-				$inout_name='สิทธิการรักษาสถานบริการอื่น';
-			}
-			
-			$recinfo=$this->inform->get_row($item['id']);
-			$rec_vaccinedate_start=$this->vaccine->where("information_id=".$item['id']." and DATEDIFF('vaccine_date',CURDATE())=3")->sort("")->order("vaccine_id asc")->get();			
-			foreach($rec_vaccinedate_start as $rec){
-?>
+	<table class="tb_search_Rabies1">
+	<tr>
+	  <th width="10%">HN - ครั้งที่</th>
+	  <th width="10%">วันที่สัมผัสโรค</th>
+	  <th width="10%">วันที่ฉีดวัคซีนครั้งต่อไป</th>	   
+	  <th width="17%">ชื่อ-นามสกุล</th>
+	  <th width="20%">เลขที่บัตรประชาชน / passport</th>
+	  <th width="20%">สิทธิ์การรักษา</th>
+	  <th width="5%">ฉีดโดยวิธี</th>
+	  <th width="5%">จำนวนเข็ม</th>	  
+	</tr>
+<? 	$means_name=array('1'=>'ID','2'=>'IM');		
+		$inout=array('1'=>'สถานบริการนี้','2'=>'สถานบริการอื่น');		?>	
+<?php		foreach($result as $item): ?>
 		<tr>
-		  <td><a href="inform_view.php?historyid=<?php echo $item['historyid']?>&information_id=<?php echo $item['id']?>" target="_blank"> <?php echo $item['hn'].'-'.$item['hn_no'];?></a></td>
-		  <td><?php echo $item['firstname']?></td>
-		  <td><?php echo $item['surname']?></td>
-		  <td><?php echo $inout_name?></td>
+		  <td><a href="inform/form/<?php echo $item['id']?>/<?php echo $item['historyid']?>/<?php  echo $item['in_out'] ?>/vaccine" target="_blank"><?php echo $item['hn'].'-'.$item['hn_no'];?></a></td>
+		  <td><?php echo cld_my2date($item['datetouch']) ?></td>
+		  <td><?php echo cld_my2date($item['vaccine_date']) ?></td>
+		  <td><?php echo $item['firstname']?> <?php echo $item['surname']?></td>
+		  <td><?php echo $item['idcard'] ?></td>
+		  <td><?php echo $inout[$item['in_out']]?></td>
 		  <td><?php echo $means_name[$item['means']]?></td>
 		  <td><?php echo $item['total_vaccine']?></td>
-		  <td><?php echo cld_my2date($rec['vaccine_date']);?></td>
-		  <td><? //if($recstart[vaccine_date]!='' && $resultdate!=''){ echo $nextdate[2]."/".$nextdate[1]."/".($nextdate[0]+543);}?></td>
+		  		  		
 		</tr>
-<?  //} 
-		} //end foreach $rec_vaccine
-	} // end foreach result
-?>
-
-
-			
-     
-    </table>
+<?php  endforeach;?>	     
+  </table>
+  <?php echo $pagination; ?>
 		<div id="btn_printout"><a href="report/schedule/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
