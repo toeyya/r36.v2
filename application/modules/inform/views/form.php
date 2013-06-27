@@ -345,9 +345,8 @@ $('select[name=prefix_name]').click(disableChkage);
 	$('#washbefore').click(function(){$('input[name=washbeforedetail]').valid();});
 	$('#causedetail_other').click(function(){$('input[name=causetext]').valid();});
 
-	$.validator.addMethod("one_required", function() {
-	    return $("#form1").find(".one_required:checked").length > 0;
-	},'');	
+	
+	$()
 	$(".btn_save").attr( 'disabled',false); 
 	 $.validator.setDefaults({
 		   	  submitHandler: function(){
@@ -355,9 +354,10 @@ $('select[name=prefix_name]').click(disableChkage);
 		   	  	$(":disabled").removeAttr('disabled');	
 				document.form1.submit();			
 			}		
-	  });
-	var g_chk="head_bite_blood head_bite_noblood head_claw_blood head_claw_blood head_claw_noblood\
-		      head_lick_blood head_lick_noblood  face_bite_blood face_bite_noblood head_lick_blood";		
+	  });	
+	$.validator.addMethod("one_required", function() {
+	    return $("#form1").find(".one_required:checked").length > 0;
+	},'');				
 	$("#form1").validate({
 		groups:{
 				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4",
