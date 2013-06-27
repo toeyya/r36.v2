@@ -64,7 +64,8 @@ var province_id,amphur_id,district_id;
 	var request;
 	function chk_closecase(){
 		$('.btn_add').attr('disabled',true);		
-		$.colorbox({width:"30%", height:"30%", inline:true,href:"#loading",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}}});							
+		$.colorbox({width:"30%", height:"30%", inline:true,href:"#loading",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}
+																																											});							
 		request=$.ajax({
 			url:'<?php echo base_url() ?>inform/closecase/true',
 			dataType:'json',
@@ -137,8 +138,7 @@ var province_id,amphur_id,district_id;
 		 				type:'get',
 				        data: {
 				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
-				          digit_last:function(){return $('#cardW4').val(); },
-				          
+				          digit_last:function(){return $('#cardW4').val(); }				          
 				        }
 		 			}		 		
 		 		}       			 		

@@ -334,117 +334,53 @@ $(function () {
 				</select>
 			 </td>
 			 <th>เขตที่</th>
-			<td>
-			<span id="grouplist">
-				<select name="group" class="styled-select" id="group">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span>
+			<td><span id="grouplist"><select name="group" class="styled-select" id="group"><option value="">ทั้งหมด</option></select></span>
 			</td>
 			<th>จังหวัด</th>
-			<td>
-			<span id="provincelist">
-				<select name="province" class="styled-select" id="prvince">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span>
-			</td>			
+			<td><span id="provincelist"><select name="province" class="styled-select" id="prvince"><option value="">ทั้งหมด</option></select></span></td>			
 	  </tr>
 	  <tr>
-		<th>อำเภอ</th>
-		<td>
-			<span id="amphurlist">
-				<select name="amphur" class="styled-select">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span></td>
-		<th>ตำบล</th>
-			<td>
-				<span id="districtlist">
-					<select name="district" class="styled-select" id="district">
-						<option value="">ทั้งหมด</option>
-					</select>
-				</span>					</td>
+			<th>อำเภอ</th>
+			<td><span id="amphurlist"><select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select></span></td>
+			<th>ตำบล</th>
+			<td><span id="districtlist"><select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select></span></td>
 			<th>สถานบริการ</th>
-			<td>
-				<span id="hospitallist">
-				<select name="hospital" class="styled-select" id="hospital">
-					<option value="">ทั้งหมด</option>
-				</select>
-				</span></td>			
+			<td><span id="hospitallist"><select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select></span></td>			
 	  </tr>
-
 	  <tr>
-	    <th>ปีของวันที่สัมผัสโรค</th>
-	    <td>
-			<select name="year" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			$syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){
-			?>
-				<option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?
-			}
-			?>
-			</select>					</td>
+	    	<th>ปีของวันที่สัมผัสโรค</th>
+	    	<td><select name="year" class="styled-select"><option value="">ทั้งหมด</option>
+				<?$syear = (date('Y')+543)-10;
+					for($i=$syear;$i<=(date('Y')+543);$i++): ?>
+					<option value="<?php echo $i;?>"><?php echo $i;?></option>
+				<? endfor; ?></select></td>
 			<th>เดือนของวันที่สัมผัสโรค</th>
-	    	<td>
-			<select name="month" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select>
-		</td>
-	  <th>ปีของวันที่บันทึกรายการ</th>
-	    <td>
-			<select name="year_report" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			$syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){
-			?>
+	    	<td><select name="month" class="styled-select"><option value="">ทั้งหมด</option>
+				<? for($i=1;$i<=12;$i++){?>
+					<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
+				<?}?></select></td>
+	  		<th>ปีของวันที่บันทึกรายการ</th>
+	    	<td><select name="year_report" class="styled-select"><option value="">ทั้งหมด</option>
+			<? $syear = (date('Y')+543)-10;
+				for($i=$syear;$i<=(date('Y')+543);$i++){?>
 				<option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?
-			}
-			?>
-			</select></td>	
-		
+			<?}?></select></td>			
       </tr>   
 	  <tr>  
 			<th>เดือนของวันที่บันทึกรายการ</th>
-	    	<td>
-			<select name="month_report" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select>
-		</td>
+	    	<td><select name="month_report" class="styled-select"><option value="">ทั้งหมด</option>
+					<? for($i=1;$i<=12;$i++){ ?><option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option><? }?></select>
+			</td>
 			<th>สิทธิการรักษา</th>
-		<td  colspan="4">
- 			<select name="type" class="styled-select">
+			<td  colspan="4"><select name="type" class="styled-select">
 				<option value="">ทั้งหมด</option>
 				<option value="1">สถานบริการนี้</option>
 				<option value="2">สถานบริการอื่น</option>
-			</select>					</td>
+			</select></td>
       </tr>
 
   </table>
-  <div class="btn_inline">
-      <ul>
-      	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      
-      </ul>
+  <div class="btn_inline"><ul><li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li> </ul>
 </div>	
 </form>
 </div>
@@ -467,9 +403,9 @@ $(function () {
             <th align="center"><strong>สถานบริการอื่น</strong></th>
           </tr> 
               <tr>
-                <td><strong>1. จำนวนผู้สัมผัสโรค ( N = 206 )</strong><img src="media/images/n_execl.gif" width="16px" height="16px"></td>
-                <td align="center"><strong>181</strong></td>
-                <td align="center"><strong>25</strong></td>
+                <td><strong>1. จำนวนผู้สัมผัสโรค ( N = <?php echo number_format($total); ?> )</strong><img src="media/images/n_execl.gif" width="16px" height="16px"></td>
+                <td align="center"><strong><?php echo number_format($in_out1); ?></strong></td>
+                <td align="center"><strong><?php echo number_format($in_out2); ?></strong></td>
               </tr>
                   <tr>
                     <td><strong>2. สัญชาติ (คน) </strong>
@@ -477,68 +413,67 @@ $(function () {
                     	<a href="javascript:void()" class="pie-chart img" ></a>
                     	<a href="javascript:void()" class="horizontal-chart img" ></a>
                     </td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
+                    <td></td><td></td>
                   </tr>
                   <tr >
                     <td><span class="para1">ไทย</span></td>
-                    <td align="center">179</td>
-                    <td align="center">25</td>
+                    <td align="center"><?php echo number_format($in_out3); ?></td>
+                    <td align="center"><?php echo number_format($in_out14); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">จีน/ฮ่องกง/ใต้หวัน</span></td>
-                    <td align="center">0</td>
-                    <td align="center">0</td>
+                    <td align="center"><?php echo number_format($in_out4); ?></td>
+                    <td align="center"><?php echo number_format($in_out15); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">พม่า</span></td>
-                    <td align="center">5</td>
-                    <td align="center">5</td>
+                    <td align="center"><?php echo number_format($in_out5); ?></td>
+                    <td align="center"><?php echo number_format($in_out16); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">มาเลเซีย</span></td>
-                    <td align="center">1</td>
-                    <td align="center">0</td>
+                    <td align="center"><?php echo number_format($in_out6); ?></td>
+                    <td align="center"><?php echo number_format($in_out17); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">กัมพูชา</span></td>
-                    <td align="center">2</td>
-                    <td align="center">3</td>
+                    <td align="center"><?php echo number_format($in_out7); ?></td>
+                    <td align="center"><?php echo number_format($in_out18); ?></td>
                   </tr>
                   <tr>
                     <td ><span class="para1">ลาว</span></td>
-                    <td align="center">1</td>
-                    <td align="center">2</td>
+                    <td align="center"><?php echo number_format($in_out8); ?></td>
+                    <td align="center"><?php echo number_format($in_out19); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">เวียดนาม</span></td>
-                    <td align="center">1</td>
-                    <td align="center" >0</td>
+                    <td align="center"><?php echo number_format($in_out9); ?></td>
+                    <td align="center" ><?php echo number_format($in_out20); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">ยุโรป</span></td>
-                    <td align="center" >10</td>
-                    <td align="center" >0</td>
+                    <td align="center" ><?php echo number_format($in_out10); ?></td>
+                    <td align="center" ><?php echo number_format($in_out21); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">อเมริกา</span></td>
-                    <td align="center" >1</td>
-                    <td align="center" >1</td>
+                    <td align="center" ><?php echo number_format($in_out11); ?></td>
+                    <td align="center" ><?php echo number_format($in_out22); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">ไม่ทราบสัญชาติ</span></td>
-                    <td align="center" >0</td>
-                    <td align="center" >0</td>
+                    <td align="center" ><?php echo number_format($in_out12); ?></td>
+                    <td align="center" ><?php echo number_format($in_out23); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">ไม่ระบุ</span></td>
-                    <td align="center" >0</td>
-                    <td align="center" >0</td>
+                    <td align="center" ><?php echo number_format($in_out13); ?></td>
+                    <td align="center" ><?php echo number_format($in_out24); ?></td>
                   </tr>
                   <tr>
                     <td align="center"><strong>รวม</strong></td>
-                    <td align="center"><strong>200</strong></td>
-                    <td align="center"><strong>36</strong></td>
+                    <td align="center"><strong><?php echo number_format($total3); ?></strong></td>
+                    <td align="center"><strong><?php echo number_format($total4); ?></strong></td>
                   </tr>
                   <tr>
                   	<td colspan="3"><div id="container" style="width: 750px; height: 400px; margin: 0 auto"></div><div ><a href="javascript:void()" name="close" title="close">close</a></div></td>
@@ -554,18 +489,18 @@ $(function () {
                   </tr>
                   <tr>
                     <td><span class="para1">ERIG</span></td>
-                    <td align="center" >20</td>
-                    <td align="center" >10</td>
+                    <td align="center" ><?php echo number_format($in_out25); ?></td>
+                    <td align="center" ><?php echo number_format($in_out26); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">HRIG</span></td>
-                    <td align="center" >5</td>
-                    <td align="center" >6</td>
+                    <td align="center" ><?php echo number_format($in_out27); ?></td>
+                    <td align="center" ><?php echo number_format($in_out28); ?></td>
                   </tr>
                   <tr>
                     <td align="center"><strong>รวม</strong></td>
-                    <td align="center"><strong>25</strong></td>
-                    <td align="center"><strong>16</strong></td>
+                    <td align="center"><strong><?php echo number_format($total3); ?></strong></td>
+                    <td align="center"><strong><?php echo number_format($total4); ?></strong></td>
                   </tr>            
                   <tr>
                     <td><strong>4. ชนิดของวัคซีน (โด๊ส)</strong>
@@ -578,28 +513,28 @@ $(function () {
                   </tr>
                   <tr>
                     <td><span class="para1">PVRV</span></td>
-                    <td align="center" >334</td>
-                    <td align="center" >37</td>
+                    <td align="center" ><?php echo number_format($in_out29); ?></td>
+                    <td align="center" ><?php echo number_format($in_out30); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">PCEC</span></td>
-                    <td align="center" >148</td>
-                    <td align="center" >19</td>
+                    <td align="center" ><?php echo number_format($in_out31); ?></td>
+                    <td align="center" ><?php echo number_format($in_out32); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">HDCV</span></td>
-                    <td align="center" >0</td>
-                    <td align="center" >0</td>
+                    <td align="center" ><?php echo number_format($in_out33); ?></td>
+                    <td align="center" ><?php echo number_format($in_out34); ?></td>
                   </tr>
                   <tr>
                     <td><span class="para1">PDEV</span></td>
-                    <td align="center" >0</td>
-                    <td align="center" >0</td>
+                    <td align="center" ><?php echo number_format($in_out35); ?></td>
+                    <td align="center" ><?php echo number_format($in_out36); ?></td>
                   </tr>
                   <tr>
                     <td align="center"><strong>รวม</strong></td>
-                    <td align="center" ><strong>482</strong></td>
-                    <td align="center" ><strong>56</strong></td>
+                    <td align="center" ><strong><?php echo number_format($total5); ?></strong></td>
+                    <td align="center" ><strong><?php echo number_format($total6); ?></strong></td>
                   </tr>
                 </table>
 		<hr class="hr1">

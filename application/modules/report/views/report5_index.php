@@ -156,144 +156,125 @@ $(document).ready(function(){
 			</tr>
 		</tr>
 		<tr>
-			<td><strong>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
-			<td>0</td>			
+			<td>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่<strong>ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
+			<td><?php echo $total; ?></td>			
 		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td>0</td>
-		</tr>
+	
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
 			<td ><strong>0</strong></td>
 		</tr>
 		<tr>
-			<td><strong>2. ผู้สัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าภายใน 6 เดือนได้รับการฉีดวัคซีน</strong></td>
+			<td>2. ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน</td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v6) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v7) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v8) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v9) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v10) ?></td>
 		</tr>
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
 			<td ><strong>0</strong></td>
 		</tr>
 		<tr>
-			<td><strong>3.ผู้สัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าเกิน 6 เดือน ได้รับการฉีดวัคซีน</strong></td>
+			<td><strong>3.ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>เกิน 6 เดือน</strong> ได้รับการฉีดวัคซีน</strong></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v11) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v12) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v13) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v14) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v15) ?></td>
 		</tr>
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong>0</strong></td>
+			<td ><strong><?php echo number_format($total2) ?></strong></td>
 		</tr>
 		<tr>
-			<td><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์ไม่ตายภายใน 10 วัน โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong></td>
+			<td><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์<strong>ไม่ตายภายใน 10 วัน</strong> โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v16) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v17) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v18) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v19) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v20) ?></td>
 		</tr>
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong>0</strong></td>
+			<td ><strong><?php echo number_format($total3) ?></strong></td>
 		</tr>
 		<tr>
-			<td><strong>5. ผู้สัมผัสโรคพิษสุนัขบ้าฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong></td>
-			<td>0</td>
+			<td>5. ผู้สัมผัสโรคพิษสุนัขบ้า<strong>ฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong></td>
+			<td><strong><?php echo number_format($total5) ?></strong></td>
 		</tr>
 		<tr>
 			<td><strong>6. ชนิดของวัคซีน (โด๊ส)</strong></td>
-			<td>0</td>
+			<td></td>
 		</tr>
 			<tr>
 			<td><span class="para1">- PVRV</span></td>
-			<td>0</td>
+			<td><? echo number_format($v21); ?></td>
 		</tr>
 				<tr>
 			<td><span class="para1">- PCEC</span></td>
-			<td>0</td>
+			<td><? echo number_format($v22); ?></td>
 		</tr>
 				<tr>
 			<td><span class="para1">- HDCV</span></td>
-			<td>0</td>
+			<td><? echo number_format($v23); ?></td>
 		</tr>
 				<tr>
 			<td><span class="para1">- PDEV</span></td>
-			<td>0</td>
+			<td><? echo number_format($v24); ?></td>
 		</tr>		
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong>0</strong></td>
+			<td ><strong><? echo number_format($total6); ?></strong></td>
 		</tr>
 	</table>
 	<hr class="hr1">
