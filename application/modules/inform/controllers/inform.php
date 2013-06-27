@@ -70,11 +70,11 @@ class Inform extends R36_Controller
 		}
 		$data['result'] = $result;		
 		$data['pagination']=$this->inform->pagination();
-		//$this->template->set_layout('blank');
+		$this->template->set_layout('blank');
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
-	{	//$this->db->debug=true;exit;							
+	{							
 		$where="";			
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
@@ -105,9 +105,7 @@ class Inform extends R36_Controller
 				}elseif(!empty($_GET['report_startdate'])){
 						$where.=" and reportdate BETWEEN '".$startdate."' and '".$startdate."'";		
 				}
-						
-
-				
+										
 				if(!empty($_GET['hn']) && !empty($_GET['idcard']))	{
 					$where.="AND  hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
 				}else{
@@ -140,7 +138,7 @@ class Inform extends R36_Controller
 				LEFT JOIN n_information ON n_history.historyid=n_information.information_historyid
 				LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
 
-			$data['result']=$this->inform->limit(20)->get($sql);
+			//$data['result']=$this->inform->limit(20)->get($sql);
 			$data['pagination']=$this->inform->pagination();			
 
 			$data['hospitalprovince']=@$_GET['hospital_province_id'];
@@ -188,12 +186,12 @@ class Inform extends R36_Controller
 	}		
 	function addnew()
 	{//กรอกข้อมูลการสัมผัสโรค
+	   
 		$idcard=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
 		$historyid=$this->db->GetOne("select historyid from n_history where idcard= ? ",$idcard);
 		if(!empty($historyid)){
 			$data['rs'] = $this->history->get_row("historyid",$historyid);			
-			$data['rs']['hn_no']=$this->db->GetOne('SELECT hn_no+1 as cnt from n_information where information_historyid= ? order by id desc',$historyid);
-																   	
+			$data['rs']['hn_no']=$this->db->GetOne('SELECT hn_no+1 as cnt from n_information where information_historyid= ? order by id desc',$historyid);																   	
 		}else{
 			$data['rs']['hn_no']=1;
 		}			

@@ -31,19 +31,17 @@
 	}
 $(function(){
 	$('#area').click(List("GetGroupByArea","grouplist"))
-					.change(function(){Clear("all");	List("GetGroupByArea","grouplist");});
+			  .change(function(){Clear("all");	List("GetGroupByArea","grouplist");});
 					
 	$('#group').live('click',function(){List("GetProvinceByGroup","provincelist","province")})
-					   .change(function(){Clear('group');List("GetProvinceByGroup","provincelist","amphur"); });
+			   .change(function(){Clear('group');List("GetProvinceByGroup","provincelist","amphur"); });
 					   
 	$('#province').live('click',function(){List("getAmphur","amphurlist","amphur")})
-							.change(function(){
-								Clear('province');
-								List("getAmphur","amphurlist","amphur");
-							});							
+				  .change(function(){Clear('province');List("getAmphur","amphurlist","amphur");});							
+	
 	$('#amphur').live('click',function(){List("getDistrict","districtlist","district")})
-						  .change(function(){Clear('amphur');List("getDistrict","districtlist","district");});
+				.change(function(){Clear('amphur');List("getDistrict","districtlist","district");});
 							
 	$('#district').live('click',function(){List("getHospital","hospitallist","hospital")})
-						.change(function(){Clear('district');List("getHospital","hospitallist","hospital");});							
+				  .change(function(){Clear('district');List("getHospital","hospitallist","hospital");});							
 });

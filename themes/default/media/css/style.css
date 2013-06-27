@@ -49,9 +49,9 @@ a:hover {color:#0190fe;}
 	input.btn_go[type="submit"]{margin-left:36%;margin-top:5%; width:51px; height:33px; background: url(../images/btn-go_reg.png) no-repeat; border:0; cursor:pointer;}
 	input.btn_go[type="submit"]:hover{width:51px; height:33px; background: url(../images/btn-go_hot.png) no-repeat;border:0;}
 	.input_box {background: transparent;border: 0;}
-	.username-field {width:168px;height: 38px;	float:left;	margin-top: 10px; margin-left:25px;	background: url(../images/username-field.png) center left no-repeat;}
+	.username-field {width:200px;height: 38px;	float:left;	margin-top: 10px; margin-left:16px;	background: url(../images/username-field.png) center left no-repeat;}
 	.username-field:hover {	background: url(../images/username-field-hover.png) center left no-repeat;}
-	.password-field {width:280px;height: 38px;float:left;margin-top: 10px;margin-left: 25px;background: url(../images/password-field.png) center left no-repeat;}
+	.password-field {width:200px;height: 38px;float:left;margin-top: 10px;margin-left: 16px;background: url(../images/password-field.png) center left no-repeat;}
 	.password-field:hover {background: url(../images/password-field-hover.png) center left no-repeat;}
 	
 	.login input[type="text"], .login input[type="password"] {width: 120px;height: 16px;margin-top: 10px;	margin-left: 10px;	font-family: Verdana, Arial;font-size: 13px;color: #2d2d2d;}

@@ -1,7 +1,8 @@
 <div id="title">ข้อมูลรายจังหวัด</div>
 <div id="search">
+<?php if(empty($cond)): ?>
 <form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
-	<table  class="tb_patient1">
+<table  class="tb_patient1">
 	  <tr>
 			<th>เขตความรับผิดชอบ</th>
 			<td>
@@ -85,59 +86,34 @@
 		</td>
 	 </tr>
 </table>
-  <div class="btn_inline">
-      <ul>
-      	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      	<li><button class="btn_cancel" type="button">&nbsp;&nbsp;&nbsp;</button></li>
-      </ul>
-</div>
+  <div class="btn_inline"><ul><li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li></ul></div>
 </form>
+<?php endif; ?>
 </div>
+<?php if(!empty($cond)): ?>
 <div id="report">	
 <div id="title">
-	<p>รายงานจังหวัดนนทบุรี  เดือน ม.ค. ปี 2556</p>
+	<p>รายงานจังหวัด<?php echo $textprovince ?>  เดือน  <?php echo $textmonth ?> ปี  <? echo $textyear ?></p>
 </div>
 <div class="right">หน่วย: คน</div>
 <table class="tbreport">
 	<tr>
-		<th rowspan="2">อำเภอ</th>
-		<th rowspan="2">ยอดรวม</th>
+		<th rowspan="2">อำเภอ</th>		
 		<th colspan="2">สิทธิการรักษา</th>		
+		<th rowspan="2">ยอดรวม</th>
 	</tr>
 	<tr>
 		<th>สถานบริการนี้</th>
 		<th>สถานบริการอื่น</th>
 	</tr>
+	<?php foreach($result as $item): ?>
 	<tr class="para1">
-		<td class="pad-left">บางกรวย</td>
-		<td>73</td>
-		<td>55</td>
-		<td>18</td>
+		<td class="pad-left"><?php echo $item['amphur_name'] ?></td>		
+		<td><?php echo $in=($item['in_out']=="1") ? number_format($item['cnt']) : 0; ?></td>
+		<td><?php echo $out=($item['in_out']=="2") ? number_format($item['cnt']) : 0; ?></td>
+		<td><?php echo number_format($in+$out) ?></td>
 	</tr>
-	<tr class="para1">
-		<td class="pad-left">บางบัวทอง</td>
-		<td>73</td>
-		<td>55</td>
-		<td>18</td>
-	</tr>
-	<tr class="para1">
-		<td class="pad-left">ปากเกร็ด</td>
-		<td>73</td>
-		<td>55</td>
-		<td>18</td>
-	</tr>
-	<tr class="para1">
-		<td class="pad-left">เมืองนนทบุรี</td>
-		<td>73</td>
-		<td>55</td>
-		<td>18</td>
-	</tr>
-	<tr class="para1">
-		<td class="pad-left">ไทรน้อย</td>
-		<td>73</td>
-		<td>55</td>
-		<td>18</td>
-	</tr>
+	<?php endforeach; ?>
 	<tr class="total para1">
 		<td class="pad-left">รวม</td>
 		<td>73</td>
@@ -153,3 +129,4 @@
 		</div>
 </div>	
 </div>
+<?php endif; ?>

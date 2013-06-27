@@ -10,290 +10,211 @@ $(document).ready(function(){
 </script>
 <div id="title">ข้อมูลการฉีดวัคซีน</div>
 <div id="search">
+<?php if(empty($cond)): ?>
 <form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	  <tr>
-			<th>เขตความรับผิดชอบ</th>
-			<td>
-				<select name="area" id="area" class="styled-select" >
-					<option value="-">กรุณาเลือกเขต</option>
-					<option value="1" <?php echo (@$_GET['area']=="1")? "selected='selected":''; ?>>รูปแบบเดิม (12 เขต)</option>
-					<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
-				</select>
-			 </td>
-			 <th>เขตที่</th>
-			<td>
+		<th>เขตความรับผิดชอบ</th>
+		<td>
+			<select name="area" id="area" class="styled-select" >
+				<option value="-">กรุณาเลือกเขต</option>
+				<option value="1" <?php echo (@$_GET['area']=="1")? "selected='selected":''; ?>>รูปแบบเดิม (12 เขต)</option>
+				<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
+			</select>
+		 </td>
+		<th>เขตที่</th>
+		<td>
+			<?php if(empty($_GET['gorup'])): ?>
 			<span id="grouplist">
-				<select name="group" class="styled-select" id="group">
-					<option value="">ทั้งหมด</option>
-				</select>
+			<select name="group" class="styled-select" id="group"><option value="">ทั้งหมด</option></select>
 			</span>
+			<?php else: ?>
+				
+		    <?php endif; ?>
 			</td>
-			<th>จังหวัด</th>
-			<td>
-			<span id="provincelist">
-				<select name="province" class="styled-select" id="prvince">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span>
-			</td>			
+		<th>จังหวัด</th>
+		<td><span id="provincelist"><select name="province" class="styled-select" id="prvince"><option value="">ทั้งหมด</option></select></span></td>			
 	  </tr>
 	  <tr>
 		<th>อำเภอ</th>
-		<td>
-			<span id="amphurlist">
-				<select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select>
-			</span></td>
+		<td><span id="amphurlist"><select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select></span></td>
 		<th>ตำบล</th>
-			<td>
-				<span id="districtlist">
-					<select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select>
-				</span>	
-			</td>
-			<th>สถานบริการ</td>
-			<td>
-				<span id="hospitallist">
-				<select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select>
-				</span></td>			
+		<td><span id="districtlist"><select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select></span></td>
+		<th>สถานบริการ</td>
+		<td><span id="hospitallist"><select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select></span></td>			
 	  </tr>
-
 	  <tr>
 	    <th>ปีของวันที่สัมผัสโรค</th>
-	    <td>
-			<select name="year" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			$syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){
-			?>
-				<option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?
-			}
-			?>
-			</select>					</td>
-			<th>เดือนของวันที่สัมผัสโรค</th>
-	    	<td>
-			<select name="month_start" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
+	    <td><select name="year" class="styled-select"><option value="">ทั้งหมด</option>
+			<? $syear = (date('Y')+543)-10;
+			for($i=$syear;$i<=(date('Y')+543);$i++){?><option value="<?php echo $i;?>"><?php echo $i;?></option>
+			<?}?></select>
+		</td>
+		<th>เดือนของวันที่สัมผัสโรค</th>
+	    <td><select name="month_start" class="styled-select"><option value="">ทั้งหมด</option>
+			<? for($i=1;$i<=12;$i++){?>
 				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
+			<? }?>
 			</select> - <select name="month_end" class="styled-select">
 			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
+			<? for($i=1;$i<=12;$i++){?>
 				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select>			
+			<? }?></select>			
 		</td>
 	 </tr>
 	 <tr>
 	  <th>ปีของวันที่บันทึกรายการ</th>
-	    <td>
-			<select name="year_report" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			$syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){
-			?>
-				<option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?
-			}
-			?>
-			</select></td>	
-		
-
-			<th>เดือนของวันที่บันทึกรายการ</th>
-	    	<td>
-			<select name="month_report_start" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select> - <select name="month_report_end" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
+	    <td><select name="year_report" class="styled-select"><option value="">ทั้งหมด</option>
+			<? $syear = (date('Y')+543)-10;
+			for($i=$syear;$i<=(date('Y')+543);$i++){?><option value="<?php echo $i;?>"><?php echo $i;?></option>
+			<? }?>
 			</select>
-		</td>
+		</td>		
+		<th>เดือนของวันที่บันทึกรายการ</th>
+    	<td>
+		<select name="month_report_start" class="styled-select">
+		<option value="">ทั้งหมด</option>
+		<? for($i=1;$i<=12;$i++){ ?>
+			<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
+		<? }?>
+		</select> - <select name="month_report_end" class="styled-select">
+		<option value="">ทั้งหมด</option>
+		<?for($i=1;$i<=12;$i++){?>
+			<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
+		<?}?>
+		</select></td>
 	  </tr>
 </table>
-  <div class="btn_inline">
-      <ul>
-      	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      	
-      </ul>
-</div>	
+  <div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul></div>	
 </form>
+<?php endif; ?>
 </div>
+<? if(!empty($cond)): ?>
 <div id="report">
 	<div id="title"><p>รายงานการฉีดวัคซีน</p>
 	<p>เขตความรับผิดชอบ (12 เขต) : เขต 1 จังหวัด นนทบุรี  อำเภอ บางกรวย  ตำบล บางกรวย </p>
 	<p>สถานบริการ โรงพยาบาลบางกรวย <span>ปี 2556</span> เดือน ทั้งหมด ถึง ทั้งหมด </p>
  </div>
- <div class="right">หน่วย:คน</div>
-	<table class="tbreport">
+	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;" >
+		<tr><td colspan="2" style="text-align:right;">หน่วย:คน</td></tr>
 		<tr>
-			<tr>
-				<th style="text-align:center">เงื่อนไข</th>
-				<th>จำนวน (N=0)</th>
-			</tr>
+			<th style="text-align:center">เงื่อนไข</th><th style="text-align:left">จำนวน (N=0)</th>
 		</tr>
 		<tr>
-			<td><strong>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
-			<td>0</td>			
-		</tr>
+			<td>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่<strong>ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
+			<td><strong><?php echo $total; ?></strong></td>			
+		</tr>	
 		<tr>
-			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td>0</td>
-		</tr>
-		<tr>
-			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong>0</strong></td>
-		</tr>
-		<tr>
-			<td><strong>2. ผู้สัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าภายใน 6 เดือนได้รับการฉีดวัคซีน</strong></td>
+			<td>2. ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน</td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v6) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v7) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v8) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v9) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v10) ?></td>
 		</tr>
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong>0</strong></td>
+			<td ><strong><?php echo number_format($total2) ?></strong></td>
 		</tr>
 		<tr>
-			<td><strong>3.ผู้สัมผัสหรือสงสัยว่าสัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าเกิน 6 เดือน ได้รับการฉีดวัคซีน</strong></td>
+			<td><strong>3.ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>เกิน 6 เดือน</strong> ได้รับการฉีดวัคซีน</strong></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v11) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v12) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v13) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v14) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v15) ?></td>
 		</tr>
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong>0</strong></td>
+			<td ><strong><?php echo number_format($total3) ?></strong></td>
 		</tr>
 		<tr>
-			<td><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์ไม่ตายภายใน 10 วัน โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong></td>
+			<td><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์<strong>ไม่ตายภายใน 10 วัน</strong> โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong></td>
 			<td></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v16) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v17) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v18) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v19) ?></td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td>0</td>
+			<td><?php echo number_format($v20) ?></td>
 		</tr>
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong>0</strong></td>
+			<td ><strong><?php echo number_format($total4) ?></strong></td>
 		</tr>
 		<tr>
-			<td><strong>5. ผู้สัมผัสโรคพิษสุนัขบ้าฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong></td>
-			<td>0</td>
+			<td>5. ผู้สัมผัสโรคพิษสุนัขบ้า<strong>ฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong></td>
+			<td><strong><?php echo number_format($total5) ?></strong></td>
 		</tr>
 		<tr>
 			<td><strong>6. ชนิดของวัคซีน (โด๊ส)</strong></td>
-			<td>0</td>
+			<td></td>
 		</tr>
 			<tr>
 			<td><span class="para1">- PVRV</span></td>
-			<td>0</td>
+			<td><? echo number_format($v21); ?></td>
 		</tr>
 				<tr>
 			<td><span class="para1">- PCEC</span></td>
-			<td>0</td>
+			<td><? echo number_format($v22); ?></td>
 		</tr>
 				<tr>
 			<td><span class="para1">- HDCV</span></td>
-			<td>0</td>
+			<td><? echo number_format($v23); ?></td>
 		</tr>
 				<tr>
 			<td><span class="para1">- PDEV</span></td>
-			<td>0</td>
+			<td><? echo number_format($v24); ?></td>
 		</tr>		
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong>0</strong></td>
+			<td ><strong><? echo number_format($total6); ?></strong></td>
 		</tr>
 	</table>
 	<hr class="hr1">
@@ -322,3 +243,4 @@ $(document).ready(function(){
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 		</div>
 </div>
+<?php endif; ?>

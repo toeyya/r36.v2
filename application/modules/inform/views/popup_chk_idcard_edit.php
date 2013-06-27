@@ -51,7 +51,7 @@ $(document).ready(function(){
 		}else{					
 			parent.$('#Show_idpassport').show();			
 			parent.$('#Show_idcard').hide();						
-			parent.$('input[name=idpasspost]').val($('input[name=idpassport]').val());
+			parent.$('input[name=idpassport]').val($('input[name=idpassport]').val());
 		}
 		parent.$.colorbox.close();
 	});

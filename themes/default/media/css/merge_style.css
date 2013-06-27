@@ -10,8 +10,8 @@ Design by http://www.favouritedesign.com
 label.error{color:red;width:50%;display:inline}
 label.alertred{font-size: 12px;	color: #FF0000;display:inline;}
 .username-field input[type="text"],.password-field input[type="password"] 
-{width: 120px;height: 16px;margin-top: 10px;
-	margin-left: 10px;	font-family: Verdana, Arial;font-size: 13px;color: #2d2d2d;
+{width: 159px;height: 16px;margin-top: 10px;
+	margin-left:4px;	font-family: Verdana, Arial;font-size: 13px;color: #2d2d2d;
 	box-shadow:none;background:none;border:none}
 
 #register .form-horizontal .controls{clear:both;display:inline-block;margin-left:40px;margin-top:10px;}

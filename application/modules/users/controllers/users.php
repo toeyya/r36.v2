@@ -121,32 +121,22 @@ class Users extends Public_Controller
 		phpmail($subject,$address,$message,$redirect);
 	}
 	public function chkidcard($patient=FALSE)
-	{	//$this->db->debug=true;		
+	{	// ผู้สัมผัสโรคไม่เช็คการซ้ำกัน
+		$this->db->debug=TRUE;
 		for($i=0;$i<13;$i++){
 			$idcard_arr[]=substr($_GET['idcard'],$i,1);
 		}		
 		$chk=chk_idcard($idcard_arr,$_GET['digit_last']);
-		$dup1=($chk=="no")? TRUE:FALSE;
+		$dup1=($chk=="no")? true:false;
 
-		if(!empty($_GET['uid'])){
-			$dup = $this->db->GetOne("select uid from n_user where idcard= ? and uid<> ? ",array($_GET['idcard'],$_GET['uid']));
-		}else{
-			if($patient){
-				$dup=true;
-			}else{
-				$dup = $this->user->get_one("uid",'idcard',$_GET['idcard']);
-			}
-			
-		}
-		
+
 		if(empty($_GET['uid'])){
 			echo ($chk=="no")? "false":"true";
 		}else{						
 			echo ($dup1 || $dup)? "false":"true";
 		}
-		//echo ($dup1 || $dup)? "false":"true";
-			
-		
+	
+	
 	}
 	public function checkEmail(){
 		if(!empty($_GET['uid'])){

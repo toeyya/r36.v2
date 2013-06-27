@@ -63,24 +63,24 @@ var province_id,amphur_id,district_id;
 	$('name=[ifm]').attr('src','#');
 	var request;
 	function chk_closecase(){
-		$('.btn_add').attr('disabled',true);
-		$.colorbox({width:"30%", height:"30%", inline:true,href:"#loading",escKey:false,closeButton:false,onClosed:
-																											function(){
-																												if(request!=undefinded){request.abort();}
-																											}});								
+		$('.btn_add').attr('disabled',true);		
+		$.colorbox({width:"30%", height:"30%", inline:true,href:"#loading",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}
+																																											});							
 		request=$.ajax({
 			url:'<?php echo base_url() ?>inform/closecase/true',
 			dataType:'json',
 			success:function(data){
-				if(data.chk=="yes"){	
-					$('.btn_add').attr('disabled',false);			  
-				  	$('input[name=closecase]').val(data.chk);
+				$('.btn_add').removeAttr('disabled');	
+				$('input[name=closecase]').val(data.chk);
+				if(data.chk=="yes"){								  				  	
 				  	$('name=[ifm]').attr('src','inform/index');											
 				  	$.colorbox({width:"70%", height:"80%", inline:true,href:"#closecase",onClosed:function(){request.abort();location.reload();}});					 						
+				}else{
+					$.colorbox.close();
 				}						
 			}			
 		})
-				
+			
 	}	
 
 	$('.btn_submit').click(function(e){
@@ -99,9 +99,8 @@ var province_id,amphur_id,district_id;
 		var chk_c=$('input[name=closecase]').val();			 		
 		$('#form1').attr('action','inform/addNew');	
 		$('input[name=action]').val('');	
-		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้	
-				
-				//chk_closecase();					
+		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้				
+				chk_closecase(); // แสดงรายการที่ยังไมได้ปิดเคส											
 				$("#hospitalprovince option").filter(function(){return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
 				$('#hospital_amphur_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_amphur_id]').val()+'">'+$('input[name=amphur_name]').val()+'</option>');
 				$('#hospital_district_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_district_id]').val()+'">'+$('input[name=district_name]').val()+'</option>');
@@ -114,9 +113,9 @@ var province_id,amphur_id,district_id;
 		 	  //chk_closecase_person();
 		 	  var chk_p=$('input[name=closecase_person]').val();
 		 	  //alert(chk_p);
-		 	 if(chk_p==''){
+		 	// if(chk_p==''){
 		 	  	document.form1.submit();
-		 	  }		 				 	
+		 	 // }		 				 	
 		 	}
 		 });
 		 $('#form1').validate({
@@ -139,8 +138,7 @@ var province_id,amphur_id,district_id;
 		 				type:'get',
 				        data: {
 				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
-				          digit_last:function(){return $('#cardW4').val(); },
-				          
+				          digit_last:function(){return $('#cardW4').val(); }				          
 				        }
 		 			}		 		
 		 		}       			 		
@@ -395,7 +393,7 @@ var province_id,amphur_id,district_id;
 
 <div style="display:none;">
 <div id="closecase" style="height:100%;width:100%;">
-	<iframe name="ifm"  ALIGN="top" HSPACE="0" VSPACE="0" frameborder="0" style="height:100%;width:100%;" ></iframe>
+	<iframe name="ifm"  src="#" ALIGN="top" HSPACE="0" VSPACE="0" frameborder="0" style="height:100%;width:100%;" ></iframe>
 </div>
 </div>
 

@@ -409,7 +409,7 @@ function chkvalLogin(c){
 	function show_hide_clear_typeanimal(c){
 		if(c.typeanimal[0].checked==true || c.typeanimal[1].checked==true || c.typeanimal[2].checked==true || c.typeanimal[3].checked==true ||c.typeanimal[4].checked==true){
 			document.getElementById("typeotherspan").style.display='none';
-			//c.typeother.value='0';
+			document.getElementById('typeother').value='0';
 		}else{
 			document.getElementById("typeotherspan").style.display='';
 		}

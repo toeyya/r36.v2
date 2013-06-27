@@ -123,9 +123,7 @@ function currency_rate($price)
 					$digit=($mod<11)? 11-$mod:$mod-11;
 					if(strlen($digit)>1){$digit=substr($digit,1,1);}
 					$chk_compare=($digit==$digit_last)? "yes":"no";
-					//echo $chk_compare;
-					return $chk_compare;
-					
+					return $chk_compare;					
 			}
 			function get_ip(){
 				
