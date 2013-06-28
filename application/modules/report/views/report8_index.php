@@ -1,5 +1,6 @@
 <div id="title">ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบุลิน </div>
 <div id="search">
+<?php if(empty($cond)): ?>
 <form action="report/index/8" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	  <tr>
@@ -12,73 +13,57 @@
 				</select>
 			 </td>
 			 <th>เขตที่</th>
-			<td>
-			<span id="grouplist">
-				<select name="group" class="styled-select" id="group"><option value="">ทั้งหมด</option></select>
-			</span>
+			<td><span id="grouplist"><select name="group" class="styled-select" id="group"><option value="">ทั้งหมด</option></select></span>
+				
 			</td>
 			<th>จังหวัด</th>
-			<td>
-			<span id="provincelist">
-				<select name="province" class="styled-select" id="prvince"><option value="">ทั้งหมด</option></select>
-			</span>
+			<td><span id="provincelist"><select name="province" class="styled-select" id="prvince"><option value="">ทั้งหมด</option></select></span>
+				<?php if(!empty($_GET['province']) && !empty($_GET['area']) && !empty($_GET['group'])){
+							if($_GET['area']=='1'){
+								$field = "province_level_old";
+							}else{
+								$field = "province_level_new";																	
+							}
+							$sql = "select province_id, province_name from n_province where ".$field."='".$_GET['group']."' order by province_name asc";
+						   $result=$this->province->get($sql);
+						   $output = '<select name="province" class="styled-select" id="province">';
+						   $output.= '<option value="">ทั้งหมด</option>';
+							foreach($result as $rec){
+								  $output .= '<option value="'.$rec['province_id'].'">'.$rec['province_name'].'</option>';
+							}
+							$output.='</select>';	
+				} ?>
 			</td>			
 	  </tr>
 	  <tr>
 		<th>อำเภอ</th>
-		<td>
-			<span id="amphurlist">
-				<select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select>
-			</span></td>
+		<td><span id="amphurlist"><select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select></span>
+				<?php if(!empty($_GET['province'])) : 
+						echo form_dropdown($name,get_option('amphur_id','amphur_name'," n_amphur where province_id='".$_GET['province']." and amphur_id ='".$_GET['amphur_id']."' ORDER BY amphur_name ASC"),'',' class="styled-select"','ทั้งหมด');		
+				endif; ?>
+		</td>
 		<th>ตำบล</th>
-			<td>
-				<span id="districtlist">
-					<select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select>
-				</span>	
-			</td>
-			<th>สถานบริการ</td>
-			<td>
-				<span id="hospitallist">
-				<select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select>
-				</span></td>			
-	  </tr>
-	  
-	 	  <tr>
+		<td><span id="districtlist"><select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select></span>	</td>
+		<th>สถานบริการ</td>
+		<td><span id="hospitallist"><select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select></span></td>			
+	  </tr>	  
+	 	<tr>
 	    <th>ตั้งแต่เดือน ปี(วันที่สัมผัสโรค)</th>
-	    <td>
-	    	<select name="month" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
+	    <td><select name="month" class="styled-select"><option value="">ทั้งหมด</option>
+			<?for($i=1;$i<=12;$i++){?>
 				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select>-
-			<select name="year" class="styled-select">
-				<option value="">ทั้งหมด</option>
-				<?
-				$syear = (date('Y')+543)-10;
-				for($i=$syear;$i<=(date('Y')+543);$i++){
-				?>
-					<option value="<?php echo $i;?>"><?php echo $i;?></option>
-				<?
-				}
-				?>
+			<?}?></select>-
+			<select name="year" class="styled-select"><option value="">ทั้งหมด</option>
+				<?$syear = (date('Y')+543)-10;
+				for($i=$syear;$i<=(date('Y')+543);$i++){?><option value="<?php echo $i;?>"><?php echo $i;?></option><?}?>
 			</select>	
 		</td>
 			<th>ถึง เดือน ปี (วันที่สัมผัสโรค)</th>
 	    	<td>
 	    	<select name="month" class="styled-select">
 			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
+			<? for($i=1;$i<=12;$i++){ ?> <option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
+			<? }?>
 			</select>-
 			<select name="year" class="styled-select">
 				<option value="">ทั้งหมด</option>
@@ -96,7 +81,7 @@
 	<tr>
 	  <th>ตั้งแต่เดือน ปี(วันที่บันทึกข้อมูล)</th>
 	    <td>
-	    	<select name="month" class="styled-select">
+	    	<select name="month_start" class="styled-select">
 			<option value="">ทั้งหมด</option>
 			<?
 			for($i=1;$i<=12;$i++){
@@ -105,7 +90,7 @@
 			<?
 			}
 			?>
-			</select> - <select name="year" class="styled-select">
+			</select> - <select name="year_start" class="styled-select">
 				<option value="">ทั้งหมด</option>
 				<?
 				$syear = (date('Y')+543)-10;
@@ -118,7 +103,7 @@
 			</select></td>			
 			<th>ถึง เดือน ปี (วันที่บันทึกข้อมูล)</th>
 	    	<td>
-		    	<select name="month" class="styled-select">
+		    	<select name="month_end" class="styled-select">
 			<option value="">ทั้งหมด</option>
 			<?
 			for($i=1;$i<=12;$i++){
@@ -127,7 +112,7 @@
 			<?
 			}
 			?>
-			</select> -  <select name="year" class="styled-select">
+			</select> -  <select name="year_end" class="styled-select">
 				<option value="">ทั้งหมด</option>
 				<?
 				$syear = (date('Y')+543)-10;
@@ -148,6 +133,7 @@
       </ul>
 </div>
 </form>
+<?php endif; ?>
 </div>
 <div id="report">
 	<div id="title">				  
@@ -155,9 +141,10 @@
 	    <p>เขตความรับผิดชอบ (<?php echo $textarea;?>) :เขต <?php echo $textgroup;?></p>
 		<p>จังหวัด<?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?> ตำบล <?php echo $textdistrict; ?></p>
 		<p>โรงพยาบาล <?php echo $texthospital;?> </p>
-		<p>เดือน มกราคม ปี 2556 ถึงเดือน กุมภาพันธ์ ปี 2556</p>				
+		<p>เดือน <?php echo $textyear ?> ปี <?php echo $textmonth ?> ถึงเดือน กุมภาพันธ์ ปี 2556</p>				
 	</div>
-	<div class="right">หน่วย :คน</div>
+	<?php if(!empty($cond)): ?>
+	<div class="right">หน่วย : คน</div>
 	<table class="tbreport1">
 		<tr>
 			<td colspan="10" style="text-align:center;" class="B">จำนวนผู้รับการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าและอิมมูโนโกลบูลิน</td>
@@ -182,18 +169,19 @@
 
 		</tr>
 		<tr>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
+			<td><? echo number_format($total1); ?></td>
+			<td><? echo number_format($total2); ?></td>
+			<td><? echo number_format($total3); ?></td>
+			<td><? echo number_format($total4); ?></td>
+			<td><? echo number_format($total5); ?></td>
+			<td><? echo number_format($total6); ?></td>
+			<td><? echo number_format($total7); ?></td>
+			<td><? echo number_format($total8); ?></td>
+			<td><? echo number_format($total9); ?></td>
+			<td><? echo number_format($total10); ?></td>
 		</tr>
 	</table>	
+	<?php endif; ?>
 	<div id="description">
 		<table class="tbdesc">
 			<tr>
@@ -219,7 +207,7 @@
 		</table>							
 	</div>
 	<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
-		<div id="btn_printout"><a href="report/index/8/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="btn_printout"><a href="report/index/8/preview/"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

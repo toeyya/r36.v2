@@ -178,7 +178,7 @@ $(document).ready(function(){
 </div>	  
 </form>
 </div>
-<div id="boxAdd"><a href="inform/form_dead/" class="btn_add1" title="เพิ่มข้อมูล"></a></div>
+<div id="boxAdd"><a href="inform/dead/form" class="btn_add1" title="เพิ่มข้อมูล"></a></div>
 <?php if(!empty($result)): ?>
 			<table width="70%" class="tb_search_Rabies1">
 			  <tr>

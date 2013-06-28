@@ -326,7 +326,7 @@ ul.sublist label.error,label.error{color:red;width:50%;}
     
  
 }
-
+.tbreport td p.percentage{margin:0px;padding:0px;color:#2151B3;font-size:11px;}
 .tbreport td.B { font-weight:700;}
 .tbreport td.para1{margin-left:20px;}
 

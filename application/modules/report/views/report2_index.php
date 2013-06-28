@@ -753,7 +753,623 @@
 			<td>5</td>
 			<td>362</td>
 		</tr>
+	<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ทราบ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่เคยฉีด</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">เคยฉีด 1 ครั้ง</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left" colspan="13">เคยฉีด 1 ครั้งสุดท้าย</td>		
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ภายใน 1 ปี</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">เกิน 1 ปี</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>	
+	<tr><td colspan="6"><strong>สาเหตุที่ถูกกัด</strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">ถูกกัดโดยไม่มีสาเหตุโน้มนำ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ถูกกัดโดยมีสาเหตุโน้มนำ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ทำให้สัตว์เจ็บปวด โมโห หรือตกใจ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left2">พยายามแยกสัตว์ที่กำลังต่อสู้กัน</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">เข้าใกล้สัตว์แม่ลูกอ่อน</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>		
+		<tr class="para1">
+			<td class="pad-left2">รบกวนสัตว์ขณะกินอาหาร</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">เข้าไปในบริเวณที่สัตว์คิดว่าเป็นเจ้าของ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">อื่นๆ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>	
+	<tr><td colspan="6"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ได้ล้าง</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ได้ล้าง</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>			
+		<tr class="para1">
+			<td class="pad-left">ล้าง</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">น้ำ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">น้ำและสบู่ / ผงซักฟอก</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>		
+		<tr class="para1">
+			<td class="pad-left2">อื่นๆ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left2">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>		
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>		
 
+	<tr><td colspan="6"><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ได้ใส่ยา</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>	
+		<tr class="para1">
+			<td class="pad-left">ใส่ยา</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">สารละลายไอโอดีนที่ไม่มีแอลกอฮอล์ฯ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ทิงเจอร์ไอโอดีนแอลกอฮอล์ฯ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>					
+		<tr class="para1">
+			<td class="pad-left2">อื่นๆ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+	<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส</strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">เคยฉีด 3 เข็ม หรือมากกว่า</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ภายใน 6 เดือน</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">เกิน 6 เดือน</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left2">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<td>0<p class="percentage">(0.00)</p></td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>
+			<td>0</td>		
+			<td>34</td>
+			<td>54</td>
+			<td>23</td>
+			<td>62</td>
+			<td>0</td>
+			<td>3</td>
+			<td>5</td>
+			<td>362</td>
+		</tr>
 		</tbody>																							
 	</table>
 		<hr class="hr1">

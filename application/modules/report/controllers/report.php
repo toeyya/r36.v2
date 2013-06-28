@@ -57,17 +57,32 @@ class Report extends R36_Controller
 				  //$provinceid = substr($provinceid, 0, -2);  
 				  $cond = " AND hospitalprovince IN (".$provinceid.")";												
 					
-					if($_GET['group']=='0'){
-						$data['textgroup'] = "กทม.";
-					}else{
-						$data['textgroup'] = "เขต ".$_GET['group'];
-					}
+					if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
+					}else{$data['textgroup'] = "เขต ".$_GET['group'];}
+		  }		  
+		  if((!empty($_GET['month_start'])  && !empty($_GET['year_start']))   && (!empty($_GET['month_end']) && !empty($_GET['year_end']))){
+		  	 	$cond.= " AND (month(datetouch) BETWEEN '".$_GET['month_start']."' AND '".$_GET['month_end']."') AND (year(datetouch) BETWEEN '".$_GET['year_start']."' AND '".$_GET['year_end']."')";
+		 		$data['textyear_start'] = $_GET['year_start'];
+				$data['textmonth_start'] = convert_month($_GET['month_start'],"longthai");
+			 	$data['textyear_end'] = $_GET['year_end'];
+				$data['textmonth_end'] = convert_month($_GET['month_end'],"longthai");
+		  }else{
+				if(!empty($_GET['year_start'])){					$cond.= " AND year(datetouch)='".$_GET['year_start']."'";	$data['textyear_start'] = $_GET['year_start'];}		  	
+		  		if(!empty($_GET['month_start'])){				$cond.= " AND month(datetouch)='".$_GET['month_start']."'";  	$data['textmonth_start'] = convert_month($_GET['month_start'],"longthai");	}	
 		  }
-		  if(!empty($_GET['year'])){					$cond.= " AND year(datetouch)='".$_GET['year']."'";	    	$data['textyear'] = $_GET['year'];}		  	
-		  if(!empty($_GET['month'])){				$cond.= " AND month(datetouch)='".$_GET['month']."'";  	$data['textmonth'] = convert_month($_GET['month'],"longthai");	}	  	
-		  if(!empty($_GET['year_report'])){		$cond.= " AND year(reportdate)='".$_GET['year_report']."'";}		 
-		  if(!empty($_GET['month_report'])){	$cond.= " AND month(reportdate)='".$_GET['month_report']."'";}	  
-		   if(!empty($_GET['type'])){					$cond.= " AND in_out='".$type."'";	$data['texttype'] =$type[$_GET['type']];	}									
+		    
+		  if((!empty($_GET['month_report_start'])  && !empty($_GET['year_report_start']))   && (!empty($_GET['month_report_end']) && !empty($_GET['year_report_start']))){
+		  	 	$cond.= " AND (month(datetouch) BETWEEN '".$_GET['month_report_start']."' AND '".$_GET['month_report_end']."') AND (year(datetouch) BETWEEN '".$_GET['year_report_start']."' AND '".$_GET['year_report_end']."')";
+		 		$data['textyear_report_start'] = $_GET['year_report_start'];
+				$data['textmonth_report_start'] = convert_month($_GET['month_report_start'],"longthai");
+			 	$data['textyear_report_end'] = $_GET['year_report_end'];
+				$data['textmonth_report_end'] = convert_month($_GET['month_report_end'],"longthai");				
+		  }else{
+		  		if(!empty($_GET['year_report_start'])){		$cond.= " AND year(reportdate)='".$_GET['year_report_start']."'";		$data['textyear_start'] = $_GET['year_report_start'];}  
+		 	 	if(!empty($_GET['month_report_start'])){	$cond.= " AND month(reportdate)='".$_GET['month_report_start']."'";  $data['textmonth_start'] = convert_month($_GET['month_report_start'],"longthai");	}	
+		  }  
+		  			  
+		   if(!empty($_GET['type'])){	$cond.= " AND in_out='".$type."'";	$data['texttype'] =$type[$_GET['type']];	}									
 		   
 			$current = date('Ymdhis');
 			$data['current']=$current;
@@ -79,6 +94,7 @@ class Report extends R36_Controller
 				case "4":$this->report4($cond,$preview,$data);break;
 				case "5":$this->report5($cond,$preview,$data);break;
 				case "6":$this->report6($cond,$preview,$data);break;
+				case "7":$this->report7($cond,$preview,$data);break;
 				case "8":$this->report8($cond,$preview,$data);break;
 			}
 			//if($preview) $this->template->set_layout('print');				
@@ -255,7 +271,7 @@ class Report extends R36_Controller
 	}
 	function report6($cond= FALSE,$preview=FALSE,$data){					
 		$sql="SELECT n_amphur.amphur_name as amphur_name,province_name,cnt,in_out,n_amphur.amphur_id as amphur_id from n_amphur
-			  LEFT JOIN(
+			 	   LEFT JOIN(
 						SELECT amphur_id,amphur_name,province_name,n_province.province_id as province_id,count(historyid) as cnt,in_out
 						FROM n_province
 						LEFT JOIN n_amphur 			on n_province.province_id = n_amphur.province_id 
@@ -272,15 +288,46 @@ class Report extends R36_Controller
 		if($preview){$this->template->set_layout('print');}	
 		$this->template->build("report6_index",$data);			
 	}
-	function dead($part=FALSE,$preview=FALSE){
-		$data['part']=$part;
+	function report7($part=FALSE,$preview=FALSE){
+		$sql="";	
 		if($preview) $this->template->set_layout('print');
 		$this->template->build('report7_index',$data);
 	}			
 	function report8($cond= FALSE,$preview=FALSE){
-			//echo $cond;
-			//if($preview) $this->template->set_layout('print');				
-			$this->template->build("report8_index");			
+	## ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบูลิน
+		
+		if($cond){			
+			#ฉีดวัคซีนครบชุด
+			$sql = " SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information on historyid=information_historyid   WHERE  means='2' and total_vaccine>'3'  ".$cond."";	
+			$data['total1'] = $this->db->GetOne($sql);
+			$sql = " SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information on historyid=information_historyid   WHERE   means='1' and total_vaccine='5'  ".$cond."";	
+			$data['total2'] = $this->db->GetOne($sql);	
+
+			#ฉีดต่ำกว่า 4-5 เข็ม
+			$sql = " SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information on historyid=information_historyid   WHERE  means='2' and closecase_reason_detail1='1' and total_vaccine<'4' ".$cond."";	
+			$data['total3'] = $this->db->GetOne($sql);
+			$sql = " SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information on historyid=information_historyid   WHERE  means='1' and closecase_reason_detail1='1' and total_vaccine<'5' ".$cond."";	
+			$data['total4'] = $this->db->GetOne($sql);	
+
+			## ฉีดวัคซีนไม่ครบชุด
+			$sql = " SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information on historyid=information_historyid   WHERE  means='2' and closecase_reason_detail1 <>'1' and total_vaccine<'4' ".$cond."";	
+			$data['total5'] = $this->db->GetOne($sql);
+			$sql = " SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information on historyid=information_historyid   WHERE  means='1' and closecase_reason_detail1 <>'1' and total_vaccine<'5' ".$cond."";	
+			$data['total6'] = $this->db->GetOne($sql);	
+			
+			##ฉีดวัคซีนรวม
+			$data['total7'] = $data['total1'] + $data['total3'] + $data['total5']; 	
+			$data['total8'] = $data['total2'] + $data['total4'] + $data['total6'];				
+			## ไม่ฉีดวัคซีน		
+			$sql="SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information on historyid=information_historyid  WHERE means='3'".$cond."";
+			$data['total9']=$this->db->GetOne($sql);	
+			## ฉีด rig
+			$sql = " SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information on historyid=information_historyid  WHERE use_rig='2' ".$cond."";	
+			$data['total10']=$this->db->GetOne($sql);									
+		}
+			$data['cond'] = $cond;
+			if($preview) $this->template->set_layout('print');				
+			$this->template->build("report8_index",$data);			
 	}
 	function schedule($preview=FALSE)
 	{ ## ต้องมาแก้ ให้  n_vaccine.hospital_id=n_hospital_1.hospital_id ##

@@ -85,10 +85,10 @@
 			<th>ระยะฟักตัว</th>
 			<th>ผลตรวจทางห้องปฏิบัติการ</th>
 		</tr>
-		<tr>
-			<td>1</td>
-			<td>ชาย</td>
+		<tr style="text-align: center;">
+			<td>1</td>			
 			<td>27 ต.ค. 2554</td>
+			<td>ชาย</td>
 			<td>16</td>
 			<td>นักเรียน/นักศึกษา</td>		
 			<td>เขตอบต. (จ.พิษณุโลก อ.เมือง ต.โพณพิษสัย)</td>
@@ -105,7 +105,7 @@
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 			</div>
 	</div>
-<? if($part=="2"): ?>
+
 	<h3><a herf="javascript:void(0)">ประวัติของสัตว์ที่กัด</a></h3>
 	<div id="section2">
 		<table class="tbreport">
@@ -119,7 +119,7 @@
 			<th>สาเหตุการตายของสัตว์</th>
 			<th>การส่งตรวจ</th>
 		</tr>
-		<tr>
+		<tr style="text-align: center;">
 			<td>1</td>
 			<td></td>
 			<td></td>
@@ -137,7 +137,7 @@
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 			</div>
 	</div><!--section2 -->
-<? endif; ?>
+
 </div><!-- mulicordion -->			
 
 </div><!--report-->
