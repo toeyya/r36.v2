@@ -332,14 +332,7 @@ if(! function_exists('timespan'))
 					}
 				}
 			}
-			function compute_percent($val, $fullval){
-				if($fullval==0){
-				return number_format(0,2);
-				}else{
-				$percent = ($val*100)/$fullval;
-				return number_format($percent,2);
-				}
-			}
+
 
 			function cld_date2my($date_input){//format dd/mm/year_th -> year_th-mm-dd
 				if(!$date_input){return false;}

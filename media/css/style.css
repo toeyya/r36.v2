@@ -153,6 +153,10 @@ margin-right:11px;
 .tbdead8 td span.pad-left{
 	margin-left:61px;
 }
+.tbdead8 td span.pad-left{
+	margin-left:61px;
+}
+
 
 
 
@@ -342,6 +346,7 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 .tbreport td a:active {color: #800000; text-decoration:underline;}
 .tbreport tr.para1{text-align:center;}
 .tbreport tr.para1 td.pad-left{text-align:left;padding-left:40px;}
+.tbreport tr.para1 td.pad-left:before{content:'- ';padding-right:3px;}
 .tbreport tr.para1 td.pad-left2{text-align:left;padding-left:60px;}
 .tbreport1
 {

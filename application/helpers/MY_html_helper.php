@@ -37,9 +37,7 @@ function pagebreak($content){
 }
 
 function getIP(){
-    $ip = (getenv(HTTP_X_FORWARDED_FOR))
-    ?  getenv(HTTP_X_FORWARDED_FOR)
-    :  getenv(REMOTE_ADDR);
+    $ip = (getenv(HTTP_X_FORWARDED_FOR)) ? getenv(HTTP_X_FORWARDED_FOR): getenv(REMOTE_ADDR);
     return $ip;
 }
 
@@ -172,9 +170,14 @@ function image_extension($val){
 	return in_array($val, $ext);	
 }
 
-
-
-
+function compute_percent($val, $fullval){
+	if($fullval==0){
+		return "(".number_format(0,2).")";
+	}else{
+		$percent = ($val*100)/$fullval;
+		return "(".number_format($percent,2).")";
+	}
+}
 
 
 

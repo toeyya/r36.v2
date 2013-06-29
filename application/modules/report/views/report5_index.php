@@ -92,10 +92,10 @@ $(document).ready(function(){
 <? if(!empty($cond)): ?>
 <div id="report">
 	<div id="title"><p>รายงานการฉีดวัคซีน</p>
-	<p>เขตความรับผิดชอบ (12 เขต) : เขต 1 จังหวัด นนทบุรี  อำเภอ บางกรวย  ตำบล บางกรวย </p>
-	<p>สถานบริการ โรงพยาบาลบางกรวย <span>ปี 2556</span> เดือน ทั้งหมด ถึง ทั้งหมด </p>
+	<p>เขตความรับผิดชอบ (<?php echo $textarea; ?> เขต) : เขต <?php echo $textarea ?> จังหวัด <?php echo $textprovince ?>  อำเภอ <?php echo $textamphur ?>  ตำบล <?php echo $textdistrict ?></p>
+	<p>สถานบริการ <?php echo $texthospital ?> <span>ปี <?php echo $textyear ?></span> เดือน ทั้งหมด ถึง ทั้งหมด </p>
  </div>
-	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;" >
+	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;">
 		<tr><td colspan="2" style="text-align:right;">หน่วย:คน</td></tr>
 		<tr>
 			<th style="text-align:center">เงื่อนไข</th><th style="text-align:left">จำนวน (N=0)</th>
