@@ -101,11 +101,339 @@ class Report extends R36_Controller
 			//$this->template->build("report".$no."_index",$data);				  							
 	}
 	function report1($cond= FALSE,$preview=FALSE,$data){
+		if($cond){
+			//echo $cond;
+			//$this->db->debug = true;
+			#### 	จำนวน N ทั้งหมด  		####	
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  where 1=1 ".$cond;	
+			$total_n= $this->db->GetOne($sql);
+			$data['total_n'] =(empty($total_n)) ? 0 : $total_n;		
+			####   จำนวน N จำแนกตามเพศ      ####
+			$rs = array();
+			$total = array(0,3,0);
+			$sql="select  count(historyid) as cnt,gender  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by gender  order by gender  asc";
+		    $result = $this->db->Execute($sql);
+			foreach($result as $key =>$item){
+				$rs[$item['gender']] = $item['cnt'];
+										
+			}
+			for($i=0;$i<3;$i++){
+				$data['total_gender'.$i] = (empty($rs[$i])) ? 0 : $rs[$i];
+							
+			}
+			## จำนวน N จำแนกตามช่วงอายุ
+			$rs = array();	
+			$total= array(0,11,0);	
+			$sql="select count(historyid) as cnt,age_group  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by age_group order by age_group  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $key =>$item){
+				$rs[$item['age_group']] = $item['cnt'];	
+									
+			}
+			for($i=0;$i<11;$i++){							
+				$data['total_age'.$i] = (empty($rs[$i])) ? 0:$rs[$i];	
+											
+			}	
+			## จำนวน N จำแนกตามอาชีพขณะสัมผัสโรค
+			$rs = array();
+			$total = array(0,22,0);		
+			$sql="select count(historyid) as cnt,occupationname  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by occupationname order by occupationname  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $key =>$item){
+				$rs[$item['occupationname']] = $item['cnt'];
+											
+			}
+			for($i=0;$i<11;$i++){							
+				$data['total_occupationname'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
+													
+			}			
+			## detailplacetouch
+			$rs = array();
+			$array = array(0,4,0);
+			$total = array(0,5,$array);		
+			$sql="select count(historyid) as cnt,placetouch,detailplacetouch  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by placetouch,detailplacetouch order by placetouch,detailplacetouch  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $key =>$item){
+				$rs[$item['placetouch']][$item['detailplacetouch']] = $item['cnt'];	
+									
+			}
+			for($i=0;$i<5;$i++){
+				for($j=0;$j<4;$j++){
+					$data['total_placetouch'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];					
+				}																			
+			}
+			## bite
+			## food_dangerous
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid 
+			where food_dangerous='1'".$cond;
+			$data['total_food'] = $this->db->GetOne($sql);	
+			
+			## ตำแหน่งการสัมผัส
+			$sql ="select  sum(head) as head,sum(face) as face,sum(neck) as neck,sum(hand) as hand,sum(arm) as arm,sum(body) as body,sum(leg) as leg,sum(feet) as feet 
+				   from(
+					select count(historyid) as cnt,head,face,neck,hand,arm,body,leg,feet FROM n_history INNER JOIN n_information ON historyid=information_historyid 
+					where 1=1  ".$cond." group by head,face,neck,hand,arm,body,leg ,feet 
+				   )a";
+			$data['rs']=$this->db->GetRow($sql);
+			$data['total_position'] = $data['rs']['head']+$data['rs']['face']+$data['rs']['neck']+$data['rs']['hand']
+							  +$data['rs']['arm']+$data['rs']['body']+$data['rs']['leg']+$data['rs']['feet'];		
+
+			## ชนิดสัตว์นำโรค
+			$rs=array();
+			$array = array_fill(0,6,0);
+			$total = array_fill(0,14,$array);
+			$sql="select count(historyid) as cnt,typeanimal,typeother  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by typeanimal,typeother  order by typeanimal,typeother  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['typeanimal']][$item['typeother']] = $item['cnt'];
+				//$total1[$item['typeanimal']][$item['typeother']] = $total[$item['typeanimal']][$item['typeother']]+$item['cnt'];			
+			}
+			for($i=0;$i<7;$i++){
+				for($j=0;$j<14;$j++){				
+					$data['total_animal'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];
+				}
+				//$data['total_animal_all'.$i] = (empty($total[$i])) ? 0 : $total1[$i];
+			}
+			## จำนวน N จำแนกตามอายุของสัตว์	
+			$rs=array();
+			$total1=array_fill(0,7,0);
+			$sql="select count(historyid) as cnt,ageanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by ageanimal  order by ageanimal  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['ageanimal']] = $item['cnt'];
+				$total1[$item['ageanimal']]	= $total1[$item['ageanimal']]+$item['cnt'];			
+			}
+			for($i=0;$i<8;$i++){								
+				$data['total_ageanimal'.$i] = (empty($rs[$i])) ? 0:$rs[$i];				
+				//$data['total_ageanimal_all'.$i] = (empty($total1[$i])) ? 0 : $total1[$i];
+			}
+		   ## สถานะของสัตว์
+			$rs=array();
+			$total1=array_fill(0,4,0);
+			$sql="select count(historyid) as cnt,statusanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by statusanimal  order by statusanimal  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['statusanimal']] = $item['cnt'];
+				$total1[$item['statusanimal']]	= $total1[$item['statusanimal']]+$item['cnt'];			
+			}
+			for($i=0;$i<5;$i++){								
+				$data['total_statusanimal'.$i] = (empty($rs[$i])) ? 0:$rs[$i];				
+				//$data['total_ageanimal_all'.$i] = (empty($total1[$i])) ? 0 : $total1[$i];
+			}
+			## จำนวน N จำแนกตามการกักขัง
+			$rs=array();
+			$array=array_fill(0,3,0);			
+			$total1 =array_fill(0,5,$array);				
+			$sql="SELECT count(historyid) as cnt,detain,detaindate FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1= 1  ".$cond." GROUP BY detain,detaindate ORDER BY detain,detaindate asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['detain']][$item['detaindate']] = $item['cnt'];
+				//$total1[$item['detain']][$item['detaindate']] = $total1[$item['detain']][$item['detaindate']]+$item['cnt'];				
+			}
+			for($i=0;$i<5;$i++){
+				for($j=0;$j<3;$j++){									
+					$data['total_detain'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];					
+					//$data['total_detain_all'.$i] = (empty($total1[$i][$j])) ? 0 : $total1[$i][$j];
+				}								
+			}	
+			## ประวัติการฉีดวัคซีนของสัตว์
+			$rs=array();
+			$array=array_fill(0,3,0);			
+			$total1 =array_fill(0,5,$array);				
+			$sql="SELECT count(historyid) as cnt,historyvacine,historyvacine_within FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1= 1  ".$cond." GROUP BY historyvacine,historyvacine_within ORDER BY historyvacine,historyvacine_within asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['historyvacine']][$item['historyvacine_within']] = $item['cnt'];
+				//$total1[$item['historyvacine']] = $total1[$item['historyvacine']]+$item['cnt'];				
+			}
+			for($i=0;$i<5;$i++){
+				for($j=0;$j<3;$j++){								
+					$data['total_vaccinedog'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];					
+					//$data['total_vaccinedog_all'.$i.$j] = (empty($total1[$i][$j])) ? 0 : $total1[$i][$j];
+				}								
+			}
+			## การล้างแผล					
+			$rs=array();								
+			$sql="SELECT count(historyid) as cnt,washbefore FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1= 1  ".$cond." GROUP BY washbefore ORDER BY washbefore asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['washbefore']] = $item['cnt'];
+							
+			}
+			for($i=0;$i<3;$i++){												
+				$data['total_wash'.$i] = (empty($rs[$i])) ? 0:$rs[$i];																					
+			}
+			## วิธีการล้างแผล	
+			$rs=array();			
+			$total1 =array_fill(0,4,0);						
+			$sql="SELECT count(historyid) as cnt,washbeforedetail FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  washbefore='2'  and  washbeforedetail<>'0' ".$cond." GROUP BY washbeforedetail ORDER BY washbeforedetail asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['washbeforedetail']] = $item['cnt'];										
+			}
+			for($i=0;$i<4;$i++){												
+				$data['total_washdetail'.$i] = (empty($rs[$i])) ? 0:$rs[$i];																
+			} 
+			$data['total_washdetail_all'] = $data['total_washdetail0'] +$data['total_washdetail1'] + $data['total_washdetail2']+ $data['total_washdetail3'];  									
+			
+			## การใส่ยา					
+			$rs=array();								
+			$sql="SELECT count(historyid) as cnt,putdrug FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1= 1  ".$cond." GROUP BY putdrug ORDER BY putdrug asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['putdrug']] = $item['cnt'];							
+			}
+			for($i=0;$i<3;$i++){								
+				$data['total_drug'.$i] = (empty($rs[$i])) ? 0:$rs[$i];											
+			}
+
+			## ชนิดยา				
+			$rs=array();								
+			$sql="SELECT count(historyid) as cnt,putdrugdetail FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  putdrug='2'  ".$cond." GROUP BY putdrugdetail ORDER BY putdrugdetail asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['putdrugdetail']] = $item['cnt'];	
+									
+			}
+			for($i=0;$i<4;$i++){								
+				$data['total_drugdetail'.$i] = (empty($rs[$i])) ? 0:$rs[$i];											
+			}
+			$data['total_drugdetail_all'] = $data['total_drugdetail0'] +$data['total_drugdetail1'] + $data['total_drugdetail2']+ $data['total_drugdetail3'];  									
+
+			## ประวัติการฉีดวัคซีน			
+			$rs=array();								
+			$sql="SELECT count(historyid) as cnt,historyprotect,historyprotectdetail FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1=1 ".$cond." GROUP BY historyprotect,historyprotectdetail  ORDER BY historyprotect,historyprotectdetail  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['historyprotect']][$item['historyprotectdetail']] = $item['cnt'];										
+			}
+			for($i=0;$i<3;$i++){
+				for($j=0;$j<3;$j++){
+					$data['total_protect'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];
+				}																						
+			}			
+			$data['total_protect_all'] = $data['total_protect20'] +	$data['total_protect21'] + $data['total_protect22'];
+			## use_rig,hrig_erig
+				
+			$rs=array();								
+			$sql="SELECT count(historyid) as cnt,use_rig,erig_hrig  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1=1 ".$cond." GROUP BY use_rig,erig_hrig   ORDER BY use_rig,erig_hrig   asc";
+		    $result = $this->inform->get($sql);						
+			foreach($result as $item){
+				$rs[$item['use_rig']][$item['erig_hrig']] = $item['cnt'];										
+			}
+			for($i=0;$i<3;$i++){
+				for($j=0;$j<3;$j++){
+					 $data['total_rig'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];
+					
+				}																						
+			}			
+			$data['total_rig_all'] = $data['total_rig20'] +	$data['total_rig21'] + $data['total_rig22'];								
+			##อาการหลังฉีดวัคซีน
+			$rs=array();								
+			$sql="SELECT count(historyid) as cnt,use_rig,erig_hrig  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1=1 ".$cond." GROUP BY use_rig,erig_hrig   ORDER BY use_rig,erig_hrig   asc";
+		    $result = $this->inform->get($sql);						
+			foreach($result as $item){
+				$rs[$item['use_rig']][$item['erig_hrig']] = $item['cnt'];										
+			}
+			for($i=0;$i<3;$i++){
+				for($j=0;$j<3;$j++){
+					 $data['total_rig'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];
+					
+				}																						
+			}			
+			$data['total_rig_all'] = $data['total_rig20'] +	$data['total_rig21'] + $data['total_rig22'];			
+			## after_rig
+			$rs=array();								
+			$sql="SELECT count(historyid) as cnt,after_rig   FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1=1 ".$cond." GROUP BY after_rig ORDER BY after_rig asc";
+		    $result = $this->inform->get($sql);						
+			foreach($result as $item){
+				$rs[$item['after_rig']] = $item['cnt'];										
+			}
+			$data['total_afterrig_all']=0;
+			for($i=0;$i<3;$i++){				
+				$data['total_afterrig'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
+				$data['total_afterrig_all'] = $data['total_afterrig_all'] + $data['total_afterrig'.$i];																														
+			}
+			## อาการแพ้ rig
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
+			where after_rigdetail1 ='1' AND after_rig='2'".$cond;
+			$data['total_detail1'] = $this->db->GetOne($sql);
+			
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
+			where after_rigdetail2 ='1' AND after_rig='2'".$cond;
+			$data['total_detail2'] = $this->db->GetOne($sql);	
+
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
+			where after_rigdetail3 ='1' AND after_rig='2'".$cond;
+			$data['total_detail3'] = $this->db->GetOne($sql);				
+			
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
+			where after_rigdetail4 ='1' AND after_rig='2'".$cond;
+			$data['total_detail4'] = $this->db->GetOne($sql);				
+			
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
+			where after_rigdetail5 ='1' AND after_rig='2'".$cond;
+			$data['total_detail5'] = $this->db->GetOne($sql);	
+			
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
+			where after_rigdetail6 ='1' AND after_rig='2'".$cond;
+			$data['total_detail6'] = $this->db->GetOne($sql);				
+											
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
+			where after_rigdetail7 ='1' AND after_rig='2'".$cond;
+			$data['total_detail7'] = $this->db->GetOne($sql);	
+
+
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
+			where after_rigdetail1 !='1' AND  after_rigdetail2 !='1' AND  after_rigdetail6 !='1' AND after_rig='2'
+			AND  after_rigdetail3 !='1' AND  after_rigdetail4 !='1' AND  after_rigdetail5 !='1' AND  after_rigdetail7 !='1'".$cond;			
+			$data['total_detailno'] = $this->db->GetOne($sql);	
+			$data['total_detail'] = $data['total_detail1']+ $data['total_detail2'] + $data['total_detail3'] 
+									+$data['total_detail4'] + $data['total_detail5'] + $data['total_detail6']
+									+$data['total_detail7']+$data['total_detailno'];
+			
+			## ชนิดยา				
+			$rs=array();								
+			$sql="SELECT count(historyid) as cnt,longfeel FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  putdrug='2'  ".$cond." GROUP BY longfeel ORDER BY longfeel asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['longfeel']] = $item['cnt'];	
+									
+			}
+			$data['total_longfeel']=0;
+			for($i=0;$i<3;$i++){								
+				$data['total_longfeel'.$i] = (empty($rs[$i])) ? 0:$rs[$i];	
+				$data['total_longfeel'] = $data['total_longfeel'] +	$data['total_longfeel'.$i];								
+			}
+			
+						
+	
+	}// $cond	
+			
+			
 		if($preview)$this->template->set_layout('print');	
 		$this->template->build("report1_index",$data);		
 	}
-	function report2($cond= FALSE,$preview=FALSE,$data){
-		//$this->db->debug=true;	
+	function report2($cond= FALSE,$preview=FALSE,$data)
+	{		
 		if($cond){
 			#### 	จำนวน N ทั้งหมด  		####	
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  where 1=1 ".$cond;	
@@ -284,7 +612,7 @@ class Report extends R36_Controller
 					$data['total_wash_all'.$i.$j] = (empty($total1[$i][$j])) ? 0 : $total1[$i][$j];
 				}								
 			}			
-			## การล้างแผล					
+			## การใส่ยา					
 			$rs=array();
 			$array=array_fill(0,5,0);			
 			$total1 =array_fill(0,3,$array);						
@@ -555,7 +883,6 @@ class Report extends R36_Controller
 	}
 	function schedule($preview=FALSE)
 	{ ## ต้องมาแก้ ให้  n_vaccine.hospital_id=n_hospital_1.hospital_id ##
-		//$this->db->debug=true;
 		$today=DBdate(date('Y-m-d'));
 		$nextday=DBdate(date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d")))));			
 		//$hospital_name =$this->hospital->get_one('hospital_name','hospital_code',$this->session->userdata('R36_HOSPITAL'));	

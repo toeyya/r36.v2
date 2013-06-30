@@ -301,6 +301,7 @@ ul.sublist label.error,label.error{color:red;width:50%;}
     width: 100%;
     border-collapse: collapse;
     text-align: left;
+    
    
 }
 .tbreport th
@@ -388,6 +389,7 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 }
 .tbreport1 th.B{font-weight:900;font-size:14px;}
 #btn_printout{float:right;margin-top:10px;}
+#report #multiAccordion{ width:70%;margin-left:15%;margin-right:15%;}
 #report #multiAccordion  #reference{font-size:11px;}
 .page-break{margin:-1px 0px; padding:0px;height:0px;}
 .btn_search1{

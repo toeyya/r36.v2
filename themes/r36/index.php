@@ -7,9 +7,7 @@
 	   <?php include_once('_script.php'); ?>
        <?php echo $template['metadata']; ?>
 </head>
-<body > 	
-
+<body> 	
 	<?php echo $template['body']; ?>	
-
 </body>
 </html>

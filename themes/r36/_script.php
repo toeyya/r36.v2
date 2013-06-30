@@ -48,3 +48,5 @@ $(function(){
       },$.datepick.regional['th']);  		
 });
 </script>
+<?php echo modules::run('report/schedule'); ?>
+

@@ -1,6 +1,5 @@
 <div id="title">ข้อมูลการสัมผัสโรค - รายเดือน</div>
 <div id="search">
-<?php if(empty($cond)): ?>
 <form action="report/index/2" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 		<table class="tb_patient1">
 			  <tr>
@@ -66,7 +65,6 @@
       </ul>
 </div>	
 </form>
-<?php endif; ?>
 </div>
 <?php if(!empty($cond)): ?>
 <div id="report">
@@ -77,7 +75,7 @@
 		<p>โรงพยาบาล <?php echo $texthospital;?>  ปี  <?php echo $textyear;?>  เดือน  <?php echo $textmonth;?></p>				
 		</div>
 	
-	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;">
+	<table class="tbreport" style="width:80%;margin-left:10%;margin-right:10%;">
 		<thead>
 			<tr><td colspan="14" style="text-align:right;">หน่วย:คน</td></tr>
 			<tr>
@@ -108,7 +106,7 @@
 			<?php endfor; ?>
 			<td><? echo number_format($total_n); ?></td>	
 		</tr>
-		<tr ><td colspan="14"><strong>เพศ</strong></td></tr>
+		<tr><td colspan="14"><strong>เพศ</strong></td></tr>
 		<tr class="para1">
 			<td class="pad-left">ชาย</td>			
 			<td><?php echo number_format($total_gender11) ?> <p class="percentage"><?php echo compute_percent($total_gender11,$total_m1); ?></p></td>
@@ -159,8 +157,8 @@
 		</tr>
 		<tr ><td colspan="14"><strong>กลุ่มอายุ</strong></td></tr>
 		<?php $age=array(1=>'ต่ำกว่า 1 ปี',2=>'1-5 ปี',3=>'6-10 ปี',4=>'11-15 ปี',5=>'16-25 ปี'
-						,6=>'26-35 ปี',7=>'36-45 ปี',8=>'46-55 ปี',9=>'56-65 ปี',10=>'66 ปีขึ้นไป',11=>'ไม่ระบุ'); ?>
-		<?php  for($i=1;$i<12;$i++):?>			
+						,6=>'26-35 ปี',7=>'36-45 ปี',8=>'46-55 ปี',9=>'56-65 ปี',10=>'66 ปีขึ้นไป'); ?>
+		<?php  for($i=1;$i<11;$i++):?>			
 		<tr class="para1">
 			<td class="pad-left"><? echo $age[$i];?></td>
 			<?php  for($j=1;$j<13;$j++): ?>
@@ -218,12 +216,7 @@
 		
 	<tr class="page-break"><td colspan="14"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong></td></tr>	
 		<?php 
-		$array[0][0] = "ไม่ระบุ";	
-		$array[1][1] = "ตายเองภายใน 10 วัน";
-		$array[1][2] = "ไม่ตายภายใน 10 วัน";
-		$array[2][0] = "กักขังไม่ได้";
-		$array[3][0] = "ถูกฆ่าตาย";
-		$array[4][0] = "หนีหาย / จำไม่ได้";
+		//$array[0][0] = "ไม่ระบุ";	$array[1][1] = "ตายเองภายใน 10 วัน";$array[1][2] = "ไม่ตายภายใน 10 วัน";$array[2][0] = "กักขังไม่ได้";$array[3][0] = "ถูกฆ่าตาย";$array[4][0] = "หนีหาย / จำไม่ได้";
 		?>
 		<tr class="para1">
 			<td class="pad-left">กักขังได้ / ติดตามได้</td>	

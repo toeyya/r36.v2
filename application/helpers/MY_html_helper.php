@@ -172,10 +172,10 @@ function image_extension($val){
 
 function compute_percent($val, $fullval){
 	if($fullval==0){
-		return "(".number_format(0,2).")";
+		return number_format(0,2);
 	}else{
 		$percent = ($val*100)/$fullval;
-		return "(".number_format($percent,2).")";
+		return number_format($percent,2);
 	}
 }
 

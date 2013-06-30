@@ -8,7 +8,7 @@
 	   <?php include_once('_script.php'); ?>
        <?php echo $template['metadata']; ?>
 </head>
-<body > 
+<body> 
 	<div class="main">
 	<div class="name"></div>   
     <div class="dog1"></div>
