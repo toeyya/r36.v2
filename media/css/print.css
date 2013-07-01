@@ -5,9 +5,10 @@ font-family: Tahoma, verdana, sans-serif;}
 a{content: " (" attr(href) ")";color:#000000;}
 h3{font-size:13px;margin-bottom:-26px;color:#2A2A2A;padding:0px;margin:0px;}
 
-#title,#search{display:none;}
+#title,#search,.img{display:none;}
 div#report{width:842px;}
 #report{width:842px;padding:10px;margin:0 auto;}
+#report #multiAccordion{ width:100%;margin:0;}
 #report #title{display:block;margin-bottom:22px;margin-top:-16px;}
 #report table{margin-top:10px;}
 #report #area_btn_print{display:block;margin:5% 37%}
@@ -18,10 +19,10 @@ div#report{width:842px;}
 #report #description ul li{list-style-type:decimal}
 #report #description div strong{margin:0 5%;}
 #report #reference{margin-top:10px;}
-
 #report .right{margin-top:-13px;}
+#report h6{width:100%;margin-left:0px;margin-right:0px;}
 
-
+.tbreport{width:100%;margin:0;}
 .tbreport th{height:17px;}
 .tbreport td{border:none;height:16px;}
 .tbreport tr:hover td,.tblist tr.active td {background:none;font-weight:normal;}
@@ -46,3 +47,4 @@ table thead{display:table-header-group}
 table tfoot { display: table-footer-group;}
 table tbody{display: table-row-group;}
 <![endif]-->
+

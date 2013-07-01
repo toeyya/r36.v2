@@ -1,147 +1,42 @@
 <div id="title">ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบุลิน </div>
 <div id="search">
-<?php if(empty($cond)): ?>
 <form action="report/index/8" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
-	<table  class="tb_patient1">
-	  <tr>
-			<th>เขตความรับผิดชอบ</th>
-			<td>
-				<select name="area" id="area" class="styled-select" >
-					<option value="-">กรุณาเลือกเขต</option>
-					<option value="1" <?php echo (@$_GET['area']=="1")? "selected='selected":''; ?>>รูปแบบเดิม (12 เขต)</option>
-					<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
-				</select>
-			 </td>
-			 <th>เขตที่</th>
-			<td><span id="grouplist"><select name="group" class="styled-select" id="group"><option value="">ทั้งหมด</option></select></span>
-				
-			</td>
-			<th>จังหวัด</th>
-			<td><span id="provincelist"><select name="province" class="styled-select" id="prvince"><option value="">ทั้งหมด</option></select></span>
-				<?php if(!empty($_GET['province']) && !empty($_GET['area']) && !empty($_GET['group'])){
-							if($_GET['area']=='1'){
-								$field = "province_level_old";
-							}else{
-								$field = "province_level_new";																	
-							}
-							$sql = "select province_id, province_name from n_province where ".$field."='".$_GET['group']."' order by province_name asc";
-						   $result=$this->province->get($sql);
-						   $output = '<select name="province" class="styled-select" id="province">';
-						   $output.= '<option value="">ทั้งหมด</option>';
-							foreach($result as $rec){
-								  $output .= '<option value="'.$rec['province_id'].'">'.$rec['province_name'].'</option>';
-							}
-							$output.='</select>';	
-				} ?>
-			</td>			
-	  </tr>
-	  <tr>
-		<th>อำเภอ</th>
-		<td><span id="amphurlist"><select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select></span>
-				<?php if(!empty($_GET['province'])) : 
-						echo form_dropdown($name,get_option('amphur_id','amphur_name'," n_amphur where province_id='".$_GET['province']." and amphur_id ='".$_GET['amphur_id']."' ORDER BY amphur_name ASC"),'',' class="styled-select"','ทั้งหมด');		
-				endif; ?>
-		</td>
-		<th>ตำบล</th>
-		<td><span id="districtlist"><select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select></span>	</td>
-		<th>สถานบริการ</td>
-		<td><span id="hospitallist"><select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select></span></td>			
-	  </tr>	  
+<table  class="tb_patient1">
+<?php require 'include/conditionreport.php'; ?> 
 	 	<tr>
 	    <th>ตั้งแต่เดือน ปี(วันที่สัมผัสโรค)</th>
-	    <td><select name="month" class="styled-select"><option value="">ทั้งหมด</option>
-			<?for($i=1;$i<=12;$i++){?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?}?></select>-
-			<select name="year" class="styled-select"><option value="">ทั้งหมด</option>
-				<?$syear = (date('Y')+543)-10;
-				for($i=$syear;$i<=(date('Y')+543);$i++){?><option value="<?php echo $i;?>"><?php echo $i;?></option><?}?>
-			</select>	
+	    <td><?php echo form_dropdown('month_start',get_month(),@$_GET['month_start'],'class="styled-select"','ทั้งหมด'); ?>	-
+			<?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?>
 		</td>
 			<th>ถึง เดือน ปี (วันที่สัมผัสโรค)</th>
 	    	<td>
-	    	<select name="month" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<? for($i=1;$i<=12;$i++){ ?> <option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<? }?>
-			</select>-
-			<select name="year" class="styled-select">
-				<option value="">ทั้งหมด</option>
-				<?
-				$syear = (date('Y')+543)-10;
-				for($i=$syear;$i<=(date('Y')+543);$i++){
-				?>
-					<option value="<?php echo $i;?>"><?php echo $i;?></option>
-				<?
-				}
-				?>
-			</select>					
+	    	<?php echo form_dropdown('month_end',get_month(),@$_GET['month_end'],'class="styled-select"','ทั้งหมด'); ?>	-
+			<?php echo form_dropdown('year_end',get_year_option(),@$_GET['year_end'],'class="styled-select"','ทั้งหมด') ?>					
 		</td>
 	</tr>
 	<tr>
 	  <th>ตั้งแต่เดือน ปี(วันที่บันทึกข้อมูล)</th>
+	    <td><?php echo form_dropdown('month_report_start',get_month(),@$_GET['month_report_start'],'class="styled-select"','ทั้งหมด'); ?>	-
+			<?php echo form_dropdown('year_report_start',get_year_option(),@$_GET['year_report_start'],'class="styled-select"','ทั้งหมด') ?>
+		</td>
+		<th>ถึง เดือน ปี (วันที่บันทึกข้อมูล)</th>
 	    <td>
-	    	<select name="month_start" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select> - <select name="year_start" class="styled-select">
-				<option value="">ทั้งหมด</option>
-				<?
-				$syear = (date('Y')+543)-10;
-				for($i=$syear;$i<=(date('Y')+543);$i++){
-				?>
-					<option value="<?php echo $i;?>"><?php echo $i;?></option>
-				<?
-				}
-				?>
-			</select></td>			
-			<th>ถึง เดือน ปี (วันที่บันทึกข้อมูล)</th>
-	    	<td>
-		    	<select name="month_end" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select> -  <select name="year_end" class="styled-select">
-				<option value="">ทั้งหมด</option>
-				<?
-				$syear = (date('Y')+543)-10;
-				for($i=$syear;$i<=(date('Y')+543);$i++){
-				?>
-					<option value="<?php echo $i;?>"><?php echo $i;?></option>
-				<?
-				}
-				?>
-			</select>
+	    	<?php echo form_dropdown('month_report_end',get_month(),@$_GET['month_report_end'],'class="styled-select"','ทั้งหมด'); ?>	-
+			<?php echo form_dropdown('year_report_end',get_year_option(),@$_GET['year_report_end'],'class="styled-select"','ทั้งหมด') ?>					
 		</td>
 	 </tr>
 </table>
-  <div class="btn_inline">
-      <ul>
-      	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      	
-      </ul>
-</div>
+  <div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul></div>
 </form>
-<?php endif; ?>
+
 </div>
 <div id="report">
 	<div id="title">				  
 		<p>รายงานการฉีดวัคซีนและอิมมูโนโกลบุลิน</p>
-	    <p>เขตความรับผิดชอบ (<?php echo $textarea;?>) :เขต <?php echo $textgroup;?></p>
+	    <p>เขตความรับผิดชอบ <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
 		<p>จังหวัด<?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?> ตำบล <?php echo $textdistrict; ?></p>
-		<p>โรงพยาบาล <?php echo $texthospital;?> </p>
-		<p>เดือน <?php echo $textyear ?> ปี <?php echo $textmonth ?> ถึงเดือน กุมภาพันธ์ ปี 2556</p>				
+		<p>สถานบริการ<?php echo $texthospital;?> </p>
+		<p>เดือน <?php echo $textmonth_start; ?> ปี <?php echo $textyear_start ?> ถึงเดือน <?php echo $textmonth_end; ?> ปี <?php echo $textyear_end ?></p>				
 	</div>
 	<?php if(!empty($cond)): ?>
 	<div class="right">หน่วย : คน</div>
@@ -207,9 +102,9 @@
 		</table>							
 	</div>
 	<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
-		<div id="btn_printout"><a href="report/index/8/preview/"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
-		<div id="area_btn_print">
-			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
-			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
-		</div>
+	<div id="btn_printout"><a href="report/index/8<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+	<div id="area_btn_print">
+		<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+		<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+	</div>
 </div>

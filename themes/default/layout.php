@@ -8,6 +8,7 @@
  <?php echo $template['metadata']; ?>
 </head>
 <body>
+
 <div id="wrap">
     <div class="main">
     	<div class="logo"></div>

@@ -1,84 +1,26 @@
 <div id="title">ข้อมูลการสัมผัสโรค - รายไตรมาส</div>
 <div id="search">
 <form action="report/index/3" method="post" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
-		<table class="tb_patient1">
-			  <tr>
-				<th>เขตความรับผิดชอบ</th>
-				<td>
-					<select name="area" class="styled-select widthselect"  id="area" onchange="ListGroupByArea();">
-						<option value="-">กรุณาเลือกเขต</option>
-						<option value="1">รูปแบบเดิม (12 เขต)</option>
-						<option value="2">รูปแบบใหม่ (19 เขต)</option>
-					</select>
-				</td>
-				<th>เขตที่</th>
-				<td>
-				<span id="grouplist">
-					<select name="group" class="styled-select widthselect" id="group">
-						<option value="">ทั้งหมด</option>
-					</select>
-				</span></td>
-
-				<th>จังหวัด</th>
-				<td>
-				<span id="provincelist">
-					<select name="province" class="styled-select widthselect">
-						<option value="">ทั้งหมด</option>
-					</select>
-				</span></td>
-			  </tr>
-		  <tr>
-			<th>อำเภอ</th>
-			<td>
-				<span id="amphurlist">
-					<select name="amphur" class="styled-select widthselect">
-						<option value="">ทั้งหมด</option>
-					</select>
-				</span>
-			</td>
-			<th>สถานบริการ</th>
-			<td>
-				<span id="hospitallist">
-				<select name="hospital" class="styled-select widthselect">
-					<option value="">ทั้งหมด</option>
-				</select>
-				</span>
-			</td>
-
-		    <th>ปี</th>
-		    <td>
-				<select name="year" class="styled-select">
-				<option value="">ทั้งหมด</option>
-				<?
-				$syear = (date('Y')+543)-10;
-				for($i=$syear;$i<=(date('Y')+543);$i++){
-				?>
-					<option value="<?=$i;?>"><?=$i;?></option>
-				<?
-				}
-				?>
-				</select>
-			</td>
-	      </tr>
-	  </table>
-  <div class="btn_inline">
-      <ul>
-      	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      	
-      </ul>
+<table class="tb_patient1">
+<?php require 'include/conditionreport.php'; ?>
+<tr><th>ปีที่สัมผัสโรค</th>
+	 <td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>
+</tr>
+</table>
+<div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul>
 </div>	
 </form>
 </div>
 <div id="report">
 		<div id="title">				  
 		<p>รายงานผู้สัมผัสโรครายไตรมาส</p>
-	    <p>เขตความรับผิดชอบ (<?php echo $textarea;?>) :เขต <?php echo $textgroup;?></p>
+	    <p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
-		<p>โรงพยาบาล <?php echo $texthospital;?>  ปี  <?php echo $textyear;?>  เดือน  <?php echo $textmonth;?></p>				
+		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 	</div>
-	<div class="right">หน่วย:คน</div>
 	<table class="tbreport">
 		<thead>
+		<tr><td colspan="6" style="text-align:right;">หน่วย:คน</td></tr>
 		<tr>
 			<th rowspan="2">ข้อมูล</th>
 			<th colspan="5">ไตรมาส (N=70,305)</th>
@@ -444,8 +386,8 @@
 		</tbody>				
 	</table>
 			<hr class="hr1">
-		<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>			
-		<div id="btn_printout"><a href="report/index/3/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="reference"><?php echo $reference?></div>			
+		<div id="btn_printout"><a href="report/index/3<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

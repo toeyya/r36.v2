@@ -1,102 +1,35 @@
+<script type="text/javascript">
+
+</script>
 <div id="title">ข้อมูลการสัมผัสโรค - รายเดือน</div>
 <div id="search">
 <form action="report/index/2" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
-		<table class="tb_patient1">
-			  <tr>
-				<th>เขตความรับผิดชอบ</th>
-				<td>
-					<select name="area" class="styled-select widthselect"  id="area" onchange="ListGroupByArea();">
-						<option value="-">กรุณาเลือกเขต</option>
-						<option value="1">รูปแบบเดิม (12 เขต)</option>
-						<option value="2">รูปแบบใหม่ (19 เขต)</option>
-					</select>
-				</td>
-				<th>เขตที่</th>
-				<td>
-				<span id="grouplist">
-					<select name="group" class="styled-select widthselect" id="group">
-						<option value="">ทั้งหมด</option>
-					</select>
-				</span></td>
-
-				<th>จังหวัด</th>
-				<td>
-				<span id="provincelist">
-					<select name="province" class="styled-select widthselect">
-						<option value="">ทั้งหมด</option>
-					</select>
-				</span></td>
-			  </tr>
-		  <tr>
-			<th>อำเภอ</th>
-			<td><span id="amphurlist"><select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select></span></td>
-			<th>ตำบล</th>
-			<td><span id="districtlist"><select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select></span></td>
-			<th>สถานบริการ</th>
-			<td>
-				<span id="hospitallist">
-				<select name="hospital" class="styled-select widthselect">
-					<option value="">ทั้งหมด</option>
-				</select>
-				</span>
-			</td>
-			</tr>
-			<tr>
-		    <th>ปี</th>
-		    <td>
-				<select name="year_start" class="styled-select">
-				<option value="">ทั้งหมด</option>
-				<?
-				$syear = (date('Y')+543)-10;
-				for($i=$syear;$i<=(date('Y')+543);$i++){
-				?>
-					<option value="<?=$i;?>"><?=$i;?></option>
-				<?
-				}
-				?>
-				</select>
-			</td>
-	      </tr>
-	  </table>
-  <div class="btn_inline">
-      <ul>
-      	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      
-      </ul>
-</div>	
+<table class="tb_patient1">
+<?php require 'include/conditionreport.php'; ?>
+	<tr>
+	    <th>ปีที่สัมผัสโรค</th>
+	    <td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>						
+      </tr>  
+</table>
+<div class="btn_inline"><ul><li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li></ul></div>	
 </form>
 </div>
-<?php if(!empty($cond)): ?>
+<?php if(!empty($cond)):?>
 <div id="report">
 		<div id="title">				  
 		<p>รายงานผู้สัมผัสโรครายเดือน</p>
-	    <p>เขตความรับผิดชอบ (<?php echo $textarea;?>) :เขต <?php echo $textgroup;?></p>
+	    <p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
-		<p>โรงพยาบาล <?php echo $texthospital;?>  ปี  <?php echo $textyear;?>  เดือน  <?php echo $textmonth;?></p>				
+		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?></p>				
 		</div>
 	
-	<table class="tbreport" style="width:80%;margin-left:10%;margin-right:10%;">
+	<table class="tbreport">
 		<thead>
 			<tr><td colspan="14" style="text-align:right;">หน่วย:คน</td></tr>
 			<tr>
-				<th rowspan="2">ข้อมูล</th>
-				<th colspan="14">เดือน (N = <? echo number_format($total_n) ?>)</th>
+				<th rowspan="2">ข้อมูล</th><th colspan="14">เดือน (N = <? echo number_format($total_n) ?>)</th>
 			</tr>		
-			<tr>
-				<th>ม.ค.</th>
-				<th>ก.พ.</th>
-				<th>มี.ค.</th>
-				<th>เม.ย.</th>
-				<th>พ.ค.</th>
-				<th>มิ.ย.</th>
-				<th>ก.ค.</th>
-				<th>ส.ค.</th>
-				<th>ก.ย.</th>
-				<th>ต.ค.</th>
-				<th>พ.ย.</th>
-				<th>ธ.ค.</th>
-				<th >รวม</th>
-			</tr>
+			<tr><th>ม.ค.</th><th>ก.พ.</th><th>มี.ค.</th><th>เม.ย.</th><th>พ.ค.</th><th>มิ.ย.</th><th>ก.ค.</th><th>ส.ค.</th><th>ก.ย.</th><th>ต.ค.</th><th>พ.ย.</th><th>ธ.ค.</th><th >รวม</th></tr>
 		</thead>
 		<tbody>
 		<tr class="para1">
@@ -188,7 +121,7 @@
 			<td><?php echo number_format(${'total_place_all'.$i});?><p class="percentage"><?php echo compute_percent(${'total_place_all'.$i},$total_n); ?></p></td>
 		<?php endfor; ?>
 		</tr>
-			
+		<tr class="page-break"></tr>	
 		<tr><td colspan="14"><strong>ชนิดสัตว์นำโรค</strong></td></tr>
 	<?php $animal = array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ',7=>'ไม่ระบุ'); ?>	
 		<?php for($i=1;$i<8;$i++): ?>
@@ -214,7 +147,7 @@
 		<?php endfor; ?>
 		</tr>		
 		
-	<tr class="page-break"><td colspan="14"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong></td></tr>	
+	<tr><td colspan="14"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong></td></tr>	
 		<?php 
 		//$array[0][0] = "ไม่ระบุ";	$array[1][1] = "ตายเองภายใน 10 วัน";$array[1][2] = "ไม่ตายภายใน 10 วัน";$array[2][0] = "กักขังไม่ได้";$array[3][0] = "ถูกฆ่าตาย";$array[4][0] = "หนีหาย / จำไม่ได้";
 		?>
@@ -445,9 +378,9 @@
 		<tr class="para1">
 			<td class="pad-left">ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม</td>	
 			<?php  for($j=1;$j<13;$j++): ?>
-			<td><?php echo number_format(${'total_historyprotect10'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_historyprotect10'.$j},${'total_m'.$j}); ?></p></td>
+			<td><?php echo number_format(${'total_historyprotect10'.$j}); ?><p class="percentage"><?php echo compute_percent(${'total_historyprotect10'.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
-			<td><?php echo number_format($total_historyprotect_all10); ?> <p class="percentage"><?php echo compute_percent($total_historyprotect_all10,$total_n); ?></p></td>
+			<td><?php echo number_format($total_historyprotect_all10); ?><p class="percentage"><?php echo compute_percent($total_historyprotect_all10,$total_n); ?></p></td>
 
 		</tr>	
 		<tr class="para1"><td class="pad-left" colspan="14">ใส่ยา</td>	</tr>
@@ -481,8 +414,10 @@
 	</table>
 	
 		<hr class="hr1">
-		<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>			
-		<div id="btn_printout"><a href="report/index/2/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="reference"><?php echo $reference?></div>			
+		<div id="btn_printout">
+			<?php  $p=(empty($_GET['preview'])) ? '&p=preview':'';?>
+			<a href="report/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].$p ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

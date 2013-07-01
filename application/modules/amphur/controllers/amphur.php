@@ -21,11 +21,13 @@ class Amphur extends Admin_Controller
 		$this->template->build('amphur_form');
 	}
 	function save(){
+		if($_POST){
+			$this->amphur->save($_POST);
+		}
 		
-		$this->amphur->save($_POST);
 	}
 	function delete(){
-		
+	    redirect('amphur/index');
 	}
 	
 	

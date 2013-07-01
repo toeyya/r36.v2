@@ -14,112 +14,15 @@ $(document).ready(function(){
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - ภาพรวม</div>
 <div id="search">
-<? if(empty($cond)): ?>
 <form action="report/index/1" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
-	<table  class="tb_patient1">
-	  <tr>
-			<th>เขตความรับผิดชอบ</th>
-			<td>
-				<select name="area" id="area" class="styled-select" >
-					<option value="-">กรุณาเลือกเขต</option>
-					<option value="1" <?php echo (@$_GET['area']=="1")? "selected='selected":''; ?>>รูปแบบเดิม (12 เขต)</option>
-					<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
-				</select>
-			 </td>
-			 <th>เขตที่</th>
-			<td><span id="grouplist"><select name="group" class="styled-select" id="group"><option value="">ทั้งหมด</option></select></span></td>
-			<th>จังหวัด</th>
-			<td>
-			<span id="provincelist">
-				<select name="province" class="styled-select" id="prvince">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span></td>			
-	  </tr>
-	  <tr>
-
-		<th>อำเภอ</th>
-		<td>
-			<span id="amphurlist">
-				<select name="amphur" class="styled-select">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span></td>
-		<th>ตำบล</th>
-			<td>
-				<span id="districtlist">
-					<select name="district" class="styled-select" id="district">
-						<option value="">ทั้งหมด</option>
-					</select>
-				</span>					</td>
-			<th>สถานบริการ</td>
-			<td>
-				<span id="hospitallist">
-				<select name="hospital" class="styled-select" id="hospital">
-					<option value="">ทั้งหมด</option>
-				</select>
-				</span></td>			
-	  </tr>
-
-	  <tr>
+<table class="tb_patient1">
+<?php require 'include/conditionreport.php'; ?>
+	<tr>
 	    <th>ปีที่สัมผัสโรค</th>
-	    <td>
-			<select name="year_start" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			$syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){
-			?>
-				<option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?
-			}
-			?>
-			</select>					</td>
-			<th>เดือนที่สัมผัสโรค</th>
-	    	<td>
-			<select name="month_start" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select>
-		</td>
-		
-      </tr>   
-	  <tr>  
-	  <th>ปีที่บันทึกรายการ</th>
-	    <td>
-			<select name="year_report_start" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			$syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){
-			?>
-				<option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?
-			}
-			?>
-			</select></td>			
-			<th>เดือนที่บันทึกรายการ</th>
-	    	<td>
-			<select name="month_report_start" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			for($i=1;$i<=12;$i++){
-			?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<?
-			}
-			?>
-			</select>
-		</td>
-
-      </tr>
-
+	    <td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>
+		<th>เดือนที่สัมผัสโรค</th>
+	    <td><?php echo form_dropdown('month_start',get_month(),@$_GET['month_start'],'class="styled-select"','ทั้งหมด'); ?></td>					
+      </tr>   	
   </table>
   <div class="btn_inline">
       <ul>
@@ -128,28 +31,28 @@ $(document).ready(function(){
       </ul>
 </div>	
 </form>
-<? endif; ?>
+
 </div>
 
 <div id="report">
 		<div id="title">				  
 		<p>รายงานผู้สัมผัสโรคในภาพรวม</p>
-	    <p>เขตความรับผิดชอบ (<?php echo $textarea;?>) :เขต <?php echo $textgroup;?></p>
+	    <p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
-		<p>โรงพยาบาล <?php echo $texthospital;?>  ปี  <?php echo $textyear;?>  เดือน  <?php echo $textmonth;?></p>				
+		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 		</div>
 <? if(!empty($cond)): ?>
 <div id="multiAccordion">
-    <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป</a></h3>
+    <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>
     <div id="section1">
-		<h6>ตารางที่ 1 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามข้อมูลทั่วไป</h6>
-		<table class="tbreport" style="width:80%;margin-left:10%;margin-right:10%;">
+		<h6>ตารางที่ 1 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามข้อมูลทั่วไป <a href="" class="excel"></a></h6>
+		<table class="tbreport">
 		<tr>
 			<th>ข้อมูลทั่วไป</th>
 			<th>จำนวน (N=<?php echo $total_n ?>)</th>
 			<th>ร้อยละ</th>
 		</tr>
-		<tr ><td colspan="3"><strong>เพศ</strong></td></tr>
+		<tr><td colspan="3"><strong>เพศ</strong></td></tr>
 		<tr class="para1">
 			<td class="pad-left">ชาย</td>
 			<td><? echo number_format($total_gender1); ?></td>
@@ -173,15 +76,16 @@ $(document).ready(function(){
 		<tr class="para1">
 			<td class="pad-left"><? echo $age[$i];?></td>
 			<td><?php echo number_format(${'total_age'.$i}); ?></td>
-			<td><?php echo compute_percent(${'total_age'.$i},$total_n); ?></p></td>
+			<td><?php echo compute_percent(${'total_age'.$i},$total_n); ?></td>
 		</tr>
 		<?php endfor; ?>
 		<tr class="para1">
 			<td class="pad-left">ไม่ระบุ</td>
-			<td><?php echo number_format($total_age0); ?></p></td>
-			<td><?php echo compute_percent($total_age0,$total_n); ?></p></td>		
+			<td><?php echo number_format($total_age0); ?></td>
+			<td><?php echo compute_percent($total_age0,$total_n); ?></td>		
 		</tr>
-		<tr ><td colspan="3"><strong>อาชีพขณะสัมผัสโรค</strong></td></tr>
+		<tr class="para1"><td colspan="3" class="pad-left2">(<strong>X</strong>= 36.20, <strong>SD</strong>= 23.59, <strong>Min</strong>= 0.00, <strong>Max</strong>= 85.00)</td></tr>
+		<tr><td colspan="3"><strong>อาชีพขณะสัมผัสโรค</strong></td></tr>
 <?php $occupationname = array(1=>'นักเรียน นักศึกษา',2=>'ในปกครอง',3=>'เกษตรกรทำนา ทำสวน ',4=>'ข้าราชการ',5=>'กรรมกร'
 							 ,6=>'รับจ้าง( เช่น พนักงานบริษัท,ดารานักแสดง )',7=>'ค้าขาย',8=>'งานบ้าน',9=>'ทหาร ตำรวจ',10=>'ประมง'
 							 ,11=>'ครู',12=>'เลี้ยงสัตว์ / จับสุนัข ',13=>'นักบวช / ภิกษุสามเณร ',14=>'ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ '
@@ -191,7 +95,7 @@ $(document).ready(function(){
 		<tr class="para1">
 			<td class="pad-left"><? echo $occupationname[$i];?></td>
 			<td><?php echo number_format(${'total_occupationname'.$i}); ?></td>
-			<td><?php echo compute_percent(${'total_occupationname'.$i},$total_n); ?></p></td>
+			<td><?php echo compute_percent(${'total_occupationname'.$i},$total_n); ?></td>
 		</tr>
 		<?php endfor; ?>
 		</table>		
@@ -202,7 +106,7 @@ $(document).ready(function(){
 		 <h3><a href="javascript:void(0);">ส่วนที่ 2 : ตำแหน่งและลักษณะการสัมผัส</a></h3>
 		<div id="section2">
 			<h6>ตารางที่ 2 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามสถานที่สัมผัสโรค ลักษณะการสัมผัสโรค และตำแหน่งที่สัมผัส</h6>
-			<table class="tbreport" style="width:80%;margin-left:10%;margin-right:10%;">
+			<table class="tbreport">
 				<tr>
 					<th>การสัมผัส</th>
 					<th>จำนวน (N=<?php echo $total_n; ?>)</th>
@@ -267,17 +171,6 @@ $(document).ready(function(){
 				</tr>
 
 				<tr><td colspan="3"><strong>ลักษณะการสัมผัส</strong></td></tr>
-<?php $placetouch = array(1=>'ถูกกัด',2=>'ถูกข่วน',3=>'ถูกเลีย / ถูกข่วน'); ?>
-<?php $placetouchdetail = array(1=>'มีเลือดออก',2=>'ไม่มีเลือดออก',3=>'มีเลือดออก',4=>'ไม่มีเลือดออก',5=>'ที่มีแผล',6=>'ที่ไม่มีแผล'); ?>
-				<? //for($i=1;$i<4;$i++): ?>
-				<tr class="para1">
-					<td class="pad-left2">มีเลือดออก</td>
-					<? //for($j=1;$j<7;$j++): ?>
-					<td></td>
-					<td></td>			    					
-					<? //endfor; ?>
-				</tr>
-				<? //endfor; ?>
 				<tr class="para1">
 					<td class="pad-left" colspan="3">ถูกกัด</td>
 			    </tr>
@@ -372,7 +265,7 @@ $(document).ready(function(){
 		 <h3><a href="javascript:void(0);">ส่วนที่ 3 : สัตว์นำโรค</a></h3>
 		<div id="section3">
 			<h6>ตารางที่ 3 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้าแจกแจงตามชนิดและประวัติของสัตว์นำโรค </h6>
-			<table class="tbreport" style="width:80%;margin-left:10%;margin-right:10%;">
+			<table class="tbreport">
 				<tr>
 					<th>ชนิดและประวัติของสัตว์</th>
 					<th>จำนวน (N=<?php echo $total_n; ?>)</th>
@@ -497,7 +390,7 @@ $(document).ready(function(){
 		 <h3><a href="javascript:void(0);">ส่วนที่ 4 : ประวัติการได้รับวัคซีน และการปฏิบัติตนของผู้สัมผัสโรค</a></h3>
 		<div id="section4">
 			<h6>ตารางที่ 4  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการดูแลบาดแผลและประวัติการได้รับวัคซีน </h6>
-			<table class="tbreport" style="width:80%;margin-left:10%;margin-right:10%;">
+			<table class="tbreport">
 				<tr>
 					<th>การดูแลบาดแผลและประวัติการได้รับวัคซีน</th>
 					<th>จำนวน (N=<?php echo $total_n; ?>)</th>
@@ -618,7 +511,7 @@ $(document).ready(function(){
 		 <h3><a href="javascript:void(0);">ส่วนที่ 5 : การฉีดอิมมูโนโกลบุลินและวัคซีนในครั้งนี้</a></h3>
 		<div id="section5">
 			<h6>ตารางที่ 5  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการฉีดอิมมูโนโกลบุลินและวัคซีน </h6>
-			<table class="tbreport" style="width:80%;margin-left:10%;margin-right:10%;">
+			<table class="tbreport">
 				<tr>
 					<th>การฉีดอิมมูโนโกลบุลินและวัคซีน</th>
 					<th>จำนวน (N=<?php echo $total_n;  ?>)</th>
@@ -731,8 +624,9 @@ $(document).ready(function(){
 				</tr>
 			</table>	
 			<hr class="hr1">		
-			<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>			
-			<div id="btn_printout"><a href="report/index/1/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<div id="reference"><?php echo $reference?></div>			
+			<div id="btn_printout">
+			<a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 			<div id="area_btn_print">
 				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

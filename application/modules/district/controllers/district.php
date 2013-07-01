@@ -150,7 +150,7 @@ class District extends Admin_Controller
 					  $output .= '<option value="'.$rec['groupno'].'">'.$groupname.'</option>';
 				}
 				$output.='</select>';
-		    }elseif($area=='-'){
+		    }elseif($area==''){
 			   $output = '<select name="group" class="styled-select" id="group">';
 			   $output.= '<option value="">ทั้งหมด</option>';
 			   $output.='</select>';
@@ -161,7 +161,7 @@ class District extends Admin_Controller
 	{
 		 $group=$_GET['group'];
 		 $area=$_GET['area'];
-		  if($group!='-' && $area!='-' && $group!=''){
+		  if($group!='' && $area!='' && $group!=''){
 				if($area=='1'){
 					$field = "province_level_old";
 				}else{

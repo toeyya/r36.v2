@@ -19,6 +19,14 @@ class Area extends Admin_Controller
 	function delete($id){
 		if($id){
 			$this->area->delete($id);
+			set_notify('success', DELETE_DATA_COMPLETE);
+		}
+		redirect('area');
+	}
+	function save(){
+		if($_POST){
+			$this->area->save($_POST);
+			set_notify('success', SAVE_DATA_COMPLETE);
 		}
 		redirect('area');
 	}

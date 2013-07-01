@@ -12,12 +12,14 @@ class Report extends R36_Controller
 		$this->load->model('province/province_model','province');
 		$this->load->model('inform/inform_model','inform');
 		$this->load->model('inform/vaccine_model','vaccine');
+		
 		$this->template->append_metadata(js_report());
 	}
-
-	function index($no=FALSE,$preview=FALSE)
+	public $reference= "แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข";
+	function index($no=FALSE)
 	{
 		// $this->db->debug=TRUE;
+		 $data['reference'] = $this->reference;
 		 $data['textarea'] ="";
 		 $data['textprovince'] = "ทั้งหมด";
 		 $data['textamphur'] = "ทั้งหมด";
@@ -32,33 +34,40 @@ class Report extends R36_Controller
 		  if(!empty($_GET['hospital'])){
 		  		$cond = " AND hospitalcode='".$_GET['hospital']."'";
 			  	$data['texthospital']=$this->hospital->get_one("hospital_name","hospital_code",$_GET['hospital']);
-		  }elseif(!empty($_GET['amphur'])){
+		  }
+		  if(!empty($_GET['amphur'])){
 			  	$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."'";		
 				$data['textamphur']=$this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id= ? ",array($_GET['province'],$_GET['amphur']));
-		  }elseif(!empty($_GET['district'])){
-		  		$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$province."' and hospitaldistrict='".$_GET['district']."'";
+		  }
+		  if(!empty($_GET['district'])){
+		  		$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."' and hospitaldistrict='".$_GET['district']."'";
 				$data['textdistrict']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district']));
-		  }elseif(!empty($_GET['province'])){
+		  }
+		  if(!empty($_GET['province'])){
 		  	 	$col="hospitalprovince";	
 		  	 	if($no=="6") $col="n_amphur.province_id";
 			  	$cond = " AND ".$col." = '".$_GET['province']."'";
+				$data['province_id'] = $_GET['province'];
+				
 				$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
-		  }elseif(!empty($_GET['group'])){
-		  	  if(!empty($_GET['area'])=='1'){
-		  	  	 $field="province_level_old";	
-				  $data['textarea'] = "รูปแบบเดิม (12 เขต)";		  		
-			  }elseif(!empty($_GET['area'])=='2'){
-		 		 $field="province_level_new";		
-				 $data['textarea']  = "รูปแบบใหม่ (19 เขต)";			
-			  }
-				  $where=$field."='".$_GET['group']."'";
-				  $area=$this->province->select("province_id")->where($where)->sort("")->order("province_id asc")->get();
-				  $provinceid=explode(',',$area[0]['province_id']);
-				  //$provinceid = substr($provinceid, 0, -2);  
-				  $cond = " AND hospitalprovince IN (".$provinceid.")";												
-					
-					if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
-					}else{$data['textgroup'] = "เขต ".$_GET['group'];}
+		  }
+		 
+		 	if(!empty($_GET['area'])){
+			  	  if($_GET['area']=='1'){
+			  	  	 $field="province_level_old";	
+					 $data['textarea'] = "รูปแบบเดิม (12 เขต)";		  		
+				  }elseif($_GET['area']=='2'){
+			 		 $field="province_level_new";		
+					 $data['textarea']  = "รูปแบบใหม่ (19 เขต)";			
+				  } 
+			   	if(!empty($_GET['group'])&& empty($_GET['province'])){		  	   	
+				  $where=$field."='".$_GET['group']."'";				 
+				  $provinceid= "select province_id from n_province where ".$where;  
+				  $cond = " AND hospitalprovince IN (".$provinceid.")";			  	   
+			   	}
+																
+				if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
+				}else{$data['textgroup'] = $_GET['group'];}
 		  }		  
 		  if((!empty($_GET['month_start'])  && !empty($_GET['year_start']))   && (!empty($_GET['month_end']) && !empty($_GET['year_end']))){
 		  	 	$cond.= " AND (month(datetouch) BETWEEN '".$_GET['month_start']."' AND '".$_GET['month_end']."') AND (year(datetouch) BETWEEN '".$_GET['year_start']."' AND '".$_GET['year_end']."')";
@@ -67,8 +76,8 @@ class Report extends R36_Controller
 			 	$data['textyear_end'] = $_GET['year_end'];
 				$data['textmonth_end'] = convert_month($_GET['month_end'],"longthai");
 		  }else{
-				if(!empty($_GET['year_start'])){					$cond.= " AND year(datetouch)='".$_GET['year_start']."'";	$data['textyear_start'] = $_GET['year_start'];}		  	
-		  		if(!empty($_GET['month_start'])){				$cond.= " AND month(datetouch)='".$_GET['month_start']."'";  	$data['textmonth_start'] = convert_month($_GET['month_start'],"longthai");	}	
+				if(!empty($_GET['year_start'])){	$cond.= " AND year(datetouch)='".$_GET['year_start']."'";	$data['textyear_start'] = $_GET['year_start'];}		  	
+		  		if(!empty($_GET['month_start'])){	$cond.= " AND month(datetouch)='".$_GET['month_start']."'";  	$data['textmonth_start'] = convert_month($_GET['month_start'],"longthai");	}	
 		  }
 		    
 		  if((!empty($_GET['month_report_start'])  && !empty($_GET['year_report_start']))   && (!empty($_GET['month_report_end']) && !empty($_GET['year_report_start']))){
@@ -87,6 +96,7 @@ class Report extends R36_Controller
 			$current = date('Ymdhis');
 			$data['current']=$current;
 		    $data['cond']=$cond;
+		    $preview = (empty($_GET['p'])) ? '':'preview';
 			switch($no){
 				case "1":$this->report1($cond,$preview,$data);break;
 				case "2":$this->report2($cond,$preview,$data);break;
@@ -100,10 +110,9 @@ class Report extends R36_Controller
 			//if($preview) $this->template->set_layout('print');				
 			//$this->template->build("report".$no."_index",$data);				  							
 	}
-	function report1($cond= FALSE,$preview=FALSE,$data){
+	function report1($cond= FALSE,$preview=FALSE,$data)
+	{
 		if($cond){
-			//echo $cond;
-			//$this->db->debug = true;
 			#### 	จำนวน N ทั้งหมด  		####	
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  where 1=1 ".$cond;	
 			$total_n= $this->db->GetOne($sql);
@@ -651,13 +660,9 @@ class Report extends R36_Controller
 				}								
 			}
 
-		}// $cond
-		
-		
-					 
+		}// $cond					 
 		$data['cond'] = $cond;
-		//var_dump($data);
-		if($preview)$this->template->set_layout('print');	
+		if($preview){$this->template->set_layout('print');}
 		$this->template->build("report2_index",$data);			
 	}
 	function report3($cond= FALSE,$preview=FALSE,$data){
@@ -753,86 +758,92 @@ class Report extends R36_Controller
 	}
 	function report5($cond= FALSE,$preview=FALSE,$data)
 	{		
-		if($cond){		 
-		$total=0;$total1=0;$total2=0;$total3=0;$total4=0;$total5=0;$total6=0;
-		## ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม
-		$sql="SELECT count(historyid) as cnt,total_vaccine FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE historyprotect=1 ".$cond."";
-		$data['total']=$this->db->GetOne($sql);
-
-		## --  ภายใน 6 เดือน
-		$sql="SELECT count(historyid) as cnt,total_vaccine FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE historyprotectdetail=1  and total_vaccine<>0 ".$cond." group by total_vaccine ORDER BY total_vaccine ASC";
-		$result=$this->inform->get($sql);	
-		foreach($result as $item){
-			$vaccine2[$item['total_vaccine']]=$item['cnt'];
-			$total2=$total2+$item['cnt'];
-		}
-		 $data['v6']=(empty($vaccine2[1])) ? 0:$vaccine2[1];
-		 $data['v7']=(empty($vaccine2[2])) ? 0:$vaccine2[2];
-		 $data['v8']=(empty($vaccine2[3])) ? 0:$vaccine2[3];
-		 $data['v9']=(empty($vaccine2[4])) ? 0:$vaccine2[4];
-		 $data['v10']=(empty($vaccine2[5])) ? 0:$vaccine2[5];
-		 $data['total2']=$total2;	 		
-		## เกิน 6 เดือน
-		$sql="SELECT count(historyid) as cnt,total_vaccine FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE historyprotectdetail=2  and total_vaccine<>0  ".$cond." group by total_vaccine ORDER BY total_vaccine ASC";
-		$result=$this->inform->get($sql);	
-		foreach($result as $item){
-			$vaccine3[$item['total_vaccine']]=$item['cnt'];
-			$total3=$total3+$item['cnt'];
-		}	
-		 $data['v11']=(empty($vaccine3[1])) ? 0:$vaccine3[1];
-		 $data['v12']=(empty($vaccine3[2])) ? 0:$vaccine3[2];
-		 $data['v13']=(empty($vaccine3[3])) ? 0:$vaccine3[3];
-		 $data['v14']=(empty($vaccine3[4])) ? 0:$vaccine3[4];
-		 $data['v15']=(empty($vaccine3[5])) ? 0:$vaccine3[5];
-		 $data['total3']=$total3;	 	
-		## ไม่ตายภายใน 10 วัน
-		$sql="SELECT count(historyid) as cnt,total_vaccine FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE  detaindate=2  and total_vaccine<>0 ".$cond." 	GROUP BY total_vaccine ORDER BY total_vaccine ASC";
-		$result=$this->inform->get($sql);	
-		foreach($result as $item){
-			$vaccine4[$item['total_vaccine']]=$item['cnt'];
-			$total4=$total4+$item['cnt'];
-		}
-		 $data['v16']=(empty($vaccine4[1])) ? 0:$vaccine4[1];
-		 $data['v17']=(empty($vaccine4[2])) ? 0:$vaccine4[2];
-		 $data['v18']=(empty($vaccine4[3])) ? 0:$vaccine4[3];
-		 $data['v19']=(empty($vaccine4[4])) ? 0:$vaccine4[4];
-		 $data['v20']=(empty($vaccine4[5])) ? 0:$vaccine4[5];
-		 $data['total4']=$total4;			
-		## ฉีดวัคซีนไม่ครบ
-		$sql="SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id 	WHERE  closecase_reason_detail2=1  and total_vaccine<>0 "	;
-		$total5=$this->db->GetOne($sql);	
-		$data['total5'] = (empty($total5)) ? 0:$total5;	
-		## จำนวนเข็มของแต่ละชนิด
-		$sql="SELECT vaccine_name, count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE (vaccine_name !='0')  and total_vaccine<>'0' AND vaccine_date<>''".$cond."  group by vaccine_name  order by vaccine_name asc";						
-		$result=$this->inform->get($sql);	
-		foreach($result as $item){
-			$vaccine6[$item['vaccine_name']]=$item['cnt'];
-			$total6=$total6+$item['cnt'];
-		}
-		 $data['v21']=(empty($vaccine6[1])) ? 0:$vaccine6[1];
-		 $data['v22']=(empty($vaccine6[2])) ? 0:$vaccine6[2];
-		 $data['v23']=(empty($vaccine6[3])) ? 0:$vaccine6[3];
-		 $data['v24']=(empty($vaccine6[4])) ? 0:$vaccine6[4];
-		 $data['total6']=$total6;	
+		if($cond)
+		{		 
+			$total=0;$total1=0;$total2=0;$total3=0;$total4=0;$total5=0;$total6=0;
+			## ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม
+			$sql="SELECT count(historyid) as cnt,total_vaccine FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE historyprotect=1 ".$cond."";
+			$data['total']=$this->db->GetOne($sql);
+	
+			## --  ภายใน 6 เดือน
+			$sql="SELECT count(historyid) as cnt,total_vaccine FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE historyprotectdetail=1  and total_vaccine<>0 ".$cond." group by total_vaccine ORDER BY total_vaccine ASC";
+			$result=$this->inform->get($sql);	
+			foreach($result as $item){
+				$vaccine2[$item['total_vaccine']]=$item['cnt'];
+				$total2=$total2+$item['cnt'];
+			}
+			 $data['v6']=(empty($vaccine2[1])) ? 0:$vaccine2[1];
+			 $data['v7']=(empty($vaccine2[2])) ? 0:$vaccine2[2];
+			 $data['v8']=(empty($vaccine2[3])) ? 0:$vaccine2[3];
+			 $data['v9']=(empty($vaccine2[4])) ? 0:$vaccine2[4];
+			 $data['v10']=(empty($vaccine2[5])) ? 0:$vaccine2[5];
+			 $data['total2']=$total2;	 		
+			## เกิน 6 เดือน
+			$sql="SELECT count(historyid) as cnt,total_vaccine FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE historyprotectdetail=2  and total_vaccine<>0  ".$cond." group by total_vaccine ORDER BY total_vaccine ASC";
+			$result=$this->inform->get($sql);	
+			foreach($result as $item){
+				$vaccine3[$item['total_vaccine']]=$item['cnt'];
+				$total3=$total3+$item['cnt'];
+			}	
+			 $data['v11']=(empty($vaccine3[1])) ? 0:$vaccine3[1];
+			 $data['v12']=(empty($vaccine3[2])) ? 0:$vaccine3[2];
+			 $data['v13']=(empty($vaccine3[3])) ? 0:$vaccine3[3];
+			 $data['v14']=(empty($vaccine3[4])) ? 0:$vaccine3[4];
+			 $data['v15']=(empty($vaccine3[5])) ? 0:$vaccine3[5];
+			 $data['total3']=$total3;	 	
+			## ไม่ตายภายใน 10 วัน
+			$sql="SELECT count(historyid) as cnt,total_vaccine FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE  detaindate=2  and total_vaccine<>0 ".$cond." 	GROUP BY total_vaccine ORDER BY total_vaccine ASC";
+			$result=$this->inform->get($sql);	
+			foreach($result as $item){
+				$vaccine4[$item['total_vaccine']]=$item['cnt'];
+				$total4=$total4+$item['cnt'];
+			}
+			 $data['v16']=(empty($vaccine4[1])) ? 0:$vaccine4[1];
+			 $data['v17']=(empty($vaccine4[2])) ? 0:$vaccine4[2];
+			 $data['v18']=(empty($vaccine4[3])) ? 0:$vaccine4[3];
+			 $data['v19']=(empty($vaccine4[4])) ? 0:$vaccine4[4];
+			 $data['v20']=(empty($vaccine4[5])) ? 0:$vaccine4[5];
+			 $data['total4']=$total4;			
+			## ฉีดวัคซีนไม่ครบ
+			$sql="SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id 	WHERE  closecase_reason_detail2=1  and total_vaccine<>0 "	;
+			$total5=$this->db->GetOne($sql);	
+			$data['total5'] = (empty($total5)) ? 0:$total5;	
+			## จำนวนเข็มของแต่ละชนิด
+			$sql="SELECT vaccine_name, count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id WHERE (vaccine_name !='0')  and total_vaccine<>'0' AND vaccine_date<>''".$cond."  group by vaccine_name  order by vaccine_name asc";						
+			$result=$this->inform->get($sql);	
+			foreach($result as $item){
+				$vaccine6[$item['vaccine_name']]=$item['cnt'];
+				$total6=$total6+$item['cnt'];
+			}
+			 $data['v21']=(empty($vaccine6[1])) ? 0:$vaccine6[1];
+			 $data['v22']=(empty($vaccine6[2])) ? 0:$vaccine6[2];
+			 $data['v23']=(empty($vaccine6[3])) ? 0:$vaccine6[3];
+			 $data['v24']=(empty($vaccine6[4])) ? 0:$vaccine6[4];
+			 $data['total6']=$total6;	
 		  
-		 $data['cond']=$cond; 
+		  
 		}//$cond	
-
+		$data['cond']=$cond;
 		if($preview)$this->template->set_layout('print');			
 		$this->template->build("report5_index",$data);			
 	}
-	function report6($cond= FALSE,$preview=FALSE,$data){					
-		$sql="SELECT n_amphur.amphur_name as amphur_name,province_name,cnt,in_out,n_amphur.amphur_id as amphur_id from n_amphur
-			 	   LEFT JOIN(
-						SELECT amphur_id,amphur_name,province_name,n_province.province_id as province_id,count(historyid) as cnt,in_out
-						FROM n_province
-						LEFT JOIN n_amphur 			on n_province.province_id = n_amphur.province_id 
-						LEFT JOIN n_information 	on n_amphur.amphur_id = hospitalamphur and n_amphur.province_id=hospitalprovince 
-						INNER JOIN n_history 			on historyid = information_historyid
-						WHERE n_amphur.province_id=66
-						GROUP BY in_out) a on n_amphur.amphur_id=a.amphur_id and n_amphur.province_id=a.province_id 
-			 WHERE n_amphur.province_id =66
-			 ORDER BY  n_amphur.amphur_id,in_out";		
+	function report6($cond= FALSE,$preview=FALSE,$data)
+	{								 
+		$sql="SELECT n_amphur.amphur_name as amphur_name,a.province_name,cnt1,in_out1,cnt2,in_out2,n_amphur.amphur_id as amphur_id 
+			  from n_amphur 
+			  LEFT JOIN( 
+						SELECT amphur_id,amphur_name,province_name,n_province.province_id as province_id,count(historyid) as cnt1,in_out  as in_out1
+						FROM n_province LEFT JOIN n_amphur on n_province.province_id = n_amphur.province_id 
+						LEFT JOIN n_information on n_amphur.amphur_id = hospitalamphur and n_amphur.province_id=hospitalprovince 
+						INNER JOIN n_history on historyid = information_historyid 
+						WHERE in_out=1  ".$cond.") a ON n_amphur.amphur_id=a.amphur_id and n_amphur.province_id=a.province_id 
+			  LEFT JOIN (
+			  			SELECT amphur_id,amphur_name,province_name,n_province.province_id as province_id,count(historyid) as cnt2,in_out  as in_out2
+						FROM n_province LEFT JOIN n_amphur on n_province.province_id = n_amphur.province_id 
+						LEFT JOIN n_information on n_amphur.amphur_id = hospitalamphur and n_amphur.province_id=hospitalprovince 
+						INNER JOIN n_history on historyid = information_historyid 
+						WHERE in_out=2".$cond.")b on n_amphur.amphur_id=b.amphur_id and n_amphur.province_id=b.province_id 
+			WHERE n_amphur.province_id=".@$data['province_id']." ORDER BY n_amphur.amphur_id,in_out1,in_out2";		
 		if($cond){
 			$data['result']=$this->inform->get($sql);				
 		}
@@ -845,7 +856,7 @@ class Report extends R36_Controller
 		if($preview) $this->template->set_layout('print');
 		$this->template->build('report7_index',$data);
 	}			
-	function report8($cond= FALSE,$preview=FALSE){
+	function report8($cond= FALSE,$preview=FALSE,$data){
 	## ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบูลิน
 		
 		if($cond){			
@@ -881,7 +892,7 @@ class Report extends R36_Controller
 			if($preview) $this->template->set_layout('print');				
 			$this->template->build("report8_index",$data);			
 	}
-	function schedule($preview=FALSE)
+	function schedule($preview=FALSE,$popup=FALSE)
 	{ ## ต้องมาแก้ ให้  n_vaccine.hospital_id=n_hospital_1.hospital_id ##
 		$today=DBdate(date('Y-m-d'));
 		$nextday=DBdate(date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d")))));			
@@ -900,9 +911,12 @@ class Report extends R36_Controller
 					ORDER BY  vaccine_date asc";	
  		$data['result']=$this->inform->get($sql);
 		$data['pagination'] = $this->inform->pagination();
-		if($preview)$this->template->set_layout('print');
+		if($preview=="popup"){
+			$this->template->set_layout('blank');
+		}else{$this->template->set_layout('print');}
 		$this->template->build('report_schedule',$data);
 	}
+
 
 
 

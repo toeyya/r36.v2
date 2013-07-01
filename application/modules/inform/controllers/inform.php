@@ -398,7 +398,9 @@ class Inform extends R36_Controller
 		$now=strtotime(date("Y-m-d H:i:s"));
 		echo ($datetouch >$now)? "false":"true";					
 	}
-
+	function popuplist(){
+		$this->template->build('popup_list');
+	}
 
 }
 

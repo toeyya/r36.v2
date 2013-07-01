@@ -17,7 +17,7 @@ class R36_Controller extends Controller
 		$this->template->title('โปรแกรมการรายงานผู้สัมผัสหรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า');		
 		//Set js
 		$this->template->append_metadata(js_notify());
-
+		 
 	}
 
 	

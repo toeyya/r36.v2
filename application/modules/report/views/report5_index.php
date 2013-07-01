@@ -13,76 +13,22 @@ $(document).ready(function(){
 <?php if(empty($cond)): ?>
 <form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
+	<?php require 'include/conditionreport.php'; ?>	
 	  <tr>
-		<th>เขตความรับผิดชอบ</th>
-		<td>
-			<select name="area" id="area" class="styled-select" >
-				<option value="-">กรุณาเลือกเขต</option>
-				<option value="1" <?php echo (@$_GET['area']=="1")? "selected='selected":''; ?>>รูปแบบเดิม (12 เขต)</option>
-				<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
-			</select>
-		 </td>
-		<th>เขตที่</th>
-		<td>
-			<?php if(empty($_GET['gorup'])): ?>
-			<span id="grouplist">
-			<select name="group" class="styled-select" id="group"><option value="">ทั้งหมด</option></select>
-			</span>
-			<?php else: ?>
-				
-		    <?php endif; ?>
-			</td>
-		<th>จังหวัด</th>
-		<td><span id="provincelist"><select name="province" class="styled-select" id="prvince"><option value="">ทั้งหมด</option></select></span></td>			
-	  </tr>
-	  <tr>
-		<th>อำเภอ</th>
-		<td><span id="amphurlist"><select name="amphur" class="styled-select"><option value="">ทั้งหมด</option></select></span></td>
-		<th>ตำบล</th>
-		<td><span id="districtlist"><select name="district" class="styled-select" id="district"><option value="">ทั้งหมด</option></select></span></td>
-		<th>สถานบริการ</td>
-		<td><span id="hospitallist"><select name="hospital" class="styled-select" id="hospital"><option value="">ทั้งหมด</option></select></span></td>			
-	  </tr>
-	  <tr>
-	    <th>ปีของวันที่สัมผัสโรค</th>
-	    <td><select name="year" class="styled-select"><option value="">ทั้งหมด</option>
-			<? $syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){?><option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?}?></select>
-		</td>
-		<th>เดือนของวันที่สัมผัสโรค</th>
-	    <td><select name="month_start" class="styled-select"><option value="">ทั้งหมด</option>
-			<? for($i=1;$i<=12;$i++){?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<? }?>
-			</select> - <select name="month_end" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<? for($i=1;$i<=12;$i++){?>
-				<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-			<? }?></select>			
+	    <th>ปีสัมผัสโรค</th>
+	    <td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>
+		<th>เดือนที่สัมผัสโรค</th>
+	    <td><?php echo form_dropdown('month_start',get_month(),@$_GET['month_start'],'class="styled-select"','ทั้งหมด'); ?> - 
+	    	<?php echo form_dropdown('month_end',get_month(),@$_GET['month_end'],'class="styled-select"','ทั้งหมด'); ?>		
 		</td>
 	 </tr>
 	 <tr>
-	  <th>ปีของวันที่บันทึกรายการ</th>
-	    <td><select name="year_report" class="styled-select"><option value="">ทั้งหมด</option>
-			<? $syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){?><option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<? }?>
-			</select>
-		</td>		
-		<th>เดือนของวันที่บันทึกรายการ</th>
+	  <th>ปีที่บันทึกรายการ</th>
+	    <td><?php echo form_dropdown('year_report_start',get_year_option(),@$_GET['year_report_start'],'class="styled-select"','ทั้งหมด') ?></td>		
+		<th>เดือนที่บันทึกรายการ</th>
     	<td>
-		<select name="month_report_start" class="styled-select">
-		<option value="">ทั้งหมด</option>
-		<? for($i=1;$i<=12;$i++){ ?>
-			<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-		<? }?>
-		</select> - <select name="month_report_end" class="styled-select">
-		<option value="">ทั้งหมด</option>
-		<?for($i=1;$i<=12;$i++){?>
-			<option value="<?php echo sprintf("%02d",$i);?>"><?php echo convert_month($i,"longthai");?></option>
-		<?}?>
-		</select></td>
+		<?php echo form_dropdown('month_report_start',get_month(),@$_GET['month_report_start'],'class="styled-select"','ทั้งหมด'); ?>	 - 
+		<?php echo form_dropdown('month_report_end',get_month(),@$_GET['month_report_end'],'class="styled-select"','ทั้งหมด'); ?>	</td>
 	  </tr>
 </table>
   <div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul></div>	
@@ -92,8 +38,8 @@ $(document).ready(function(){
 <? if(!empty($cond)): ?>
 <div id="report">
 	<div id="title"><p>รายงานการฉีดวัคซีน</p>
-	<p>เขตความรับผิดชอบ (<?php echo $textarea; ?> เขต) : เขต <?php echo $textarea ?> จังหวัด <?php echo $textprovince ?>  อำเภอ <?php echo $textamphur ?>  ตำบล <?php echo $textdistrict ?></p>
-	<p>สถานบริการ <?php echo $texthospital ?> <span>ปี <?php echo $textyear ?></span> เดือน ทั้งหมด ถึง ทั้งหมด </p>
+	<p>เขตความรับผิดชอบ <?php echo $textarea; ?>  : เขต <?php echo $textarea ?> จังหวัด <?php echo $textprovince ?>  อำเภอ <?php echo $textamphur ?>  ตำบล <?php echo $textdistrict ?></p>
+	<p>สถานบริการ <?php echo $texthospital ?> <span>ปี <?php echo $textyear_start ?></span> เดือน  <?php echo $textmonth_start ?> ถึง <?php echo $textmonth_end ?></p>
  </div>
 	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;">
 		<tr><td colspan="2" style="text-align:right;">หน่วย:คน</td></tr>
@@ -236,8 +182,8 @@ $(document).ready(function(){
 		<div><strong>(ผู้สัมผัสที่ได้รับวัคซีนที่มีคุณภาพมาแล้วน้อยกว่า 3 เข็ม หรือได้รับวัคซีนป้องกันโรคพิษสุนัขบ้าชนิดที่ผลิตจากสมองสัตว์  ให้ปฎิบัติเหมือนผู้ที่ไม่เคยได้รับการฉีดวัคซีนมาก่อน)</strong></div>
 	</div>
 
-	<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
-		<div id="btn_printout"><a href="report/index/5/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+	<div id="reference"><?php echo $reference?></div>	
+		<div id="btn_printout"><a href="report/index/5<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

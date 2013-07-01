@@ -275,6 +275,8 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 #report{
 	margin-top:50px;
 	margin-left:10px;
+	width:80%;
+	margin-left:10%;margin-right:10%;
 }
 #report #title{
 	font-size:12px;
@@ -301,7 +303,7 @@ ul.sublist label.error,label.error{color:red;width:50%;}
     width: 100%;
     border-collapse: collapse;
     text-align: left;
-    
+   
    
 }
 .tbreport th
@@ -354,7 +356,6 @@ ul.sublist label.error,label.error{color:red;width:50%;}
     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
     font-size: 12px;
     background: #fff;
-    margin:0;
     margin-bottom:10px;
     width: 100%;
     border-collapse: collapse;
@@ -446,4 +447,8 @@ vertical-align:top
 .label-warning,
 .badge-warning {
   background-color: #f89406;
+}
+.excel{
+	background:url('../images/n_excel.gif') no-repeat;width:16px;height:16px;
+	display:inline-block;
 }
