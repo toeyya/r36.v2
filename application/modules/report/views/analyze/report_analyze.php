@@ -38,88 +38,14 @@ $(document).ready(function(){
 		</td>
 	
 	  </tr>
-
-	  <tr>
-			<th>เขตความรับผิดชอบ</th>
-			<td>
-				<select name="area" id="area" class="styled-select" >
-					<option value="-">กรุณาเลือกเขต</option>
-					<option value="1" <?php echo (@$_GET['area']=="1")? "selected='selected":''; ?>>รูปแบบเดิม (12 เขต)</option>
-					<option value="2" <?php echo (@$_GET['area']=="2")? "selected='selected":''; ?>>รูปแบบใหม่ (19 เขต)</option>
-				</select>
-			 </td>
-			 <th>เขตที่</th>
-			<td>
-			<span id="grouplist">
-				<select name="group" class="styled-select" id="group">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span>
-			</td>
-			<th>จังหวัด</th>
-			<td>
-			<span id="provincelist">
-				<select name="province" class="styled-select" id="prvince">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span>
-			</td>			
-	  </tr>
-	  <tr>
-
-		<th>อำเภอ</th>
-		<td>
-			<span id="amphurlist">
-				<select name="amphur" class="styled-select">
-					<option value="">ทั้งหมด</option>
-				</select>
-			</span></td>
-		<th>ตำบล</th>
-			<td>
-				<span id="districtlist">
-					<select name="district" class="styled-select" id="district">
-						<option value="">ทั้งหมด</option>
-					</select>
-				</span>					</td>
-			<th>สถานบริการ</td>
-			<td>
-				<span id="hospitallist">
-				<select name="hospital" class="styled-select" id="hospital">
-					<option value="">ทั้งหมด</option>
-				</select>
-				</span></td>			
-	  </tr>
+<?php require 'include/conditionreport.php'; ?>
 
 	  <tr>
 	    <th>ปีที่สัมผัสโรค</th>
-	    <td>
-			<select name="year" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			$syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){
-			?>
-				<option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?
-			}
-			?>
-			</select>							
+	 	<td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>						
  
 	  <th>ปีที่บันทึกรายการ</th>
-	    <td>
-			<select name="year_report" class="styled-select">
-			<option value="">ทั้งหมด</option>
-			<?
-			$syear = (date('Y')+543)-10;
-			for($i=$syear;$i<=(date('Y')+543);$i++){
-			?>
-				<option value="<?php echo $i;?>"><?php echo $i;?></option>
-			<?
-			}
-			?>
-			</select></td>			
-
-
+	    <td><?php echo form_dropdown('year_report_start',get_year_option(),@$_GET['year_report_start'],'class="styled-select"','ทั้งหมด') ?></td>
       </tr>
 
   </table>

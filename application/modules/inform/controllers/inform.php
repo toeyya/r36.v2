@@ -53,7 +53,7 @@ class Inform extends R36_Controller
 		
 	}
 	function closecase($chk=FALSE)
-	{						 
+	{$this->db->debug=true;						 
 		$sql="SELECT id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch,vaccine_date 
 			  FROM n_information 
 			  LEFT JOIN n_history ON historyid=information_historyid 
@@ -63,14 +63,14 @@ class Inform extends R36_Controller
 			  WHERE closecase=1 and hospitalcode='".$this->session->userdata('R36_HOSPITAL')."' 
 			  ORDER BY n_information.datetouch asc";
 		$result=$this->inform->get($sql);				
-		$data['chk']=(sizeof($result)>0) ?"yes":"no";	
+		/*$data['chk']=($result) ?"yes":"no";	
 		if($chk){
 			echo json_encode($data);
 			return true;
 		}
 		$data['result'] = $result;		
 		$data['pagination']=$this->inform->pagination();
-		$this->template->set_layout('blank');
+		$this->template->set_layout('blank');*/
 		$this->template->build('view_closecase',$data);
 	}
 	function index()

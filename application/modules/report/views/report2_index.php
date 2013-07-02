@@ -408,9 +408,97 @@
 			<td><?php echo number_format(${'total_historyprotect00'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_historyprotect00'.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format($total_drug_all00); ?> <p class="percentage"><?php echo compute_percent($total_drug_all00,$total_n); ?></p></td>
-
 		</tr>
+		<tr><td colspan="14"><strong>สัญชาติ</strong></td></tr>	
+		<?php $name = array(1=>'ไทย',2=>'จีน/ฮ่องกง/ใต้หวัน',3=>'พม่า',4=>'มาเลเซีย',5=>'กัมพูชา',6=>'ลาว',7=>'เวียดนาม'
+						   ,8=>'ยุโรป',9=>'อเมริกา',10=>'ไม่ทราบสัญชาติ',11=>'อื่นๆ'); ?>
+		<?php for($i=1;$i<12;$i++){ ?>
+		<tr class="para1">
+			<td class="pad-left"><?php echo  $name[$i] ?></td>
+			<?php  for($j=1;$j<13;$j++){ ?>
+			<td><?php echo number_format(${'total_nationalityname'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_nationalityname'.$i.$j},${'total_m'.$j}); ?></p></td>
+			<?php } ?>			
+			<td><?php echo number_format(${'total_nationalityname_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_nationalityname_all'.$i},$total_n); ?></p></td>
+		</tr>
+		<?php } ?>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_nationalityname0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_nationalityname0'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_nationalityname_all12); ?> <p class="percentage"><?php echo compute_percent($total_nationalityname_all12,$total_n); ?></p></td>
+		</tr>			
 		</tbody>																							
+		
+<?php 	$name=array(1=>"นักเรียน นักศึกษา",2=>"ในปกครอง",3=>"เกษตร ทำนา ทำสวน",4=>"ข้าราชการ",5=>"กรรมกร"
+			,6=>"รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)",7=>"ค้าขาย",8=>"งานบ้าน",9=>"ทหาร ตำรวจ",10=>"ประมง",11=>"ครู"
+			,12=>"เลี้ยงสัตว์ / จับสุนัข","นักบวช / ภิกษุสามเณร",13=>"ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ"
+			,14=>"สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า"
+			,15=>"อาสาสมัครฉีดวัคซีนสุนัข",16=>"เจ้าหน้าที่สวนสัตว์",17=>"ไปรษณีย์",18=>"ป่าไม้"
+			,19=>"พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า",20=>"อื่นๆ",21=>"ไม่ระบุ");?>	
+		<tr><td colspan="14"><strong>อาชีพขณะสัมผัสโรค</strong></td></tr>		
+		<?php for($i=1;$i<22;$i++){ ?>
+		<tr class="para1">
+			<td class="pad-left"><?php echo  $name[$i] ?></td>
+			<?php  for($j=1;$j<13;$j++){ ?>
+			<td><?php echo number_format(${'total_occupation'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_occupation'.$i.$j},${'total_m'.$j}); ?></p></td>
+			<?php } ?>			
+			<td><?php echo number_format(${'total_occupation_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_occupation_all'.$i},$total_n); ?></p></td>
+		</tr>
+		<?php } ?>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_occupation0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_occupation0'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_occupation_all12); ?> <p class="percentage"><?php echo compute_percent($total_occupation_all12,$total_n); ?></p></td>
+		</tr>		
+<?php $name=array(1=>"เกษตร ทำนา ทำสวน",2=>"ข้าราชการ",3=>"กรรมกร",4=>"รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)"
+,5=>"ค้าขาย",6=>"งานบ้าน",7=>"ทหาร ตำรวจ",8=>"ประมง",9=>"ครู",10=>"เลี้ยงสัตว์ / จับสุนัข",11=>"นักบวช / ภิกษุสามเณร"
+,12=>"ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ",13=>"สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า"
+,14=>"อาสาสมัครฉีดวัคซีนสุนัข",15=>"เจ้าหน้าที่สวนสัตว์",16=>"ไปรษณีย์",17=>"ป่าไม้",18=>"พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า",19=>"อื่นๆ",20=>"ไม่ระบุ"); ?>	
+		<tr><td colspan="14"><strong>อาชีพผู้ปกครอง</strong></td></tr>		
+		<?php for($i=1;$i<21;$i++){ ?>
+		<tr class="para1">
+			<td class="pad-left"><?php echo  $name[$i] ?></td>
+			<?php  for($j=1;$j<13;$j++){ ?>
+			<td><?php echo number_format(${'total_occparentsname'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_occparentsname'.$i.$j},${'total_m'.$j}); ?></p></td>
+			<?php } ?>			
+			<td><?php echo number_format(${'total_occparentsname_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_occparentsname_all'.$i},$total_n); ?></p></td>
+		</tr>
+		<?php } ?>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_occparentsname0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_occparentsname0'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_occparentsname_all12); ?> <p class="percentage"><?php echo compute_percent($total_occparentsname_all12,$total_n); ?></p></td>
+		</tr>			
+		<tr><td colspan="14"><strong>สถานภาพสัตว์</strong></td></tr>	
+		<?php $statusanimal = array(1=>'มีเจ้าของ',2=>'ไม่มีเจ้าของ',3=>'ไม่ทราบ'); ?>
+		<? for($i=1;$i<4;$i++): ?>
+		<tr class="para1">
+			<td class="pad-left"><? echo $statusanimal[$i] ?></td>
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_statusanimal'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_occparentsname0'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format(${'total_statusanimal_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_statusanimal_all'.$i},$total_n); ?></p></td>		
+		</tr>
+		<? endfor; ?>	
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_statusanimal0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_statusanimal0'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_statusanimal_all0); ?> <p class="percentage"><?php echo compute_percent($total_statusanimal_all0,$total_n); ?></p></td>
+		</tr>	
+		<tr><td colspan="14"><strong>การส่งหัวสัตว์ตรวจ</strong></td></tr>	
+		<tr class="para1">
+			<?php  for($i=1;$i<13;$i++): ?>
+			<td><?php echo number_format(${'total_head'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_head'.$i},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_head); ?> <p class="percentage"><?php echo compute_percent($total_head,$total_n); ?></p></td>		
+		</tr>	
 	</table>
 	
 		<hr class="hr1">
