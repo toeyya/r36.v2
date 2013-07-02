@@ -62,8 +62,8 @@ class Inform extends R36_Controller
 			  			 order by vaccine_date  limit 1)vaccine ON vaccine.information_id=n_information.id 			  
 			  WHERE hospitalcode = $hospitalcode and closecase=1 and  
 			  ORDER BY n_information.datetouch asc ";
-			  echo $sql;
-		$result=$this->inform->get($sql);				
+	
+		$result=$this->inform->get($sql);					
 		/*$data['chk']=($result) ?"yes":"no";	
 		if($chk){
 			echo json_encode($data);
@@ -75,8 +75,8 @@ class Inform extends R36_Controller
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
-	{							
-		$where="";			
+	{				
+	
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
 				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
@@ -139,7 +139,7 @@ class Inform extends R36_Controller
 				LEFT JOIN n_information ON n_history.historyid=n_information.information_historyid
 				LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
 
-			//$data['result']=$this->inform->limit(20)->get($sql);
+			$data['result']=$this->inform->limit(20)->get($sql);
 			$data['pagination']=$this->inform->pagination();			
 
 			$data['hospitalprovince']=@$_GET['hospital_province_id'];
@@ -287,6 +287,7 @@ class Inform extends R36_Controller
 		//--------------------------chk_total_vaccine-----------------------------
 			if($_POST['means']!='3' && $_POST['means']!=''){		
 				$total_vaccine=0;
+				
 				for($c=0;$c<count($_POST['vaccine_name']);$c++){
 						if($_POST['vaccine_date'][$c]!='' && $_POST['vaccine_name'][$c]!='0' && $_POST['byname'][$c]!="" ){
 							$total_vaccine++;
@@ -323,7 +324,7 @@ class Inform extends R36_Controller
 					for($i=0;$i<$j;$i++){
 								if($_POST['vaccine_name'][$i]!='0'){
 									$user_id=(!empty($_POST['user_id'][$i]))? $_POST['user_id'][$i]:$this->session->userdata('R36_UID');
-									$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>cld_date2my($_POST['vaccine_date'][$i])
+									$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>date2DB($_POST['vaccine_date'][$i])
 											   ,'vaccine_name'=>$_POST['vaccine_name'][$i],'vaccine_no'=> $_POST['vaccine_no'][$i]
 											   ,'vaccine_cc'=>$_POST['vaccine_cc'][$i] ,'vaccine_point'=>$_POST['vaccine_point'][$i]
 											   ,'byname'=> $_POST['byname'][$i],'byplace'=> $_POST['byplace'][$i],'user_id'=>$user_id

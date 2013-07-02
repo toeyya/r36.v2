@@ -18,7 +18,8 @@ class Permissions extends Admin_Controller
 		'q-reply' => array('label' => 'ถาม-ตอบ', 'permission' => array('act_read','act_create','act_update','act_delete')),
 		'contact' => array('label' => 'ติดต่อเรา', 'permission' => array('act_read','act_create','act_update','act_delete')),		
 		'dashboards' => array('label' => 'จำนวนคนเข้าเว็บไซต์', 'permission' => array('act_read')),
-		'logs'=>array('label' => 'ประวัติเข้าใช้ระบบ', 'permission' => array('act_read'))
+		'logs'=>array('label' => 'ประวัติเข้าใช้ระบบ', 'permission' => array('act_read')),
+		'program'=>array('label' => 'โปรแกรม ร.36', 'permission' => array('act_read','act_create','act_update','act_delete'))
 	);
 	
 	public $crud = array(
@@ -79,12 +80,13 @@ class Permissions extends Admin_Controller
 	
 	public function save($id=FALSE){
 		if($_POST){
+			$this->level->primary_key('lid');
 			$id=$this->level->save($_POST);
 			$this->permission->delete("level_id",$id);				
 			if(isset($_POST['checkbox'])){
 				foreach($_POST['checkbox'] as $module => $item)
 				{
-					$data['user_type_id'] = $_POST['id'];
+					$data['level_id'] = $id;
 					$data['module'] = $module;
 					foreach($item as $perm => $val) $data[$perm] =  $val;							
 						$this->permission->save($data);

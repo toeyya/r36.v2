@@ -333,10 +333,9 @@ $('select[name=prefix_name]').click(disableChkage);
 	$('#causedetail_other').click(function(){$('input[name=causetext]').valid();});
 
 	
-	$()
 	$(".btn_save").attr( 'disabled',false); 
 	 $.validator.setDefaults({
-		   	  submitHandler: function(){
+		   	submitHandler: function(){
 		   	  	$(".btn_save").attr('disabled','disabled'); 	
 		   	  	$(":disabled").removeAttr('disabled');	
 				document.form1.submit();			
@@ -345,13 +344,15 @@ $('select[name=prefix_name]').click(disableChkage);
 	});	
 	$.validator.addMethod("one_required", function() {
 	    return $("#form1").find(".one_required:checked").length > 0;
-	},'');				
-	});
+	},'กรุณาระบุอย่างน้อยหนึ่งรายการ');				
+	var checkboxes = $('.one_required');
+	var checkbox_names = $.map(checkboxes, function(e,i) { return $(e).attr("name")}).join(" ");
 
 	$("#form1").validate({
 		groups:{
 				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4",
 				groupname:"firstname surname",
+				checks: checkbox_names,
 		},
 		rules:{
 			hospital_id_other: { required: {depends: function(element) {	return $('input[name=in_out]:checked').val() == '2' }}},   
@@ -392,14 +393,14 @@ $('select[name=prefix_name]').click(disableChkage);
 		errorPlacement: function(error, element){								
 				if((element.attr('name')=='firstname') || (element.attr('name')=='surname')){					
 					error.insertAfter("#surname");				
-				}else if(element.hasClass('one_required')){						
-						 if($('#tbposition_bite').next('label').length==0)$('<label class="alertred">กรุณาระบุอย่างน้อยหนึ่งรายการ</label>').insertAfter('#tbposition_bite');						
+				}else if(element.hasClass('one_required')){												
+						 	error.insertAfter('#tbposition_bite');						 				
 				}else if(element.is(':radio')){ 
 						var name=element.attr('name');
 						$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").next().find('span:eq(0)').html(error);
 						if(name=='use_rig' || name =='means')	$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);
-						if(name=="causedetail") 								$('input[name='+name+']').closest('table').closest("tr").prev().find('td').eq(4).find('span').eq(1).html(error);
-						if(name=="erig_hrig")									$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);						
+						if(name=="causedetail") 				$('input[name='+name+']').closest('table').closest("tr").prev().find('td').eq(4).find('span').eq(1).html(error);
+						if(name=="erig_hrig")				    $('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);						
 				}else if(element.attr('name')=="age"){error.insertAfter(element);
 				}else if(element.attr('name')=="typeother"){alert(error);
 				}else{ error.appendTo(element.parent());}					
@@ -415,7 +416,9 @@ $('select[name=prefix_name]').click(disableChkage);
                  		// ไม่เก็บ index ซ้ำกัน
                  		temp=$(this).closest(".ui-accordion-content").index(".ui-accordion-content");                  		
                 		index[i]=temp;  
-                		i++;               		              		
+                		i++;     
+                		
+                		          		              		
                  	}                	 	
                 });    
 			   $('#multiAccordion').multiAccordion({active:index}); 				
@@ -1882,19 +1885,18 @@ $('select[name=prefix_name]').click(disableChkage);
 										$user_id =array('','','','','');
 														
 										if($result){
-											foreach($result as $key=>$rec_vaccine){
-												
-														$vaccine_id[$key] = $rec_vaccine['vaccine_id'];
-														$vaccine_date[$key] = cld_my2date($rec_vaccine['vaccine_date']);
-														$vaccine_date_now[$key] =strtotime(DateTime2DB($rec_vaccine['vaccine_date']));
-														$disable_vac[$key]=($vaccine_date_now[$key]>$now)? 'disabled="disabled"':'';
-														$vaccine_name[$key] = $rec_vaccine['vaccine_name'];
-														$vaccine_no[$key] = $rec_vaccine['vaccine_no'];
-														$vaccine_cc [$key]= $rec_vaccine['vaccine_cc'];
-														$vaccine_point[$key] = $rec_vaccine['vaccine_point'];
-														$byname[$key] = $rec_vaccine['byname'];
-														$byplace[$key] = $rec_vaccine['byplace'];
-														$user_id[$key] =$rec_vaccine['user_id'];
+											foreach($result as $key=>$rec_vaccine){												
+													$vaccine_id[$key] = $rec_vaccine['vaccine_id'];
+													$vaccine_date[$key] = DB2($rec_vaccine['vaccine_date']);
+													$vaccine_date_now[$key] =strtotime($rec_vaccine['vaccine_date']);
+													$disable_vac[$key]=($vaccine_date_now[$key]>$now)? 'disabled="disabled"':'';
+													$vaccine_name[$key] = $rec_vaccine['vaccine_name'];
+													$vaccine_no[$key] = $rec_vaccine['vaccine_no'];
+													$vaccine_cc [$key]= $rec_vaccine['vaccine_cc'];
+													$vaccine_point[$key] = $rec_vaccine['vaccine_point'];
+													$byname[$key] = $rec_vaccine['byname'];
+													$byplace[$key] = $rec_vaccine['byplace'];
+													$user_id[$key] =$rec_vaccine['user_id'];
 											}
 											$max_rec=$result->Recordcount();
 										}	

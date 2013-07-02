@@ -6,8 +6,9 @@
 	<li <?php echo menu_active('users','users')?>><a href="users/admin/users">ผู้ใช้ระบบ</a></li>
 	<li><a href="javascript:void(0)">ตั้งค่าระบบโปรแกรมร.36</a>
 		<ul class="sublist">
-                 <li><a href="area/index">เขตความรับผิดชอบ</a></li>
+                <li><a href="area/index">เขตความรับผิดชอบ</a></li>
                 <li><a href="province/index">จังหวัด</a></li>
+                <li><a href="province/province_new">เพิ่มจังหวัดใหม่</a></li>
                 <li><a href="amphur/index">อำเภอ</a></li>
 				<li><a href="district/index">ตำบล</a></li>
 				<li><a href="hospital/index">สถานพยาบาล</a></li>					

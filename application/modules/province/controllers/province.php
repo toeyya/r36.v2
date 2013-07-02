@@ -4,7 +4,10 @@ class Province extends Admin_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model('province_model','province');	
+		$this->load->model('province_model','province');
+		$this->load->model('area/area_model','area');
+		$this->load->model('amphur/amphur_model','amphur');	
+		$this->load->model('area/area_detail_model','detail');
 	}
 	function index($view=FALSE){
 		//$this->db->debug=TRUE;	
@@ -25,11 +28,11 @@ class Province extends Admin_Controller
 		$data['rs']=array();
 		if($id && $area_id){
 			$data['rs']=$this->db->GetRow("SELECT n_area_detail.province_id as province_id,province_name,area_id,n_area.name as area_name
-																					,level,n_area_detail.id as id,provincepeople
-																	  FROM n_province
-																	  LEFT JOIN n_area_detail on n_area_detail.province_id=n_province.province_id
-										   							  LEFT JOIN n_area on n_area.id=n_area_detail.area_id
-										   							  WHERE n_area_detail.area_id=$area_id and n_area_detail.province_id=$id");				
+												,level,n_area_detail.id as id,provincepeople
+										  FROM n_province
+										  LEFT JOIN n_area_detail on n_area_detail.province_id=n_province.province_id
+			   							  LEFT JOIN n_area on n_area.id=n_area_detail.area_id
+			   							  WHERE n_area_detail.area_id=$area_id and n_area_detail.province_id=$id");				
 			
 		}
 		$this->template->build('province_form',$data);
@@ -41,6 +44,38 @@ class Province extends Admin_Controller
 	function delete(){
 		
 	}
-	
+	function province_new(){
+		$data['area']=$this->area->get();
+		$this->template->build('province_new',$data);
+	}
+	function save_province_new()
+	{// province_id ไม่ auto increment;
+		if($_POST)
+		{	$this->province->primary_key('province_id');					
+			$province_id_old = $_POST['province_id'];
+			$amphur_id_old   = $_POST['amphur_id'];
+			## save จังหวัด ใหม่
+				$_POST['province_id'] = $this->db->GetOne("select max(province_id)+1 as province_id from n_province");
+				   
+				$this->province->save($_POST);
+			## บันทึการเลือกเขตความรับผิดชอบ
+				foreach($_POST['area_id'] as $key =>$item){
+					$this->detail->save(array('id'=>'','province_id'=>$p['province_id'],'area_id'=>$item,'level'=>$_POST['level'][$key]));
+				}
+						
+			set_notify('success',SAVE_DATA_COMPLETE);
+		}
+		redirect('province/province_new');
+	}
+	function getAmphurNew(){
+		if($_GET){					
+			$result = $this->amphur->where('province_id = '.$_GET['province_id'])->sort("")->order("amphur_name asc")->get();			
+			echo '<ul>';
+			foreach($result as $item){
+				echo '<li><input name="amphur_new_id[]" value="'.$item['amphur_id'].'" type="checkbox"> '.$item['amphur_name']."</li>";
+			}
+			echo '</ul>';			
+		}		
+	}
 	
 }

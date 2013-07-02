@@ -88,7 +88,6 @@ var province_id,amphur_id,district_id;
 		 $('#form1').validate({ignore: "#form1 *" });	 
 		 $('input').removeClass('error');
 		 $('label.error').remove();
-		 //$('#title').text("ค้นหาประวัติการฉีดวัคซีนโรคพิษสุนัขบ้า");
 		 $('#form1').attr('action','inform/index');
 		 $('input[name=action]').val('search');		 		 
 		 document.form1.submit();	
@@ -100,7 +99,7 @@ var province_id,amphur_id,district_id;
 		$('#form1').attr('action','inform/addNew');	
 		$('input[name=action]').val('');	
 		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้				
-				chk_closecase(); // แสดงรายการที่ยังไมได้ปิดเคส											
+				//chk_closecase(); // แสดงรายการที่ยังไมได้ปิดเคส											
 				$("#hospitalprovince option").filter(function(){return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
 				$('#hospital_amphur_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_amphur_id]').val()+'">'+$('input[name=amphur_name]').val()+'</option>');
 				$('#hospital_district_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_district_id]').val()+'">'+$('input[name=district_name]').val()+'</option>');

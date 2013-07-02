@@ -1,19 +1,13 @@
 <script type="text/javascript">
 $(document).ready(function(){
-
+	$
 })
 </script>
 <h1>จังหวัด(เพิ่ม/แก้ไข)</h1>
 <form action="province/save" method="post" id="formm">
 <table  class="form">
 <tr><th width="20%">จังหวัด</th>
-		<td><?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['province_id'],'class="styled-select" id="province_id"','-โปรดเลือก-') ?><span class="alertred">*</span></td>
-</tr>
-<tr><th>จังหวัดใหม่</th>
-		<td><select name="amphur_id" class="styled-select"><option>-โปรดเลือก-</option></select><span class="alertred">*</span></td>
-</tr>
-<tr><th>โค้ดจังหวัด</th>
-		<td><input type="text" name="province_id" value="<?php echo @$rs['province_id'] ?>" class="input_box_patient"><span class="alertred">*</span></td>
+	<td><?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['province_id'],'class="styled-select" id="province_id"','-โปรดเลือก-') ?><span class="alertred">*</span></td>
 </tr>
 <tr><th>รูปแบบเขตความรับผิดชอบ</th>
 		<td><?php echo form_dropdown('area_id',get_option('id','name','n_area order by created desc'),@$rs['area_id'],'class="styled-select"','-โปรดเลือก-'); ?><span class="alertred">*</span></td>
