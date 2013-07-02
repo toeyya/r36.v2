@@ -106,9 +106,7 @@ class Report extends R36_Controller
 				case "6":$this->report6($cond,$preview,$data);break;
 				case "7":$this->report7($cond,$preview,$data);break;
 				case "8":$this->report8($cond,$preview,$data);break;
-			}
-			//if($preview) $this->template->set_layout('print');				
-			//$this->template->build("report".$no."_index",$data);				  							
+			}			  							
 	}
 	function report1($cond= FALSE,$preview=FALSE,$data)
 	{
@@ -177,8 +175,7 @@ class Report extends R36_Controller
 			}
 			## bite
 			## food_dangerous
-			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid 
-			where food_dangerous='1'".$cond;
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid where food_dangerous='1'".$cond;
 			$data['total_food'] = $this->db->GetOne($sql);	
 			
 			## ตำแหน่งการสัมผัส
@@ -441,6 +438,37 @@ class Report extends R36_Controller
 		if($preview)$this->template->set_layout('print');	
 		$this->template->build("report1_index",$data);		
 	}
+	function listreport($cond,$month){
+
+		$month =($month) ? " month(datetouch)" : " QUARTER(datetouch)";
+		####   จำนวน N แต่ละเดือน,ไตรมาส		####	
+		if($list=="N"){
+			$sql="select month(datetouch) as m ,count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+			where 1=1 $cond group by $month order by $month asc";		
+		}else if($list=="gender"){
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,gender  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  $cond group by $month ,gender  order by $month,gender  asc";			
+		}else if($list=="age_group"){
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,age_group  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where age<>0  ".$cond." group by $month,age_group  order by $month,age_group  asc";
+			
+		}else if($list=="placetouch"){
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,placetouch  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by $month,placetouch  order by $month,placetouch  asc";			
+		}else if($list=="typeanimal"){
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,typeanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by $month,typeanimal  order by $month,typeanimal  asc";						
+		}else if($list=="ageanimal"){
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,ageanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by month(datetouch),ageanimal  order by month(datetouch),ageanimal  asc";
+			
+			
+		}
+
+	}	
+	
+	
+		
 	function report2($cond= FALSE,$preview=FALSE,$data)
 	{		
 		if($cond){
@@ -659,7 +687,92 @@ class Report extends R36_Controller
 					$data['total_historyprotect_all'.$i.$j] = (empty($total1[$i][$j])) ? 0 : $total1[$i][$j];
 				}								
 			}
+		## สัญชาติ	
+			$rs=array();		
+			$total1 =array_fill(0,13,0);						
+			$sql="SELECT month(datetouch) as m ,count(historyid) as cnt,nationalityname FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1= 1  ".$cond." GROUP BY month(datetouch),nationalityname ORDER BY month(datetouch),nationalityname asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['nationalityname']][$item['m']] = $item['cnt'];
+				$total1[$item['nationalityname']] = $total1[$item['nationalityname']] + $item['cnt'];				
+			}	
+			for($i=0;$i<13;$i++){
+				for($j=1;$j<13;$j++){										
+					$data['total_nationalityname'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];					
+					$data['total_nationalityname_all'.$i] = (empty($total1[$i])) ? 0 : $total1[$i];
+				}								
+			}		
+		## อาชีพขณะสัมผัสโรค
+			$rs=array();		
+			$total1 =array_fill(0,22,0);						
+			$sql="SELECT month(datetouch) as m ,count(historyid) as cnt,occupationname FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  1= 1  ".$cond." GROUP BY month(datetouch),occupationname ORDER BY month(datetouch),occupationname asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['occupationname']][$item['m']] = $item['cnt'];
+				$total1[$item['occupationname']] = $total1[$item['occupationname']] + $item['cnt'];				
+			}			
+			for($i=0;$i<22;$i++){
+				for($j=1;$j<13;$j++){										
+					$data['total_occupation'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];					
+					$data['total_occupation_all'.$i] = (empty($total1[$i])) ? 0 : $total1[$i];
+				}								
+			}				
+		## อาชีพผู้ปกครอง
+			$rs=array();		
+			$total1 =array_fill(0,22,0);
+									
+			$sql="SELECT month(datetouch) as m ,count(historyid) as cnt,occparentsname FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  WHERE  age < '15'  ".$cond." GROUP BY month(datetouch),occparentsname ORDER BY month(datetouch),occparentsname asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['occparentsname']][$item['m']] = $item['cnt'];
+				$total1[$item['occparentsname']] = $total1[$item['occparentsname']] + $item['cnt'];				
+			}			
+			for($i=0;$i<22;$i++){
+				for($j=1;$j<13;$j++){										
+					$data['total_occparentsname'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];										
+				}
+				$data['total_occparentsname_all'.$i] = (empty($total1[$i])) ? 0 : $total1[$i];								
+			}		
+		## สถานภาพสัตว์
+			$rs=array();
+			$total1=array_fill(0,4,0);
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,statusanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where 1=1  ".$cond." group by month(datetouch),statusanimal  order by month(datetouch),statusanimal  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['statusanimal']][$item['m']] = $item['cnt'];
+				$total1[$item['statusanimal']]	= $total1[$item['statusanimal']]+$item['cnt'];			
+			}
+			for($i=0;$i<5;$i++){
+				for($j=1;$j<13;$j++){									
+				$data['total_statusanimal'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];	
+				}			
+				$data['total_statusanimal_all'.$i] = (empty($total1[$i])) ? 0 : $total1[$i];
+			}
+		## การส่งหัวตรวจ
+			$rs=array();			
+			$data['total_head'] = 0;
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,headanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where headanimal='2'  ".$cond." group by month(datetouch),headanimal  order by month(datetouch),headanimal  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['m']] = $item['cnt'];						
+			}
 
+		    for($i=1;$i<13;$i++){									
+				$data['total_head'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
+				$data['total_head'] = $data['total_head'] + $rs[$i];
+			}			
+									
+		## หัวสัตว์ที่ส่งตรวจพบเชื้อ
+		## การฉีดอิมมูโนโกลบุลิน(RIG)
+		## อาการหลังฉีดอิมมูโนโกลบุลิน (RIG)
+		## วิธีการฉีดวัคซีน
+		## ชนิดวัคซีน(จำนวนครั้งที่ใช้) (โด๊ส)
+		## การแพ้วัคซีน
 		}// $cond					 
 		$data['cond'] = $cond;
 		if($preview){$this->template->set_layout('print');}
@@ -916,7 +1029,6 @@ class Report extends R36_Controller
 		}else{$this->template->set_layout('print');}
 		$this->template->build('report_schedule',$data);
 	}
-
 
 
 
