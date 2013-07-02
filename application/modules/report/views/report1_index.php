@@ -19,7 +19,8 @@ $(document).ready(function(){
 <?php require 'include/conditionreport.php'; ?>
 	<tr>
 	    <th>ปีที่สัมผัสโรค</th>
-	    <td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>
+	    
+
 		<th>เดือนที่สัมผัสโรค</th>
 	    <td><?php echo form_dropdown('month_start',get_month(),@$_GET['month_start'],'class="styled-select"','ทั้งหมด'); ?></td>					
       </tr>   	

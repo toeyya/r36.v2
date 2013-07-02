@@ -15,5 +15,6 @@ class Export extends R36_Controller
 	function export_rabies(){
 		$this->template->build('export_rabies');
 	}
+
 }
 ?>
