@@ -10,7 +10,7 @@ class Analyze extends R36_Controller
 		$this->load->model('inform/vaccine_model','vaccine');
 		$this->template->append_metadata(js_report());
 	}
-	function index($no=FALSE,$preview=FALSE)
+	function index($preview=FALSE)
 	{
 	 	 $data['textarea'] ="";
 		 $data['textprovince'] = "ทั้งหมด";
@@ -33,9 +33,7 @@ class Analyze extends R36_Controller
 		  		$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$province."' and hospitaldistrict='".$_GET['district']."'";
 				$data['textdistrict']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district']));
 		  }elseif(!empty($_GET['province'])){
-		  	 	$col="hospitalprovince";	
-		  	 	if($no=="6") $col="n_amphur.province_id";
-			  	$cond = " AND ".$col." = '".$_GET['province']."'";
+			  	$cond = " AND hospitalprovince = '".$_GET['province']."'";
 				$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
 		  }elseif(!empty($_GET['group'])){
 		  	  if(!empty($_GET['area'])=='1'){
@@ -45,30 +43,85 @@ class Analyze extends R36_Controller
 		 		 $field="province_level_new";		
 				 $data['textarea']  = "รูปแบบใหม่ (19 เขต)";			
 			  }
-				  $where=$field."='".$_GET['group']."'";
-				  $area=$this->province->select("province_id")->where($where)->sort("")->order("province_id asc")->get();
-				  $provinceid=explode(',',$area[0]['province_id']);
+				 $where=$field."='".$_GET['group']."'";
+				 $area=$this->province->select("province_id")->where($where)->sort("")->order("province_id asc")->get();
+				 $provinceid=explode(',',$area[0]['province_id']);
 				  //$provinceid = substr($provinceid, 0, -2);  
-				  $cond = " AND hospitalprovince IN (".$provinceid.")";												
-					
-					if($_GET['group']=='0'){
-						$data['textgroup'] = "กทม.";
-					}else{
-						$data['textgroup'] = "เขต ".$_GET['group'];
-					}
+				 $cond = " AND hospitalprovince IN (".$provinceid.")";																
+				if($_GET['group']=='0'){
+					$data['textgroup'] = "กทม.";
+				}else{
+					$data['textgroup'] = "เขต ".$_GET['group'];
+				}
 		  }
-		  if(!empty($_GET['year'])){					$cond.= " AND year(datetouch)='".$_GET['year']."'";	    	$data['textyear'] = $_GET['year'];}		  	
-		  if(!empty($_GET['month'])){				$cond.= " AND month(datetouch)='".$_GET['month']."'";  	$data['textmonth'] = convert_month($_GET['month'],"longthai");	}	  	
-		  if(!empty($_GET['year_report'])){		$cond.= " AND year(reportdate)='".$_GET['year_report']."'";}		 
-		  if(!empty($_GET['month_report'])){	$cond.= " AND month(reportdate)='".$_GET['month_report']."'";}	  
-		  if(!empty($_GET['type'])){					$cond.= " AND in_out='".$type."'";	$data['texttype'] =$type[$_GET['type']];	}									
+		  if(!empty($_GET['year'])){	$cond.= " AND year(datetouch)='".$_GET['year']."'";	    	$data['textyear'] = $_GET['year'];}		  	
 		
-	if($preview)$this->template->set_layout('print');
-	$this->template->build('analyze/report_analyze');
+		
+	//if($preview)$this->template->set_layout('print');
+	//$this->template->build('analyze/report_analyze');
 		   		
 	}
-	function report1(){
+	function report1($cond= FALSE,$preview=FALSE,$data)
+	{
+		$detail_minor_name=array("",'เพศ','อาชีพ','อาชีพผู้ปกครอง','สถานที่สัมผัส','ชนิดสัตว์นำโรค','อายุสัตว์','สถานภาพสัตว์','สาเหตุที่ถูกกัด','การล้างแผล','การใส่ยาฆ่าเชื้อ');
+		$detail_minor_type=array("age_group","gender","occupationname","occparentsname","placetouch","typeanimal","ageanimal","statusanimal","causedetail","washbefore","putdrug");
+		$detail_main_name=array("","ต่ำกว่า 1 ปี","1-5 ปี","6-10 ปี","11-15 ปี","16-25 ปี","26-35 ปี","36-45 ปี","46-55 ปี","56-65ปี","65 ปีขึ้นไป","ไม่ระบุ");
+		$detail_main_type=array("","1","2","3","4","5","6","7","8","9","10","0");
+		$num_main=count($detail_main_name);
+		if($detail_minor==1){
+			$data['minordetail']=array("","ชาย","หญิง","ไม่ระบุ");
+			$data['minorvalue']=array("","1","2","0");			
+		}
+		if($detail_minor==2){
+			$data['minordetail']=array("","นักเรียน นักศึกษา","ในปกครอง","เกษตร ทำนา ทำสวน","ข้าราชการ","กรรมกร","รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)","ค้าขาย","งานบ้าน","ทหาร ตำรวจ","ประมง","ครู","เลี้ยงสัตว์ / จับสุนัข","นักบวช / ภิกษุสามเณร","ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ","สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า","อาสาสมัครฉีดวัคซีนสุนัข","เจ้าหน้าที่สวนสัตว์","ไปรษณีย์","ป่าไม้","พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า","อื่นๆ (ระบุ)","ไม่ระบุ");
+			$data['minorvalue']=array("","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","");
+		}
+		if($detail_minor==3){
+			$data['minordetail']=array("","เกษตร ทำนา ทำสวน","ข้าราชการ","กรรมกร","รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)","ค้าขาย","งานบ้าน","ทหาร ตำรวจ","ประมง","ครู","เลี้ยงสัตว์ / จับสุนัข","นักบวช / ภิกษุสามเณร","ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ","สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า","อาสาสมัครฉีดวัคซีนสุนัข","เจ้าหน้าที่สวนสัตว์","ไปรษณีย์","ป่าไม้","พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า","อื่นๆ (ระบุ)","ไม่ระบุุ/เกิน 15 ปี");
+			$data['minorvalue']=array("","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","0");
+		}
+		if($detail_minor==4){
+			$data['minordetail_head']=array("","เขต กทม.","เขตเมืองพัทยา","เขตเทศบาล","เขตอบต.","ไม่ระบุ");
+			$data['minorvalue_head']=array("","1","1","4","3.","1");
+			$data['minordetail']=array("","","","นคร","เมือง","ตำบล","ไม่ระบุ","ในชุมชน/ตลาด","ชนบท","ไม่ระบุ");
+			$data['minorvalue']=array("","1","2","301","302","303","3099","404","405","4099","0");
+			$data['minorvalue_sub']=array("detailplacetouch");
+		}
 		
+		if($detail_minor==5){
+			$data['minordetail']=array("","สุนัข","แมว","ลิง","ชะนี","หนู","คน","วัว","กระบือ","สุกร","แพะ","แกะ","ม้า","กระรอก","กระแต","พังพอน","กระต่าย","สัตว์ป่า","ไม่ทราบ","ไม่ระบุ");
+			$data['minorvalue']=array("","1","2","3","4","5","601","602","603","604","605","606","607","608","609","6010","6011","6012","6013","");
+			$data['minorvalue_sub']=array("typeother");
+		}
+		if($detail_minor==6){
+			$data['minordetail']=array("","น้อยกว่า 3 เดือน ","3 - 6 เดือน ","6 - 12 เดือน ","มากกว่า 1 ปี ","ไม่ทราบ","ไม่ระบุ");
+			$data['minorvalue']=array("","1","2","3","4","5","0");
+		}
+		if($detail_minor==7){
+			$data['minordetail']=array("","มีเจ้าของ","ไม่มีเจ้าของ","ไม่ทราบ","ไม่ระบุ");
+			$data['minorvalue']=array("","1","2","3","0");
+		}
+		if($detail_minor==8){
+			$data['minordetail']=array("","ทำให้สัตว์เจ็บปวด โมโหหรือตกใจ ","พยายามแยกสัตว์ที่กำลังต่อสู้กัน","เข้าใกล้สัตว์แม่ลูกอ่อน","รบกวนสัตว์ขณะกินอาหาร","เข้าไปในบริเวณที่สัตว์คิดว่าเป็นเจ้าของ","อื่นๆ","ไม่ระบุ");
+			$data['minorvalue']=array("","1","2","3","4","5","6","0");
+		}
+		if($detail_minor==9){
+			$data['minordetail_head']=array("","ไม่ได้ล้าง","ล้าง","ไม่ระบุ");
+			$data['minorvalue_head']=array("","1","4","1");
+			$data['minordetail']=array("","","น้ำ","น้ำและสบู่/<br>ผงซักฟอก","อื่นๆ","ไม่ระบุ","");
+			$data['minorvalue']=array("","1","201","202","203","2099","");
+			$data['minorvalue_sub']=array("washbeforedetail","1","2","3","0");
+		}
+		if($detail_minor==10){
+			$data['minordetail_head']=array("","ไม่ได้ใส่ยา","ใส่ยา","ไม่ระบุ");
+			$data['minorvalue_head']=array("","1","4","1");
+			$data['minordetail']=array("","","สารละลาย<br>ไอโอดีน<br>ที่ไม่มีแอลกอฮอล์","ทิงเจอร์ไอโอดีน <br>/ แอลกอฮอล์","อื่นๆ","ไม่ระบุ","");
+			$data['minorvalue']=array("","1","201","202","203","2099","");
+			$data['minorvalue_sub']=array("putdrugdetail","1","2","3");
+		}			
+				
+		if($preview)$this->template->set_layout('print');		
+		$this->template->build('analyze/report_analyze');
 	}
 }
 ?>

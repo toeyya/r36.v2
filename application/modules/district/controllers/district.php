@@ -6,7 +6,8 @@ class District extends Admin_Controller
 		parent::__construct();
 		$this->load->model('district_model','district');
 		$this->load->model("province/province_model",'province');
-		$this->load->model("amphur/amphur_model",'amphur');		
+		$this->load->model("amphur/amphur_model",'amphur');
+		$this->load->model('area/area_model','area');		
 	}
 	function index($view=FALSE)
 	{
@@ -131,31 +132,16 @@ class District extends Admin_Controller
 	function GetGroupByArea()
 	{
 		$area=$_GET['area']; 	
-		 if($area=='1' || $area=='2'){
-				if($area=='1'){
-					$province=$this->province->select("province_level_old as groupno")->groupby("province_level_old")->sort("")->order("province_level_old")->get();
-				}else{
-					$province=$this->province->select("province_level_new as groupno")->groupby("province_level_new")->sort("")->order("province_level_new")->get();
-				}
-
-			   
-			   $output = '<select name="group" class="styled-select" id="group">';
-			   $output.= '<option value="">ทั้งหมด</option>';
-				foreach($province as $rec){
-					  if($rec['groupno']=='0'){
-						$groupname = "กทม.";
-					  }else{
-						$groupname = "เขต ".$rec['groupno'];
-					  }
-					  $output .= '<option value="'.$rec['groupno'].'">'.$groupname.'</option>';
-				}
-				$output.='</select>';
+		 if($area){
+				$total = $this->area->get_one("total","id",$_GET['area']);			
+				echo form_dropdown('group',getLevel($_GET['area'],$total),$_GET['group'],'class="styled-select" id="group"','ทั้งหมด'); 	
 		    }elseif($area==''){
 			   $output = '<select name="group" class="styled-select" id="group">';
 			   $output.= '<option value="">ทั้งหมด</option>';
 			   $output.='</select>';
+			   echo $output;	
 		   }
-			echo $output;		
+				
 	}
 	function GetProvinceByGroup()
 	{

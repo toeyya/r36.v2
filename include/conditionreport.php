@@ -4,25 +4,10 @@
 	<th>เขต</th>
 	<td>
 	<?php if(!empty($_GET['area'])){ ?>
-		<select name="group" class="styled-select" id="group">
-		<option value="">ทั้งหมด</option>
-	<?		$area=$_GET['area']; 	
-		 	if($area=='1' || $area=='2'){
-				if($area=='1'){
-					$province=$this->province->select("province_level_old as groupno")->groupby("province_level_old")->sort("")->order("province_level_old")->get();
-				}else{
-					$province=$this->province->select("province_level_new as groupno")->groupby("province_level_new")->sort("")->order("province_level_new")->get();
-				}									
-				foreach($province as $rec){
-				  if($rec['groupno']=='0'){
-					$groupname = "กทม.";
-				  }else{
-					$groupname = "เขต ".$rec['groupno'];
-				  } ?>
-				  <option value="<? echo $rec['groupno'] ?>" <?php echo ($rec['groupno'] ==$_GET['group']) ? 'selected="selected"':'';?>><?php echo $groupname ?></option>
-			<?php } ?>
-			</select>								
-	<?php }}else{ ?>
+	<?		
+		$total = $this->area->get_one("total","id",$_GET['area']);			
+		echo form_dropdown('group',getLevel($_GET['area'],$total),$_GET['group'],'class="styled-select" id="group"','ทั้งหมด'); 	
+	}else{ ?>
 	<span id="grouplist"><select name="group" class="styled-select widthselect" id="group"><option value="">ทั้งหมด</option></select></span>
 	<?php }; ?>
 	</td>

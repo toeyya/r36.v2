@@ -4,7 +4,7 @@
 จังหวัด<?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$_GET['province_id'],'class="styled-select"','-ทั้งหมด-')?>			
 ชื่อเขตความรับผิดชอบ <?php echo form_dropdown('area_id',get_option('id','name','n_area order by id'),@$_GET['area_id'],'class="styled-select"','-ทั้งหมด-') ?>
 เขตความรับผิดชอบ <?php echo form_dropdown('level',array_combine(range(0,$total),range(0,$total)),@$_GET['level'],'class="styled-select"','-ทั้งหมด-') ?>
-<input class="btn" type="submit" value="ตกลง">
+ <input class="btn" type="submit" value="ค้นหา">
 
 </form>
 </div>

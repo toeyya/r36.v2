@@ -2,7 +2,7 @@
 $(document).ready(function(){
 var province_id;
 $("select[name=province_id]").change(function(){
-	province_id=$("select[name=province_id] option:selected").val();
+	province_id=$("select[name=province_id] option:selected").val();	
 	$('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	
 	$.ajax({
 		url:'<?php echo base_url() ?>district/getAmphur',
@@ -13,6 +13,17 @@ $("select[name=province_id]").change(function(){
 		}
 	});	
 })
+$("select[name=amphur_id]").live('change',function(){
+	$('input[name=province_name]').val($('select[name=amphur_id] option:selected').text());
+	var amphur_id = $('select[name=amphur_id] option:selected').val();
+	$.ajax({
+		url:'<?php echo base_url() ?>province/getHospital',
+		data:'name=hospital&province_id='+province_id+'&amphur_id='+amphur_id,
+		success:function(data){
+			$('#input_hospital').html(data);						
+		}
+	});
+});
 
 $("select[name=province_new_id]").change(function(){
 	province_id=$("select[name=province_new_id] option:selected").val();
@@ -49,7 +60,10 @@ $("select[name=province_new_id]").change(function(){
 		<p id="input_amphur_new" style="margin:10px 0px;"></p>		
 	</td>
 </tr>
-
+<tr>
+	<th>สถานบริการที่ย้ายไป</th>
+	<td id="input_hospital"></td>
+</tr>
 <tr><th>รูปแบบเขตความรับผิดชอบ</th>
 	<td>
 		<?php foreach($area as $item): ?>

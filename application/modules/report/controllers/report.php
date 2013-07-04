@@ -12,7 +12,7 @@ class Report extends R36_Controller
 		$this->load->model('province/province_model','province');
 		$this->load->model('inform/inform_model','inform');
 		$this->load->model('inform/vaccine_model','vaccine');
-		
+		$this->load->model('area/area_model','area');		
 		$this->template->append_metadata(js_report());
 	}
 	public $reference= "แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข";
@@ -53,6 +53,7 @@ class Report extends R36_Controller
 		  }
 		 
 		 	if(!empty($_GET['area'])){
+		 		  $data['textarea'] = $this->area->get_row($_GET['area']);
 			  	  if($_GET['area']=='1'){
 			  	  	 $field="province_level_old";	
 					 $data['textarea'] = "รูปแบบเดิม (12 เขต)";		  		
@@ -174,10 +175,50 @@ class Report extends R36_Controller
 				}																			
 			}
 			## bite
+			$data['bite_blood']=0;
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid  
+				 where (head_bite_blood='1' OR face_bite_blood='1' OR neck_bite_blood='1' 
+				 OR hand_bite_blood='1' OR arm_bite_blood='1' OR body_bite_blood='1' 
+				 OR leg_bite_blood='1' OR feet_bite_blood='1') $cond";
+			$data['bite_blood'] = $this->db->GetOne($sql);	
+			$data['bite_noblood'] =0;			
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid  
+				 where (head_bite_noblood='1' OR face_bite_noblood='1' 
+				 	OR neck_bite_noblood='1' OR hand_bite_noblood='1' 
+				 	OR arm_bite_noblood='1' OR body_bite_noblood='1' 
+				 	OR leg_bite_noblood='1' OR feet_bite_noblood='1') $cond";
+			$data['bite_noblood'] = $this->db->GetOne($sql);
+			$data['claw_blood'] =0;			
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid  
+				 where (head_claw_blood='1' OR face_claw_blood='1' OR neck_claw_blood='1' 
+				 		OR hand_claw_blood='1' OR arm_claw_blood='1' OR body_claw_blood='1' 
+				 		OR leg_claw_blood='1' OR feet_claw_blood='1') $cond";
+			$data['claw_blood'] = $this->db->GetOne($sql);
+			
+			$data['claw_noblood'] =0; 	
+			$sql="select count(historyid)as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid  
+				 where ( head_claw_noblood='1' OR face_claw_noblood='1' OR neck_claw_noblood='1' 
+				 		OR hand_claw_noblood='1' OR arm_claw_noblood='1' OR body_claw_noblood='1' 
+				 		OR leg_claw_noblood='1' OR feet_claw_noblood='1') $cond";
+			$data['claw_noblood'] = $this->db->GetOne($sql);
+			
+			$data['lick_blood'] =0;
+			$sql="select count(historyid) FROM n_history INNER JOIN n_information ON historyid=information_historyid  
+				 where (head_lick_blood='1' OR face_lick_blood='1' OR neck_lick_blood='1' OR hand_lick_blood='1' OR arm_lick_blood='1' OR body_lick_blood='1' OR leg_lick_blood='1' OR feet_lick_blood='1') $cond";
+			$data['lick_blood'] = $this->db->GetOne($sql);			
+
+			$data['lick_noblood'] =0;
+			$sql="select count(historyid) FROM n_history INNER JOIN n_information ON historyid=information_historyid  
+				 where (head_lick_noblood='1' OR face_lick_noblood='1' OR neck_lick_noblood='1' OR hand_lick_noblood='1' OR arm_lick_noblood='1' OR body_lick_noblood='1' OR leg_lick_noblood='1' OR feet_lick_noblood='1') $cond";
+			$data['lick_noblood'] = $this->db->GetOne($sql);				
+			
+			
 			## food_dangerous
+			$data['total_food'] = 0;
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid where food_dangerous='1'".$cond;
 			$data['total_food'] = $this->db->GetOne($sql);	
 			
+			$data['totaltouch'] = $data['lick_blood'] + $data['lick_noblood'] + $data['claw_noblood'] + $data['claw_blood'] + $data['bite_noblood'] + $data['bite_blood']+$data['total_food'];						
 			## ตำแหน่งการสัมผัส
 			$sql ="select  sum(head) as head,sum(face) as face,sum(neck) as neck,sum(hand) as hand,sum(arm) as arm,sum(body) as body,sum(leg) as leg,sum(feet) as feet 
 				   from(
@@ -333,8 +374,7 @@ class Report extends R36_Controller
 				}																						
 			}			
 			$data['total_protect_all'] = $data['total_protect20'] +	$data['total_protect21'] + $data['total_protect22'];
-			## use_rig,hrig_erig
-				
+			## use_rig,hrig_erig				
 			$rs=array();								
 			$sql="SELECT count(historyid) as cnt,use_rig,erig_hrig  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
 				  WHERE  1=1 ".$cond." GROUP BY use_rig,erig_hrig   ORDER BY use_rig,erig_hrig   asc";
@@ -438,36 +478,6 @@ class Report extends R36_Controller
 		if($preview)$this->template->set_layout('print');	
 		$this->template->build("report1_index",$data);		
 	}
-	function listreport($cond,$month){
-
-		$month =($month) ? " month(datetouch)" : " QUARTER(datetouch)";
-		####   จำนวน N แต่ละเดือน,ไตรมาส		####	
-		if($list=="N"){
-			$sql="select month(datetouch) as m ,count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-			where 1=1 $cond group by $month order by $month asc";		
-		}else if($list=="gender"){
-			$sql="select month(datetouch) as m ,count(historyid) as cnt,gender  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where 1=1  $cond group by $month ,gender  order by $month,gender  asc";			
-		}else if($list=="age_group"){
-			$sql="select month(datetouch) as m ,count(historyid) as cnt,age_group  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where age<>0  ".$cond." group by $month,age_group  order by $month,age_group  asc";
-			
-		}else if($list=="placetouch"){
-			$sql="select month(datetouch) as m ,count(historyid) as cnt,placetouch  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where 1=1  ".$cond." group by $month,placetouch  order by $month,placetouch  asc";			
-		}else if($list=="typeanimal"){
-			$sql="select month(datetouch) as m ,count(historyid) as cnt,typeanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where 1=1  ".$cond." group by $month,typeanimal  order by $month,typeanimal  asc";						
-		}else if($list=="ageanimal"){
-			$sql="select month(datetouch) as m ,count(historyid) as cnt,ageanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where 1=1  ".$cond." group by month(datetouch),ageanimal  order by month(datetouch),ageanimal  asc";
-			
-			
-		}
-
-	}	
-	
-	
 		
 	function report2($cond= FALSE,$preview=FALSE,$data)
 	{		
@@ -761,18 +771,46 @@ class Report extends R36_Controller
 			foreach($result as $item){
 				$rs[$item['m']] = $item['cnt'];						
 			}
-
+			
 		    for($i=1;$i<13;$i++){									
 				$data['total_head'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
-				$data['total_head'] = $data['total_head'] + $rs[$i];
+				$data['total_head'] = $data['total_head'] + $data['total_head'.$i];
 			}			
 									
 		## หัวสัตว์ที่ส่งตรวจพบเชื้อ
+			$rs=array();			
+			$sql="select month(datetouch) as m ,count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where batteria='1'  ".$cond." order by month(datetouch),headanimal  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs[$item['m']] = $item['cnt'];						
+			}			
+		    for($i=1;$i<13;$i++){
+		    	$data['total_batteria_all'.$i]=0;									
+				$data['total_batteria'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
+				$data['total_batteria_all'.$i] = $data['total_batteria_all'.$i] + $data['total_batteria'.$i];
+			}						
 		## การฉีดอิมมูโนโกลบุลิน(RIG)
+			## use_rig,hrig_erig				
+			
+					
 		## อาการหลังฉีดอิมมูโนโกลบุลิน (RIG)
 		## วิธีการฉีดวัคซีน
 		## ชนิดวัคซีน(จำนวนครั้งที่ใช้) (โด๊ส)
 		## การแพ้วัคซีน
+			$rs=array();			
+			$sql="select month(datetouch) as m ,count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where aftervaccine <>'0' ".$cond." order by month(datetouch),aftervaccine  asc";
+		    $result = $this->db->Execute($sql);						
+			foreach($result as $item){
+				$rs['aftervaccine'][$item['m']] = $item['cnt'];						
+			}			
+		    for($i=1;$i<13;$i++){									
+				$data['total_aftervaccine'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
+				$data['total_aftervaccine'] = $data['total_aftervaccine'] + $data['total_aftervaccine'.$i];
+			}
+		
+		
 		}// $cond					 
 		$data['cond'] = $cond;
 		if($preview){$this->template->set_layout('print');}
@@ -1024,9 +1062,7 @@ class Report extends R36_Controller
 					ORDER BY  vaccine_date asc";	
  		$data['result']=$this->inform->get($sql);
 		$data['pagination'] = $this->inform->pagination();
-		if($preview=="popup"){
-			$this->template->set_layout('blank');
-		}else{$this->template->set_layout('print');}
+		if($preview){$this->template->set_layout('print');}
 		$this->template->build('report_schedule',$data);
 	}
 

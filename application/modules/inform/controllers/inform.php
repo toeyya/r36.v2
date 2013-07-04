@@ -23,7 +23,7 @@ class Inform extends R36_Controller
 		$result=$this->inform->get($sql);
 		if($result){
 			$tb = '<div class="alert alert-warning"><span class="label label-warning">มีเคสนี้อยู่แล้วในระบบ</span> คุณต้องปิดเคสนี้ก่อนจึงสามารถเพิ่มครั้งที่สัผมัสโรคได้</div>';
-			$tb.='<table class="tb_search_Rabies1">';
+			$tb.= '<table class="tb_search_Rabies1">';
 			$tb.= '<tr>';
 			$tb.= '<th>วันที่สัมผัสโรค</th>';
 			$tb.= '<th>HN</th>';
@@ -53,25 +53,25 @@ class Inform extends R36_Controller
 		
 	}
 	function closecase($chk=FALSE)
-	{	$hospitalcode =	$this->session->userdata('R36_HOSPITAL');			 
-		$sql="SELECT id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch,vaccine_date 
-			  FROM n_information 
-			  LEFT JOIN n_history ON historyid=information_historyid 
-			  LEFT JOIN (select information_id,vaccine_date from n_vaccine 
-			  			 where datediff(now(),SUBDATE(vaccine_date,INTERVAL 543 YEAR)) >=90 
-			  			 order by vaccine_date  limit 1)vaccine ON vaccine.information_id=n_information.id 			  
-			  WHERE hospitalcode = $hospitalcode and closecase=1 and  
-			  ORDER BY n_information.datetouch asc ";
+	{
 	
-		$result=$this->inform->get($sql);					
+		$hospitalcode =	$this->session->userdata('R36_HOSPITAL');			 	
+		$result=$this->inform->select("id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch,vaccine_date ")
+							 ->join("LEFT JOIN n_history ON historyid=information_historyid
+									 LEFT JOIN (select information_id,vaccine_date from n_vaccine 
+			  			 			 WHERE datediff(now(),vaccine_date) >=90 
+			  			             ORDER BY vaccine_date  limit 1)vaccine ON vaccine.information_id=n_information.id							 			
+							 ")->where("hospitalcode = $hospitalcode and closecase=1")
+							 ->sort('')->order("n_information.datetouch asc")->get();					
 		/*$data['chk']=($result) ?"yes":"no";	
 		if($chk){
 			echo json_encode($data);
 			return true;
-		}
+		}*/
+		var_dump($result);exit;
 		$data['result'] = $result;		
 		$data['pagination']=$this->inform->pagination();
-		$this->template->set_layout('blank');*/
+		$this->template->set_layout('blank');
 		$this->template->build('view_closecase',$data);
 	}
 	function index()

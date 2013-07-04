@@ -498,17 +498,38 @@
 			<td><?php echo number_format(${'total_head'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_head'.$i},${'total_m'.$i}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format($total_head); ?> <p class="percentage"><?php echo compute_percent($total_head,$total_n); ?></p></td>		
+		</tr>
+		<tr><td colspan="14"><strong>หัวสัตว์ที่ส่งตรวจพบเชื้อ </strong></td></tr>	
+		<tr class="para1">
+			<?php  for($i=1;$i<13;$i++): ?>
+			<td><?php echo number_format(${'total_batteria'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_batteria'.$i},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format(${'total_batteria_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_batteria_all'.$i},$total_n); ?></p></td>		
 		</tr>	
-	</table>
-	
-		<hr class="hr1">
-		<div id="reference"><?php echo $reference?></div>			
-		<div id="btn_printout">
-			<?php  $p=(empty($_GET['preview'])) ? '&p=preview':'';?>
-			<a href="report/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].$p ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
-		<div id="area_btn_print">
-			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
-			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
-		</div>
+		<tr><td colspan="14"><strong>การฉีดอิมมูโนโกลบุลิน(RIG) </strong></td></tr>	
+		<tr class="para1">
+			<td class="pad-left">ERIG</td>
+			<?php  for($i=1;$i<13;$i++): ?>
+			<td><?php echo number_format(${'total_rig21'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_rig21'.$i},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_rig_all21); ?> <p class="percentage"><?php echo compute_percent($total_rig_all21,$total_n); ?></p></td>		
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">HRIG</td>
+			<?php for($i=1;$i<13;$i++): ?>
+			<td><?php echo number_format(${'total_rig22'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_batteria22'.$i},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><p class="percentage"></p></td>		
+		</tr>					
+	</table>	
+	<hr class="hr1">
+	<div id="reference"><?php echo $reference?></div>			
+	<div id="btn_printout">
+		<?php  $p=(empty($_GET['preview'])) ? '&p=preview':'';?>
+		<a href="report/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].$p ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+	<div id="area_btn_print">
+		<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+		<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+	</div>
 </div>
 <?php endif; ?>
