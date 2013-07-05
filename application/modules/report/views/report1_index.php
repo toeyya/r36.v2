@@ -19,8 +19,10 @@ $(document).ready(function(){
 <?php require 'include/conditionreport.php'; ?>
 	<tr>
 	    <th>ปีที่สัมผัสโรค</th>
+
 	    
 		<td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>	
+
 		<th>เดือนที่สัมผัสโรค</th>
 	    <td><?php echo form_dropdown('month_start',get_month(),@$_GET['month_start'],'class="styled-select"','ทั้งหมด'); ?></td>					
       </tr>   	
@@ -36,12 +38,12 @@ $(document).ready(function(){
 </div>
 
 <div id="report">
-		<div id="title">				  
-		<p>รายงานผู้สัมผัสโรคในภาพรวม</p>
-	    <p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
-		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
-		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
-		</div>
+<div id="title">				  
+	<p>รายงานผู้สัมผัสโรคในภาพรวม</p>
+	<p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
+	<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
+	<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
+</div>
 <? if(!empty($cond)): ?>
 <div id="multiAccordion">
     <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>
@@ -177,39 +179,39 @@ $(document).ready(function(){
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">มีเลือดออก</td>
-					<td></td>
-					<td></td>
+					<td><?php echo number_format($bite_blood); ?></td>
+					<td><?php echo compute_percent($bite_blood,$totaltouch); ?></td>	
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">ไม่มีเลือดออก</td>
-					<td></td>
-					<td></td>
+					<td><?php echo number_format($bite_noblood); ?></td>
+					<td><?php echo compute_percent($bite_noblood,$totaltouch); ?></td>	
 			    </tr>			
 				<tr class="para1">
 					<td class="pad-left" colspan="3">ถูกข่วน</td>
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">มีเลือดออก</td>
-					<td></td>
-					<td></td>
+					<td><?php echo number_format($lick_blood); ?></td>
+					<td><?php echo compute_percent($lick_blood,$totaltouch); ?></td>	
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">ไม่มีเลือดออก</td>
-					<td></td>
-					<td></td>
+					<td><?php echo number_format($lick_noblood); ?></td>
+					<td><?php echo compute_percent($lick_noblood,$totaltouch); ?></td>	
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left" colspan="3">ถูกเลีย / ถูกข่วน</td>
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">ที่มีแผล</td>
-					<td></td>
-					<td></td>
+					<td><?php echo number_format($claw_blood); ?></td>
+					<td><?php echo compute_percent($claw_blood,$totaltouch); ?></td>	
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">ที่ไม่มีแผล</td>
-					<td></td>
-					<td></td>
+					<td><?php echo number_format($claw_noblood); ?></td>
+					<td><?php echo compute_percent($claw_noblood,$totaltouch); ?></td>	
 			    </tr>			    
 				<tr class="para1">
 					<td class="pad-left">กินอาหารดิบหรือดื่มน้ำที่สัมผัสเชื้อโรคพิษสุนัขบ้า</td>

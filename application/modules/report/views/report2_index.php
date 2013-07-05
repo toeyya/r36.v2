@@ -492,23 +492,110 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_statusanimal_all0); ?> <p class="percentage"><?php echo compute_percent($total_statusanimal_all0,$total_n); ?></p></td>
 		</tr>	
-		<tr><td colspan="14"><strong>การส่งหัวสัตว์ตรวจ</strong></td></tr>	
-		<tr class="para1">
+		<tr><td><strong>การส่งหัวสัตว์ตรวจ</strong></td>			
 			<?php  for($i=1;$i<13;$i++): ?>
 			<td><?php echo number_format(${'total_head'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_head'.$i},${'total_m'.$i}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format($total_head); ?> <p class="percentage"><?php echo compute_percent($total_head,$total_n); ?></p></td>		
+		</tr>
+		<tr><td><strong>หัวสัตว์ที่ส่งตรวจพบเชื้อ </strong></td>	
+			<?php  for($i=1;$i<13;$i++): ?>
+			<td><?php echo number_format(${'total_batteria'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_batteria'.$i},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_batteria_all); ?> <p class="percentage"><?php echo compute_percent($total_batteria_all,$total_n); ?></p></td>		
 		</tr>	
-	</table>
-	
-		<hr class="hr1">
-		<div id="reference"><?php echo $reference?></div>			
-		<div id="btn_printout">
-			<?php  $p=(empty($_GET['preview'])) ? '&p=preview':'';?>
-			<a href="report/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].$p ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
-		<div id="area_btn_print">
-			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
-			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
-		</div>
+		<tr><td colspan="14"><strong>การฉีดอิมมูโนโกลบุลิน(RIG)</strong></td></tr>
+		<tr class="para1">
+			<td class="pad-left">ERIG</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_rig1'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_rig1'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_rig_all1); ?> <p class="percentage"><?php echo compute_percent($total_rig_all1,$total_n); ?></p></td>		
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">HRIG</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_rig2'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_rig2'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_rig_all2); ?> <p class="percentage"><?php echo compute_percent($total_rig_all2,$total_n); ?></p></td>		
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_rig0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_rig0'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_rig_all0); ?> <p class="percentage"><?php echo compute_percent($total_rig_all0,$total_n); ?></p></td>		
+		</tr>		
+		<tr><td colspan="14"><strong>อาการหลังฉีดอิมมูโนโกลบุลิน (RIG)</strong></td></tr>					
+		<tr class="para1">
+			<td class="pad-left">แพ้</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_afterrig1'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_afterrig1'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_afterrig_all1); ?> <p class="percentage"><?php echo compute_percent($total_afterrig_all1,$total_n); ?></p></td>		
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่แพ้</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_afterrig2'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_afterrig2'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_afterrig_all2); ?> <p class="percentage"><?php echo compute_percent($total_afterrig_all2,$total_n); ?></p></td>		
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่ระบุ</td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_afterrig0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_afterrig0'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_afterrig_all0); ?> <p class="percentage"><?php echo compute_percent($total_afterrig_all0,$total_n); ?></p></td>		
+		</tr>
+										
+		<tr><td colspan="14"><strong>วิธีการฉีดวัคซีน</strong></td></tr>
+		<?php $vaccine = array(1=>'เข้ากล้ามเนื้อ',2=>'เข้าผิวหนัง',3=>'ไม่ฉีด');?>	
+		<?php for($i=1;$i<4;$i++): ?>	
+		<tr class="para1">
+			<td class="pad-left"><?php echo $vaccine[$i]; ?></td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_means'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_means'.$i.$j},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format(${'total_means_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_means_all'.$i},$total_n); ?></p></td>		
+		</tr>
+		<?php endfor; ?>	
+		
+		<tr><td colspan="14"><strong>ชนิดวัคซีน(จำนวนครั้งที่ใช้)</strong></td></tr>
+		<?php $vaccine = array(1=>'PVRV',2=>'PCEC',3=>'HDCV',4=>'PDEV');?>	
+		<?php for($i=1;$i<5;$i++): ?>	
+		<tr class="para1">
+			<td class="pad-left"><?php echo $vaccine[$i]; ?></td>	
+			<?php  for($j=1;$j<13;$j++): ?>
+			<td><?php echo number_format(${'total_vaccine'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine'.$i.$j},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format(${'total_vaccine_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine_all'.$i},$total_n); ?></p></td>		
+		</tr>
+		<?php endfor; ?>
+		<tr><td colspan="14"><strong>การแพ้วัคซีน</strong></td></tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่มี</td>	
+			<?php  for($i=1;$i<13;$i++): ?>
+			<td><?php echo number_format(${'total_aftervaccine1'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_aftervaccine1'.$i},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_aftervaccine_all1); ?> <p class="percentage"><?php echo compute_percent($total_aftervaccine_all1,$total_n); ?></p></td>		
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">มี</td>	
+			<?php  for($i=1;$i<13;$i++): ?>
+			<td><?php echo number_format(${'total_aftervaccine2'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_aftervaccine2'.$i},${'total_m'.$i}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_aftervaccine_all2); ?> <p class="percentage"><?php echo compute_percent($total_aftervaccine_all2,$total_n); ?></p></td>		
+		</tr>									
+	</table>	
+	<hr class="hr1">
+	<div id="reference"><?php echo $reference?></div>			
+	<div id="btn_printout">
+		<?php  $p=(empty($_GET['preview'])) ? '&p=preview':'';?>
+		<a href="report/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].$p ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+	<div id="area_btn_print">
+		<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+		<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+	</div>
 </div>
 <?php endif; ?>

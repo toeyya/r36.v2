@@ -212,7 +212,7 @@ class Webboards extends Public_Controller
 	{
 		$data['webboard_quizs'] = new Webboard_quiz();
 		$data['webboard_quizs']->sql("select webboard_polldetails.*,round((count(webboard_pollresults.webboard_quiz_id)/(select count(webboard_quiz_id) from webboard_pollresults where webboard_quiz_id = $id)*100),2) percent,count(webboard_pollresults.id) num
-from webboard_polldetails left join webboard_pollresults
+									  from webboard_polldetails left join webboard_pollresults
 on webboard_polldetails.id = webboard_pollresults.webboard_polldetail_id
 where webboard_polldetails.webboard_quiz_id = $id
 group by webboard_pollresults.webboard_polldetail_id
