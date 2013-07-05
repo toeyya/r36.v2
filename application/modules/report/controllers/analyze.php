@@ -160,8 +160,9 @@ class Analyze extends R36_Controller
 			$data['minorvalue_sub']=array("putdrugdetail","1","2","3");
 		}
 		if($cond){										
-			$sql = "select year(datetouch) as y,count(historyid) as cnt,age_group,gender from n_history inner join n_information on historyid=information_historyid
-					where 1=1 ".$cond." group by year(datetouch),age_group ,gender asc";
+			$sql = "SELECT year(datetouch) as y,count(historyid) as cnt,age_group,".$data['detail_minor_type'][$detail_minor]." FROM n_history inner join n_information on historyid=information_historyid
+					WHERE 1=1 ".$cond." group by year(datetouch),age_group ,".$data['detail_minor_type'][$detail_minor]."  
+					ORDER BY age_group ,".$data['detail_minor_type'][$detail_minor]." ASC";
 			$result = $this->db->Execute($sql);	
 			if($result){
 				foreach($result as $item){

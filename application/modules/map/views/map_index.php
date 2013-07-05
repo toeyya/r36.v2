@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
 <link rel="stylesheet" href="themes/map/media/css/stylesheet.css" type="text/css" media="screen" charset="utf-8" />
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="themes/map/media/js/jquery-1.9.1.js"></script>
+<script type="text/javascript" src="themes/map/media/js/jquery-ui1.10.3.js"></script>
 <script type="text/javascript" src="http://mmmap15.longdo.com/mmmap/mmmap.php?key=7a19bf7e66f74a0b39843f76eaf11371"></script>
 
 <script id="mmmap_init_includeobject_script"> 
@@ -793,7 +793,7 @@ $('ul.tabs').each(function(){
 		<ul class="tabs">
 		<li><a href="#tabs1">GIS</a></li>
 		<li><a href="#tabs2">TABLE</a></li>
-		<li><a href="#tabs3">REPORT</a></li>
+		<li><a href="#tabs3">GRAPH</a></li>
 		</ul>
 		<div id="tabs1">
 			<div id="breadcrumbs"></div>	
@@ -843,7 +843,9 @@ $('ul.tabs').each(function(){
 		</tr>
 		</table>
 		</div>
-		<div id="tabs3"></div>
+		<div id="tabs3">
+			
+		</div>
 	</div>
 </div>
 

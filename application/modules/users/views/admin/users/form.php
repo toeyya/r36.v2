@@ -230,6 +230,7 @@ var ref1,ref2,ref3;
         <input  id="position" name="position" value="<?php echo @$rs['userposition']?>" type="hidden" />
         </td>
   </tr>
+
   <?php if(!$profile): ?>
   <?php if($this->session->userdata('R36_LEVEL')=="00" || $this->session->userdata('R36_LEVEL')=="02"): ?>
    <tr><th>การอนุมัติของผู้ดูแลระดับจังหวัด</th>
@@ -238,6 +239,9 @@ var ref1,ref2,ref3;
    <?php if($this->session->userdata('R36_LEVEL')=="00"): ?> 
   <tr><th>การอนุมัติของผู้ดูแลระดับกรม</th>
   	<td><input type="checkbox" name="confirm_admin"  value="1"  <?php echo(!empty($rs['confirm_admin']))?'checked="checked"':''; ?>></td>
+  </tr>
+  <tr><th>การเข้าใช้ระบบสารสนเทศ ฯ(GIS)</th>
+  	<td><input type="checkbox" name="login_gis" value="1"></td>
   </tr>
   <tr><th>ส่งอีเมล์แจ้งอนุมัติ</th>
   	<td><input type="checkbox" name="send_mail" value="1"></td>
