@@ -64,7 +64,7 @@ class Analyze extends R36_Controller
 		  if(!empty($_GET['type'])){					$cond.= " AND in_out='".$type."'";	$data['texttype'] =$type[$_GET['type']];	}									
 		
 	if($preview)$this->template->set_layout('print');
-	$this->template->build('analyze/report_analyze');
+	$this->template->build('analyze/report1');
 		   		
 	}
 	function report1(){
