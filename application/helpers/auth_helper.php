@@ -2,8 +2,7 @@
 
 function login($username=FALSE,$password=FALSE,$admin='') 
 {
-	$CI =& get_instance();
-	$CI->db->debug=TRUE;
+	$CI =& get_instance();	
 	if($admin){
 		$admin =" and userposition IN('00','01','02')";
 	}
