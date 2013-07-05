@@ -167,8 +167,7 @@ class Analyze extends R36_Controller
 				foreach($result as $item){
 					$rs['main'][$item['age_group']][$item['gender']]=$item['cnt'];
 				}
-			}
-			
+			}			
 			$main =count($data['detail_main_name']);
 			$minor = count($data['minordetail']);
 			for($i=0;$i<$main;$i++){
@@ -176,11 +175,10 @@ class Analyze extends R36_Controller
 				for($j=0;$j<$minor;$j++){
 					$data['main'.$i.$j] = (empty($rs['main'][$i][$j])) ? 0 : $rs['main'][$i][$j];
 					$data['main'.$i] = $data['main'.$i] + $data['main'.$i.$j];
-				}
-				
+				}				
 			}
 			$data['main'] = $main;
-			$data['minor'] = $minor;
+			$data['minor']=$minor;
 		}			
 		if($preview)$this->template->set_layout('print');		
 		$this->template->build('analyze/report1_index',$data);
