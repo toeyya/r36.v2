@@ -9,13 +9,13 @@ class Hospital extends Admin_Controller
 		
 	}
 	function index($view=FALSE){
-		$amphur=@$_GET['amphur_id'];
-		$province=@$_GET['province_id'];
-		$district=@$_GET['district_id'];
-		$hospital_name=mysql_real_escape_string(@$_GET['hospital_name']);
-		$hospital=mysql_real_escape_string(@$_GET['hospital']);
+		$amphur=(!empty($_GET['amphur_id'])) ? $_GET['amphur_id']:'';
+		$province=(!empty($_GET['province_id'])) ? $_GET['province_id']:'';
+		$district=(!empty($_GET['district_id'])) ? $_GET['district_id']:'';
+		$hospital_name=(!empty($_GET['hospital_name'])) ? $_GET['hospital_name']:'';
+		$hospital=(!empty($_GET['hospital'])) ? $_GET['hospital'] :'';
 		$wh='';
-		 if($amphur!=''){			$wh=" AND  hospital_amphur_id = '".$amphur."' AND hospital_province_id ='".$province."'";
+		 if($amphur!=''){	$wh=" AND  hospital_amphur_id = '".$amphur."' AND hospital_province_id ='".$province."'";
 		  }else if($province!=''){$wh=" AND hospital_province_id ='".$province."'"; }
 		  if($district!=''){$wh .=" AND hospital_district_id ='".$district."'"; }
 		  if($hospital_name!=''){$wh .=" AND hospital_name LIKE'%".$hospital_name."%'";}	
@@ -49,7 +49,7 @@ class Hospital extends Admin_Controller
 	}
 	function delete($id){
 		if($id)
-		{
+		{	
 			$this->hospital->delete("hospital_id",$id);
 		}
 		redirect('hospital/index?');
@@ -110,7 +110,7 @@ class Hospital extends Admin_Controller
 												,hospitalamphur = '".$_POST['hospital_amphur_id']."'
 												,hospitaldistrict ='".$_POST['hospital_district_id']."'
 												WHERE hospitalcode = '".$_POST['hospital_code']."'");
-			$this->db->Execute("UPDATE n_user SET userhospital = '".$_POST['hospital_code']."' WHERE userhospital = '".$_POST['hospital_code']."'");
+			$this->db->Execute("UPDATE n_user SET userhospital = '".$_POST['hospital_code']."' WHERE userhospital = '".$_POST['hospital_code']."'");			
 			$this->hospital->primary_key("hospital_id");
 			$id=$this->hospital->save($_POST);
 			set_notify('success', SAVE_DATA_COMPLETE);

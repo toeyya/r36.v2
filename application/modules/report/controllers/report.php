@@ -19,6 +19,7 @@ class Report extends R36_Controller
 	function index($no=FALSE)
 	{
 		// $this->db->debug=TRUE;
+
 		 $data['reference'] = $this->reference;
 		 $data['textarea'] ="";
 		 $data['textprovince'] = "ทั้งหมด";
@@ -31,40 +32,34 @@ class Report extends R36_Controller
 		 $data['textgroup'] = "ทั้งหมด";
 		 $type=array(1=>'จำแนกตามคนไข้ปัจจุบัน',2=>'จำแนกตามคนไข้ขาจร');	
 		 $cond="";
-		  if(!empty($_GET['hospital'])){
-		  		$cond = " AND hospitalcode='".$_GET['hospital']."'";
-			  	$data['texthospital']=$this->hospital->get_one("hospital_name","hospital_code",$_GET['hospital']);
-		  }
-		  if(!empty($_GET['amphur'])){
+		  if(!empty($_GET['province'])){
+		  	 	$col="hospitalprovince";	
+		  	 	if($no=="6") $col="n_amphur.province_id";
+			  	$cond .= " AND ".$col." = '".$_GET['province']."'";
+				$data['province_id'] = $_GET['province'];
+				
+				$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
+		  }	
+  		 if(!empty($_GET['amphur'])){
 			  	$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."'";		
 				$data['textamphur']=$this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id= ? ",array($_GET['province'],$_GET['amphur']));
 		  }
 		  if(!empty($_GET['district'])){
 		  		$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."' and hospitaldistrict='".$_GET['district']."'";
 				$data['textdistrict']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district']));
-		  }
-		  if(!empty($_GET['province'])){
-		  	 	$col="hospitalprovince";	
-		  	 	if($no=="6") $col="n_amphur.province_id";
-			  	$cond = " AND ".$col." = '".$_GET['province']."'";
-				$data['province_id'] = $_GET['province'];
-				
-				$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
+		  }		  
+		  if(!empty($_GET['hospital'])){
+		  		$cond = " AND hospitalcode='".$_GET['hospital']."'";
+			  	$data['texthospital']=$this->hospital->get_one("hospital_name","hospital_code",$_GET['hospital']);
 		  }
 		 
-		 	if(!empty($_GET['area'])){
-		 		  $data['textarea'] = $this->area->get_row($_GET['area']);
-			  	  if($_GET['area']=='1'){
-			  	  	 $field="province_level_old";	
-					 $data['textarea'] = "รูปแบบเดิม (12 เขต)";		  		
-				  }elseif($_GET['area']=='2'){
-			 		 $field="province_level_new";		
-					 $data['textarea']  = "รูปแบบใหม่ (19 เขต)";			
-				  } 
-			   	if(!empty($_GET['group'])&& empty($_GET['province'])){		  	   	
-				  $where=$field."='".$_GET['group']."'";				 
-				  $provinceid= "select province_id from n_province where ".$where;  
-				  $cond = " AND hospitalprovince IN (".$provinceid.")";			  	   
+		  if(!empty($_GET['area']))
+		  {
+		 		$data['textarea'] = $this->area->get_one("name","id",$_GET['area']);			  	  
+			   	if(!empty($_GET['group'])&& empty($_GET['province'])){		  	   					 
+				  $provinceid= "select DISTINCT province_id from n_area   inner join n_area_detail on n_area.id = n_area_detail.area_id
+								where hospitalprovince = n_area_detail.province_id and area_id= ".$_GET['area'];  
+				  $cond .= " AND hospitalprovince IN (".$provinceid.")";			  	   
 			   	}
 																
 				if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
@@ -94,8 +89,6 @@ class Report extends R36_Controller
 		  			  
 		   if(!empty($_GET['type'])){	$cond.= " AND in_out='".$type."'";	$data['texttype'] =$type[$_GET['type']];	}									
 		   
-			$current = date('Ymdhis');
-			$data['current']=$current;
 		    $data['cond']=$cond;
 		    $preview = (empty($_GET['p'])) ? '':'preview';
 			switch($no){
@@ -107,6 +100,7 @@ class Report extends R36_Controller
 				case "6":$this->report6($cond,$preview,$data);break;
 				case "7":$this->report7($cond,$preview,$data);break;
 				case "8":$this->report8($cond,$preview,$data);break;
+			   
 			}			  							
 	}
 	function report1($cond= FALSE,$preview=FALSE,$data)
@@ -777,39 +771,111 @@ class Report extends R36_Controller
 				$data['total_head'] = $data['total_head'] + $data['total_head'.$i];
 			}			
 									
-		## หัวสัตว์ที่ส่งตรวจพบเชื้อ
-			$rs=array();			
+		## หัวสัตว์ที่ส่งตรวจพบเชื้อ			
+			$rs=array();
+			$data['total_batteria_all'] = 0;			
 			$sql="select month(datetouch) as m ,count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where batteria='1'  ".$cond." order by month(datetouch),headanimal  asc";
-		    $result = $this->db->Execute($sql);						
+				  where batteria='1' ".$cond." group by month(datetouch) order by month(datetouch)  asc";
+		    $result = $this->db->Execute($sql);				
 			foreach($result as $item){
 				$rs[$item['m']] = $item['cnt'];						
 			}			
 		    for($i=1;$i<13;$i++){
 		    	$data['total_batteria_all'.$i]=0;									
 				$data['total_batteria'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
-				$data['total_batteria_all'.$i] = $data['total_batteria_all'.$i] + $data['total_batteria'.$i];
-			}						
-		## การฉีดอิมมูโนโกลบุลิน(RIG)
-			## use_rig,hrig_erig				
-			
+				$data['total_batteria_all'] = $data['total_batteria_all'] + $data['total_batteria'.$i];
+			}
+							
+		## การฉีดอิมมูโนโกลบุลิน(RIG)use_rig,hrig_erig				
+			$rs=array();					
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,erig_hrig  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where use_rig='2' ".$cond." group by month(datetouch),erig_hrig order by month(datetouch),erig_hrig asc";
+		    $result = $this->db->Execute($sql);						
+			if(!empty($result)){
+				foreach($result as $item){
+					$rs['erig_hrig '][$item['m']] = $item['cnt'];						
+				}				
+			}
+			for($i=0;$i<3;$i++){
+				$data['total_rig_all'.$i] =0;											
+			    for($j=1;$j<13;$j++){									
+					$data['total_rig'.$i.$j]  = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];
+					$data['total_rig_all'.$i] = $data['total_rig_all'.$i] + $data['total_rig'.$i.$j];					
+				}				
+			}			
 					
 		## อาการหลังฉีดอิมมูโนโกลบุลิน (RIG)
-		## วิธีการฉีดวัคซีน
-		## ชนิดวัคซีน(จำนวนครั้งที่ใช้) (โด๊ส)
-		## การแพ้วัคซีน
-			$rs=array();			
-			$sql="select month(datetouch) as m ,count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where aftervaccine <>'0' ".$cond." order by month(datetouch),aftervaccine  asc";
+			$rs=array();					
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,after_rig  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where use_rig='2' ".$cond." group by month(datetouch),after_rig order by month(datetouch),after_rig   asc";
 		    $result = $this->db->Execute($sql);						
-			foreach($result as $item){
-				$rs['aftervaccine'][$item['m']] = $item['cnt'];						
-			}			
-		    for($i=1;$i<13;$i++){									
-				$data['total_aftervaccine'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
-				$data['total_aftervaccine'] = $data['total_aftervaccine'] + $data['total_aftervaccine'.$i];
+			if(!empty($result)){
+				foreach($result as $item){
+					$rs['after_rig '][$item['m']] = $item['cnt'];						
+				}				
 			}
-		
+			for($i=0;$i<3;$i++){
+				$data['total_afterrig_all'.$i] =0;											
+			    for($j=1;$j<13;$j++){									
+					$data['total_afterrig'.$i.$j]  = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];
+					$data['total_afterrig_all'.$i] = $data['total_afterrig_all'.$i] + $data['total_afterrig'.$i.$j];					
+				}				
+			}
+		## วิธีการฉีดวัคซีน
+			$rs=array();					
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,means FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where means <>'0' ".$cond." group by month(datetouch),means order by month(datetouch),means  asc";
+		    $result = $this->db->Execute($sql);						
+			if(!empty($result)){
+				foreach($result as $item){
+					$rs['means'][$item['m']] = $item['cnt'];
+						
+				}				
+			}
+			for($i=1;$i<4;$i++){
+				$data['total_means_all'.$i] =0;											
+			    for($j=1;$j<13;$j++){									
+					$data['total_means'.$i.$j]  = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];
+					$data['total_means_all'.$i] = $data['total_means_all'.$i] + $data['total_means'.$i.$j];					
+				}				
+			}
+		## ชนิดวัคซีน(จำนวนครั้งที่ใช้) (โด๊ส)
+			$rs=array();	
+				
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,vaccine_name FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where vaccine_name <>'0' ".$cond." group by month(datetouch),vaccine_name order by month(datetouch),vaccine_name  asc";
+		    $result = $this->db->Execute($sql);						
+			if(!empty($result)){
+				foreach($result as $item){
+					$rs['vaccine_name'][$item['m']] = $item['cnt'];						
+				}				
+			}
+			for($i=1;$i<5;$i++){
+				$data['total_vaccine_all'.$i] =0;										
+			    for($j=1;$j<13;$j++){			    											
+					$data['total_vaccine'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];	
+					$data['total_vaccine_all'.$i] = $data['total_vaccine_all'.$i] + $data['total_vaccine'.$i.$j];				
+				}				
+			}
+					
+		## การแพ้วัคซีน
+			$rs=array();					
+			$sql="select month(datetouch) as m ,count(historyid) as cnt,after_vaccine FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				  where after_vaccine <>'0' ".$cond." group by month(datetouch),after_vaccine order by month(datetouch),after_vaccine  asc";
+		    $result = $this->db->Execute($sql);						
+			if(!empty($result)){
+				foreach($result as $item){
+					$rs['after_vaccine'][$item['m']] = $item['cnt'];
+						
+				}				
+			}
+			for($i=1;$i<3;$i++){
+				$data['total_aftervaccine_all'.$i] =0;											
+			    for($j=1;$j<13;$j++){									
+					$data['total_aftervaccine'.$i.$j]  = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];
+					$data['total_aftervaccine_all'.$i] = $data['total_aftervaccine_all'.$i] + $data['total_aftervaccine'.$i.$j];					
+				}				
+			}
 		
 		}// $cond					 
 		$data['cond'] = $cond;
@@ -1049,10 +1115,10 @@ class Report extends R36_Controller
 		$nextday=DBdate(date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d")))));			
 		//$hospital_name =$this->hospital->get_one('hospital_name','hospital_code',$this->session->userdata('R36_HOSPITAL'));	
 		$data['hospital'] = $this->db->GetRow("SELECT province_name,amphur_name,district_name,hospital_name FROM n_hospital_1
-																   LEFT JOIN n_province on hospital_province_id=n_province.province_id
-																   LEFT JOIN n_amphur on  hospital_amphur_id =n_amphur.amphur_id and n_amphur.province_id=n_province.province_id
-																   LEFT JOIN n_district on hospital_district_id = n_district.district_id and  n_district.amphur_id =n_amphur.amphur_id and n_district.province_id=n_province.province_id
-																   WHERE hospital_code = ? ",$this->session->userdata('R36_HOSPITAL'));
+											LEFT JOIN n_province on hospital_province_id=n_province.province_id
+											LEFT JOIN n_amphur on  hospital_amphur_id =n_amphur.amphur_id and n_amphur.province_id=n_province.province_id
+											LEFT JOIN n_district on hospital_district_id = n_district.district_id and  n_district.amphur_id =n_amphur.amphur_id and n_district.province_id=n_province.province_id
+											WHERE hospital_code = ? ",$this->session->userdata('R36_HOSPITAL'));
 		$sql="SELECT hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,vaccine_date,datetouch,idcard
 					FROM n_information
 					INNER JOIN n_history   ON n_information.information_historyid = n_history.historyid

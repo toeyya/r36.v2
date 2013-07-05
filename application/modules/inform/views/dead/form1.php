@@ -143,9 +143,8 @@ $(document).ready(function(){
 	});
 });
 </script>
-<? error_reporting(E_ALL ^ E_NOTICE); ?>
 <div id="title">แบบฟอร์มผู้เสียชีวิตด้วยโรคพิษสุนัขบ้า</div>
-<form id="form1" name="form1" method="post"  action="inform/save_dead" > 
+<form id="form1" name="form1" method="post"  action="inform/dead/save" > 
 <div id="multiAccordion">
 	<h3><a href="javascript:void(0)">ส่วนที่ 1 ข้อมูลทั่วไป</a></h3>
 	<div id="section1">
@@ -295,7 +294,7 @@ $(document).ready(function(){
 		</tr>
 		<tr>
 			<th rowspan="4">4.</th>
-			<td><span class="topic radio">สถานที่สัมผัสโรค</span>
+			<td><span class="topic radio">ภูมิลำเนา</span>
 					<input type="radio" value="1" name="addr_same">ที่อยู่ขณะป่วย
 					<input type="radio" value="2" name="addr_same">คนละที่</td>
 		</tr>
@@ -344,8 +343,7 @@ $(document).ready(function(){
 		</tr>
 		<tr>
 			<th>5.</th>
-			<?php $area=array(1=>'เขตกทม.',2=>'เขตเมืองพัทยา',3=>'เขตเทศบาล',4=>'เขต อบต.'); ?>
-			<td><span class="topic">พื้นที่</span><?php echo form_dropdown('area_id',$area,$rs['area_id'],'class="input_box_patient"','-โปรดเลือก-') ?></td>
+			<td colspan="2">เบอร์โทรศัพท์ของญาติ / เพื่อนบ้าน / ผู้นำส่ง ที่สามารถติดต่อได้ <input type="text" class="input_box_patient" name="telephone" value="<?php echo $rs['telephone']  ?>"></td>
 		</tr>
 		</table>
 	</div><!--section1 -->
@@ -355,13 +353,16 @@ $(document).ready(function(){
 			<tr>
 				<th>1. </th>
 				<td><span class="topic">วันเริ่มอาการ</span><input type="text" name="" class="input_box_patient datepicker  auto" size="10"></td>
-				<td><span class="topic">วันที่รักษา</span><input type="text" name="" class="input_box_patient datepicker  auto" size="10"></td>
-				<td><span class="topic">สถานที่รักษา</span><input type="text" name="hospitalcode" class="input_box_patient"></td>
-				
+				<td><span class="topic">รักษาที่</span><input type="text" name="hospitalcode" class="input_box_patient"></td>
+				<td><span class="topic">วันที่</span><input type="text" name="" class="input_box_patient datepicker  auto" size="10"></td>
 			</tr>
 			<tr>
 				<th>2. </th>
-				<td><span class="topic">วันที่เสียชีวิต</span>
+				<td><span class="topic radio">ประเภทผู้ป่วย</span>
+					<input type="radio" name="patient_type" value="in">ผู้ป่วยนอก
+					<input type="radio" name="patient_type" value="out">ผู้ป่วยใน
+				</td>
+				<td><span class="topic radio">วันที่เสียชีวิต</span>
 					 <input type="text" name="" class="input_box_patient datepicker  auto" size="10">					
 				</td>
 			<tr>
@@ -454,10 +455,42 @@ $(document).ready(function(){
 	<div id="section4">
 		<table class="tbdead">
 			<tr><th>1.</th>
-					<td><span class="topic">วันที่สัมผัส</span><input type="text" class="datepicker  auto input_box_patient" size="10"> </td>
+				<td><span class="topic">ชนิดของสัตว์</span>
+					<?php $animal=array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ ระบุ');echo form_dropdown('animal',$animal,@$rs['aniaml'],'class="styled-select"');?>
+					<span class="other"><input type="text" class="input_box_patient"></span>
+				</td> 			
 			</tr>
 			<tr>
-				<th rowspan="3">3.</th>
+				<th>2.</th>
+				<td><span class="topic">วันที่สัมผัส</span><input type="text" class="datepicker  auto input_box_patient" size="10"> เวลา <input type="text" class="input_box_patient"><small>(ถ้าไม่ทราบวันที่ สามารถระบุเป็นช่วงเวลาได้)</small></td>
+			</tr>
+			<tr>
+				<th>3.</th>
+				<td><span class="topic">สถานที่ถูกกัด/ข่วน</span>
+					<?php echo form_radio('','1','') ?>ในบ้าน
+					<?php echo form_radio('','1','') ?>นอกบ้าน 
+						<span>
+							<select><option>จังหวัด</option></select>
+							<select><option>อำเภอ</option></select>
+							<select><option>ตำบล</option></select>
+							
+						</span>
+					<?php echo form_radio('','1','') ?>ต่างประเทศ ระบุ <input type="text" class="input_box_patient">
+				</td>
+			</tr>
+			<tr>
+				<th>4.</th>
+				<td><span class="topic">ลักษณะสถานที่</span>	<?php echo form_radio('','1','') ?>ชุมชนเมือง
+					<?php echo form_radio('','1','') ?>ชานเมือง 	<?php echo form_radio('','1','') ?>ชนบท </td>
+			</tr>
+				<tr>
+				<th>5.</th>
+				<td><span class="topic">การได้รับเชื้อ</span>	<?php echo form_checkbox('','1','') ?>ไม่ทราบ
+					<?php echo form_checkbox('','1','') ?>ถูกน้ำลาย 	<?php echo form_checkbox('','1','') ?>คลุกคลีใกล้ชิดสัตว์ 
+					<?php echo form_checkbox('','1','') ?>ถูกข่วน 	<?php echo form_checkbox('','1','') ?>ถูกกัด</td>
+			</tr>
+			<tr>
+				<th rowspan="3">6.</th>
 				<td style="padding:10px;">บริเวณที่ถูกสัมผัสและความรุนแรง</td>
 			</tr>
 			<tr>
@@ -602,6 +635,10 @@ $(document).ready(function(){
 				<th>2.</th>
 				<td><span class="topic radio">การใช้ยาใส่แผล </span><?php echo form_radio('','1','') ?>ไม่ได้ใช้<?php echo form_radio('','2','') ?>ใช้ ระบุชนิด <input type="text" class="input_box_patient"></td>
 			</tr>
+			<tr>
+				<th>3.</th>
+				<td><span class="topic radio">การเย็บแผล </span><?php echo form_radio('','1','') ?>ไม่ได้เย็บแผล<?php echo form_radio('','2','') ?>เย็บแผลที่ รพ./รพ.สต./คลีนิก <input type="text" class="input_box_patient"></td>
+			</tr>
 		</table>
 	</div><!--section5-->	
 	<h3><a href="javascript:void(0)">ส่วนที่ 6 ประวัติการได้รับวัคซีน/อิมมูโนโกบุลิน/อาการแทรกซ้อนหลังการฉีดของผู้เสียชีวิต</a></h3>
@@ -614,7 +651,7 @@ $(document).ready(function(){
 						<?php echo form_radio('','1','') ?>ฉีด 									
 							<ul class="sub">
 							<li><?php echo form_radio('','1','') ?>ERIG<?php echo form_radio('','1','') ?>HRIG	เมื่อวันที่<input type="text" class="input_box_patient datepicker  auto" size="10"></li>
-							<li>จำนวน <input type="text" class="input_box_patient">  IU/kg </li>
+							<li>จำนวน <input type="text" class="input_box_patient"> หน่วยสากล (IU) </li>
 							<li>Lot.No <input type="text" class="input_box_patient"> </li>
 							<li>วันหมดอายุ <input type="text" class="input_box_patient datepicker  auto" size="10"></li></ul>
 					</td>
@@ -635,6 +672,21 @@ $(document).ready(function(){
 						</ul> 	
 				</td>
 			</tr>
+			<tr>
+				<th>3.</th>
+				<td><span class="topic radio">อาการแทรกซ้อนหลังฉีดวัคซีน</span>	<?php echo form_radio('','1','') ?>ไม่มี
+						<?php echo form_radio('','1','') ?>มี ระบุ
+						<ul class="sub">
+							<li><?php echo form_checkbox('','1','') ?>บวมบริเวณฉีด</li>	
+							<li><?php echo form_checkbox('','1','') ?>ปวดศีรษะ</li>	
+							<li><?php echo form_checkbox('','1','') ?>ไข้สูง</li>	
+							<li><?php echo form_checkbox('','1','') ?>ปัสสาวะลำบาก</li>	
+							<li><?php echo form_checkbox('','1','') ?>อัมพาต</li>	
+							<li><?php echo form_checkbox('','1','') ?>เสียชีวิต</li>	
+							<li><?php echo form_checkbox('','1','') ?>อื่นๆ ระบุ <input type="text" class="input_box_patient"></li>	
+						</ul>	</td>
+				
+			</tr>
 		</table>
 	</div><!-- section 6-->	
 	<h3><a href="javascript:void(0)">ส่วนที่ 7 ประวัติของสัตว์ที่กัด</a></h3>
@@ -642,15 +694,6 @@ $(document).ready(function(){
 		<table class="tbdead">
 			<tr>
 				<th>1.</th>
-				<td>
-					<span class="topic">ชนิดของสัตว์</span>
-					<?php $animal=array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ ระบุ');echo form_dropdown('animal',$animal,@$rs['aniaml'],'class="styled-select"');?>
-					<span class="other"><input type="text" class="input_box_patient"></span>
-				</td> 			
-				
-			</tr>
-			<tr>
-				<th>2.</th>
 				<td><span class="topic">อายุของสัตว์</span>
 					<?php $age=array(1=>'น้อยกว่า 3 เดือน',2=>'3-6 เดือน',3=>'6-12 เดือน',4=>'มากกว่า 1 ปี',5=>'ไม่ทราบ'); ?>
 					<?php echo  form_dropdown('age_animal',$age,@$rs['age_animal'],'class="styled-select"');?>
@@ -658,7 +701,7 @@ $(document).ready(function(){
 
 			</tr>
 			<tr>
-				<th>3.</th>
+				<th>2.</th>
 				<td><span class="topic radio">สถานภาพสัตว์</span>
 					<?php echo form_radio('','1','') ?>มีเจ้าของ
 					<?php echo form_radio('','1','') ?>ไม่มีเจ้าของ
@@ -666,21 +709,18 @@ $(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
-				<th>4.</th>
+				<th>3.</th>
 				<td valign="top"><span class="topic radio">การกักขังติดตาม</span>
-					<?php echo form_radio('','1','') ?>ไม่ทราบ
-					<?php echo form_radio('','1','') ?>สัตว์หนีหายไปติดตามไม่ได้
-					<?php echo form_radio('','1','') ?>ถูกฆ่า/รถทับตาย							
-					<?php echo form_radio('','1','') ?>ไม่ได้กักขัง
-					<?php echo form_radio('','1','') ?>ได้กักขัง/ติดตามพบ
-					<ul class="sub" style="margin-right:24%;"><!-- 17%-->
-						<li><?php echo form_checkbox('','1','') ?>ไม่ตายภายใน 10 วัน</li>
-						<li><?php echo form_checkbox('','1','') ?>ตายเองภายใน 10 วัน</li>
-					</ul>										
+					<?php echo form_checkbox('','1','') ?>ไม่ได้กักขัง
+					<?php echo form_checkbox('','1','') ?>ได้กักขัง/ติดตามพบ
+					<?php echo form_checkbox('','1','') ?>ไม่ตายภายใน 10 วัน
+					<?php echo form_checkbox('','1','') ?>ตายเองภายใน 10 วัน
+					<?php echo form_checkbox('','1','') ?>ถูกฆ่าตาย
+					<?php echo form_checkbox('','1','') ?>สัตว์หายไปติดตามไม่ได้
 				</td>
 			</tr>
 			<tr>
-				<th>5.</th>
+				<th>4.</th>
 				<td colspan="3"><span class="topic radio">สาเหตุที่ถูกกัด</span>
 					<?php echo form_radio('','1','') ?>ถูกกัดโดยไม่มีสาเหตุโน้นำ
 					<?php echo form_radio('','1','') ?>ถูกกัดโดยมีสาเหตุโน้มนำ เนื่องจาก
@@ -694,21 +734,10 @@ $(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
-				<th>6.</th>
-				<td colspan="3"><span class="topic radio">ประวัติการรับวัคซีนของสัตว์นำโรค</span>
-					<?php echo form_radio('','1','') ?>ไม่ทราบ
-					<?php echo form_radio('','1','') ?>ไม่ได้รับ
-					<?php echo form_radio('','1','') ?>ได้รับ จำนวน <input type="text" class="input_box_patient auto" name="" size="2"> ครั้ง 
-					ครั้งสุดท้าย 	<?php echo form_radio('','1','') ?>ภายใน 1 ปี<?php echo form_radio('','1','') ?>เกิน 1 ปี <?php echo form_radio('','1','') ?>จำไม่ได้
-				</td>
-				
-			</tr>
-			<tr>
-				<th>7.</th>
+				<th>5.</th>
 				<td colspan="3"><span class="topic radio">การส่งหัวตรวจ</span>
 						<?php echo form_radio('','1','') ?>ไม่ได้ส่งตรวจเนื่องจาก
-						<?php echo form_radio('','1','') ?>ส่งตรวจเนื่อง ระบุสถานที่ 					  		
-						<?php 
+						<?php echo form_radio('','1','') ?>ส่งตรวจเนื่อง ระบุสถานที่ 					  		<?php 
 					  			$class=' id="headanimalplace" class="input_box_patient " onChange="show_hide_clear_otherheadanimalplace(this);"';
 					  		 	echo form_dropdown('headanimalplace',get_option('id','name','n_animalplaces'),@$rs['headanimalplace'],$class,'-โปรดเลือก-'); ?>
 						<ul class="sub">
@@ -716,29 +745,42 @@ $(document).ready(function(){
 												<?php echo form_radio('','1','') ?>ไม่พบเชื้อ</li></ul>
 				</td>
 			</tr>
-
 		</table>
 	</div><!-- section 7-->	
 	<h3><a href="javascript:void(0)">ส่วนที่ 8 ผู้สัมผัสโรครายอื่น</a></h3>
 	<div id="section8">
-		<table class="tbdead8">			
-		<tr>
-				<th rowspan="2">1.</th>				
-		</tr>
+		<table class="tbdead8">	
+			<tr>
+				<th rowspan="4">1.</th>
+				<td style="padding:10px;">ผู้สัมผัสโรค<span style="text-decoration: underline"><strong>จากสัตว์ตัวเดียวกัน</strong></span></td>
+			</tr>
+			<tr>
+				<td><span class="topic">มีผู้ถูกกัดจำนวน</span><input type="text" class="input_box_patient"> คน</td>
+				<td><span class="pad-left">ได้รับการฉีดวัคซีนป้องกันโรคนี้แล้ว</span><input type="text" class="input_box_patient"> คน</td>				
+			</tr>
 				<tr>
-					<td>ผู้สัมผัสโรค<span style="text-decoration: underline"><strong>จากสัตว์ตัวเดียวกัน</strong></span> จำนวน <input type="text" class="input_box_patient">คน</td>
-					<td style="padding-left:10px;">สัตว์ตัวอื่นที่สัมผัสโรค<span style="text-decoration: underline"><strong>จากสัตว์ตัวเดียวกัน</strong></span> 
-					จำนวน<input type="text" class="input_box_patient">ตัว</td>
+				<td><span class="topic">มีผู้สัมผัสน้ำลายจำนวน</span><input type="text" class="input_box_patient"> คน</td>
+				<td><span class="pad-left">ได้รับการฉีดวัคซีนป้องกันโรคนี้แล้ว</span><input type="text" class="input_box_patient"> คน</td>
+			</tr>
+			<tr>
+				<td colspan="2"><span class="pad-left">จำนวนผู้ถึงแก่กรรมจากสัตว์ตัวเดียวกันนี้กัด</span>
+					<?php echo form_radio('','1','') ?>ไม่มี
+					<?php echo form_radio('','1','') ?>มี	<span class="">ชื่อ-สกุล <input type="text" class="input_box_patient"> เบอร์โทรศัพท์ญาติ/ผู้เกี่ยวข้อง <input type="text" class="input_box_patient"></span>
+				</td>	
+			</tr>		
+			</tr>
+			<tr>
+				<th rowspan="3">2.</th>
+				<td style="padding:10px;">ผู้สัมผัสโรค<span style="text-decoration: underline"><strong>จากผู้ป่วยรายนี้</strong></span></td>
+				<tr>
+					<td><span class="topic">สัมผัสน้ำลายโดยไม่มีแผล</span><input type="text" class="input_box_patient"> คน</td>
+					<td><span class="pad-left">ได้รับการฉีดวัคซีนป้องกันโรคนี้แล้ว</span><input type="text" class="input_box_patient"> คน</td>
+				</tr>
+				<tr>
+					<td><span class="topic">สัมผัสน้ำลายโดยมีแผล / ถูกผู้ป่วยกัน</span><input type="text" class="input_box_patient"> คน</td>
+					<td><span class="pad-left">ได้รับการฉีดวัคซีนป้องกันโรคนี้แล้ว</span><input type="text" class="input_box_patient"> คน</td>
 				</tr>
 			</tr>
-		<tr>
-				<th rowspan="2">2.</th>				
-		</tr>
-				<tr>
-					<td>ผู้สัมผัสโรค<span style="text-decoration: underline"><strong>จากผู้ป่วยรายนี้</strong></span> 	<span style="padding-left:24px;">จำนวน</span> <input type="text" class="input_box_patient">คน</td>
-					
-				</tr>
-			</tr>			
 		</table>
 
 	</div><!-- section 8 -->
@@ -746,13 +788,21 @@ $(document).ready(function(){
 </div><!-- cordion -->
 		<table class="tbform">
 			<tr>
-				<th>ชื่อ-สกุลผู้รายงาน</th><td><input type="text" class="input_box_patient"></td>
-				<th>ตำแหน่ง</th><td><input type="text" class="input_box_patient"></td>
+				<th>ชื่อผู้ให้สัมภาษณ์</th><td><input type="text" class="input_box_patient"></td>
+				<th>ความสัมพันธ์กับผู้ป่วย</th><td><input type="text" class="input_box_patient"></td>
+				
+			</tr>
+			<tr>
+				<th>ชื่อ-สกุล</th><td><input type="text" class="input_box_patient"></td>
+				<th>ผู้สอบสวนตำแหน่ง</th><td><input type="text" class="input_box_patient"></td>
 		   </tr>
 		   <tr>
 				<th>สถานที่ปฏิบัติงาน</th><td><input type="text" class="input_box_patient"></td>
-				<th>วันบันทึกรายงาน</th><td><input type="text" class="input_box_patient  auto" size="10" readonly="readonly">
-			</tr>
+				<th>โทรศัพท์</th><td><input type="text" class="input_box_patient"></td></tr>
+		 <tr><th>อีเมล์</th><td><input type="text" class="input_box_patient"></td>
+				<th>วันที่สอบสวนโรค</th><td><input type="text" class="input_box_patient datepicker  auto" size="10"></td>
+		</tr>
+
 		</table>
 <small><strong>หมายเหตุ :</strong>ระยะฟักตัวของโรค (Incubation period) ที่เชื่อถือได้สั้นที่สุด 7 วัน ยาวนานที่สุด 3 ปี (โดยเฉลี่ย 30-90 วัน)</small>
 

@@ -12,11 +12,15 @@ $(document).ready(function(){
 			}
 		 })
 	});
+	$('.btn_submit').click(function(){
+		var index = $('#detail_main option:selected').val();
+		$('#formreport').attr('action','report/analyze/index/'+index);
+	})
 })
 </script>
 <div id="title">ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</div>
 <div id="search">
-<form action="report/index/4" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/analyze/" method="get" name="formreport"  id="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	  <tr>
 	  	<th>เลือกปัจจัยที่เกี่ยวข้อง</th>
@@ -38,8 +42,7 @@ $(document).ready(function(){
 		</td>
 	
 	  </tr>
-<?php require 'include/conditionreport.php'; ?>
-
+	<?php require 'include/conditionreport.php'; ?>
 	  <tr>
 	    <th>ปีที่สัมผัสโรค</th>
 	 	<td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>						
@@ -47,13 +50,48 @@ $(document).ready(function(){
 	  <th>ปีที่บันทึกรายการ</th>
 	    <td><?php echo form_dropdown('year_report_start',get_year_option(),@$_GET['year_report_start'],'class="styled-select"','ทั้งหมด') ?></td>
       </tr>
-
   </table>
+  <div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul></div>	
+ </form>
+</div>
+<?php if($cond): ?>
+ <div id="report">
+	<div id="title">				  
+		<p>ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</p>
+		<p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
+		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
+		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
+	</div>  
+	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามอายุผู้สัมผัส และ เพศ </h6>	
+	<table class="tbreport">
+		<tr><th rowspan="3">อายุผู้สัมผัสหรือสงสัยว่าสัมผัส</th></tr>
+		<tr>
+			<th colspan="<?php echo count($minordetail)+1; ?>"><strong><?php echo $detail_minor_name[$detail_main] ?></strong></th>
+		</tr>
+		<tr>
+			<?php foreach($minordetail as $item): ?>
+			<th><?php echo $item; ?></th>
+			<?php endforeach; ?>
+			<th>รวม</th>
+		</tr>
+		<?php for($i=1;$i<$main;$i++): ?>
+		<tr class="para1">
+			<td class="pad-left"><?php echo $detail_main_name[$i] ?></td>
+			<?php for($j=1;$j<$minor;$j++): ?>
+			<td><?php echo ${'main'.$i.$j}; ?></td>	
+						
+			<?php endfor; ?>			
+			<td><?php echo ${'main'.$i}; ?></td>
+		</tr>		
+		<?php endfor; ?>
+		
+		
+	</table>
+  </div><!--report -->
   <div class="btn_inline">
       <ul>
       	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
       	<li><button class="btn_cancel" type="button">&nbsp;&nbsp;&nbsp;</button></li>
       </ul>
-</div>	
-</form>
-</div>
+	</div>	
+<?php endif; ?>

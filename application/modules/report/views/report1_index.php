@@ -36,12 +36,12 @@ $(document).ready(function(){
 </div>
 
 <div id="report">
-		<div id="title">				  
-		<p>รายงานผู้สัมผัสโรคในภาพรวม</p>
-	    <p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
-		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
-		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
-		</div>
+<div id="title">				  
+	<p>รายงานผู้สัมผัสโรคในภาพรวม</p>
+	<p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
+	<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
+	<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
+</div>
 <? if(!empty($cond)): ?>
 <div id="multiAccordion">
     <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>

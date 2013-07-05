@@ -11,10 +11,9 @@ class District extends Admin_Controller
 	}
 	function index($view=FALSE)
 	{
-		//$this->db->debug=TRUE;
-		$amphur=@$_GET['amphur_id'];
-		$province=@$_GET['province_id'];	
-		$district=@$_GET['district_name'];
+		$amphur=(!empty($_GET['amphur_id']))? $_GET['amphur_id']:'';
+		$province=(!empty($_GET['province_id'])) ? $_GET['province_id']:'';	
+		$district=(!empty($_GET['district_name'])) ? $_GET['district_name']:'';
 		$wh='';
 		if($amphur!=''){
 		  		$wh=" AND  amphur_id = '".$amphur."' AND province_id ='".$province."'";

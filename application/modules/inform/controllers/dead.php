@@ -15,7 +15,7 @@ class Dead extends R36_Controller
 		$this->history->primary_key('historyid');		
 	}
 	function index()
-	{ 			  	//$this->db->debug=TRUE;	  	  	
+	{ 		//$this->db->debug=TRUE;	  	  	
 			$wh='';
 			if(!empty($_GET['startdate']))				$wh.=" AND n_historydead.datetouch >='".cld_date2my($_GET['startdate'])."'";			
 			if(!empty($_GET['enddate']))				$wh.=" AND n_historydead.datetouch <='".cld_date2my($_GET['endate'])."'";			
