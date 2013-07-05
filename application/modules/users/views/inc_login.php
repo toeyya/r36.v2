@@ -14,14 +14,17 @@
     		<li>สวัสดี :<label><?php echo $this->session->userdata('R36_MAIL')?></label></li>
     		<li>ประเภท :<label><?php echo $this->session->userdata('R36_LEVEL_NAME'); ?></label></li>
     		<hr class="hr1">
-    		<li><span>
+    		<li>
    <?php 
    $link="users/r36/users/index/".$this->session->userdata('R36_UID'); 
    if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"): ?>
    <?php $link="inform/index"; ?>
    <?php endif; ?>			
-   <a href="<? echo $link ?>" target="_blank" class="btn btn-mini btn-info">โปรแกรม ร.36</a></span>
-   <a href="users/logout" class="btn btn-mini">logout</a></li>
+   <a href="<? echo $link ?>" target="_blank" class="btn_r36"></a>  
+   <a href="map/index" target="_blank" class="btn_gis"></a>
+   <p style="text-align: center;"><a href="users/logout" class="btn btn-mini btn-inverse">ออกจากระบบ</a></p>
+ 	
+   </li>
     	</ul> 
     	 <?php else: ?>
     	<form action="users/login" method="post">

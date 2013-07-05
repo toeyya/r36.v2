@@ -24,7 +24,6 @@
                      			<li><a href="report/index/6">ข้อมูลรายจังหวัด   </a></li>
                      			<li><a href="report/index/7">ข้อมูลผู้เสียชีวิต   </a></li>
                      			<li><a href="report/index/8">ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบุลิน </a></li>
-                     			<li><a href="map/index">ระบบภูมิศาสตร์สารสนเทศ (GIS)</a></li>
 
                      		</ul>
                      </li>                    

@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
 <script type="text/javascript" src="themes/map/media/js/jquery-1.9.1.js"></script>
 <script type="text/javascript" src="themes/map/media/js/jquery-ui1.10.3.js"></script>
+<script type="text/javascript" src="themes/map/media/js/highcharts.js"></script>
 <script type="text/javascript" src="http://mmmap15.longdo.com/mmmap/mmmap.php?key=7a19bf7e66f74a0b39843f76eaf11371"></script>
 
 <script id="mmmap_init_includeobject_script"> 
@@ -703,6 +704,51 @@ $('ul.tabs').each(function(){
     e.preventDefault();
   });
 });
+
+  $('#container').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false
+        },
+        title: {
+            text: 'ข้อมูลระดับความเสี่ยงของการสัมผัสโรค'
+        },
+        tooltip: {
+    	    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    color: '#000000',
+                    connectorColor: '#000000',
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'อัตราการสัมผัสโรค',
+            data: [
+                {name: 'อ.สารภี',y: 26.8,color :'#E01B1B'},
+                {name: 'อ.แม่แตง',y: 45.0,sliced: true,selected: true,color :'#E01B1B'},
+                {name: 'อ.ไชปราการ',y: 30.5,color :'#E01B1B'}, 
+                {name: 'อ.หางดง',y:55.5,color :'#E01B1B'},   
+                {name: 'อ.จอมทอง',y: 12.7,color :'#ED4C1F'},  
+                {name: 'อ.ดอยสะเก็ด',y: 10.7,color :'#ED4C1F'},  
+                {name: 'อ.สเมิง',y: 8.0,color :'#FAD502'},
+                {name: 'อ.แม่แจ่ม',y: 5.1,color :'#FAD502'},
+                {name: 'อ.ฮอด',y: 7.0,color :'#FAD502'},
+                {name: 'อ.ดอยเต่า',y: 8.9,color :'#FAD502'},     
+                {name: 'อ.พร้าว',y: 5.1,color :'#55FA02'},
+                {name: 'อ.ฝาก',y: 7.0,color :'#55FA02'},
+                {name: 'อ.แม่อาย',y: 8.9,color :'#55FA02'} 
+            ]
+        }]
+    });
 	
 })
 
@@ -844,7 +890,7 @@ $('ul.tabs').each(function(){
 		</table>
 		</div>
 		<div id="tabs3">
-			
+			<div id="container"></div>
 		</div>
 	</div>
 </div>
