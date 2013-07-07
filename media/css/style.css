@@ -340,7 +340,7 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 .tbreport td strong {font-weight:700;}
 .tbreport td.red, span.red { color:#F00;}
 .tbreport tr:hover td,.tblist tr.active td {background:#FDB8EE;font-weight:bold;}
-.tbreport tr.total { border-top:2px dotted #666; border-bottom:2px dotted #666; font-weight:700; background:url(../images/bg_pattern.png);}
+.tbreport tr.total { border-top:1px solid #666; border-bottom:1px solid #666; font-weight:700;text-align: center;}
 .tbreport td.topic { background:#F5F5F5;}
 .tbreport td.topic p { padding:5px 0 5px 15px;}
 .tbreport td a:link {color:#800000; text-decoration:underline;}

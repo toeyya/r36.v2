@@ -9,6 +9,8 @@ $(document).ready(function(){
 			data:'mode=D_main&ref1='+ref1,
 			success:function(data){
 				$("#show_minor").html(data);
+				
+				
 			}
 		 })
 	});
@@ -16,6 +18,8 @@ $(document).ready(function(){
 		var index = $('#detail_main option:selected').val();
 		$('#formreport').attr('action','report/analyze/index/'+index);
 	})
+	
+ 	
 })
 </script>
 <div id="title">ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</div>
@@ -24,21 +28,18 @@ $(document).ready(function(){
 	<table  class="tb_patient1">
 	  <tr>
 	  	<th>เลือกปัจจัยที่เกี่ยวข้อง</th>
-	  	<td colspan="5"><select name="detail_main" class="styled-select" id="detail_main">
-							<option value="-">ปัจจัยหลัก</option>
-							<option value="1">อายุผู้สัมผัสหรือสงสัยว่าสัมผัส</option>
-							<option value="2">สถานที่สัมผัส</option>
-							<option value="3">ชนิดสัตว์นำโรค</option>
-							<option value="4">อายุสัตว์</option>
-							<option value="5">สัตว์ถูกฆ่าตาย กับ สัตว์ตายเองภายใน 10  วัน</option>
-							<option value="6">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>
-							<option value="7">ประวัติการฉีดวัคซีนของผู้สัมผัส</option>
-							<option value="8">การฉีดอิมมูโนโกลบุลิน</option>
-							<option value="9">จำนวนครั้งที่ฉีดวัคซีนในคน</option>
-				</select>
-				<span id="show_minor">
-					<select name="detail_minor" class="styled-select"><option value="-">ปัจจัยรอง</option></select>
-				</span>
+	  	<?php $arr_detail_main =array(1=>'อายุผู้สัมผัสหรือสงสัยว่าสัมผัส',2=>'สถานที่สัมผัส',3=>'ชนิดสัตว์นำโรค',4=>'อายุสัตว์'
+	  							,5=>'สัตว์ถูกฆ่าตาย กับ สัตว์ตายเองภายใน 10  วัน',6=>'ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์'
+	  							,7=>'ประวัติการฉีดวัคซีนของผู้สัมผัส',8=>'การฉีดอิมมูโนโกลบุลิน',9=>'จำนวนครั้งที่ฉีดวัคซีนในคน'); 
+	  						?>
+	  	<td colspan="5"><?php echo form_dropdown('detail_main',$arr_detail_main,@$_GET['detail_main'],'class="styled-select" id="detail_main"','ปัจจัยหลัก'); ?>
+			<span id="show_minor">
+			<?php if(empty($_GET['detail_minor'])): ?>	
+				<select name="detail_minor" class="styled-select"><option value="">ปัจจัยรอง</option></select>		
+			<? else: ?>
+				<select name="detail_minor" class="styled-select"><option value="<?php echo $_GET['detail_minor'] ?>"><?php echo $detail_minor_name[$detail_minor]; ?></option></select>
+			<? endif; ?>
+			</span>
 		</td>
 	
 	  </tr>
@@ -62,35 +63,47 @@ $(document).ready(function(){
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
 	</div>  
-	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามอายุผู้สัมผัส และ เพศ </h6>	
+	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามอายุผู้สัมผัส และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>	
 	<table class="tbreport">
-		<tr><th rowspan="3">อายุผู้สัมผัสหรือสงสัยว่าสัมผัส</th></tr>
+		<tr><th rowspan="3">อายุผู้สัมผัสหรือสงสัยว่าสัมผัส</th></tr>				
 		<tr>
-			<th colspan="<?php echo count($minordetail)+1; ?>"><strong><?php echo $detail_minor_name[$detail_main] ?></strong></th>
+			<th colspan="<?php echo count($minordetail)+1; ?>"><strong><?php echo $detail_minor_name[$detail_minor] ?></strong></th>
 		</tr>
+		<?php if(!empty($minordetail_head)): ?>
+		<tr><? foreach($minordetail_head as $key =>$item): ?>
+			<th colspan="<?php echo $minorvalue_head[$key] ?>"><?php echo $item; ?></th>
+			<?php endforeach; ?>
+		</tr>		
+		<?php endif; ?>
 		<tr>
 			<?php foreach($minordetail as $item): ?>
 			<th><?php echo $item; ?></th>
 			<?php endforeach; ?>
 			<th>รวม</th>
 		</tr>
-		<?php for($i=1;$i<$main;$i++): ?>
+		<?php foreach($detail_main_type as $i): ?>
 		<tr class="para1">
-			<td class="pad-left"><?php echo $detail_main_name[$i] ?></td>
-			<?php for($j=1;$j<$minor;$j++): ?>
-			<td><?php echo ${'main'.$i.$j}; ?></td>	
-						
-			<?php endfor; ?>			
-			<td><?php echo ${'main'.$i}; ?></td>
+			<td><strong><?php echo $detail_main_name[$i] ?></strong></td>
+			<?php foreach($minorvalue as $j): ?>
+			<td><?php //echo ${'main'.$i.$j}; ?><p class="percentage">(<?php //echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
+			<?php endforeach; ?>			
+			<td><?php //echo ${'total_main'.$i}; ?></td>
 		</tr>		
-		<?php endfor; ?>
+		<?php endforeach; ?>
+		<tr class="total">
+			<td>รวม</td>
+			<td></td>
+			<td></td>							
+			<td></td>	
+			<td></td>				
+		</tr>		
 		
 		
 	</table>
 			<hr class="hr1">		
 			<div id="reference"><?php echo $reference?></div>			
 			<div id="btn_printout">
-			<a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<a href="report/analyze/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 			<div id="area_btn_print">
 				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

@@ -63,29 +63,21 @@ class Analyze extends R36_Controller
 				if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
 				}else{$data['textgroup'] = $_GET['group'];}
 		  }		  
-		  if((!empty($_GET['month_start'])  && !empty($_GET['year_start']))   && (!empty($_GET['month_end']) && !empty($_GET['year_end']))){
-		  	 	$cond.= " AND (month(datetouch) BETWEEN '".$_GET['month_start']."' AND '".$_GET['month_end']."') AND (year(datetouch) BETWEEN '".$_GET['year_start']."' AND '".$_GET['year_end']."')";
-		 		$data['textyear_start'] = $_GET['year_start'];
-				$data['textmonth_start'] = convert_month($_GET['month_start'],"longthai");
-			 	$data['textyear_end'] = $_GET['year_end'];
-				$data['textmonth_end'] = convert_month($_GET['month_end'],"longthai");
-		  }else{
-				if(!empty($_GET['year_start'])){	$cond.= " AND year(datetouch)='".$_GET['year_start']."'";	$data['textyear_start'] = $_GET['year_start'];}		  	
-		  		if(!empty($_GET['month_start'])){	$cond.= " AND month(datetouch)='".$_GET['month_start']."'";  	$data['textmonth_start'] = convert_month($_GET['month_start'],"longthai");	}	
-		  }
-		    
-		  if((!empty($_GET['month_report_start'])  && !empty($_GET['year_report_start']))   && (!empty($_GET['month_report_end']) && !empty($_GET['year_report_start']))){
-		  	 	$cond.= " AND (month(datetouch) BETWEEN '".$_GET['month_report_start']."' AND '".$_GET['month_report_end']."') AND (year(datetouch) BETWEEN '".$_GET['year_report_start']."' AND '".$_GET['year_report_end']."')";
-		 		$data['textyear_report_start'] = $_GET['year_report_start'];
-				$data['textmonth_report_start'] = convert_month($_GET['month_report_start'],"longthai");
-			 	$data['textyear_report_end'] = $_GET['year_report_end'];
-				$data['textmonth_report_end'] = convert_month($_GET['month_report_end'],"longthai");				
-		  }else{
-		  		if(!empty($_GET['year_report_start'])){		$cond.= " AND year(reportdate)='".$_GET['year_report_start']."'";		$data['textyear_start'] = $_GET['year_report_start'];}  
-		 	 	if(!empty($_GET['month_report_start'])){	$cond.= " AND month(reportdate)='".$_GET['month_report_start']."'";  $data['textmonth_start'] = convert_month($_GET['month_report_start'],"longthai");	}	
-		  }  
-		  			  
-		   if(!empty($_GET['type'])){	$cond.= " AND in_out='".$type."'";	$data['texttype'] =$type[$_GET['type']];	}									
+		  
+		if(!empty($_GET['year_start'])){
+				    $cond.= " AND year(datetouch) ='".$_GET['year_start']."'";	
+				    $data['textyear_start'] = $_GET['year_start'];
+					$data['date_type'] ="year(datetouch)";
+		
+}		  			  				  		    
+		if(!empty($_GET['year_report_start'])){
+				$cond.= " AND year(reportdate)='".$_GET['year_report_start']."'";
+				$data['textyear_start'] = $_GET['year_report_start'];
+				$data['date_type'] ="year(reportdate)";
+		}  
+		 	 		
+		  	  			  
+		   									
 		   
 		    $data['cond']=$cond;
 		    $preview = (empty($_GET['p'])) ? '':'preview';
@@ -105,24 +97,25 @@ class Analyze extends R36_Controller
 	{
 		$data['detail_minor_name'] = array('','เพศ','อาชีพ','อาชีพผู้ปกครอง','สถานที่สัมผัส','ชนิดสัตว์นำโรค','อายุสัตว์','สถานภาพสัตว์','สาเหตุที่ถูกกัด','การล้างแผล','การใส่ยาฆ่าเชื้อ');
 		$data['detail_minor_type'] = array('',"age_group","gender","occupationname","occparentsname","placetouch","typeanimal","ageanimal","statusanimal","causedetail","washbefore","putdrug");
-		$data['detail_main_name'] = array("ต่ำกว่า 1 ปี","1-5 ปี","6-10 ปี","11-15 ปี","16-25 ปี","26-35 ปี","36-45 ปี","46-55 ปี","56-65ปี","65 ปีขึ้นไป","ไม่ระบุ");
+		$data['detail_main_name'] = array('ไม่ระบุ',"ต่ำกว่า 1 ปี","1-5 ปี","6-10 ปี","11-15 ปี","16-25 ปี","26-35 ปี","36-45 ปี","46-55 ปี","56-65ปี","65 ปีขึ้นไป");
 		$data['detail_main_type'] = array("1","2","3","4","5","6","7","8","9","10","0");
+		$field_minor = $data['detail_minor']+1;
 		$num_main=count($data['detail_main_name']);
 		if($data['detail_minor']==1){
 			$data['minordetail']=array("ชาย","หญิง","ไม่ระบุ");			
-			$data['minorvalue']=array('',"1","2","0");			
+			$data['minorvalue']=array("1","2","0");			
 		}
 		if($data['detail_minor']==2){
-			$data['minordetail']=array("","นักเรียน นักศึกษา","ในปกครอง","เกษตร ทำนา ทำสวน","ข้าราชการ","กรรมกร","รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)","ค้าขาย","งานบ้าน","ทหาร ตำรวจ","ประมง","ครู","เลี้ยงสัตว์ / จับสุนัข","นักบวช / ภิกษุสามเณร","ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ","สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า","อาสาสมัครฉีดวัคซีนสุนัข","เจ้าหน้าที่สวนสัตว์","ไปรษณีย์","ป่าไม้","พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า","อื่นๆ (ระบุ)","ไม่ระบุ");
-			$data['minorvalue']=array("","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","");
+			$data['minordetail']=array("นักเรียน นักศึกษา","ในปกครอง","เกษตร ทำนา ทำสวน","ข้าราชการ","กรรมกร","รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)","ค้าขาย","งานบ้าน","ทหาร ตำรวจ","ประมง","ครู","เลี้ยงสัตว์ / จับสุนัข","นักบวช / ภิกษุสามเณร","ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ","สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า","อาสาสมัครฉีดวัคซีนสุนัข","เจ้าหน้าที่สวนสัตว์","ไปรษณีย์","ป่าไม้","พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า","อื่นๆ (ระบุ)","ไม่ระบุ");
+			$data['minorvalue']=array("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","0");
 		}
 		if($data['detail_minor']==3){
-			$data['minordetail']=array("","เกษตร ทำนา ทำสวน","ข้าราชการ","กรรมกร","รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)","ค้าขาย","งานบ้าน","ทหาร ตำรวจ","ประมง","ครู","เลี้ยงสัตว์ / จับสุนัข","นักบวช / ภิกษุสามเณร","ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ","สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า","อาสาสมัครฉีดวัคซีนสุนัข","เจ้าหน้าที่สวนสัตว์","ไปรษณีย์","ป่าไม้","พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า","อื่นๆ (ระบุ)","ไม่ระบุุ/เกิน 15 ปี");
-			$data['minorvalue']=array("","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","0");
+			$data['minordetail']=array("เกษตร ทำนา ทำสวน","ข้าราชการ","กรรมกร","รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)","ค้าขาย","งานบ้าน","ทหาร ตำรวจ","ประมง","ครู","เลี้ยงสัตว์ / จับสุนัข","นักบวช / ภิกษุสามเณร","ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ","สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า","อาสาสมัครฉีดวัคซีนสุนัข","เจ้าหน้าที่สวนสัตว์","ไปรษณีย์","ป่าไม้","พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า","อื่นๆ (ระบุ)","ไม่ระบุุ/เกิน 15 ปี");
+			$data['minorvalue']=array("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","0");
 		}
 		if($data['detail_minor']==4){
-			$data['minordetail_head']=array("","เขต กทม.","เขตเมืองพัทยา","เขตเทศบาล","เขตอบต.","ไม่ระบุ");
-			$data['minorvalue_head']=array("","1","1","4","3.","1");
+			$data['minordetail_head']=array("เขต กทม.","เขตเมืองพัทยา","เขตเทศบาล","เขตอบต.","ไม่ระบุ");
+			$data['minorvalue_head']=array("1","1","4","3.","1");
 			$data['minordetail']=array("","","","นคร","เมือง","ตำบล","ไม่ระบุ","ในชุมชน/ตลาด","ชนบท","ไม่ระบุ");
 			$data['minorvalue']=array("","1","2","301","302","303","3099","404","405","4099","0");
 			$data['minorvalue_sub']=array("detailplacetouch");
@@ -138,46 +131,50 @@ class Analyze extends R36_Controller
 			$data['minorvalue']=array("","1","2","3","4","5","0");
 		}
 		if($data['detail_minor']==7){
-			$data['minordetail']=array("","มีเจ้าของ","ไม่มีเจ้าของ","ไม่ทราบ","ไม่ระบุ");
-			$data['minorvalue']=array("","1","2","3","0");
+			$data['minordetail']=array("มีเจ้าของ","ไม่มีเจ้าของ","ไม่ทราบ","ไม่ระบุ");
+			$data['minorvalue']=array("1","2","3","0");
 		}
 		if($data['detail_minor']==8){
-			$data['minordetail']=array("","ทำให้สัตว์เจ็บปวด โมโหหรือตกใจ ","พยายามแยกสัตว์ที่กำลังต่อสู้กัน","เข้าใกล้สัตว์แม่ลูกอ่อน","รบกวนสัตว์ขณะกินอาหาร","เข้าไปในบริเวณที่สัตว์คิดว่าเป็นเจ้าของ","อื่นๆ","ไม่ระบุ");
-			$data['minorvalue']=array("","1","2","3","4","5","6","0");
+			$data['minordetail']=array("ทำให้สัตว์เจ็บปวด โมโหหรือตกใจ ","พยายามแยกสัตว์ที่กำลังต่อสู้กัน","เข้าใกล้สัตว์แม่ลูกอ่อน","รบกวนสัตว์ขณะกินอาหาร","เข้าไปในบริเวณที่สัตว์คิดว่าเป็นเจ้าของ","อื่นๆ",'ไม่ระบุ');
+			$data['minorvalue']=array("1","2","3","4","5","6","0");
 		}
 		if($data['detail_minor']==9){
-			$data['minordetail_head']=array("","ไม่ได้ล้าง","ล้าง","ไม่ระบุ");
-			$data['minorvalue_head']=array("","1","4","1");
+			$data['minordetail_head']=array("ไม่ได้ล้าง","ล้าง","ไม่ระบุ");
+			$data['minorvalue_head']=array("1","4","1");
 			$data['minordetail']=array("","","น้ำ","น้ำและสบู่/<br>ผงซักฟอก","อื่นๆ","ไม่ระบุ","");
 			$data['minorvalue']=array("","1","201","202","203","2099","");
 			$data['minorvalue_sub']=array("washbeforedetail","1","2","3","0");
 		}
 		if($data['detail_minor']==10){
-			$data['minordetail_head'] = array("","ไม่ได้ใส่ยา","ใส่ยา","ไม่ระบุ");
-			$data['minorvalue_head'] = array("","1","4","1");
+			$data['minordetail_head'] = array("ไม่ได้ใส่ยา","ใส่ยา","ไม่ระบุ");
+			$data['minorvalue_head'] = array("1","4","1");
 			$data['minordetail'] = array("","","สารละลาย<br>ไอโอดีน<br>ที่ไม่มีแอลกอฮอล์","ทิงเจอร์ไอโอดีน <br>/ แอลกอฮอล์","อื่นๆ","ไม่ระบุ","");
 			$data['minorvalue'] = array("","1","201","202","203","2099","");
 			$data['minorvalue_sub']=array("putdrugdetail","1","2","3");
 		}
 		if($cond){										
-			$sql = "SELECT year(datetouch) as y,count(historyid) as cnt,age_group,".$data['detail_minor_type'][$detail_minor]." FROM n_history inner join n_information on historyid=information_historyid
-					WHERE 1=1 ".$cond." group by year(datetouch),age_group ,".$data['detail_minor_type'][$detail_minor]."  
-					ORDER BY age_group ,".$data['detail_minor_type'][$detail_minor]." ASC";
+			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$field_minor].",".$data['detail_minor_type'][$data['detail_main']]." FROM n_history inner join n_information on historyid=information_historyid
+					WHERE 1=1 ".$cond." group by ".$data['date_type'].",".$data['detail_minor_type'][$field_minor]." ,".$data['detail_minor_type'][$data['detail_main']]."  
+					ORDER BY ".$data['detail_minor_type'][$field_minor].",".$data['detail_minor_type'][$data['detail_main']]." ASC";
+			echo $sql;
 			$result = $this->db->Execute($sql);	
+			$rs=array();
 			if($result){
 				foreach($result as $item){
-					$rs['main'][$item['age_group']][$item['gender']]=$item['cnt'];
+					$rs['main'][$item[$data['detail_minor_type'][$field_minor]]][$item[$data['detail_minor_type'][$data['detail_main']]]]=$item['cnt'];
 				}
-			}			
+			}
+			//var_dump($rs);			
 			$main =count($data['detail_main_name']);
 			$minor = count($data['minordetail']);
 			for($i=0;$i<$main;$i++){
-				$data['main'.$i]=0;
+				$data['total_main'.$i]=0;
 				for($j=0;$j<$minor;$j++){
 					$data['main'.$i.$j] = (empty($rs['main'][$i][$j])) ? 0 : $rs['main'][$i][$j];
-					$data['main'.$i] = $data['main'.$i] + $data['main'.$i.$j];
+					$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j]."<br/>";										
 				}				
 			}
+						
 			$data['main'] = $main;
 			$data['minor']=$minor;
 		}			
