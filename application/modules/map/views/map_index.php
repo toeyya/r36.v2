@@ -671,6 +671,9 @@ $(document).ready(function(){
 		  nowshowing = id;
 		 
 	})
+
+
+
 	
 $('ul.tabs').each(function(){
   // For each set of tabs, we want to keep track of
@@ -706,6 +709,8 @@ $('ul.tabs').each(function(){
     e.preventDefault();
   });
 });
+
+
 
   $('#container').highcharts({
         chart: {
