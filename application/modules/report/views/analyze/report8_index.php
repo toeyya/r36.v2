@@ -62,53 +62,23 @@ $(document).ready(function(){
 		<p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
-	</div>  
-	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามอายุผู้สัมผัส และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>	
+	</div>
 	<table class="tbreport">
-		<?php $row=(!empty($minordetail_head))? "4":"3"; ?>
-		<tr><th rowspan="<?php echo $row; ?>">อายุผู้สัมผัสหรือสงสัยว่าสัมผัส</th></tr>				
 		<tr>
-			<th colspan="<?php echo count($minordetail)+1; ?>"><strong><?php echo $detail_minor_name[$detail_minor] ?></strong></th>
+			<th rowspan="4" colspan="2">การฉีดอิมมูโนโกลบูลิน</th>
+			<th colspan="2">ถูกกัด</th>
+			<th colspan="2">ถูกข่วน</th>
+			<th colspan="2">ถูกเลีย / ถูกน้ำลาย</th>
 		</tr>
-		<?php if(!empty($minordetail_head)): ?>
-		<tr><? foreach($minordetail_head as $key =>$item): ?>
-			<th colspan="<?php echo $minorvalue_head[$key] ?>"><?php echo $item; ?></th>
-			<?php endforeach; ?>
-		</tr>		
-		<?php endif; ?>
 		<tr>
-			<?php foreach($minordetail as $item): ?>
-			<th><?php echo $item; ?></th>
-			<?php endforeach; ?>
-			<th>รวม</th>
-		</tr>					
-		<?php foreach($detail_main_type as $i): ?>
-		<tr class="para1">
-			<td><strong><?php echo $detail_main_name[$i] ?></strong></td>
-			<?php foreach($minorvalue as $j): ?>
-			<td><?php echo ${'main'.$i.$j}; ?><p class="percentage">(<?php echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
-			<?php endforeach; ?>			
-			<td><?php echo ${'total_main'.$i}; ?></td>
-		</tr>		
-		<?php endforeach; ?>
-		<tr class="total">			
-			<td>รวม</td>
-			
-			<td></td>
-							
+			<th>มีเลือดออก</th>
+			<th>ไม่มีเลือดออก</th>
+			<th>มีเลือดออก</th>
+			<th>ไม่มีเลือดออก</th>
+			<th>มีเลือดออก</th>
+			<th>ไม่มีเลือดออก</th>
+			<th rowspan="3">รวม</th>
 		</tr>
-	
-	
-		
 	</table>
-			<hr class="hr1">		
-			<div id="reference"><?php echo $reference?></div>			
-			<div id="btn_printout">
-			<a href="report/analyze/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
-			<div id="area_btn_print">
-				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
-				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
-			</div>  
-  </div><!--report -->
-
+  </div>  
 <?php endif; ?>
