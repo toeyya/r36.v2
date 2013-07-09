@@ -81,23 +81,27 @@ $(document).ready(function(){
 			<?php endforeach; ?>
 			<th>รวม</th>
 		</tr>
-		<?php foreach($detail_main_type as $i): ?>
-		<tr class="para1">
-			<td><strong><?php echo $detail_main_name[$i] ?></strong></td>
-			<?php foreach($minorvalue as $j): ?>
-			<td><?php echo ${'main'.$i.$j}; ?><p class="percentage">(<?php echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
-			<?php endforeach; ?>			
-			<td><?php echo ${'total_main'.$i}; ?></td>
-		</tr>		
-		<?php endforeach; ?>
-		<tr class="total">
-			<td>รวม</td>
-			<td></td>
-			<td></td>							
-			<td></td>	
-			<td></td>				
-		</tr>		
+	
 		
+			
+			<?php foreach($detail_main_type as $i): ?>
+			<tr class="para1">
+				<td><strong><?php echo $detail_main_name[$i] ?></strong></td>
+				<?php foreach($minorvalue as $j): ?>
+				<td><?php echo $i.'/'.$j.'/'.' = '.${'main'.$i.$j}; ?><p class="percentage">(<?php echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
+				<?php endforeach; ?>			
+				<td><?php echo ${'total_main'.$i}; ?></td>
+			</tr>		
+			<?php endforeach; ?>
+			<tr class="total">
+				<td>รวม</td>
+				<td></td>
+				<td></td>							
+				<td></td>	
+				<td></td>				
+			</tr>
+	
+	
 		
 	</table>
 			<hr class="hr1">		

@@ -38,9 +38,7 @@ function mmmap_client_init() {
 	var mmmap_div = document.getElementById("mmmap_div");
 	window.onresize = myRepaint;
 	mmmap = new MMMap(mmmap_div,13.767734,100.5351375,7, 'politicalwhite');
-  //mmmap.initVector();
-  //mmmap.hideScale();
-  //mmmap.hideModeSelector();
+
   mmmap.hideCenterMark();
   
    mmmap.showObject('เชียงราย', "ADM", false, null, null, "F70707", "F70707", 0.7, 0.5); // Chiang Rai, with line and fill colors ภาคเหนือ
@@ -144,20 +142,13 @@ function mmmap_client_init() {
   mmmap.showObject('สุราษฎร์ธานี',"ADM", false, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
   mmmap.showObject('ยะลา',"ADM", false, null, null, "FAC802", "FAC802", 0.7, 0.5); // เหลืองเข้ม
  
-   //mmmap.showObject('สกลนคร', "ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
-   //mmmap.showObject('บึงกาฬ',"ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
-   //mmmap.showObject('อุดรธานี',"ADM", false, null, null, "FCE005", "FCE005", 0.7, 0.5); // เหลือง
+
    
-    mmmap.showObject('พระนครศรีอยุธยา', "ADM", false, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
+   mmmap.showObject('พระนครศรีอยุธยา', "ADM", false, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
    mmmap.showObject('สิงห์บุรี',"ADM", false, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
    mmmap.showObject('ลพบุรี',"ADM", false, null, null, "FA6000", "FA6000", 0.7, 0.5); // ส้ม
    mmmap.moveTo(13.767734,100.5351375);
-  /* mmmap.showObject('5010;5011;5009', "IG", false, null, null, "00FF00", "00FF00", 0.7, 0.5); 
-   mmmap.showObject('5001;5003;5008;5016;5017', "IG", false, null, null, "FCE005", "FCE005", 0.7, 0.5);//เหลือง
-   mmmap.showObject('5005;5004;5002', "IG", true, null, null, "FA6000", "FA6000", 0.7, 0.5); //ส้ม
-   mmmap.showObject('5006;5007;5013;5014;5015;5018;5019;5020;5021', "IG", false, null, null, "FF3F3F", "FF3F3F", 0.7, 0.5); //แดง
-   mmmap.showObject('500501;500401;500201', "IG", false, null, null, "FF3F3F", "FF3F3F", 0.7, 0.5); //แดง
-   */
+
   var object = {
     "mmmap" : mmmap,
     "id" : '50',
@@ -673,41 +664,40 @@ $(document).ready(function(){
 	})
 
 
-
 	
-$('ul.tabs').each(function(){
-  // For each set of tabs, we want to keep track of
-  // which tab is active and it's associated content
-  var $active, $content, $links = $(this).find('a');
-
-  // If the location.hash matches one of the links, use that as the active tab.
-  // If no match is found, use the first link as the initial active tab.
-  $active = $($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
-  $active.addClass('active');
-  $content = $($active.attr('href'));
-
-  // Hide the remaining content
-  $links.not($active).each(function () {
-    $($(this).attr('href')).hide();
-  });
-
-  // Bind the click event handler
-  $(this).on('click', 'a', function(e){
-    // Make the old tab inactive.
-    $active.removeClass('active');
-    $content.hide();
-
-    // Update the variables with the new link and content
-    $active = $(this);
-    $content = $($(this).attr('href'));
-
-    // Make the tab active.
-    $active.addClass('active');
-    $content.show();
-
-    // Prevent the anchor's default click action
-    e.preventDefault();
-  });
+	$('ul.tabs').each(function(){
+	  // For each set of tabs, we want to keep track of
+	  // which tab is active and it's associated content
+	  var $active, $content, $links = $(this).find('a');
+	
+	  // If the location.hash matches one of the links, use that as the active tab.
+	  // If no match is found, use the first link as the initial active tab.
+	  $active = $($links.filter('[href="'+location.hash+'"]')[0] || $links[0]);
+	  $active.addClass('active');
+	  $content = $($active.attr('href'));
+	
+	  // Hide the remaining content
+	  $links.not($active).each(function () {
+	    $($(this).attr('href')).hide();
+	  });
+	
+	  // Bind the click event handler
+	  $(this).on('click', 'a', function(e){
+	    // Make the old tab inactive.
+	    $active.removeClass('active');
+	    $content.hide();
+	
+	    // Update the variables with the new link and content
+	    $active = $(this);
+	    $content = $($(this).attr('href'));
+	
+	    // Make the tab active.
+	    $active.addClass('active');
+	    $content.show();
+	
+	    // Prevent the anchor's default click action
+	    e.preventDefault();
+	  });
 });
 
 

@@ -1,6 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
-var province_id,amphur_id,district_id;	
+	var province_id,amphur_id,district_id;	
 	$("select[name=hospital_province_id]").change(function(){
 		province_id=$("select[name=hospital_province_id] option:selected").val();
 		$('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	

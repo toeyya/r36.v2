@@ -75,10 +75,7 @@ class Analyze extends R36_Controller
 				$data['textyear_start'] = $_GET['year_report_start'];
 				$data['date_type'] ="year(reportdate)";
 		}  
-		 	 		
-		  	  			  
-		   									
-		   
+		 	 				  	  			  		   											   
 		    $data['cond']=$cond;
 		    $preview = (empty($_GET['p'])) ? '':'preview';
 			switch($no){
@@ -122,9 +119,11 @@ class Analyze extends R36_Controller
 		}
 		
 		if($data['detail_minor']==5){
-			$data['minordetail']=array("","สุนัข","แมว","ลิง","ชะนี","หนู","คน","วัว","กระบือ","สุกร","แพะ","แกะ","ม้า","กระรอก","กระแต","พังพอน","กระต่าย","สัตว์ป่า","ไม่ทราบ","ไม่ระบุ");
-			$data['minorvalue']=array("","1","2","3","4","5","601","602","603","604","605","606","607","608","609","6010","6011","6012","6013","");
+			$data['minordetail']=array("สุนัข","แมว","ลิง","ชะนี","หนู","คน","วัว","กระบือ","สุกร","แพะ","แกะ","ม้า","กระรอก","กระแต","พังพอน","กระต่าย","สัตว์ป่า","ไม่ทราบ","ไม่ระบุ");
+			$data['minorvalue']=array("10","20","30","40","50",'61','62','63','64','65','66','67','68','69','610','611','612','613','60');
 			$minorvalue_sub=array(",typeother");
+			$data['m_value'] = array("1","2","3","4","5","6","7","8","9","10","11","12","13","0");
+			
 		}
 		if($data['detail_minor']==6){
 			$data['minordetail']=array("","น้อยกว่า 3 เดือน ","3 - 6 เดือน ","6 - 12 เดือน ","มากกว่า 1 ปี ","ไม่ทราบ","ไม่ระบุ");
@@ -159,38 +158,53 @@ class Analyze extends R36_Controller
 					WHERE 1=1 ".$cond." 
 					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
-			echo $sql;
+			//echo $sql;
 			$result = $this->db->Execute($sql);	
 			$rs=array();
+			
 			if($result){
 				if(!empty($minorvalue_sub)){
+					$minorvalue_sub[0]=substr($minorvalue_sub[0],1);
+
+					echo $data['detail_minor_type'][$data['detail_main']];
+					'<br/>'.$data['detail_minor_type'][6];				
 					foreach($result as $item){
 						$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$data['detail_minor_type'][$field_minor]]][$minorvalue_sub[0]]=$item['cnt'];
 					}
-					echo '<pre>';
-					var_dump($rs);
-					echo '</pre>';
+
 				}else{									
 					foreach($result as $item){
 						$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$data['detail_minor_type'][$field_minor]]]=$item['cnt'];
 					}
 				}
 			}
-			//var_dump($rs);			
+			var_dump($rs['main'][1][1][0]);exit;			
 			$main =count($data['detail_main_name']);
 			$minor = count($data['minordetail']);
+			$minor_sub =(empty($data['m_value'])) ? "":count($data['m_value']);
 			
-			for($i=0;$i<$main;$i++){
-				$data['total_main'.$i]=0;
-				for($j=0;$j<$minor;$j++){
-					
-					$data['main'.$i.$j] = (empty($rs['main'][$i][$j])) ? 0 : $rs['main'][$i][$j];
-					$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j]."<br/>";										
+			if(!$minor_sub){
+				for($i=0;$i<$main;$i++){
+					$data['total_main'.$i]=0;
+					for($j=0;$j<$minor;$j++){					
+						$data['main'.$i.$j] = (empty($rs['main'][$i][$j])) ? 0 : $rs['main'][$i][$j];
+						$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j]."<br/>";										
+					}				
+				}				
+			}else{				
+				for($i=0;$i<$main;$i++){
+					$data['total_main'.$i]=0;
+					for($j=0;$j<$minor;$j++){
+						for($k=0;$k<$minor_sub;$k++){																		
+							$data['main'.$i.$j.$k] = (empty($rs['main'][$i][$j][$k])) ? 0 : $rs['main'][$i][$j][$k];
+							//$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j]."<br/>";
+						}										
+					}				
 				}				
 			}
-						
+				
 			$data['main'] = $main;
-			$data['minor']=$minor;
+			$data['minor']= $minor;
 		}			
 		if($preview)$this->template->set_layout('print');		
 		$this->template->build('analyze/report1_index',$data);

@@ -119,3 +119,7 @@ radio input[type="radio"], .checkbox input[type="checkbox"] {
     padding: 2px;
     width:100%;
 }
+.red{background-color:#F70707;width:12px;height:13px;margin-left:2px;}
+.orange{background-color:#FA6000;width:12px;height:13px;margin-left:2px;}
+.yellow{background-color:#FAC802;width:12px;height:13px;margin-left:2px;}
+.green{background-color:#A7FA00;width:12px;height:13px;margin-left:2px;}
