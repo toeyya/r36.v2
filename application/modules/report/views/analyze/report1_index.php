@@ -85,9 +85,9 @@ $(document).ready(function(){
 		<tr class="para1">
 			<td><strong><?php echo $detail_main_name[$i] ?></strong></td>
 			<?php foreach($minorvalue as $j): ?>
-			<td><?php //echo ${'main'.$i.$j}; ?><p class="percentage">(<?php //echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
+			<td><?php echo ${'main'.$i.$j}; ?><p class="percentage">(<?php echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
 			<?php endforeach; ?>			
-			<td><?php //echo ${'total_main'.$i}; ?></td>
+			<td><?php echo ${'total_main'.$i}; ?></td>
 		</tr>		
 		<?php endforeach; ?>
 		<tr class="total">

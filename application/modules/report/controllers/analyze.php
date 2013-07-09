@@ -124,7 +124,7 @@ class Analyze extends R36_Controller
 		if($data['detail_minor']==5){
 			$data['minordetail']=array("","สุนัข","แมว","ลิง","ชะนี","หนู","คน","วัว","กระบือ","สุกร","แพะ","แกะ","ม้า","กระรอก","กระแต","พังพอน","กระต่าย","สัตว์ป่า","ไม่ทราบ","ไม่ระบุ");
 			$data['minorvalue']=array("","1","2","3","4","5","601","602","603","604","605","606","607","608","609","6010","6011","6012","6013","");
-			$data['minorvalue_sub']=array("typeother");
+			$minorvalue_sub=array(",typeother");
 		}
 		if($data['detail_minor']==6){
 			$data['minordetail']=array("","น้อยกว่า 3 เดือน ","3 - 6 เดือน ","6 - 12 เดือน ","มากกว่า 1 ปี ","ไม่ทราบ","ไม่ระบุ");
@@ -153,23 +153,37 @@ class Analyze extends R36_Controller
 			$data['minorvalue_sub']=array("putdrugdetail","1","2","3");
 		}
 		if($cond){										
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$field_minor].",".$data['detail_minor_type'][$data['detail_main']]." FROM n_history inner join n_information on historyid=information_historyid
-					WHERE 1=1 ".$cond." group by ".$data['date_type'].",".$data['detail_minor_type'][$field_minor]." ,".$data['detail_minor_type'][$data['detail_main']]."  
-					ORDER BY ".$data['detail_minor_type'][$field_minor].",".$data['detail_minor_type'][$data['detail_main']]." ASC";
+			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$field_minor]."
+					,".$data['detail_minor_type'][$data['detail_main']].$minorvalue_sub[0]."
+					FROM n_history inner join n_information on historyid=information_historyid
+					WHERE 1=1 ".$cond." 
+					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			echo $sql;
 			$result = $this->db->Execute($sql);	
 			$rs=array();
 			if($result){
-				foreach($result as $item){
-					$rs['main'][$item[$data['detail_minor_type'][$field_minor]]][$item[$data['detail_minor_type'][$data['detail_main']]]]=$item['cnt'];
+				if(!empty($minorvalue_sub)){
+					foreach($result as $item){
+						$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$data['detail_minor_type'][$field_minor]]][$minorvalue_sub[0]]=$item['cnt'];
+					}
+					echo '<pre>';
+					var_dump($rs);
+					echo '</pre>';
+				}else{									
+					foreach($result as $item){
+						$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$data['detail_minor_type'][$field_minor]]]=$item['cnt'];
+					}
 				}
 			}
 			//var_dump($rs);			
 			$main =count($data['detail_main_name']);
 			$minor = count($data['minordetail']);
+			
 			for($i=0;$i<$main;$i++){
 				$data['total_main'.$i]=0;
 				for($j=0;$j<$minor;$j++){
+					
 					$data['main'.$i.$j] = (empty($rs['main'][$i][$j])) ? 0 : $rs['main'][$i][$j];
 					$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j]."<br/>";										
 				}				
@@ -181,5 +195,80 @@ class Analyze extends R36_Controller
 		if($preview)$this->template->set_layout('print');		
 		$this->template->build('analyze/report1_index',$data);
 	}
+function report2(){
+	$data['detail_minor_name']=array("",'ชนิดสัตว์นำโรค','สถานภาพสัตว์','ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์','การส่งหัวสัตว์ตรวจ');
+	$data['detail_minor_type']=array("placetouch","typeanimal","statusanimal","historyvacine","headanimal");
+	$data['detail_main_name_head']=array("","เขต กทม.","เขตเมืองพัทยา","เขตเทศบาล","","","","เขตอบต.","","","ไม่ระบุ");
+	$data['detail_main_name']=array("","","","นคร","เมือง","ตำบล","ไม่ระบุ","ในชุมชน/ตลาด","ชนบท","ไม่ระบุ","");
+	$mainvalue_sub=array("detailplacetouch");
+	$detail_main_type=array("","1","2","301","302","303","3099","404","405","4099","");
+	$num_main=count($detail_main_name);
+
+
+	if($data['detail_minor']==1){
+		$data['minordetail']=array("","สุนัข","แมว","ลิง","ชะนี","หนู","คน","วัว","กระบือ","สุกร","แพะ","แกะ","ม้า","กระรอก","กระแต","พังพอน","กระต่าย","สัตว์ป่า","ไม่ทราบ","ไม่ระบุ");
+		$minorvalue=array("","1","2","3","4","5","601","602","603","604","605","606","607","608","609","6010","6011","6012","6013","");
+		$minorvalue_sub=array("typeother");
+	}
+	if($data['detail_minor']==2){
+		$data['minordetail'] = array("","มีเจ้าของ","ไม่มีเจ้าของ","ไม่ทราบ","ไม่ระบุ");
+		$data['minorvalue'] = array("","1","2","3","0");
+	}
+	if($data['detail_minor']==3){
+		$data['minordetail_head'] = array("","ไม่ทราบ","ไม่เคยฉีด","เคยฉีด 1 ครั้ง","เคยฉีดเกิน 1 ครั้ง","ไม่ระบุ");
+		$data['minorvalue_head'] = array("","1","1","1","3","1");
+	
+		$minordetail=array("","","",""," ภายใน 1 ปี ","เกิน 1 ปี","ไม่ระบุ","");
+		$minorvalue=array("","1","2","3","401","402","4099","");
+		$minorvalue_sub=array("historyvacine_within");
+	}
+	if($data['detail_minor']==4){
+		$data['minordetail_head']=array("","ไม่ได้ส่งตรวจ","ส่งตรวจ","ไม่ระบุ");
+		$data['minorvalue_head']=array("","1","3","1");
+		
+		$data['minordetail']=array("","", "พบเชื้อ","ไม่พบเชื้อ", "ไม่ระบุ", "");
+		$minorvalue=array("","1","201","202","2099","");
+		$minorvalue_sub=array("batteria");
+	}
+	$numminor=count($minordetail);	
+}
+function report3(){
+	$detail_minor_name=array("","สถานภาพสัตว์","การกักขัง/ติดตามดูอาการสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","การส่งหัวสัตว์ตรวจ");
+$detail_minor_type=array("typeanimal","statusanimal","detain","historyvacine","headanimal");
+$detail_main_name=array("","สุนัข","แมว","ลิง","ชะนี","หนู","คน","วัว","กระบือ","สุกร","แพะ","แกะ","ม้า","กระรอก","กระแต","พังพอน","กระต่าย","สัตว์ป่า","ไม่ทราบ","ไม่ระบุ");
+$detail_main_type=array("","1","2","3","4","5","601","602","603","604","605","606","607","608","609","6010","6011","6012","6013","");
+$mainvalue_sub=array("typeother");
+$num_main=count($detail_main_name);
+if($detail_minor==1){
+	$minordetail=array("","มีเจ้าของ","ไม่มีเจ้าของ","ไม่ทราบ","ไม่ระบุ");
+	$minorvalue=array("","1","2","3","");
+}
+if($detail_minor==2){
+	$minordetail_head=array("","กักขังได้","กักขังไม่ได้","ถูกฆ่าตาย","หนีหาย / จำไม่ได้","ไม่ระบุ");
+	$minorvalue_head=array("","3","1","1","1","1","1");
+	$minordetail=array("","ตายเองภายใน 10 วัน ","ไม่ตายภายใน 10 วัน","ไม่ระบุ","","","","");
+	$minorvalue=array("","101","102","1099","2","3","4");
+	$minorvalue_sub=array("detaindate");
+}
+if($detail_minor==3){
+	$minordetail_head=array("","ไม่ทราบ","ไม่เคยฉีด","เคยฉีด 1 ครั้ง","เคยฉีดเกิน 1 ครั้ง","ไม่ระบุ");
+	$minorvalue_head=array("","1","1","1","3","1");
+
+	$minordetail=array("","","",""," ภายใน 1 ปี ","เกิน 1 ปี","ไม่ระบุ","");
+	$minorvalue=array("","1","2","3","401","402","4099","");
+	$minorvalue_sub=array("historyvacine_within");
+}
+if($detail_minor==4){
+	$minordetail_head=array("","ไม่ได้ส่งตรวจ","ส่งตรวจ","ไม่ระบุ");
+	$minorvalue_head=array("","1","3","1");
+	
+	$minordetail=array("","", "พบเชื้อ","ไม่พบเชื้อ", "ไม่ระบุ", "");
+	$minorvalue=array("","1","201","202","2099","");
+	$minorvalue_sub=array("batteria");
+}
+$numminor=count($minordetail);
+	
+}
+
 }
 ?>
