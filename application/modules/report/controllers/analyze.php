@@ -163,7 +163,7 @@ class Analyze extends R36_Controller
 					WHERE 1=1 ".$cond." 
 					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
-			echo $sql;
+			//echo $sql;
 			$result = $this->db->Execute($sql);	
 			$rs=array();				
 			if($result){						
@@ -204,11 +204,12 @@ class Analyze extends R36_Controller
 				
 			$data['main'] = $main;
 			$data['minor']= $minor;
-		}			
+			$data['cond'] = $cond;
+ 		}			
 		if($preview)$this->template->set_layout('print');		
 		$this->template->build('analyze/report1_index',$data);
 	}
-	function report2(){
+	function report2($cond= FALSE,$preview=FALSE,$data){
 		$data['detail_minor_name']=array("",'ชนิดสัตว์นำโรค','สถานภาพสัตว์','ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์','การส่งหัวสัตว์ตรวจ');
 		$data['detail_minor_type']=array("placetouch","typeanimal","statusanimal","historyvacine","headanimal");
 		$data['detail_main_name_head']=array("","เขต กทม.","เขตเมืองพัทยา","เขตเทศบาล","","","","เขตอบต.","","","ไม่ระบุ");
@@ -249,7 +250,7 @@ class Analyze extends R36_Controller
 		}
 		
 	}
-	function report3(){
+	function report3($cond= FALSE,$preview=FALSE,$data){
 		$data['detail_minor_name']=array("","สถานภาพสัตว์","การกักขัง/ติดตามดูอาการสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","การส่งหัวสัตว์ตรวจ");
 		$data['detail_minor_type']=array("typeanimal","statusanimal","detain","historyvacine","headanimal");
 		$data['detail_main_name']=array("","สุนัข","แมว","ลิง","ชะนี","หนู","คน","วัว","กระบือ","สุกร","แพะ","แกะ","ม้า","กระรอก","กระแต","พังพอน","กระต่าย","สัตว์ป่า","ไม่ทราบ","ไม่ระบุ");
@@ -288,7 +289,7 @@ class Analyze extends R36_Controller
 		}
 	
 	}
-	function report4(){
+	function report4($cond= FALSE,$preview=FALSE,$data){
 		$data['detail_minor_name']=array("","ชนิดสัตว์นำโรค","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์");
 		$data['detail_minor_type']=array("ageanimal","typeanimal","statusanimal","historyvacine");
 		$data['detail_main_name']=array("","น้อยกว่า 3 เดือน ","3 - 6 เดือน ","6 - 12 เดือน ","มากกว่า 1 ปี ","ไม่ทราบ","ไม่ระบุ");
@@ -318,7 +319,7 @@ class Analyze extends R36_Controller
 			$data['m_value'] = array("1","2","0");
 		}		
 	}
-	function report5(){
+	function report5($cond= FALSE,$preview=FALSE,$data){
 		$data['detail_minor_name']=array("","จำนวนหัวสัตว์ที่ส่งตรวจ");
 		$data['detail_minor_type']=array("detain","headanimal");
 		$data['detail_main_name_head']=array("","กักขังได้ / ติดตามได้","","ถูกฆ่าตาย");
@@ -336,7 +337,7 @@ class Analyze extends R36_Controller
 			$minorvalue_sub=array("batteria");
 		}		
 	}
-	function report6()
+	function report6($cond= FALSE,$preview=FALSE,$data)
 	{
 		$data['detail_minor_name'] = array("",ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ );
 		$data['detail_minor_type'] = array("historyvacine","batteria");
@@ -351,7 +352,7 @@ class Analyze extends R36_Controller
 		}
 		
 	}
-	function report7()
+	function report7($cond= FALSE,$preview=FALSE,$data)
 	{
 		$detail_minor_name=array("",'อาชีพ','อาชีพผู้ปกครอง','อายุ','การฉีดอิมมูโนโกลบุลิน','จำนวนเข็มของการฉีด','ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ ');
 		$detail_minor_type=array("historyprotect","occupationname","occparentsname","age_group","use_rig","total_vaccine","batteria");
@@ -385,13 +386,20 @@ class Analyze extends R36_Controller
 			$data['minorvalue'] = array("batteria","1","2","0");
 		}		
 	}
-	function report8(){
-		$data['detailmain_B']=array("ศรีษะ","หน้า","ลำคอ","มือ","แขน","ลำตัว","ขา","เท้า");
-		$data['detailmain_T']=array("head","face","neck","hand","arm","body","leg","feet");
-		$data['detailminor_name']=array("","ฉีด","ไม่ฉีด");
-		$data['detailminor_T']=array("","2","1");
-		$data['detailmain_wh']=array("_bite_blood","_bite_noblood","_claw_blood","_claw_noblood","_lick_blood","_lick_noblood");		
-		
+	function report8($cond= FALSE,$preview=FALSE,$data){
+		$data['detail_minor_name']=array("","ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","วิธีฉีดวัคซีนในคน");
+		$data['detail_minor_type']=array("use_rig","statusanimal","statusanimal","historyvacine","means");
+		$data['detail_main_name']=array("","ไม่ฉีด","ฉีด","ไม่ระบุ");
+		$data['detail_main_type']=array("","1","2","0");
+		if($data['detail_minor']=="1")
+		{					
+			$data['detailmain_B']=array("ศรีษะ","หน้า","ลำคอ","มือ","แขน","ลำตัว","ขา","เท้า");
+			$data['detailmain_T']=array("head","face","neck","hand","arm","body","leg","feet");
+			$data['detailminor_name']=array("","ฉีด","ไม่ฉีด");
+			$data['detailminor_T']=array("","2","1");
+			$data['detailmain_wh']=array("_bite_blood","_bite_noblood","_claw_blood","_claw_noblood","_lick_blood","_lick_noblood");		
+		}
+		$data['cond'] = $cond;
 		if($preview)$this->template->set_layout('print');		
 		$this->template->build('analyze/report8_index',$data);
 	}

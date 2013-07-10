@@ -83,7 +83,7 @@ var ref1,ref2,ref3;
 		 		,cardW1:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"}
 		 		,cardW2:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"}
 		 		,cardW3:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"}
-		 		,cardW4:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข",remote :" ระบุไม่ถูกต้อง หรือมีอีเมล์นี้แล้วในระบบ"}	
+		 		,cardW4:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข",remote :" ระบุไม่ถูกต้อง หรือมีบัตรประชาชนนี้แล้วในระบบ"}	
 				,userfirstname:" กรุณาระบุ",usersurname:" กรุณาระบุด้วย"
 				,userprovince:" กรุณาระบุ"
 				//,useramphur:" กรุณาระบุด้วยค่ะ",userdistrict:" กรุณาระบุด้วยค่ะ"

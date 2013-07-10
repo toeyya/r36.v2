@@ -120,19 +120,26 @@ class Users extends Public_Controller
 		$address=$_POST['usermail'];		
 		phpmail($subject,$address,$message,$redirect);
 	}
-	public function chkidcard($patient=FALSE)
+	public function chkidcard($register=FALSE)
 	{	// ผู้สัมผัสโรคไม่เช็คการซ้ำกัน
-		$this->db->debug=TRUE;
+		//ผู้ลงทะเบียนห้ามกรอกเลขบัตรซ้ำ;
 		for($i=0;$i<13;$i++){
 			$idcard_arr[]=substr($_GET['idcard'],$i,1);
 		}		
 		$chk=chk_idcard($idcard_arr,$_GET['digit_last']);
 		$dup1=($chk=="no")? true:false;
-
+		
+		if($register=="regsiter"){
+			$dup = $this->user->get_one('idcard','idcard',$_GET['idcard']);
+			echo ($dup1 || $dup)? "false":"true";
+			return true;
+		}
 
 		if(empty($_GET['uid'])){
 			echo ($chk=="no")? "false":"true";
-		}else{						
+			
+		}else{
+			$dup = $this->db->GetOne("select idcard from n_user where idcard = ? and uid <> ? ",array($_GET['idcard'],$_GET['uid']));					
 			echo ($dup1 || $dup)? "false":"true";
 		}
 	

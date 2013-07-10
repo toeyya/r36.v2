@@ -33,15 +33,16 @@ var ref1,ref2,ref3;
 		rules:{
 			userhospital:"required",
 			userfirstname:"required",usersurname:"required",
-			tel0:{required:true,number:true},tel1:{required:true,number:true},tel2:{required:true,number:true},
-			mobile0:{required:true,number:true},mobile1:{required:true,number:true},mobile2:{required:true,number:true},
-			cardW0:{required:true,number:true},cardW1:{required:true,number:true},
-			cardW2:{required:true,number:true},cardW3:{required:true,number:true},
+			tel0:{required:true,number:true},tel1:{required:true,number:true,minlength:3},tel2:{required:true,number:true,minlength: 4},
+			mobile0:{required:true,number:true,minlength:3},mobile1:{required:true,number:true,minlength:3},mobile2:{required:true,number:true,minlength: 4},
+			cardW0:{required:true,number:true},cardW1:{required:true,number:true,minlength:4},
+			cardW2:{required:true,number:true,minlength:5},cardW3:{required:true,number:true,minlength:2},
 		 	cardW4:{required:true,number:true,	 		
 		 			remote:{
-		 				url:'<?php echo base_url(); ?>users/chkidcard',
+		 				url:'<?php echo base_url(); ?>users/chkidcard/register',
 		 				type:'get',
 				        data: {
+				          
 				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
 				          digit_last:function(){return $('#cardW4').val(); }
 				        }
@@ -75,11 +76,11 @@ var ref1,ref2,ref3;
 		},
 		messages:{
 			userhospital:"กรุณาระบุ",
-			mobile0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},mobile1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},mobile2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
-			tel0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},tel1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},tel2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
+			mobile0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",minlength:"กรุณาระบุให้ครบถ้วน"},mobile1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",minlength: "กรุณาระบุให้ครบถ้วน"},mobile2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",minlength: "กรุณาระบุให้ครบถ้วน"},
+			tel0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},tel1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",minlength:"กรุณาระบุให้ครบถ้วน"},tel2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",minlength: "กรุณาระบุให้ครบถ้วน"},
 			userfirstname:"กรุณาระบุ",usersurname:"กรุณาระบุ",			
-			cardW0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},cardW1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},	
-			cardW2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},cardW3:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},
+			cardW0:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข"},cardW1:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",minlength:"กรุณาระบุให้ครบถ้วน"},	
+			cardW2:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",minlength:"กรุณาระบุให้ครบถ้วน"},cardW3:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",minlength:"กรุณาระบุให้ครบถ้วน"},
 			cardW4:{required:"กรุณาระบุ",number:"กรุณาระบุด้วยตัวเลข",remote:"กรุณาระบุให้ถูกต้อง หรือมีอยู่แล้วในระบบ"},
 			userhospital:'กรุณาระบุ',
 			usermail:{required:"กรุณาระบุ",email:"กรุณาระบุให้ถูกต้อง",remote:'มีอีเมล์นี้แล้ว'},
