@@ -87,7 +87,7 @@ class Analyze extends R36_Controller
 				case "6":$this->report6($cond,$preview,$data);break;
 				case "7":$this->report7($cond,$preview,$data);break;
 				case "8":$this->report8($cond,$preview,$data);break;
-				
+				case "9":$this->report9($cond,$preview,$data);break;
 			}			  							
 	}
 	function report1($cond= FALSE,$preview=FALSE,$data)
@@ -518,8 +518,8 @@ class Analyze extends R36_Controller
 		$data['detail_minor_name']=array("","จำนวนหัวสัตว์ที่ส่งตรวจ");
 		$data['detail_minor_type']=array('',"detain","headanimal");
 		$data['detail_main_name_head']=array("กักขังได้ / ติดตามได้","","ถูกฆ่าตาย");
-		$data['detail_main_name']=array("ตายเองภายใน 10 วัน","");
-		$data['detail_main_type']=array("1","101","3");
+		$data['detail_main_name']=array('',"ตายเองภายใน 10 วัน","");
+		$data['detail_main_type']=array("10","11","30");
 		$mainvalue_sub=array(",detaindate");
 		
 
@@ -528,10 +528,10 @@ class Analyze extends R36_Controller
 	
 		if($data['detail_minor']==1){
 			$data['minordetail_head']= array("ไม่ได้ส่งตรวจ","ส่งตรวจ","ไม่ระบุ");
-			$data['minorvalue_head'] = array("1","3","1");
+			$data['minorvalue_head'] = array("10","20","00");
 			
 			$data['minordetail'] = array("", "พบเชื้อ","ไม่พบเชื้อ", "ไม่ระบุ", "");
-			$data['minorvalue'] = array("1","201","202","2099","");
+			$data['minorvalue'] = array("10","21","22","20","00");
 			$minorvalue_sub=array(",batteria");
 		}
 		if($cond)
@@ -575,32 +575,76 @@ class Analyze extends R36_Controller
 			$data['cond'] = $cond;
  		}		
 		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report3_index',$data);					
+		$this->template->build('analyze/report5_index',$data);					
 	}
 	function report6($cond= FALSE,$preview=FALSE,$data)
-	{
-		$data['detail_minor_name'] = array("",ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ );
-		$data['detail_minor_type'] = array("historyvacine","batteria");
-		$data['detail_main_name_head'] = array("","ไม่ทราบ","ไม่เคยฉีด","เคยฉีด 1 ครั้ง","เคยฉีดเกิน 1 ครั้ง","","","ไม่ระบุ");
-		$data['detail_main_name'] = array("","","","","ภายใน 1 ปี","เกิน 1 ปี","ไม่ระบุ");
-		$data['detail_main_type'] = array("","1","2","3","401","402","4099","0");
-		$mainvalue_sub=array("historyvacine_within");
-		$num_main=count($detail_main_name_head);
-		if($detail_minor==1){
-			$data['minordetail']= array("","พบเชื้อ","ไม่พบเชื้อ", "ไม่ระบุ");
-			$data['minorvalue'] = array("batteria","1","2","0");
+	{	$data['detail_main'] = $data['detail_main']-5; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
+		$data['head'] = "ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์";
+		$data['detail_minor_name'] = array("",'ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ' );
+		$data['detail_minor_type'] = array('',"historyvacine","batteria");
+		$data['detail_main_name_head'] = array("ไม่ทราบ","ไม่เคยฉีด","เคยฉีด 1 ครั้ง","เคยฉีดเกิน 1 ครั้ง","","","ไม่ระบุ");
+		$data['detail_main_name'] = array("","","","ภายใน 1 ปี","เกิน 1 ปี","ไม่ระบุ",'');
+		$data['detail_main_type'] = array("10","20","30","41","42","40","00");
+		$mainvalue_sub=array(",historyvacine_within");
+		$num_main=count($data['detail_main_name_head']);
+		$field_minor = $data['detail_minor']+1;
+		if($data['detail_minor']==1){
+			$data['minordetail']= array("พบเชื้อ","ไม่พบเชื้อ", "ไม่ระบุ");
+			$data['minorvalue'] = array(",batteria");
+			$data['m_value'] = array("1","2","0");
 		}
-		
+		if($cond)
+		{											
+			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
+					,".$data['detail_minor_type'][$field_minor]."
+					FROM n_history inner join n_information on historyid=information_historyid
+					WHERE 1=1 ".$cond." 
+					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."  
+					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]." ASC";
+			echo $sql;
+			$result = $this->db->Execute($sql);	
+			$rs=array();				
+			$mainvalue_sub[0] =substr($mainvalue_sub[0],1);
+			if($result){														
+									
+				foreach($result as $item){
+					$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$mainvalue_sub[0]]][$item[$data['detail_minor_type'][$field_minor]]]=$item['cnt'];						
+				}										
+			}
+						
+			$main  = count($data['detail_main_name_head']);
+			$minor = count($data['minordetail']);
+			$minor_sub   = (empty($data['m_value'])) ? "":count($data['m_value']);
+				for($i=0;$i<$main;$i++){													
+					for($j=0;$j<$minor;$j++){
+						$data['total_main'.$i.$j]=0;
+						for($k=0;$k<$minor_sub;$k++){																							
+							$data['main'.$i.$j.$k] = (empty($rs['main'][$i][$j][$k])) ? 0 : $rs['main'][$i][$j][$k];
+							$data['total_main'.$i.$j] = $data['total_main'.$i.$j] + $data['main'.$i.$j.$k];
+																
+						}				
+					}					
+				}			
+			
+		}
+		if($preview)$this->template->set_layout('print');		
+		$this->template->build('analyze/report6_index',$data);				
 	}
 	function report7($cond= FALSE,$preview=FALSE,$data)
 	{
-		$detail_minor_name=array("",'อาชีพ','อาชีพผู้ปกครอง','อายุ','การฉีดอิมมูโนโกลบุลิน','จำนวนเข็มของการฉีด','ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ ');
-		$detail_minor_type=array("historyprotect","occupationname","occparentsname","age_group","use_rig","total_vaccine","batteria");
-		$detail_main_name_head=array("","ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม ","เคยฉีด 3 เข็มหรือมากกว่า ","","","ไม่ระบุ");
-		$detail_main_name=array("","","ภายใน 6 เดือน","เกิน 6 เดือน","ไม่ระบุ");
-		$detail_main_type=array("","10","21","22","20","00");
-		$mainvalue_sub=array("historyprotectdetail");
-		$num_main=count($detail_main_name_head);
+		$data['detail_main'] = $data['detail_main']-6; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
+		$data['head'] = "ประวัติการฉีดวัคซีนของผู้สัมผัส";					
+		$data['detail_minor_name'] = array("",'อาชีพ','อาชีพผู้ปกครอง','อายุ','การฉีดอิมมูโนโกลบุลิน','จำนวนเข็มของการฉีด','ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ ');
+		$data['detail_minor_type'] = array('',"historyprotect","occupationname","occparentsname","age_group","use_rig","total_vaccine","batteria");
+		$data['detail_main_name_head'] = array("ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม ","เคยฉีด 3 เข็มหรือมากกว่า ","","","ไม่ระบุ");
+		$data['detail_main_name'] = array("","ภายใน 6 เดือน","เกิน 6 เดือน","ไม่ระบุ","");
+		$data['detail_main_type'] = array("10","21","22","20","00");
+		$data['main_sub'] = array("1","2","0");
+		$mainvalue_sub=array(",historyprotectdetail");
+		$num_main=count($data['detail_main_name_head']);
+		$field_minor = $data['detail_minor']+1;
+		
+		
 		if($data['detail_minor']==1){
 			$data['minordetail'] = array("นักเรียน นักศึกษา","ในปกครอง","เกษตร ทำนา ทำสวน","ข้าราชการ","กรรมกร","รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)","ค้าขาย","งานบ้าน","ทหาร ตำรวจ","ประมง","ครู","เลี้ยงสัตว์ / จับสุนัข","นักบวช / ภิกษุสามเณร","ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ","สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า","อาสาสมัครฉีดวัคซีนสุนัข","เจ้าหน้าที่สวนสัตว์","ไปรษณีย์","ป่าไม้","พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า","อื่นๆ (ระบุ)","ไม่ระบุ");
 			$data['minorvalue'] = array("1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","0");
@@ -623,8 +667,43 @@ class Analyze extends R36_Controller
 		}
 		if($data['detail_minor']==6){
 			$data['minordetail'] = array("พบเชื้อ","ไม่พบเชื้อ","ไม่ระบุ");
-			$data['minorvalue'] = array("batteria","1","2","0");
-		}		
+			$data['minorvalue'] = array("1","2","0");
+		}	
+		if($cond)
+		{											
+			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
+				   ".$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."
+					FROM n_history inner join n_information on historyid=information_historyid
+					WHERE 1=1 ".$cond." 
+					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."  
+					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]." ASC";
+			echo $sql;
+			$result = $this->db->Execute($sql);	
+			$rs=array();				
+			$mainvalue_sub[0]=substr($mainvalue_sub[0],1);
+			if($result){																		
+				foreach($result as $item){
+					$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$mainvalue_sub[0]]][$item[$data['detail_minor_type'][$field_minor]]]=$item['cnt'];
+				}				
+			}
+
+			$main  = count($data['main_sub']);
+			$main_sub  = count($data['main_sub']);
+			$minor = count($data['minordetail']);
+						
+			for($i=0;$i<$main;$i++){																								
+					for($k=0;$k<$main_sub;$k++){
+						$data['total_main'.$i.$k]=0;
+						for($l=0;$l<$minor;$l++){																		
+						$data['main'.$i.$k.$l] = (empty($rs['main'][$i][$k][$l])) ? 0 : $rs['main'][$i][$k][$l];
+						$data['total_main'.$i.$k] = $data['total_main'.$i.$k] + $data['main'.$i.$k.$l];
+						}										
+					}				
+				}						
+			
+		}//$cond						
+		if($preview)$this->template->set_layout('print');		
+		$this->template->build('analyze/report7_index',$data);	
 	}
 	function report8($cond= FALSE,$preview=FALSE,$data){
 		$data['detail_minor_name']=array("","ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","วิธีฉีดวัคซีนในคน");
@@ -642,6 +721,90 @@ class Analyze extends R36_Controller
 		$data['cond'] = $cond;
 		if($preview)$this->template->set_layout('print');		
 		$this->template->build('analyze/report8_index',$data);
+	}
+	function report9($cond= FALSE,$preview=FALSE,$data){
+		$data['detail_main'] = $data['detail_main']-8; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
+		$data['head'] = "จำนวนครั้งที่ฉีดวัคซีนในคน";			
+		$data['detail_minor_name'] = array("","การกักขังสัตว์ได้/ติดตามได้","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","การส่งหัวสัตว์ตรวจ");
+		$data['detail_minor_type'] = array("","total_vaccine","detaindate","historyvacine","headanimal");
+		$data['detail_main_name'] = array("1 ครั้ง ","2 ครั้ง","3 ครั้ง","4 ครั้ง","5 ครั้ง", "ไม่ระบุ");
+		$data['detail_main_type'] = array("1","2","3","4","5","0");
+		$num_main=count($data['detail_main_name']);
+		$field_minor = $data['detail_minor']+1;
+	
+		
+		if($data['detail_minor']==1){
+			$data['minordetail']=array("ตายเองภายใน 10 วัน","ไม่ตายภายใน 10 วัน", "ไม่ระบุ");
+			$data['minorvalue']=array("1","2","0");
+		}
+		if($data['detail_minor']==2){
+			$data['minordetail_head']=array("ไม่ทราบ","ไม่เคยฉีด","เคยฉีด 1 ครั้ง","เคยฉีดเกิน 1 ครั้ง","ไม่ระบุ");
+			$data['minorvalue_head']=array("1","1","1","3","1");
+			$data['minordetail']=array("","",""," ภายใน 1 ปี ","เกิน 1 ปี","ไม่ระบุ","");
+			$data['minorvalue']=array("10","20","30","41","42","40","00");
+			$m_value = array('1','2','0');
+			$minorvalue_sub=array(",historyvacine_within");
+		}
+		if($data['detail_minor']==3){
+			$data['minordetail_head']=array("","ส่งตรวจ","","ไม่ได้ส่งตรวจ","ไม่ระบุ");	
+			$data['minorvalue_head']=array("","1","","1","1","1");		
+			$data['minordetail'] = array("พบเชื้อ","ไม่พบเชื้อ","ไม่ระบุ","","");
+			$data['minorvalue']  = array("21","22","20","10","00");
+
+			$m_value = array('1','2','0');
+			$minorvalue_sub=array(",batteria");
+		}
+		
+		if($cond){
+			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
+				    ,".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."
+					FROM n_history inner join n_information on historyid=information_historyid
+					WHERE 1=1 ".$cond." 
+					GROUP BY ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
+			//echo $sql;
+			$result = $this->db->Execute($sql);
+			$rs=array();				
+			
+			if($minorvalue_sub[0]!=""){					
+					$minorvalue_sub[0]	=substr($minorvalue_sub[0],1);					
+					foreach($result as $item){
+						$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$data['detail_minor_type'][$field_minor]]][$item[$minorvalue_sub[0]]]=$item['cnt'];						
+					}						
+				}else{									
+					foreach($result as $item){
+						$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$data['detail_minor_type'][$field_minor]]]=$item['cnt'];
+					}
+				}		
+								
+			$main  = count($data['detail_main_name']);		
+			$minor = count($data['minordetail']);
+			$minor_sub = (empty($m_value)) ? "":count($data['minordetail']);
+
+				if($minor_sub !=""){
+					for($i=0;$i<$main;$i++){
+						$data['total_main'.$i]=0;																										
+							for($k=0;$k<$minor;$k++){							
+									for($l=0;$l<$minor_sub;$l++){																		
+										$data['main'.$i.$k.$l] = (empty($rs['main'][$i][$k][$l])) ? 0 : $rs['main'][$i][$k][$l];
+										$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$k.$l];
+									}										
+							}				
+						}						
+				}else{															
+					for($i=0;$i<$main;$i++){
+						$data['total_main'.$i]=0;																								
+						for($k=0;$k<$minor;$k++){																										
+							$data['main'.$i.$k] = (empty($rs['main'][$i][$k])) ? 0 : $rs['main'][$i][$k];
+							$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$k];															
+						}				
+					}
+				}											
+		}
+			
+		$data['cond'] = $cond;
+		if($preview)$this->template->set_layout('print');		
+		$this->template->build('analyze/report9_index',$data);		
 	}
 }
 ?>

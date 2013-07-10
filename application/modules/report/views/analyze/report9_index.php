@@ -64,7 +64,7 @@ $(document).ready(function(){
 	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม <?php echo $head; ?>และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>	
 	<table class="tbreport">
 		<?php $row=(!empty($minordetail_head))? "4":"3"; ?>
-		<tr><th rowspan="<?php echo $row; ?>" colspan="2"><?php echo $head; ?></th>		
+		<tr><th rowspan="<?php echo $row; ?>" ><?php echo $head; ?></th>		
 		</tr>				
 		<tr>
 			<th colspan="<?php echo count($minordetail)+1; ?>"><strong><?php echo $detail_minor_name[$detail_minor] ?></strong></th>
@@ -83,13 +83,12 @@ $(document).ready(function(){
 			<th>รวม</th>
 		</tr>
 		<?php foreach($detail_main_type as $key=>$i): ?>
-		<tr class="para1">
-			<td><strong><?php echo $detail_main_name_head[$key] ?></strong></td>
+		<tr class="para1">			
 			<td><strong><?php echo $detail_main_name[$key] ?></strong></td>
 			<?php foreach($minorvalue as $j): ?>
-				<td><?php echo $i."/".$j." = ".${'main'.$i.$j}; ?><p class="percentage">(<?php  //echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
+				<td><?php echo ${'main'.$i.$j}; ?><p class="percentage">(<?php  echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
 			<?php endforeach; ?>			
-			<td><?php //echo ${'total_main'.$i}; ?></td>			
+			<td><?php echo ${'total_main'.$i}; ?></td>			
 		</tr>		
 		<?php endforeach; ?>
 		
@@ -103,7 +102,7 @@ $(document).ready(function(){
 			<hr class="hr1">		
 			<div id="reference"><?php echo $reference?></div>			
 			<div id="btn_printout">
-			<a href="report/analyze/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<a href="report/analyze/index/9<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 			<div id="area_btn_print">
 				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
