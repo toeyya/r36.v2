@@ -23,7 +23,8 @@ var ref1,ref2,ref3;
 		$('#input_hospital').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
 		$.ajax({url:'<?php echo base_url(); ?>users/getHospital',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
 	});		
-	$('#form1').validate({	
+	$('#form1').validate({
+		debug:true,	
 		groups:{
 			groupname:'userfirstname usersurname',
 			groupidcard:'cardW0 cardW1 cardW2 cardW3 cardW4',

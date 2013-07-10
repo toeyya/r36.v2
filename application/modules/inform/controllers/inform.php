@@ -150,7 +150,8 @@ class Inform extends R36_Controller
 			$data['in_out']=@$_GET['in_out'];
 			/**************************/
 			$data['idcard']=(!empty($_GET['idcard']))?@$_GET['idcard']:'';
-			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';		
+			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';
+			
 			$this->template->build('index',$data);
 		}else{			
 			$this->template->build('index');
@@ -181,6 +182,7 @@ class Inform extends R36_Controller
 				$data['rs']['hospital_amphur_id']=$this->session->userdata('R36_HOSPITAL_AMPHUR');
 				$data['rs']['hospital_district_id']=$this->session->userdata('R36_HOSPITAL_DISTRICT');	
 			}
+			
 			$data['now']=strtotime(date("Y-m-d H:i:s"));														
 			$this->template->build('form',$data);
 				
@@ -217,6 +219,7 @@ class Inform extends R36_Controller
 
 
 	function save(){
+	
 		/*  ป้องกันการบันทึกข้อมูลผู้สัมผัสโรคซ้ำ : ตรวจสอบรหัสบัตรประชาชนก่อนบันทึกลง n_history ถ้ามีแล้วให้ update ถ้าไม่มี insert  	
 		 *   ที่ยอมให้บันทึกได้หลายเรคอร์ด - ไมได้ตรวจสอบก่อนบันทึก, ผู้สัมผัสโรคอาจย้ายที่อยู่ และสถานที่สัมผัสโรคคนละที่-					*/	
 		//$this->db->debug=TRUE;			
@@ -344,14 +347,13 @@ class Inform extends R36_Controller
 	}
 
 	function addContactTime()
-	{
-		//$this->db->debug=TRUE;	
+	{	
 		$rs=$this->db->GetRow("select * from n_history where  historyid=(select max(historyid) from n_history where idcard='".$_GET['idcard']."')");
-		$rs['hn_no']=$this->db->GetOne("select count(id)+1 from n_information 
-													                 left join n_history on n_information.information_historyid=n_history.historyid 
-													                 where idcard =  ?  ",$_GET['idcard']);			
-		$rs['amphur_name']=$this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id = ? ",array($rs['provinceid'],$rs['amphurid']));
-		$rs['district_name']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($rs['provinceid'],$rs['amphurid'],$rs['districtid']));
+		$rs['hn_no'] = $this->db->GetOne("select count(id)+1 from n_information 
+										  left join n_history on n_information.information_historyid=n_history.historyid 
+										  where idcard =  ?  ",$_GET['idcard']);			
+		$rs['amphur_name']   = $this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id = ? ",array($rs['provinceid'],$rs['amphurid']));
+		$rs['district_name'] = $this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($rs['provinceid'],$rs['amphurid'],$rs['districtid']));
 		echo json_encode($rs);
 	}
 	public function chk_format_idcard($idcard,$digit_last)

@@ -324,10 +324,7 @@ $(document).ready(function(){
 			</tr>			
 			<tr>
 				  <th>ประเภทการปิดเคส</th>
-				  <td colspan="3">		<div style="margin:10px 0px 0px 16px">
-				  	<input type="checkbox" name="close_type[]" value="1">ปิดเคสโดยเจ้าหน้าที่
-				    <input type="checkbox" name="close_type[]" value="2">ปิดเคสอัตโนมัติ
-				 </div>						
+				  <td colspan="3">		
 						<ul class="list" >
 							<li><input type="checkbox" name="total_vaccine[]" value="1"<?php if(@$_GET['total_vaccine']){if(in_array('1',$_GET['total_vaccine'])){ echo 'checked="checked"';}} ?>>
 								 	<span class="syringe1 syringe" title="1 เข็ม"> </span> ฉีด 1 เข็ม</li>
@@ -369,17 +366,14 @@ $(document).ready(function(){
 				<td><?php echo $rec['firstname'].' '.$rec['surname'];?></td>
 				<td><?php echo $rec['hospital_name']?></td>
                 <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
-            <td>	
-            		<a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" class="btn_view vtip" target="_blank"></a> 			
-				<?php if($rec['closecase']=="1"): ?>
+            	<td><a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" class="btn_view vtip" target="_blank"></a> 			
+				<?php if($rec['closecase']=="1" || $rec['closecase']==""): ?>
 				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
 					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>"  class="btn_edit vtip" target="_blank" ></a>
 					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
-				<?php }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){
-											//if($this->session->userdata('R36_FROMEDIT')=='Y'){ ?>
-									<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>
-							<?php	//}
-						}  ?>
+				 <?   }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){ ?>											
+						<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>								
+				 <?   } ?>
 					<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine"  class="btn_syring vtip"  target="_blank"></a>
 				<?php endif; ?>
 
