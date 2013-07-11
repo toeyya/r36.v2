@@ -520,6 +520,7 @@ class Analyze extends R36_Controller
 		$data['detail_main_name_head']=array("กักขังได้ / ติดตามได้","","ถูกฆ่าตาย");
 		$data['detail_main_name']=array('',"ตายเองภายใน 10 วัน","");
 		$data['detail_main_type']=array("10","11","30");
+		$data['main_value']=array("0","1","3");
 		$mainvalue_sub=array(",detaindate");
 		
 
@@ -528,10 +529,10 @@ class Analyze extends R36_Controller
 	
 		if($data['detail_minor']==1){
 			$data['minordetail_head']= array("ไม่ได้ส่งตรวจ","ส่งตรวจ","ไม่ระบุ");
-			$data['minorvalue_head'] = array("10","20","00");
-			
-			$data['minordetail'] = array("", "พบเชื้อ","ไม่พบเชื้อ", "ไม่ระบุ", "");
+			$data['minorvalue_head'] = array("1","3","1");			
+			$data['minordetail'] = array("","พบเชื้อ","ไม่พบเชื้อ", "ไม่ระบุ","");
 			$data['minorvalue'] = array("10","21","22","20","00");
+			$data['m_value'] = array("1","2","0");
 			$minorvalue_sub=array(",batteria");
 		}
 		if($cond)
@@ -542,7 +543,7 @@ class Analyze extends R36_Controller
 					WHERE 1=1 ".$cond." 
 					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
-			echo $sql;
+			//echo $sql;
 			$result = $this->db->Execute($sql);	
 			$rs=array();				
 			$mainvalue_sub[0] =substr($mainvalue_sub[0],1);
@@ -553,16 +554,16 @@ class Analyze extends R36_Controller
 				}										
 			}
 										
-			$main       = count($data['detail_main_name']);
-			$main_sub   = (empty($data['m_value'])) ? "":count($data['m_value']);
-			$minor_head = (empty($data['minordetail_head'])) ? "":count($data['minordetail_head']);
+			$main       = count($data['detail_main_name'])+1;
+			$main_sub   = count($data['main_value'])+1;			
 			$minor      = count($data['minordetail']);
+			$minor_sub  = count($data['m_value']);
 											 											
 				for($i=0;$i<$main;$i++){													
 					for($j=0;$j<$main_sub;$j++){
 						$data['total_main'.$i.$j]=0;
-						for($k=0;$k<$minor_head;$k++){
-							for($l=0;$l<$minor;$l++){																		
+						for($k=0;$k<$minor;$k++){
+							for($l=0;$l<$minor_sub;$l++){																		
 							$data['main'.$i.$j.$k.$l] = (empty($rs['main'][$i][$j][$k][$l])) ? 0 : $rs['main'][$i][$j][$k][$l];
 							$data['total_main'.$i.$j] = $data['total_main'.$i.$j] + $data['main'.$i.$j.$k.$l];
 							}										
@@ -705,22 +706,102 @@ class Analyze extends R36_Controller
 		if($preview)$this->template->set_layout('print');		
 		$this->template->build('analyze/report7_index',$data);	
 	}
-	function report8($cond= FALSE,$preview=FALSE,$data){
-		$data['detail_minor_name']=array("","ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","วิธีฉีดวัคซีนในคน");
-		$data['detail_minor_type']=array("use_rig","statusanimal","statusanimal","historyvacine","means");
-		$data['detail_main_name']=array("","ไม่ฉีด","ฉีด","ไม่ระบุ");
-		$data['detail_main_type']=array("","1","2","0");
+	function report8($cond= FALSE,$preview=FALSE,$data)
+	{
+		$data['detail_main'] = $data['detail_main']-7; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
+		$data['head'] = "การฉีดอิมมูโนโกลบุลิน";	
+		$data['detail_minor_name'] = array("","ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","วิธีฉีดวัคซีนในคน");
+		$data['detail_minor_type'] = array('',"use_rig","statusanimal","statusanimal","historyvacine","means");
+		$data['detail_main_name']  = array("ไม่ฉีด","ฉีด","ไม่ระบุ");
+		$data['detail_main_type']  = array("1","2","0");
+		$field_minor = $data['detail_minor']+1;
+		$minorvalue_sub[0]="";
 		if($data['detail_minor']=="1")
 		{					
-			$data['detailmain_B']=array("ศรีษะ","หน้า","ลำคอ","มือ","แขน","ลำตัว","ขา","เท้า");
-			$data['detailmain_T']=array("head","face","neck","hand","arm","body","leg","feet");
-			$data['detailminor_name']=array("","ฉีด","ไม่ฉีด");
-			$data['detailminor_T']=array("","2","1");
-			$data['detailmain_wh']=array("_bite_blood","_bite_noblood","_claw_blood","_claw_noblood","_lick_blood","_lick_noblood");		
+			$data['detailmain_B']    = array("ศรีษะ","หน้า","ลำคอ","มือ","แขน","ลำตัว","ขา","เท้า");
+			$data['detailmain_T']    = array("head","face","neck","hand","arm","body","leg","feet");
+			$data['detailminor_name']= array("ฉีด","ไม่ฉีด");
+			$data['detailminor_T']   = array("2","1");
+			$data['detailmain_wh']   = array("_bite_blood","_bite_noblood","_claw_blood","_claw_noblood","_lick_blood","_lick_noblood");		
 		}
+		else if($data['detail_minor']==2){
+			$data['minordetail_head'] = array("กักขังได้","กักขังไม่ได้","ถูกฆ่าตาย","หนีหาย / จำไม่ได้","ไม่ระบุ");
+			$data['minorvalue_head']  = array("3","1","1","1","1","1");
+			$data['minordetail']      = array("ตายเองภายใน 10 วัน ","ไม่ตายภายใน 10 วัน","ไม่ระบุ","","","","");
+			$data['minorvalue']       = array("11","12","10","20","30","40","00");
+			$data['m_value'] = array("1","2","0");
+			$minorvalue_sub = array(",detaindate");
+		}
+		else if($data['detail_minor']==3){
+			$data['minordetail_head'] = array("ไม่ทราบ","ไม่เคยฉีด","เคยฉีด 1 ครั้ง","เคยฉีดเกิน 1 ครั้ง","ไม่ระบุ");
+			$data['minorvalue_head']  = array("1","1","1","3","1");
+			$data['minordetail']      = array("","",""," ภายใน 1 ปี ","เกิน 1 ปี","ไม่ระบุ","");
+			$data['minorvalue']       = array("10","20","30","41","42","40","00");
+			$data['m_value'] = array("1","2","0");
+			$minorvalue_sub = array(",historyvacine_within");
+		}
+		else if($data['detail_minor']==4){
+			$data['minordetail'] = array("เข้ากล้ามเนื้อ ","เข้าในผิวหนัง ","ไม่ฉีด ");
+			$data['minorvalue']  = array("1","2","3");
+		}
+		if($cond)
+		{											
+			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
+				    ,".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."
+					FROM n_history inner join n_information on historyid=information_historyid
+					WHERE 1=1 ".$cond." 
+					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
+			echo $sql;
+			$result = $this->db->Execute($sql);	
+			$rs=array();							
+			if($result){
+				if($minorvalue_sub[0]!=""){
+					$minorvalue_sub[0]=substr($minorvalue_sub[0],1);	
+					foreach($result as $item){
+						$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$data['detail_minor_type'][$field_minor]]][$item[$minorvalue_sub[0]]]=$item['cnt'];
+					}				
+				}else{
+					foreach($result as $item){
+						$rs['main'][$item[$data['detail_minor_type'][$data['detail_main']]]][$item[$data['detail_minor_type'][$field_minor]]]=$item['cnt'];
+					}					
+				}																						
+			}
+			$main  = count($data['detail_minor_name']);	
+			$minor = count($data['minordetail'])+1;					
+			if($data['detail_minor']==4){$minor = count($data['minordetail'])+1;}
+			$minor_sub = count($data['m_value']);
+			
+			if($minorvalue_sub[0]!=""){
+				for($i=0;$i<$main;$i++){
+					$data['total_main'.$i]=0;																																	
+					for($j=0;$j<$minor;$j++){
+						for($k=0;$k<$minor_sub;$k++){
+							$data['main'.$i.$j.$k] = (empty($rs['main'][$i][$j][$k])) ? 0 : $rs['main'][$i][$j][$k];
+							$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j.$k];							
+						}																		
+
+					}										
+				}				
+			}else{										
+				for($i=0;$i<$main;$i++){																												
+					$data['total_main'.$i]=0;
+					for($j=0;$j<$minor;$j++){																		
+						$data['main'.$i.$j] = (empty($rs['main'][$i][$j])) ? 0 : $rs['main'][$i][$j];
+						$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j];
+					}										
+				}				
+			}					
+		}// $cond
+		
 		$data['cond'] = $cond;
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report8_index',$data);
+		if($preview)$this->template->set_layout('print');
+		if($data['detail_minor']=="1"){
+			$this->template->build('analyze/report8_1_index',$data);
+		}else{
+			$this->template->build('analyze/report8_index',$data);
+		}		
+		
 	}
 	function report9($cond= FALSE,$preview=FALSE,$data){
 		$data['detail_main'] = $data['detail_main']-8; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
