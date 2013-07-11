@@ -20,8 +20,8 @@
 		<td><a href="document/admin/document_detail/index/<?php echo $item['id']; ?>"><?php echo $item['name'] ?></a></td>
 		<td><?php echo $item['cnt'] ?></td>		
 		<td><?php echo $item['userfirstname'] ?> <?php echo $item['usersurname'] ?></td>
-		<td><a href="document/admin/document/form/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
-				 <a href="document/admin/document/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ">ลบ</a></td>
+		<td><a href="document/admin/document/form/<?php echo $item['id'] ?>"   class="btn" title="แก้ไข">แก้ไข</a>
+			<a href="document/admin/document/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a></td>
 	</tr>
 	<?php endforeach; ?>
 </table>

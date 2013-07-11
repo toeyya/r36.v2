@@ -22,7 +22,7 @@
 		<td><?php echo $item['title'] ?></td>
 		<td><?php echo $item['userfirstname'] ?> <?php echo $item['usersurname'] ?></td>
 		<td><a href="document/admin/document_detail/form/<?php echo $document_id ?>/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
-				 <a href="document/admin/document_detail/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ">ลบ</a></td>
+		    <a href="document/admin/document_detail/delete/<?php echo $item['id'] ?>?document_id=<? echo $document_id ?>" class="btn" title="ลบ" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a></td>
 	</tr>
 	<?php endforeach; ?>
 </table>

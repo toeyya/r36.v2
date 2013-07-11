@@ -24,9 +24,9 @@ class Research extends Admin_Controller
 		$this->template->build('admin/form',$data);
 	}
 	function delete($id){
-		if($type_id){
-			$this->research->delete("id",$id);
-			$this->type->delete($id);
+		if($id){
+			$this->detail->delete("research_id",$id);
+			$this->res->delete($id);
 			set_notify('success', DELETE_DATA_COMPLETE);
 		}
 		redirect('research/admin/research/index');

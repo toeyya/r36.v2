@@ -21,8 +21,7 @@ $(document).ready(function(){
 		$("#input_district").html('<img src="media/images/loader.gif" width="16px" height="11px">');
 		$.ajax({
 			url:'<?php echo base_url() ?>district/getDistrict',
-			data:'name=district_id&ref1='+ref1+'&ref2='+ref2,
-			
+			data:'name=district_id&ref1='+ref1+'&ref2='+ref2,			
 			success:function(data)
 			{
 				$("#input_district").html(data);
@@ -35,8 +34,7 @@ $(document).ready(function(){
 			$("#input_hospital").html('<img src="media/images/loader.gif" width="16px" height="11px">');
 		$.ajax({
 			url:'<?php echo base_url() ?>hospital/getHospital',
-			data:'name=hospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,
-		
+			data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,		
 			success:function(data){
 				$('#input_hospital').html(data);
 			}
@@ -74,31 +72,41 @@ $(document).ready(function(){
 							<td>
 								
 								<?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$_GET['province_id'],'class="styled-select" id="province_id"','-ทั้งหมด-'); ?>
-									<?php $wh=(@$_GET['province_id']!='' && $_GET['amphur_id']!='')? " WHERE province_id='".@$_GET['province_id']."' and amphur_id='".@$_GET['amphur_id']."'":""; 
+									<?php $wh=(!empty($_GET['province_id']) && !empty($_GET['amphur_id']))? " WHERE province_id='".@$_GET['province_id']."' and amphur_id='".@$_GET['amphur_id']."'":""; 
 												$class='id="amphur_id"';?>
 												
 							</td>
 							<th>อำเภอ</th>
 							<td><span id="input_amphur"><?php echo form_dropdown('amphur_id',get_option('amphur_id','amphur_name',"n_amphur".$wh),@$_GET['amphur_id'],$class,'-ทั้งหมด-'); ?></span>
-									<?php $wh=(@$_GET['province_id']!='' && $_GET['amphur_id']!='')? " WHERE province_id='".@$_GET['province_id']."' and amphur_id='".@$_GET['amphur_id']."' ":""; 
+									<?php $wh=(!empty($_GET['province_id']) && !empty($_GET['amphur_id']))? " WHERE province_id='".@$_GET['province_id']."' and amphur_id='".@$_GET['amphur_id']."' ":""; 
 												$class='id="district"';?>	
 							</td>
 							<th>ตำบล</th>
 							<td><span id="input_district"><?php echo form_dropdown('district_id',get_option('district_id','district_name','n_district'.$wh),@$_GET['district_id'],$class,'-ทั้งหมด-') ?></span>
-									<?php if(@$_GET['province_id']!='' && $_GET['amphur_id']!='' && $_GET['hospital']){
+									<?php if(!empty($_GET['district_id'])){
 													$wh=" WHERE hospital_province_id='".@$_GET['province_id']."' and hospital_amphur_id='".@$_GET['amphur_id']."' and hospital_district_id='".@$_GET['district_id']."' ";
 												}else{$wh="";}
 												$class=' id="hospital" style="width:130px;"';?>	
 							</td>								
 							<th>โรงพยาบาล</th>
-							<td><span id="input_hospital"><?php echo form_dropdown('hospital',get_option('hospital_code','hospital_name','n_hospital_1'.$wh),@$_GET['hospital'],'','-ทั้งหมด-'); ?></span></td>				 							 
+							<td><span id="input_hospital"><? if(!empty($_GET['hospital'])){
+										$wh=" WHERE hospital_province_id='".@$_GET['province_id']."' AND   hospital_amphur_id='".@$_GET['amphur_id']."' 
+											  AND hospital_district_id='".@$_GET['district_id']."' AND hospital_code='".$_GET['hospital_code']."'";
+									}else{$wh="";}
+							    ?>
+							    <?php if($wh){ ?>
+								<?php echo form_dropdown('userhospital',get_option('hospital_code','hospital_name','n_hospital_1'.$wh),@$_GET['userhospital'],'','-ทั้งหมด-'); ?>
+								<?php }else{ ?>
+							   	<select name="userhospital"><option value="">-ทั้งหมด-</option></select>
+							    <?php } ?>
+								</span></td>				 							 
 				</tr>
 				<tr><th>สิทธิืการใช้งาน</th>
 					<td>
 						<?php 
 						$position=array('00'=>'ผู้ดูแลระบบระดับกรม(สำนักโรคติดต่อทั่วไป)','01'=>'ผู้ดูแลระบบระดับเขต','02'=>'ผู้ดูแลระบบระดับจังหวัด'
 													,'03'=>'ผู้ดูแลระบบระดับอำเภอ','04'=>'ผู้ดูแลระบบระดับตำบล','05'=>'Staff','06'=>'ผู้ใช้ระบบทั่วไป');
-						echo form_dropdown('userposition',$position,@$_GET['position'],'class="styled-select"','-ทั้งหมด-'); ?>
+						echo form_dropdown('userposition',$position,@$_GET['userposition'],'class="styled-select"','-ทั้งหมด-'); ?>
 					</td>
 				</tr>
 				<tr><th></th><td  colspan="7" style="text-align:center;"><button class="btn" type="submit" name="btn_submit">ค้นหา</button></td></tr>

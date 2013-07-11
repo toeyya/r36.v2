@@ -5,6 +5,7 @@ class Question extends Admin_Controller
 	{
 		parent::__construct();
 		$this->load->model('question_model','quest');
+		$this->load->model('question_model','type');
 		$this->template->append_metadata(js_checkbox());
 	}
 	function index(){
@@ -23,11 +24,11 @@ class Question extends Admin_Controller
 		$this->template->build('admin/form',$data);
 	}
 	function delete($id){
-		if($type_id){
-			$this->question->delete("id",$id);
+		if($id){
+			$this->quest->delete("question_id",$id);
 			$this->type->delete($id);
 		}
-		redirect('admin/index');
+		redirect('question/admin/question/index');
 	}
 	function save(){
 		if(!empty($_POST)){

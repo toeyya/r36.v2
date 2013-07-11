@@ -10,9 +10,8 @@
 	  <tr>
 		<th>จังหวัด</th>
 		<th>โค้ดอำเภอ</th>
-		<th>อำเภอ</th>
-		<th>ปี</th>		
-		<th><?php echo anchor('amphur/form','เพิ่มรายการ','class="btn"')?></th>
+		<th>อำเภอ</th>		
+		<th width="10%"></th>
 	  </tr>
 	  
 	  <?php foreach($result as $key=>$item): ?>
@@ -20,9 +19,9 @@
 	  	<td><?php echo $item['province_name'] ?></td>
 	  	<td><?php echo $item['amphur_id'] ?></td>
 	  	<td><?php echo $item['amphur_name'] ?></td>
-	  	<td></td>
-	  	<td><a title="แก้ไข" href="amphur/form/<?php echo $item['amp_pro_id']?>" class="btn">แก้ไข</a>
-	  			 <a title="ลบ"  href="amphur/form/<?php echo $item['amp_pro_id']?>" class="btn">ลบ</a>
+	  	<td>
+	  		<a title="แก้ไข" href="amphur/form/<?php echo $item['amp_pro_id']?>" class="btn">แก้ไข</a>
+	  		
 	  	</td>	  	
 	  </tr>
 	  <?php endforeach; ?>

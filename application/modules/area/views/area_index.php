@@ -1,8 +1,8 @@
 <h1>เขตตรวจราชการ</h1>
 <div class="search">
 <form action="area/index" method="get" name="form1" >
-เขตตรวจราชการ <input type="text" name="name" value="<?php echo @$_GET['name'] ?>" class="input_box_patient">
-<input  class="btn" type="submit" value="ค้นหา">	 
+เขตตรวจราชการ <? echo form_dropdown('area_id',get_option('id','name','n_area'),@$_GET['area_id'],'','-- ทั้งหมด --'); ?>
+ <input  class="btn" type="submit" value="ค้นหา">	 
 </form>
 </div>
 

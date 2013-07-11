@@ -18,7 +18,9 @@
 			<?php echo anchor('permissions/admin/permissions/form/'.$level['lid'],'แก้ไข','class="btn"')?>
 			<?php //endif;?>
 			<?php //if(permission('permissions', 'delete')):?>
+				<?php if(!array_search($level['level_code'],$chk_delete)): ?>
 			<?php echo anchor('permissions/admin/permissions/delete/'.$level['lid'],'ลบ','class="btn" onclick="return confirm(\''.NOTICE_CONFIRM_DELETE.'\')"')?>
+				<?php endif;?>
 			<?php //endif;?>
 		</td>
 	</tr>

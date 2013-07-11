@@ -9,7 +9,7 @@ class Log extends Admin_Controller
 	}
 	function index()
 	{ //$this->db->debug=TRUE;
-		$name="";
+		$name="";$where="";
 		if(!empty($_GET['fullname'])){
 			list($userfirstname, $usersurname)=explode(' ',$_GET['fullname']);		
 			if($userfirstname!='' && $usersurname!=''){
@@ -26,14 +26,21 @@ class Log extends Admin_Controller
 		}else{
 				$dd=(!empty($_GET['firstDate']))?" and date(n_logs.created)='".date2DB($_GET['firstDate'])."'":"";		
 		}
-		$where="";
+		$cond =(!empty($_GET['province_id']))? "  and userhospital <>'' and substr(userhospital,1,2) =".$_GET['province_id'] :'';
+		$cond .=(!empty($_GET['amphur_id']))? "  and userhospital <>'' and substr(userhospital,3,2) =".$_GET['amphur_id'] :'';
+		$cond .=(!empty($_GET['userposition'])) ? " and userposition='".$_GET['userposition']."'" :'';
+		if(!empty($_GET['district_id'])){
+			$cond .=" and userhospital in(
+							select hospital_code from n_hospital_1 where  hospital_district_id='".$_GET['district_id']."' 
+							and hospital_province_id ='".$_GET['province_id']."' and hospital_amphur_id ='".$_GET['amphur_id']."')";
+		}
 		$where .=(!empty($_GET['hospital']))? " and userhospital=".$_GET['hospital']:"";		
 		$data['result']=$this->log->select("n_logs.*,CONCAT(userfirstname,' ',usersurname) as fullname,userposition")
 													 ->join(' LEFT JOIN n_user on n_logs.uid=n_user.uid')
-													 ->where(" n_logs.uid<>'' $name $action $dd $where")
+													 ->where(" n_logs.uid<>'' $name $action $dd $where $cond")
 													 ->sort("")->order("n_logs.created DESC")->get();
 													 
-		if(!empty($_GET['action'])=="เข้าสู่ระบบ"){
+		if(@$_GET['action']=="เข้าสู่ระบบ"){
 			$sql="select max(n_logs.created)as created,max(id) as id,uid,action,detail from n_logs 
 						where uid<>'' $dd and action='เข้าใช้ระบบ' group by uid"	;
 			$data['result']=$this->log->select("max(n_logs.created)as created,max(id) as id,n_logs.uid as uid

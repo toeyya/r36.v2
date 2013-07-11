@@ -11,27 +11,15 @@ class District extends Admin_Controller
 	}
 	function index($view=FALSE)
 	{
-		$amphur=(!empty($_GET['amphur_id']))? $_GET['amphur_id']:'';
-		$province=(!empty($_GET['province_id'])) ? $_GET['province_id']:'';	
-		$district=(!empty($_GET['district_name'])) ? $_GET['district_name']:'';
 		$wh='';
-		if($amphur!=''){
-		  		$wh=" AND  amphur_id = '".$amphur."' AND province_id ='".$province."'";
-		  }else if($province!=''){
-		  		$wh=" AND province_id ='".$province."'";
-		  }
-		  if($district!=''){
-		  		$wh .=" AND district_name LIKE'%".$district."%'";
-		  }
-		  if($view)
-		  {
-		  		$wh="hospital_id='$view'";
-		  		
-		  }
+		$wh .=(!empty($_GET['amphur_id'])) ? " AND  amphur_id = '".$_GET['amphur_id']."'": '';
+		$wh .=(!empty($_GET['province_id'])) ? " AND province_id ='".$_GET['province_id']."'":'';
+		$wh .=(!empty($_GET['district_name'])) ? " AND district_name LIKE'%".$_GET['district_name']."%'" : '';
+		if($view){$wh.="hospital_id='$view'";}
 		$data['wh']=$wh;
 		$data['result']=$this->district->select("district_name,province_id,amphur_id,tam_amp_id,district_id")															
-												    ->where(" district_id<>'' and province_id<>'' $wh")->sort("")->order("province_id,amphur_id,district_name ASC")
-												    ->get();					
+									    ->where(" district_id<>'' and province_id<>'' $wh")->sort("")->order("province_id,amphur_id,district_name ASC")
+										->get();					
 		$data['pagination']=$this->district->pagination();
 		$this->template->build('district_index',$data);								
 	}
@@ -118,14 +106,14 @@ class District extends Admin_Controller
 			set_notify('success', SAVE_DATA_COMPLETE);
 		}
 		
-		redirect('district/index?province_id='.$_POST['province_id'].'&amphur_id='.$_POST['amphur_id']);	
+		redirect('district/index');	
 	}
 	function delete($id,$province_id,$amphur_id){
 		if($id){
 			$this->district->delete("tam_amp_id",$id);	
 			set_notify('success', DELETE_DATA_COMPLETE);	
 		}		
-		redirect('district/index?province_id='.$province_id.'&amphur_id='.$amphur_id);	
+		redirect('district/index');	
 	}
 
 	function GetGroupByArea()

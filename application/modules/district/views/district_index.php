@@ -27,7 +27,7 @@ $(document).ready(function(){
 		<th width="18%">จังหวัด</th>
 		<th width="20%" >อำเภอ</th>	
 		<th width="27%" >ตำบล</th>		
-		<th width="14%" ><a href="district/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>	
+		<th width="10%" ></th>	
 	  </tr>
 	  <?
 			foreach($result as $key=>$item){
@@ -47,16 +47,7 @@ $(document).ready(function(){
 	  		<td><?php echo $recprovince_name; ?></td>
 	  		<td><?php echo $recamphur_name; ?></td>			
 			<td><?php echo $item['district_name']?></td>
-			<td>		
-	
-				 <a href="district/form/<?php echo $item['tam_amp_id']?>" class="btn" title="แก้ไข">แก้ไข</a> 
-				<? if($chk_history==0 && $chk_information==0  ){?>
-					<a class="btn" title="ลบ" href="district/delete/<?php echo $item['tam_amp_id']?>/<?php echo $province_id ?>/<?php echo $amphur_id ?>"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" >ลบ</a>
-					<? }else{?>
-					<a class="btn" title="ลบ" href="javascript:void(0);" onClick="alert('ไม่สามารถลบข้อมูลได้ เนื่องจากมีการใช้ข้อมูลตำบลนี้');">ลบ</a>
-				<? }?>
-			
-			</td>
+			<td><a href="district/form/<?php echo $item['tam_amp_id']?>" class="btn" title="แก้ไข">แก้ไข</a> </td>
 	  </tr>
 	  <? 
 	  }	 
