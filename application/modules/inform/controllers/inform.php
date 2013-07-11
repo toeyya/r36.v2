@@ -127,7 +127,7 @@ class Inform extends R36_Controller
 				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
 				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
 		}// $_GET['action]
-		$this->template->set_layout('layout');
+		
 		if(!empty($where))
 		{
 			/*$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
@@ -151,9 +151,10 @@ class Inform extends R36_Controller
 			/**************************/
 			$data['idcard']=(!empty($_GET['idcard']))?@$_GET['idcard']:'';
 			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';
-			
+			$this->template->set_layout('layout');
 			$this->template->build('index',$data);
-		}else{			
+		}else{
+			$this->template->set_layout('layout');			
 			$this->template->build('index');
 		}		
 	}
@@ -322,24 +323,28 @@ class Inform extends R36_Controller
 		//   ------++++------    table n_vaccine	------++++------ 	
 		$this->vaccine->primary_key('vaccine_id');
 		$this->vaccine->delete("information_id",$information_id);
+		
 		if($_POST['means']!='3' && $_POST['means']!=''){
 			$j=($_POST['means']=="2")?4:5;			
 					for($i=0;$i<$j;$i++){
-								if($_POST['vaccine_name'][$i]!='0'){
+								if($_POST['vaccine_name'][$i]!="0"){
+										
+									$hospital=$this->hospital->get_one("hospital_id","hospital_name",$_POST['byplace'][$i]);
 									$user_id=(!empty($_POST['user_id'][$i]))? $_POST['user_id'][$i]:$this->session->userdata('R36_UID');
+									
 									$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>date2DB($_POST['vaccine_date'][$i])
 											   ,'vaccine_name'=>$_POST['vaccine_name'][$i],'vaccine_no'=> $_POST['vaccine_no'][$i]
 											   ,'vaccine_cc'=>$_POST['vaccine_cc'][$i] ,'vaccine_point'=>$_POST['vaccine_point'][$i]
-											   ,'byname'=> $_POST['byname'][$i],'byplace'=> $_POST['byplace'][$i],'user_id'=>$user_id
-											,'updatetime'=>@$_POST['updatetime'],'created'=>@$_POST['created']);									
+											   ,'byname'=> $_POST['byname'][$i],'byplace'=> $_POST['byplace'][$i],'user_id'=>$user_id,'hospital_id'=>$hospital
+											   ,'updatetime'=>@$_POST['updatetime'],'created'=>@$_POST['created']);									
 									$this->vaccine->save($data);
-									//var_dump($data);exit;	
+										
 								}	
-								if($_POST['vaccine_date'][$i] &&  $_POST['vaccine_name'][$i]=="0"){
-									$data=$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>cld_date2my($_POST['vaccine_date'][$i]));
+								if($_POST['vaccine_date'][$i] &&  $_POST['vaccine_name'][$i]=="0"){									
+									$data=$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>date2DB($_POST['vaccine_date'][$i]));
 									$this->vaccine->save($data);
 								}
-					}
+					}//exit;
 		}
 		//  ------++++------    End n_vaccine  ------++++------ 
 		set_notify('success', SAVE_DATA_COMPLETE);		

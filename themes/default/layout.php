@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <base href="<?php echo base_url(); ?>" />
@@ -72,8 +72,7 @@
           </tr>
           <tr>
             <td background="themes/default/media/images/tbCol2_left.png">&nbsp;</td>
- 			 <td bgcolor="#FFFFFF">	<?php echo $template['body']; ?></td>
-           </td>
+ 			 <td bgcolor="#FFFFFF">	<?php echo $template['body']; ?></td>          
             <td background="themes/default/media/images/tbCol2_right.png">&nbsp;</td>
           </tr>
           <tr>

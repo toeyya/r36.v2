@@ -1897,6 +1897,7 @@ $('select[name=prefix_name]').click(disableChkage);
 													$byname[$key] = $rec_vaccine['byname'];
 													$byplace[$key] = $rec_vaccine['byplace'];
 													$user_id[$key] =$rec_vaccine['user_id'];
+													$hospital_id[$key] = $rec_vaccine['hospital_id'];
 											}
 											$max_rec=$result->Recordcount();
 										}	

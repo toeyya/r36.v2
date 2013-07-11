@@ -24,7 +24,6 @@ var ref1,ref2,ref3;
 		$.ajax({url:'<?php echo base_url(); ?>users/getHospital',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
 	});		
 	$('#form1').validate({
-		debug:true,	
 		groups:{
 			groupname:'userfirstname usersurname',
 			groupidcard:'cardW0 cardW1 cardW2 cardW3 cardW4',
@@ -49,25 +48,7 @@ var ref1,ref2,ref3;
 				        }
 		 			}		 		
 		 	},   
-			/*userhospital:{required:true,
-				remote:{
-					url:'users/chkHospitalcode',
-					type:'get',
-					dataType:'json',					
-					dataFilter:function(data){
-						var json=JSON.parse(data);
-						if(json.status=="true"){
-							$('#userhospital').closest('div').find('.shw-name').html(json.texts); 
-							return "true";
-						}else{
-							$('#userhospital').closest('div').find('.shw-name').html(''); 
-							return
-							 "false";
-						}								
-					}	
-				}
-			},*/
-			
+						
 			usermail:{required:true,email:true,
 				remote:{url:'<?php echo base_url()?>users/checkEmail'}
 			},

@@ -12,6 +12,7 @@
 </form>
 </div>
 <div id="report">
+	<?php if($cond): ?>
 		<div id="title">				  
 		<p>รายงานผู้สัมผัสโรครายไตรมาส</p>
 	    <p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
@@ -392,4 +393,5 @@
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 		</div>
+	<?php endif; ?>
 </div>
