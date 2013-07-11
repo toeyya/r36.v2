@@ -109,12 +109,12 @@ $(document).ready(function(){
 	})	
 		 $.validator.setDefaults({
 		 	submitHandler:function(){
-		 	  //chk_closecase_person();
+		 	  chk_closecase_person();
 		 	  var chk_p=$('input[name=closecase_person]').val();
 		 	  //alert(chk_p);
-		 	// if(chk_p==''){
-		 	  	document.form1.submit();
-		 	 // }		 				 	
+		 		if(chk_p==''){
+		 	  		document.form1.submit();
+		 	 	}		 				 	
 		 	}
 		 });
 		 $('#form1').validate({

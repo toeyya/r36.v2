@@ -76,10 +76,11 @@ class Inform extends R36_Controller
 	}
 	function index()
 	{				
-	
+		
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
-				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
+				$where ="";
+				
 				if(!empty($_GET['statusid'])=="1"){
 					$_GET['idcard']=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
 				}
@@ -94,14 +95,14 @@ class Inform extends R36_Controller
 					$where.=(!empty($_GET['hospital_district_id']))? " and hospital_district_id='".$_GET['hospital_district_id']."'":"";					
 				}
 				if(!empty($_GET['enddate']) && !empty($_GET['startdate'])){
-					$where.=" and datetouch BETWEEN '".DBdate($_GET['startdate'])."' AND  '".DBdate($_GET['enddate'])."' ";
+					$where.=" and datetouch BETWEEN '".date2DB($_GET['startdate'])."' AND  '".date2DB($_GET['enddate'])."' ";
 				}else if(!empty($_GET['enddate'])){
-					$where.=" and datetouch BETWEEN '".DBdate($_GET['startdate'])."' and '".DBdate($_GET['startdate'])."'";	
+					$where.=" and datetouch BETWEEN '".date2DB($_GET['startdate'])."' and '".date2DB($_GET['startdate'])."'";	
 				}
 		
 				if(!empty($_GET['report_startdate']) && !empty($_GET['report_enddate'])){
-					$startdate=cld_date2my($_GET['report_startdate']);		
-					$enddate=cld_date2my($_GET['report_enddate']);
+					$startdate=date2DB($_GET['report_startdate']);		
+					$enddate=date2DB($_GET['report_enddate']);
 					$where.=" and reportdate BETWEEN '".$startdate."' and '".$enddate."'";
 				}elseif(!empty($_GET['report_startdate'])){
 						$where.=" and reportdate BETWEEN '".$startdate."' and '".$startdate."'";		
@@ -119,7 +120,7 @@ class Inform extends R36_Controller
 						$where.=" AND (idcard='".$_GET['idcard']."' AND statusid='".$_GET['statusid']."') AND idcard!='' and hospitalcode<>''";
 					}
 				}
-
+				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['total_vaccine'])){
 					$total_vaccine=implode(',',$_GET['total_vaccine']);
 					$where.="  AND total_vaccine in(".$total_vaccine.")";
@@ -130,14 +131,10 @@ class Inform extends R36_Controller
 		
 		if(!empty($where))
 		{
-			/*$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
-				  FROM n_information
-				  LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode				 
-			      INNER JOIN n_history ON n_history.historyid=n_information.information_historyid WHERE 1=1 ".$where;*/
 			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase									
 				FROM n_history
-				LEFT JOIN n_information ON n_history.historyid=n_information.information_historyid
-				LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
+				INNER JOIN n_information ON n_history.historyid=n_information.information_historyid
+				INNER JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
 
 			$data['result']=$this->inform->limit(20)->get($sql);
 			$data['pagination']=$this->inform->pagination();			
