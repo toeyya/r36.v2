@@ -37,10 +37,9 @@
 $active_group = "default";
 $active_record = TRUE;
 
-/*$db['default']['hostname'] = "192.168.1.111";
-=======
-/*$db['default']['hostname'] = "192.168.1.39";
->>>>>>> 4d1ceff61137f28f9b03b14b6753e900a4092e0e
+
+
+/*$db['default']['hostname'] = "192.168.1.56";
 $db['default']['username'] = "sa";
 $db['default']['password'] = "1234";
 $db['default']['database'] = "R36";
@@ -51,9 +50,6 @@ $db['default']['username'] = "root";
 $db['default']['password'] = "";
 $db['default']['database']="c1r36";
 $db['default']['dbdriver'] = "mysql";
-
-/*$db['default']['database']="c1r36";
-$db['default']['dbdriver'] = "mysql";*/
 
 
 $db['default']['dbprefix'] = "";

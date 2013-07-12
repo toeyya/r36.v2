@@ -8,7 +8,8 @@ class Area extends Admin_Controller
 	
 	}
 	function index($view=FALSE){
-			$data['result']=$this->area->sort("")->order("year desc")->get();
+			$area_id=(!empty($_GET['area_id'])) ? "and id =".$_GET['area_id']:'';
+			$data['result']=$this->area->where("1=1 $area_id")->sort("")->order("year desc")->get();
 			$data['pagination']=$this->area->pagination();
 			$this->template->build('area_index',$data);
 	}

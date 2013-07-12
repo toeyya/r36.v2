@@ -14,17 +14,14 @@
 		<th width="27%" >จังหวัด</th>
 		<th>รูปแบบเขตความรับผิดชอบ</th>
 		<th width="20%" >เขตความรับผิดชอบ</th>
-		<th>ปี</th>
-		<th width="14%" ><a href="province/form" class="btn_add" title="เพิ่ม" name="btn_add"></a></th>
+		<th width="10%" ><a href="province/province_new" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>
 	  </tr>
 	  <?php foreach($result as $key=>$item): ?>
 	  <tr>
 	  	<td><?php echo $item['province_name'] ?></td>
 	  	<td><?php echo $item['area_name'] ?></td>
 	  	<td><?php echo $item['level'] ?></td>
-	  	<td></td>
-	  	<td><a title="แก้ไข" href="province/form/<?php echo $item['province_id'] ?>/<?php echo $item['area_id'] ?>" class="btn">แก้ไข</a>
-	  			 <a title="ลบ"  href="province/form/<?php echo $item['province_id']?>/<?php echo $item['area_id'] ?>" class="btn">ลบ</a>
+	  	<td><a title="แก้ไข" href="province/form/<?php echo $item['province_id'] ?>/<?php echo $item['area_id'] ?>" class="btn">แก้ไข</a>	  			
 	  	</td>	  	
 	  </tr>
 	  <?php endforeach; ?>

@@ -10,7 +10,6 @@ $(document).ready(function(){
 </script>
 <div id="title">ข้อมูลการฉีดวัคซีน</div>
 <div id="search">
-<?php if(empty($cond)): ?>
 <form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 	<table  class="tb_patient1">
 	<?php require 'include/conditionreport.php'; ?>	
@@ -33,7 +32,7 @@ $(document).ready(function(){
 </table>
   <div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul></div>	
 </form>
-<?php endif; ?>
+
 </div>
 <? if(!empty($cond)): ?>
 <div id="report">
@@ -44,7 +43,7 @@ $(document).ready(function(){
 	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;">
 		<tr><td colspan="2" style="text-align:right;">หน่วย:คน</td></tr>
 		<tr>
-			<th style="text-align:center">เงื่อนไข</th><th style="text-align:left">จำนวน (N=0)</th>
+			<th style="text-align:center">เงื่อนไข</th><th style="text-align:left">จำนวน (N=<?php echo number_format($total_n); ?>)</th>
 		</tr>
 		<tr>
 			<td>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่<strong>ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>

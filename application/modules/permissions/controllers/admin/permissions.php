@@ -41,9 +41,14 @@ class Permissions extends Admin_Controller
 	
 	public function index()
 	{
-		//$this->db->debug=TRUE;
 		$data['level'] = $this->level->sort("")->order("level_code asc")->get();
 		$data['pagination'] = $this->level->pagination();
+		$chk_delete = $this->user->select("userposition")->groupby("userposition")->sort("")->order("userposition asc")->get();
+		foreach($chk_delete as $key=>$item){
+			$level[]=$item['userposition'];
+		}
+			
+		$data['chk_delete'] = $level;
 		$this->template->build('admin/permission_index',$data);
 	}
 	

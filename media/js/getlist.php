@@ -169,8 +169,9 @@
   //---Report ปัจจัยรอง-----
   if($_GET['mode']=='D_main'){
 	  if($_GET['ref1']=='1'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'เพศ',2=>'อาชีพ',3=>'อาชีพผู้ปกครอง',4=>'สถานที่สัมผัส',5=>'ชนิดสัตว์นำโรค',6=>'อายุสัตว์',7=>'สถานภาพสัตว์',8=>'สาเหตุที่ถูกกัด',9=>'การล้างแผล',10=>'การใส่ยาฆ่าเชื้อ');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">เพศ</option>';
 		echo	'<option value="2">อาชีพ</option>';
 		echo	'<option value="3">อาชีพผู้ปกครอง</option>';
@@ -184,41 +185,47 @@
 	    echo '</select>';
 
 	  }else if($_GET['ref1']=='2'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'ชนิดสัตว์นำโรค',2=>'สถานภาพสัตว์',3=>'ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์',4=>'การส่งหัวสัตว์ตรวจ');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">ชนิดสัตว์นำโรค</option>';
 		echo	'<option value="2">สถานภาพสัตว์</option>';
 		echo	'<option value="3">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 		echo	'<option value="4">การส่งหัวสัตว์ตรวจ</option>';
 	    echo '</select>';
 	  }else if($_GET['ref1']=='3'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'สถานภาพสัตว์',2=>'การกักขัง/ติดตามดูอาการสัตว์',3=>'ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์',4=>'การส่งหัวสัตว์ตรวจ');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">สถานภาพสัตว์</option>';
 		echo	'<option value="2">การกักขัง/ติดตามดูอาการสัตว์</option>';
 		echo	'<option value="3">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 		echo	'<option value="4">การส่งหัวสัตว์ตรวจ</option>';
 	    echo '</select>';
 	  }else if($_GET['ref1']=='4'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'ชนิดสัตว์นำโรค',2=>'สถานภาพสัตว์',3=>'ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">ชนิดสัตว์นำโรค</option>';
 		echo	'<option value="2">สถานภาพสัตว์</option>';
 		echo	'<option value="3">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 	    echo '</select>';
 	  }else if($_GET['ref1']=='5'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'จำนวนหัวสัตว์ที่ส่งตรวจ');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">จำนวนหัวสัตว์ที่ส่งตรวจ</option>';
 	    echo '</select>';
 	  }else if($_GET['ref1']=='6'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'จำนวนหัวสัตว์ที่ส่งตรวจพบเชื้อ');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">จำนวนหัวสัตว์ที่ส่งตรวจพบเชื้อ</option>';
 	    echo '</select>';
 	  }else if($_GET['ref1']=='7'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'อาชีพ',2=>'อาชีพผู้ปกครอง',3=>'อายุ',4=>'การฉีดอิมมูโนโกลบุลิน',5=>'จำนวนเข็มของการฉีด',6=>'ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">อาชีพ</option>';
 		echo	'<option value="2">อาชีพผู้ปกครอง</option>';
 		echo	'<option value="3">อายุ</option>';
@@ -227,23 +234,26 @@
 		echo	'<option value="6">ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ</option>';
 	    echo '</select>';
 	  }else if($_GET['ref1']=='8'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส',2=>'สถานภาพสัตว์',3=>'ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์',4=>'วิธีฉีดวัคซีนในคน');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส</option>';
 		echo	'<option value="2">สถานภาพสัตว์</option>';
 		echo	'<option value="3">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 		echo	'<option value="4">วิธีฉีดวัคซีนในคน</option>';
 	    echo '</select>';
 	  }else if($_GET['ref1']=='9'){
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+	  	$arr_detail_minor =array(1=>'การกักขังได้/ติดตามได้',2=>'ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์',3=>'การส่งหัวสัตว์ตรวจ');
+		//echo form_dropdown('detail_minor',$arr_detail_minor,@$_GET['detail_minor'],'class="styled-select"','ปัจจัยรอง');
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 		echo	'<option value="1">การกักขังได้/ติดตามได้</option>';
 		echo	'<option value="2">ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์</option>';
 		echo	'<option value="3">การส่งหัวสัตว์ตรวจ</option>';
 	    echo '</select>';
 	  }else{
-    	echo '<select name="detail_minor" class="textbox widthselect">';
-		echo	'<option value="-">ปัจจัยรอง</option>';
+    	echo '<select name="detail_minor" class="styled-select">';
+		echo	'<option value="">ปัจจัยรอง</option>';
 	    echo '</select>';
 	  }
 	  		return true;

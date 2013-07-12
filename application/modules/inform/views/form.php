@@ -552,7 +552,7 @@ $('select[name=prefix_name]').click(disableChkage);
                 <th>
 				<div align="center">
 					HN <span class="alertred">*</span> &nbsp;					
-					<input name="hn_s" type="text" class="input_box_patient " value="<?php echo $rs['hn'] ?>" size="20" disabled="disabled"> - 					
+					<input name="hn" type="text" class="input_box_patient " value="<?php echo $rs['hn'] ?>" size="20" disabled="disabled"> - 					
 					<input type="text" name="hn_no" size="2"  disabled="disabled"  value="<?php echo $rs['hn_no']; ?>" class="input_box_patient nowidth " onKeyPress="return NumberOnly();" style="text-align:center" 
 					<?php echo (@$rs['id'])? '':'disabled="disabled"'; ?> <?php if($process=='vaccine'){echo 'disabled="disabled"';} ?>>
 					<input name="hospitalprovince" type="hidden"value="<?php echo @$rs['hospitalprovince']?>" >
@@ -599,9 +599,9 @@ $('select[name=prefix_name]').click(disableChkage);
 							 	<option value="">- โปรดเลือก -</option>
 								<option value="นาย" <?php  echo (@$rs['prefix_name']=='นาย')? "selected='selected'":"" ?>>นาย</option>
 								<option value="นาง" <?php  echo (@$rs['prefix_name']=='นาง')? "selected='selected'":"" ?>>นาง</option>
-								<option value="นางสาว" <?php  echo (@$rs['prefix_name']=='นางสาว')? "selected='selected'":"" ?>>นางสาว</option>
-								<option value="ด.ช." <?php  echo (@$rs['prefix_name']=='ด.ช.')? "selected='selected'":"" ?>>ด.ช.</option>
-								<option value="ด.ญ." <?php  echo (@$rs['prefix_name']=='ด.ญ.')? "selected='selected'":"" ?>>ด.ญ.</option>							
+								<option value="นางสาว"<?php echo (@$rs['prefix_name']=='นางสาว')? "selected='selected'":"" ?>>นางสาว</option>
+								<option value="ด.ช." <?php echo (@$rs['prefix_name']=='ด.ช.')? "selected='selected'":"" ?>>ด.ช.</option>
+								<option value="ด.ญ." <?php echo (@$rs['prefix_name']=='ด.ญ.')? "selected='selected'":"" ?>>ด.ญ.</option>							
 							 </select>							
 							 ชื่อ<span class="alertred">*</span> :
                                <input name="firstname" type="text" class="input_box_patient " id="firstname" value="<?php echo @$rs['firstname'];?>" size="20" />
@@ -616,7 +616,7 @@ $('select[name=prefix_name]').click(disableChkage);
 					</tr>
 					<tr><td>
 							เพศ : <input name="gender" type="radio" value="1" <? if(@$rs['gender']=='1'){ echo "checked";}?>> ชาย&nbsp;&nbsp;
-							  		 <input name="gender" type="radio" value="2" <? if(@$rs['gender']=='2'){ echo "checked";}?>> หญิง</td>
+							  	 <input name="gender" type="radio" value="2" <? if(@$rs['gender']=='2'){ echo "checked";}?>> หญิง</td>
 						
                       </tr>
                       <tr>
@@ -1887,7 +1887,7 @@ $('select[name=prefix_name]').click(disableChkage);
 										if($result){
 											foreach($result as $key=>$rec_vaccine){												
 													$vaccine_id[$key] = $rec_vaccine['vaccine_id'];
-													$vaccine_date[$key] = DB2($rec_vaccine['vaccine_date']);
+													$vaccine_date[$key] = DB2Date($rec_vaccine['vaccine_date']);
 													$vaccine_date_now[$key] =strtotime($rec_vaccine['vaccine_date']);
 													$disable_vac[$key]=($vaccine_date_now[$key]>$now)? 'disabled="disabled"':'';
 													$vaccine_name[$key] = $rec_vaccine['vaccine_name'];
@@ -1897,6 +1897,7 @@ $('select[name=prefix_name]').click(disableChkage);
 													$byname[$key] = $rec_vaccine['byname'];
 													$byplace[$key] = $rec_vaccine['byplace'];
 													$user_id[$key] =$rec_vaccine['user_id'];
+													$hospital_id[$key] = $rec_vaccine['hospital_id'];
 											}
 											$max_rec=$result->Recordcount();
 										}	
@@ -2024,7 +2025,7 @@ $('select[name=prefix_name]').click(disableChkage);
                   <tr>
                     <td width="15%">ท่านต้องการปิด Case หรือไม่ </td>
                     <td width="67%">
-					<input name="closecase" type="radio" value="1" <?php if($rs['closecase']=='1'){echo 'checked="checked"';}?>  onclick="show_hide_closecase_chk(document.form1);">
+					<input name="closecase" type="radio" value="1" checked="checked" <?php if($rs['closecase']=='1'){echo 'checked="checked"';}?>  onclick="show_hide_closecase_chk(document.form1);">
                       ไม่ต้องการ&nbsp;&nbsp;&nbsp;
                     <input name="closecase" type="radio" value="2" <?php if($rs['closecase']=='2'){echo 'checked="checked"';}?>  onclick="if(confirm('คุณแน่ใจหรือไม่ที่ต้องการปิดเคสข้อมูลนี้')){show_hide_closecase_chk(document.form1);}else{document.form1.closecase[1].checked=false;}">
                       ต้องการ</td>

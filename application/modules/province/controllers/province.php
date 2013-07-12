@@ -29,7 +29,7 @@ class Province extends Admin_Controller
 		$data['rs']=array();
 		if($id && $area_id){
 			$data['rs']=$this->db->GetRow("SELECT n_area_detail.province_id as province_id,province_name,area_id,n_area.name as area_name
-												,level,n_area_detail.id as id,provincepeople
+												,level,n_area_detail.id as id,provincepeople,total,n_area_detail.id as detail_id
 										  FROM n_province
 										  LEFT JOIN n_area_detail on n_area_detail.province_id=n_province.province_id
 			   							  LEFT JOIN n_area on n_area.id=n_area_detail.area_id
@@ -40,11 +40,15 @@ class Province extends Admin_Controller
 		
 	}
 	function save(){
-		
+		if($_POST){
+			$this->province->primary_key("province_id");
+			$this->province->save($_POST);
+			$this->detail->save($_POST);
+			set_notify('success', SAVE_DATA_COMPLETE);			
+		}
+		redirect('province/form/'.$_POST['province_id'].'/'.$_POST['area_id']);		
 	}
-	function delete(){
-		
-	}
+
 	function province_new(){
 		$data['area']=$this->area->get();
 		$this->template->build('province_new',$data);

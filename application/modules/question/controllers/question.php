@@ -22,6 +22,7 @@ class Question extends Public_Controller
 		$data['question_name']=$this->quest->get_one("name","id",$question_id);
 		$data['pagination'] =$this->detail->pagination();
 		$this->template->build('inc_detail',$data);
-	}	
+	}
+	
 
 }

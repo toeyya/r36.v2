@@ -18,12 +18,15 @@ class Amphur extends Admin_Controller
 		$this->template->build('amphur_index',$data);
 	}
 	function form($id=FALSE,$area_id=FALSE){
-		$this->template->build('amphur_form');
+		$data['rs']=$this->amphur->get_row($id);	
+		$this->template->build('amphur_form',$data);
 	}
 	function save(){
 		if($_POST){
 			$this->amphur->save($_POST);
+			set_notify('success', SAVE_DATA_COMPLETE);			
 		}
+		redirect('amphur/index');
 		
 	}
 	function delete(){

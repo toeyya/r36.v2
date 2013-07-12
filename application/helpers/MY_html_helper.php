@@ -170,12 +170,12 @@ function image_extension($val){
 	return in_array($val, $ext);	
 }
 
-function compute_percent($val, $fullval){
+function compute_percent($val, $fullval,$n=2){
 	if($fullval==0){
-		return number_format(0,2);
+		return number_format(0,$n);
 	}else{
 		$percent = ($val*100)/$fullval;
-		return number_format($percent,2);
+		return number_format($percent,$n);
 	}
 }
 function getLevel($area,$total){

@@ -63,7 +63,7 @@ define('BTN_DELETE','ลบ');
 define('BTN_SUBMIT','ตกลง');
 define('BTN_ANS', 'ตอบกระทู้');
 define('BTN_SENDMAIL', 'ส่งเมลล์');
-define('NOTICE_CONFIRM_DELETE', 'คุณแน่ใจหรือไม่ที่ต้องการลบข้อมูลนี้');
+define('NOTICE_CONFIRM_DELETE', 'คุณแน่ใจหรือไม่ที่ต้องการลบข้อมูลนี้ หากมีข้อมูลที่เกี่ยวข้องจะถูกลบออกไปด้วย');
 
 define('SAVE_DATA_COMPLETE','บันทึกข้อมูลเรียบร้อย');
 define('DELETE_DATA_COMPLETE', 'ลบข้อมูลเรียบร้อยแล้ว');
@@ -74,8 +74,7 @@ define('LOGIN_NOT', 'คุณต้อง Login ก่อนค่ะ');
 define('LOGIN_FAIL', 'Username หรือ Password ไม่ถูกต้อง');
 define('CANCEL_RECEIVE','คุณต้องการยกเลิกรับข่าว-สาร ใช่หรือไม่ ?');
 define('CANNOT SEND EMAIL','CANNOT SEND EMAIL');
-define('NOTICE_ERROR_REGISTER','คุณได้ลงทะเบียนหลักสูตรนี้แล้ว !!! ');
-define('CODE_AUTOMATED','ระบบจะสร้างให้อัตโนมัติ');
+
 
 
 

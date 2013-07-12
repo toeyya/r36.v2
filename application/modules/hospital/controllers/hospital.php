@@ -80,16 +80,33 @@ class Hospital extends Admin_Controller
 	}
 	function save()
 	{
-		//$this->db->debug=TRUE;	
+	
 		if($_POST){	
 			$_POST['hospital_province_id']=$_POST['province_id'];
 			$_POST['hospital_amphur_id']=$_POST['amphur_id'];
 			$_POST['hospital_district_id']=$_POST['district_id'];
 			$_POST['user_id']=$this->session->userdata('R36_UID');
-		
-			$sql="SELECT Max(hospital_code) AS chk_hospitalcode FROM n_hospital_1 WHERE hospital_province_id= ? AND  hospital_amphur_id=? ";
-			$code=$this->db->GetOne($sql,array($_POST['province_id'],$_POST['amphur_id']));
-		
+			
+			if($_POST['hospital_id'])
+			{
+				$rs = $this->hospital->get_row("hospital_id",$_POST['hospital_id']);		
+				$_POST['hospital_code']=$_POST['province_id'].$_POST['amphur_id'].$_POST['district_id'].substr($_POST['hospital_code'],4);			
+								
+				$this->db->Execute("UPDATE n_information SET hospitalcode = '".$_POST['hospital_code']."'
+													,hospitalprovince ='".$_POST['hospital_province_id']."' 
+													,hospitalamphur = '".$_POST['hospital_amphur_id']."'
+													,hospitaldistrict ='".$_POST['hospital_district_id']."'
+													WHERE hospitalcode = '".$rs['hospital_code']."'");
+				$this->db->Execute("UPDATE n_historydead SET hospitalcode = '".$_POST['hospital_code']."'
+													,hospitalprovince ='".$_POST['hospital_province_id']."' 
+													,hospitalamphur = '".$_POST['hospital_amphur_id']."'
+													,hospitaldistrict ='".$_POST['hospital_district_id']."'
+													WHERE hospitalcode = '".$rs['hospital_code']."'");
+				$this->db->Execute("UPDATE n_user SET userhospital = '".$_POST['hospital_code']."' WHERE userhospital = '".$rs['hospital_code']."'");
+				$this->db->Execute("UPDATE n_vaccine SET byplace ='".$_POST['hospital_name']."' WHERE byplace ='".$rs['hospital_name']."'");
+			}else{
+				$sql="SELECT Max(hospital_code) AS chk_hospitalcode FROM n_hospital_1 WHERE hospital_province_id= ? AND  hospital_amphur_id=? ";
+				$code=$this->db->GetOne($sql,array($_POST['province_id'],$_POST['amphur_id']));					
 				if($_POST['hospital_code']=='')
 				{
 					if($code){
@@ -97,25 +114,13 @@ class Hospital extends Admin_Controller
 					}else{
 								$_POST['hospital_code']=$_POST['province_id'].$_POST['amphur_id'].'0001';
 					}						
-				}	
-				
-			
-			$this->db->Execute("UPDATE n_information SET hospitalcode = '".$_POST['hospital_code']."'
-												,hospitalprovince ='".$_POST['hospital_province_id']."' 
-												,hospitalamphur = '".$_POST['hospital_amphur_id']."'
-												,hospitaldistrict ='".$_POST['hospital_district_id']."'
-												WHERE hospitalcode = '".$_POST['hospital_code']."'");
-			$this->db->Execute("UPDATE n_historydead SET hospitalcode = '".$_POST['hospital_code']."'
-												,hospitalprovince ='".$_POST['hospital_province_id']."' 
-												,hospitalamphur = '".$_POST['hospital_amphur_id']."'
-												,hospitaldistrict ='".$_POST['hospital_district_id']."'
-												WHERE hospitalcode = '".$_POST['hospital_code']."'");
-			$this->db->Execute("UPDATE n_user SET userhospital = '".$_POST['hospital_code']."' WHERE userhospital = '".$_POST['hospital_code']."'");			
+				}				
+			}			
 			$this->hospital->primary_key("hospital_id");
 			$id=$this->hospital->save($_POST);
 			set_notify('success', SAVE_DATA_COMPLETE);
 		}
-		redirect('hospital/form/'.$id);
+		redirect('hospital/index');
 	}
 	function GetClearHospital(){
 		$output = '<select name="hospital" class="styled-select" id="hospital">';

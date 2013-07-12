@@ -8,7 +8,6 @@
 		<ul class="sublist">
                 <li><a href="area/index">เขตความรับผิดชอบ</a></li>
                 <li><a href="province/index">จังหวัด</a></li>
-                <li><a href="province/province_new">เพิ่มจังหวัดใหม่</a></li>
                 <li><a href="amphur/index">อำเภอ</a></li>
 				<li><a href="district/index">ตำบล</a></li>
 				<li><a href="hospital/index">สถานพยาบาล</a></li>					

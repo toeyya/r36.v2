@@ -5,7 +5,7 @@ $(document).ready(function(){
 		ref1=$('select[name=province_id] option:selected').val();
 		$.ajax({
 			url:'<?php echo base_url() ?>district/getAmphur',
-			data:'ref1='+ref1,
+			data:'name=amphur_id&ref1='+ref1,
 			success:function(data){$("#input_amphur").html(data);}
 		});
 	});	//select name=province
@@ -13,7 +13,7 @@ $(document).ready(function(){
 		var ref2=$('select[name=amphur_id] option:selected').val();
 		$.ajax({
 			url:'<?php echo base_url() ?>district/getDistrict',
-			data:'ref1='+ref1+'&ref2='+ref2,
+			data:'name=district_id&ref1='+ref1+'&ref2='+ref2,
 			success:function(data){$("#input_district").html(data);}
 		})
 	});
@@ -34,8 +34,8 @@ $(document).ready(function(){
 						type:"get",
 						data: {							
 							province_id: function () {return $('#province_id').val();	},
-							amphur_id: function () {return $('#amphur_id').val();}
-							district_id: function () {return $('#district_id').val();}
+							amphur_id: function () {return $('#amphur_id').val();},
+							district_id: function () {return $('#district_id').val();},
 							hospital_id: function () {return $('#hospital_id').val();}				
 					   }//close data			
 					}//remote  
@@ -69,11 +69,14 @@ $(document).ready(function(){
 <h1>สถานพยาบาล(เพิ่ม/แก้ไข)</h1>
 <form name="form1" action="hospital/save"  method="post" id="formm" >
 		<table class="form">
+                <tr><th>โค้ดสถานพยาบาล</th>
+                	<td><input type="text" readonly="readonly" value="<?php echo $rs['hospital_code']; ?>"><small> ระบบคำนวณอัตโนมัติ </small></td>
+                </tr>
                 <tr> 
                   <th width="110" height="20">จังหวัด :</th>
                   <td width="242" height="20">
-					<?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province ORDER BY province_name ASC'),@$rs['hospital_province_id'],'class="input_box_patient " id="province_id"','-โปรดเลือก-') ?>				
-					<span class="alertred">*</span>
+					<?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province ORDER BY province_name ASC'),@$rs['hospital_province_id'],'" id="province_id"','-โปรดเลือก-') ?>				
+					
 				  </td>
                 </tr>
                 <tr> 
@@ -81,9 +84,9 @@ $(document).ready(function(){
                   <td height="20">
 				  <span id="input_amphur">
 						<?php 
-						$class='class="input_box_patient " id="amphur_id"';
+						$class='" id="amphur_id"';
 						echo form_dropdown('amphur_id',get_option('amphur_id','amphur_name',"n_amphur WHERE province_id='".@$rs['hospital_province_id']."' ORDER BY amphur_name ASC"),@$rs['hospital_amphur_id'],$class,'-โปรดเลือก-'); ?>
-					</span> <span class="alertred">*</span>
+					</span>
 				  </td>
                 </tr>
                 <tr> 
@@ -91,11 +94,10 @@ $(document).ready(function(){
                   <td height="20">
 				  <span id="input_district">
 						<?php 
-						$class='class="input_box_patient " id="district_id"';
+						$class=' id="district_id"';
 						$wh=(@$rs['hospital_province_id'] && @$rs['hospital_amphur_id'])? "WHERE province_id='".@$rs['hospital_province_id']."' and amphur_id='".@$rs['hospital_amphur_id']."'":"";
-						echo form_dropdown('district_id',get_option('district_id','district_name',"n_district  $wh  ORDER BY district_name ASC"),@$rs['hospital_district_id'],$class,'-โปรดเลือก-'); ?>
-						
-					</span> <span class="alertred">*</span>
+						echo form_dropdown('district_id',get_option('district_id','district_name',"n_district  $wh  ORDER BY district_name ASC"),@$rs['hospital_district_id'],$class,'-โปรดเลือก-'); ?>						
+					</span> 
 				  </td>
                 </tr>
                 <tr> 
@@ -103,9 +105,9 @@ $(document).ready(function(){
                   <td> <input name="hospital_name" type="text" id="hospital_name" size="30" maxlength="300"  class="input_box_patient " value="<?php echo $rs['hospital_name']?>"> <span class="alertred">*</span></td>
                 </tr>
                 <tr>
-                	<th>โค้ดสถานพยาบาล:</th>
+                	<th>โค้ดสถานพยาบาล   7 หลัก :</th>
                   	<td><input name="hospital_code_healthoffice" type="text" id="hospital_code_healthoffice" size="30" maxlength="300"  class="input_box_patient " value="<?php echo $rs['hospital_code_healthoffice'] ?>"> 
-                  	<span class="alertred">*</span></td>
+                  	</td>
                 </tr>
                 <tr> 
                   <th height="33">สังกัด :</th>
@@ -115,7 +117,7 @@ $(document).ready(function(){
                       <option value="1" <? if(@$rs['hospital_type']=='1'){echo 'selected';}?>>รัฐบาล</option>
                       <option value="2" <? if(@$rs['hospital_type']=='2'){echo 'selected';}?>>เอกชน</option>
                     </select> <span class="alertred">*</span>
-	                    <input type="hidden" name="hospital_id"  id="hospital_id" value="<?php echo $rs['hospital_id'] ?>">
+	                   <input type="hidden" name="hospital_id"  id="hospital_id" value="<?php echo $rs['hospital_id'] ?>">
 	                  <input type="hidden" name="hospital_code" value="<?php echo $rs['hospital_code'] ?>">
 	                  <?php echo ($rs['hospital_id']) ? form_hidden('updated',time()) : form_hidden('created',time())?>
 					</td>

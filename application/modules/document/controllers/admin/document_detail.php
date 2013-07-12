@@ -10,7 +10,7 @@ class Document_detail extends Admin_Controller
 	function index($document_id=FALSE){
 		$data['result']=$this->detail->select("n_document_detail.*,name,userfirstname,usersurname")
 														->join("LEFT JOIN n_document ON n_document.id=n_document_detail.document_id
-																	 LEFT JOIN n_user ON n_document_detail.user_id=uid")
+																LEFT JOIN n_user ON n_document_detail.user_id=uid")
 													    ->where("document_id=$document_id")
 														->sort("")->order("n_document_detail.id desc")->get();
 		$data['document_id']=$document_id;
@@ -24,10 +24,12 @@ class Document_detail extends Admin_Controller
 		$this->template->build('admin/detail/form',$data);
 	}
 	function delete($id){
+		$this->db->debug=true;
 		if($id){
-			$this->detail->delete("id",$id);
+			$this->detail->delete($id);
+			set_notify('success', DELETE_DATA_COMPLETE);
 		}
-		redirect('document/admin/document_detail/index');
+		redirect('document/admin/document_detail/index/'.$_GET['document_id']);
 	}
 	function save(){
 		if($_POST){

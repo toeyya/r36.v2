@@ -59,7 +59,7 @@ a:hover {color:#0190fe;}
 	.forgot-usr-pwd{float:left;width:200ppx; margin-left:45px; margin-top:7px;}
 	.forgot-usr-pwd a{color:#dc1992; text-decoration:none; font-size:13px;}
 	.forgot-usr-pwd a:hover, .forgot-usr-pwd a:focus {text-decoration: underline;}
-	.login ul{list-style: none;margin-left:10%;margin-top:10%;}
+	.login ul{list-style: none;margin-left:5%;margin-top:10%;}
 	.login ul li{font-size:12px;margin:10px 0px 10px 10px;}
 	.login ul li label{width:50px;display:inline;}
 	.login ul li span{margin-right:10px;}
@@ -77,7 +77,8 @@ a:hover {color:#0190fe;}
 	#news-pr ul li a:hover{color:#0985dc;}
 	input[type="submit"].btn_readAll {float:right; width:75px; height:21px; background:url(../images/btn_readAll_reg.png) no-repeat; border:0; cursor:pointer;}
 	input[type="submit"].btn_readAll:hover {float:right; width:75px; height:21px; background:url(../images/btn_readAll_hot.png) no-repeat; border:0; cursor:pointer;}
-
+	.btn_r36{display:inline-block; width:92px; height:18px; background:url(../images/btn_r36.png) no-repeat; border:0; cursor:pointer;}
+	.btn_gis{display:inline-block; width:145px; height:18px; background:url(../images/btn_gis.png) no-repeat; border:0; cursor:pointer;}
 	/* news- */
 	.pic ul {list-style-type:none; margin-left:10px; padding:0; }
 	.pic ul li{display:inline; padding-left:10px;}

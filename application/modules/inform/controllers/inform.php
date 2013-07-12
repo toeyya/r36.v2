@@ -76,10 +76,11 @@ class Inform extends R36_Controller
 	}
 	function index()
 	{				
-	
+		
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
-				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
+				$where ="";
+				
 				if(!empty($_GET['statusid'])=="1"){
 					$_GET['idcard']=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
 				}
@@ -94,14 +95,14 @@ class Inform extends R36_Controller
 					$where.=(!empty($_GET['hospital_district_id']))? " and hospital_district_id='".$_GET['hospital_district_id']."'":"";					
 				}
 				if(!empty($_GET['enddate']) && !empty($_GET['startdate'])){
-					$where.=" and datetouch BETWEEN '".DBdate($_GET['startdate'])."' AND  '".DBdate($_GET['enddate'])."' ";
+					$where.=" and datetouch BETWEEN '".date2DB($_GET['startdate'])."' AND  '".date2DB($_GET['enddate'])."' ";
 				}else if(!empty($_GET['enddate'])){
-					$where.=" and datetouch BETWEEN '".DBdate($_GET['startdate'])."' and '".DBdate($_GET['startdate'])."'";	
+					$where.=" and datetouch BETWEEN '".date2DB($_GET['startdate'])."' and '".date2DB($_GET['startdate'])."'";	
 				}
 		
 				if(!empty($_GET['report_startdate']) && !empty($_GET['report_enddate'])){
-					$startdate=cld_date2my($_GET['report_startdate']);		
-					$enddate=cld_date2my($_GET['report_enddate']);
+					$startdate=date2DB($_GET['report_startdate']);		
+					$enddate=date2DB($_GET['report_enddate']);
 					$where.=" and reportdate BETWEEN '".$startdate."' and '".$enddate."'";
 				}elseif(!empty($_GET['report_startdate'])){
 						$where.=" and reportdate BETWEEN '".$startdate."' and '".$startdate."'";		
@@ -119,7 +120,7 @@ class Inform extends R36_Controller
 						$where.=" AND (idcard='".$_GET['idcard']."' AND statusid='".$_GET['statusid']."') AND idcard!='' and hospitalcode<>''";
 					}
 				}
-
+				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['total_vaccine'])){
 					$total_vaccine=implode(',',$_GET['total_vaccine']);
 					$where.="  AND total_vaccine in(".$total_vaccine.")";
@@ -127,17 +128,13 @@ class Inform extends R36_Controller
 				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
 				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
 		}// $_GET['action]
-		$this->template->set_layout('layout');
+		
 		if(!empty($where))
 		{
-			/*$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase
-				  FROM n_information
-				  LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode				 
-			      INNER JOIN n_history ON n_history.historyid=n_information.information_historyid WHERE 1=1 ".$where;*/
 			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase									
 				FROM n_history
-				LEFT JOIN n_information ON n_history.historyid=n_information.information_historyid
-				LEFT JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
+				INNER JOIN n_information ON n_history.historyid=n_information.information_historyid
+				INNER JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
 
 			$data['result']=$this->inform->limit(20)->get($sql);
 			$data['pagination']=$this->inform->pagination();			
@@ -150,9 +147,11 @@ class Inform extends R36_Controller
 			$data['in_out']=@$_GET['in_out'];
 			/**************************/
 			$data['idcard']=(!empty($_GET['idcard']))?@$_GET['idcard']:'';
-			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';		
+			$data['statusid']=(!empty($_GET['statusid']))? $_GET['statusid']:'';
+			$this->template->set_layout('layout');
 			$this->template->build('index',$data);
-		}else{			
+		}else{
+			$this->template->set_layout('layout');			
 			$this->template->build('index');
 		}		
 	}
@@ -181,6 +180,7 @@ class Inform extends R36_Controller
 				$data['rs']['hospital_amphur_id']=$this->session->userdata('R36_HOSPITAL_AMPHUR');
 				$data['rs']['hospital_district_id']=$this->session->userdata('R36_HOSPITAL_DISTRICT');	
 			}
+			
 			$data['now']=strtotime(date("Y-m-d H:i:s"));														
 			$this->template->build('form',$data);
 				
@@ -217,6 +217,7 @@ class Inform extends R36_Controller
 
 
 	function save(){
+	
 		/*  ป้องกันการบันทึกข้อมูลผู้สัมผัสโรคซ้ำ : ตรวจสอบรหัสบัตรประชาชนก่อนบันทึกลง n_history ถ้ามีแล้วให้ update ถ้าไม่มี insert  	
 		 *   ที่ยอมให้บันทึกได้หลายเรคอร์ด - ไมได้ตรวจสอบก่อนบันทึก, ผู้สัมผัสโรคอาจย้ายที่อยู่ และสถานที่สัมผัสโรคคนละที่-					*/	
 		//$this->db->debug=TRUE;			
@@ -319,24 +320,28 @@ class Inform extends R36_Controller
 		//   ------++++------    table n_vaccine	------++++------ 	
 		$this->vaccine->primary_key('vaccine_id');
 		$this->vaccine->delete("information_id",$information_id);
+		
 		if($_POST['means']!='3' && $_POST['means']!=''){
 			$j=($_POST['means']=="2")?4:5;			
 					for($i=0;$i<$j;$i++){
-								if($_POST['vaccine_name'][$i]!='0'){
+								if($_POST['vaccine_name'][$i]!="0"){
+										
+									$hospital=$this->hospital->get_one("hospital_id","hospital_name",$_POST['byplace'][$i]);
 									$user_id=(!empty($_POST['user_id'][$i]))? $_POST['user_id'][$i]:$this->session->userdata('R36_UID');
+									
 									$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>date2DB($_POST['vaccine_date'][$i])
 											   ,'vaccine_name'=>$_POST['vaccine_name'][$i],'vaccine_no'=> $_POST['vaccine_no'][$i]
 											   ,'vaccine_cc'=>$_POST['vaccine_cc'][$i] ,'vaccine_point'=>$_POST['vaccine_point'][$i]
-											   ,'byname'=> $_POST['byname'][$i],'byplace'=> $_POST['byplace'][$i],'user_id'=>$user_id
-											,'updatetime'=>@$_POST['updatetime'],'created'=>@$_POST['created']);									
+											   ,'byname'=> $_POST['byname'][$i],'byplace'=> $_POST['byplace'][$i],'user_id'=>$user_id,'hospital_id'=>$hospital
+											   ,'updatetime'=>@$_POST['updatetime'],'created'=>@$_POST['created']);									
 									$this->vaccine->save($data);
-									//var_dump($data);exit;	
+										
 								}	
-								if($_POST['vaccine_date'][$i] &&  $_POST['vaccine_name'][$i]=="0"){
-									$data=$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>cld_date2my($_POST['vaccine_date'][$i]));
+								if($_POST['vaccine_date'][$i] &&  $_POST['vaccine_name'][$i]=="0"){									
+									$data=$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>date2DB($_POST['vaccine_date'][$i]));
 									$this->vaccine->save($data);
 								}
-					}
+					}//exit;
 		}
 		//  ------++++------    End n_vaccine  ------++++------ 
 		set_notify('success', SAVE_DATA_COMPLETE);		
@@ -344,14 +349,13 @@ class Inform extends R36_Controller
 	}
 
 	function addContactTime()
-	{
-		//$this->db->debug=TRUE;	
+	{	
 		$rs=$this->db->GetRow("select * from n_history where  historyid=(select max(historyid) from n_history where idcard='".$_GET['idcard']."')");
-		$rs['hn_no']=$this->db->GetOne("select count(id)+1 from n_information 
-													                 left join n_history on n_information.information_historyid=n_history.historyid 
-													                 where idcard =  ?  ",$_GET['idcard']);			
-		$rs['amphur_name']=$this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id = ? ",array($rs['provinceid'],$rs['amphurid']));
-		$rs['district_name']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($rs['provinceid'],$rs['amphurid'],$rs['districtid']));
+		$rs['hn_no'] = $this->db->GetOne("select count(id)+1 from n_information 
+										  left join n_history on n_information.information_historyid=n_history.historyid 
+										  where idcard =  ?  ",$_GET['idcard']);			
+		$rs['amphur_name']   = $this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id = ? ",array($rs['provinceid'],$rs['amphurid']));
+		$rs['district_name'] = $this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($rs['provinceid'],$rs['amphurid'],$rs['districtid']));
 		echo json_encode($rs);
 	}
 	public function chk_format_idcard($idcard,$digit_last)
