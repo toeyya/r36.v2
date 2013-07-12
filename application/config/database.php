@@ -49,7 +49,6 @@ $db['default']['dbdriver'] = "mssqlnative";*/
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "root";
 $db['default']['password'] = "";
-
 $db['default']['database']="c1r36";
 $db['default']['dbdriver'] = "mysql";
 
