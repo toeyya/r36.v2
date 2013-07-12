@@ -34,7 +34,7 @@ class Inform extends R36_Controller
 			$tb.= '</tr>';
 			foreach($result as $item){
 				$tb.= '<tr>';
-				$tb.= '<td>'.$item['datetouch'].'</td>';
+				$tb.= '<td>'.cld_my2date($item['datetouch']).'</td>';
 				$tb.= '<td>'.$item['hn'].'</td>';
 				$tb.= '<td>'.$item['hn_no'].'</td>';
 				$tb.= '<td>'.$item['firstname'].' '.$item['surname'].'</td>';

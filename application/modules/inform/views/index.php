@@ -43,6 +43,7 @@ $(document).ready(function(){
 		}else{
 			var idcard=$('input[name=idcard]').val();
 		}
+		$.colorbox({width:"70%", height:"80%", inline:true,href:"#loading"});
 		if(idcard.length==13){
 			$.ajax({
 				url:'<?php echo base_url() ?>inform/closecase_person/'+idcard,
@@ -52,6 +53,8 @@ $(document).ready(function(){
 						$('input[name=closecase_person]').val(data.chk);					  											
 					 	$('#closecase_person').html(data.tb);
 					 	$.colorbox({width:"70%", height:"80%", inline:true,href:"#closecase_person"});												  
+					}else{
+						$.colorbox.close();
 					}
 				}				
 			})
@@ -394,13 +397,15 @@ $(document).ready(function(){
 			 <?php endif; ?>			    
 </table>	
 <?php echo (isset($pagination))? $pagination:''; ?>
+<div style="display:none">
+	<div id="loading"></div>	
+</div>
 
 <div style="display:none;">
 <div id="closecase" style="height:100%;width:100%;">
 	<iframe name="ifm"  src="#" ALIGN="top" HSPACE="0" VSPACE="0" frameborder="0" style="height:100%;width:100%;" ></iframe>
 </div>
 </div>
-
 <div style="display:none;"><div id="closecase_person"></div></div>
 <div style="display:none;"><div id="loading" style="text-align:center;margin-top:15%;"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div></div>
 
