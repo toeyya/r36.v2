@@ -8,10 +8,11 @@ class Question_detail extends Admin_Controller
 		$this->template->append_metadata(js_checkbox());
 	}
 	function index($question_id=FALSE){
+		$where =(empty($_GET['question'])) ? "":" and question like '%".$_GET['question']."%'";
 		$data['result']=$this->detail->select("n_question_detail.*,name,userfirstname,usersurname")
 														->join("LEFT JOIN n_question ON n_question.id=n_question_detail.question_id
 																	 LEFT JOIN n_user ON n_question_detail.user_id=uid")
-														->where("question_id=$question_id")
+														->where("question_id=$question_id $where")
 														->sort("")->order("n_question_detail.id desc")->get();
 		$data['question_id']=$question_id;
 		$data['pagination']=$this->detail->pagination();

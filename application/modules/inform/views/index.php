@@ -8,10 +8,8 @@ $(document).ready(function(){
 			url:'<?php echo base_url() ?>district/getAmphur',
 			data:'name=hospital_amphur_id&ref1='+province_id,
 			success:function(data){
-				$('#input_amphur').html(data);
-				//$('select[name=hospital_district_id] option:[value=""]').attr('selected',true);
-				$('#input_hospital').html('<select name="hospitalcode" class="styled-select" id="hospitalcode"><option value="">-โปรดเลือก-</option></select>');
-				//$('#input_district').html('<select name="hospital_district_id" class="input_box_patient" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');
+				$('#input_amphur').html(data);				
+				$('#input_hospital').html('<select name="hospitalcode" class="styled-select" id="hospitalcode"><option value="">-โปรดเลือก-</option></select>');				
 			}
 		});
 	});
@@ -134,16 +132,13 @@ $(document).ready(function(){
 		 			required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true,	 		
 		 			remote:{
 		 				url:'<?php echo base_url(); ?>users/chkidcard/patient',
-		 				type:'get',
-				        data: {
-				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
-				          digit_last:function(){return $('#cardW4').val(); }				          
+				        data:{ idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
+				          	   digit_last:function(){return $('#cardW4').val(); }				          
 				        }
 		 			}		 		
 		 		}       			 		
 		 	},
-		 	messages:{
-		 		
+		 	messages:{		 		
 		 		hospital_province_id:" กรุณาระบุ",hospital_amphur_id:" กรุณาระบุ",hospital_district_id:" กรุณาระบุ",hospitalcode:" กรุณาระบุ",
 		 		hn:" กรุณาระบุ",idcard:"กรุณาระบุ",
 		 		cardW0:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
@@ -177,6 +172,20 @@ $(document).ready(function(){
 		$('input[name=search_adv]').trigger('click');
 	}
 	
+	$('.btn_delete').click(function(){
+		if(confirm('ยืนยันการลบข้อมูลนี้ ?')){	
+			var btn_del =$(this);		
+			var historyid= $(this).prev().val();
+			var information_id = $(this).prev().prev().val();
+			$.ajax({
+				data:'id='+information_id+'&historyid='+historyid,
+				url:'<? echo base_url();?>/inform/delete',
+				success:function(){
+					btn_del.closest("tr").fadeOut('slow');
+				}
+			})
+		}
+	})
 
 	
 });
@@ -370,7 +379,9 @@ $(document).ready(function(){
 				<?php if($rec['closecase']=="1" || $rec['closecase']==""): ?>
 				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
 					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>"  class="btn_edit vtip" target="_blank" ></a>
-					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
+					<input type="hidden" name="information_id" value="<?php echo $rec['id'] ?>" />
+					<input type="hidden" name="historyid" value="<?php echo $rec['historyid'] ?>"/>
+					<a title="ลบ"   href="javascript:void(0)" class="btn_delete vtip"></a>	
 				 <?   }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){ ?>											
 						<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>								
 				 <?   } ?>

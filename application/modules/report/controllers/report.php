@@ -116,9 +116,9 @@ class Report extends R36_Controller
 	function total_n($cond=''){
 		$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  where 1=1 ".$cond;	
 		//echo $sql;
-		$total_n= $this->db->GetOne($sql);
-		return $total_n;
-		
+		$total_n = $this->db->GetOne($sql);
+		return (empty($total_n)) ? 0 : $total_n;
+				
 	}
 	function report1($cond= FALSE,$preview=FALSE,$data)
 	{
@@ -900,6 +900,49 @@ class Report extends R36_Controller
 		$this->template->build("report2_index",$data);			
 	}
 	function report3($cond= FALSE,$preview=FALSE,$data){
+		if($cond){
+			$whmonth[1]="  month(datetouch) IN (1,2,3)";
+			$whmonth[2]="  month(datetouch) IN (4,5,6)";
+			$whmonth[3]="  month(datetouch) IN (7,8,9)";
+			$whmonth[4]="  month(datetouch) IN (10,11,12)";
+			
+			#### 	จำนวน N ทั้งหมด  		####	
+			$data['total_n'] =$this->total_n($cond);
+			
+			####   จำนวน N แต่ละไตรมาส	####
+			for($i=1;$i<5;$i++){
+				$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+				      where ".$whmonth[$i].$cond;
+		    	$data['q'.$i] = $this->db->GetOne($sql);
+			}
+		    ## จำแนกตามเพศ
+		    $module = array('gender'=>'เพศ','age_group'=>'กลุ่มอายุ','placetouch'=>'สถานที่สัมผัสโรค');	
+			$data['module'] = $module;		
+		    $data['gender'] =array(1=>'ชาย',2=>'หญิง',0=>'ไม่ระบุ');
+			$data['age_group'] = array(1=>"ต่ำกว่า 1 ปี",2=>"1-5 ปี",3=>"6-10 ปี",4=>"11-15 ปี",5=>"16-25 ปี",6=>"26-35 ปี",7=>"36-45 ปี",8=>"46-55 ปี",9=>"56-65ปี",10=>"65 ปีขึ้นไป",0=>'ไม่ระบุ');
+			$data['placetouch']=array(1=>"เขต กทม.",2=>"เขตเมืองพัทยา",3=>"เขตเทศบาล",4=>"เขตอบต.",0=>"ไม่ระบุ");
+			foreach($module as $field =>$name)
+			{	$quarter = array();						
+				for($i=1;$i<5;$i++){
+					$sql="select count(historyid) as cnt,$field FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+					  	where ".$whmonth[$i].$cond." group by $field order by $field asc";		 
+					$result = $this->db->Execute($sql);
+					foreach($result as $item){
+						$quarter[$item[$field]][$i] = $item['cnt'];
+					}				
+				}
+				$num =count($data[$field]);
+				for($i=0;$i<$num;$i++){
+					$data[$field.$i]=0;
+					for($j=0;$j<5;$j++){
+						$data[$field.$i.$j] = (empty($quarter[$i][$j])) ? 0: $quarter[$i][$j];
+						$data[$field.$i]    = $data[$field.$i] +  $data[$field.$i.$j];
+					}
+				}
+			}//endforeach;
+			$data['cond'] = $cond;
+
+		}
 		if($preview)$this->template->set_layout('print');	
 		$this->template->build("report3_index",$data);			
 	}

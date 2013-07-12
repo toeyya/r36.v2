@@ -76,15 +76,27 @@ class Inform extends R36_Controller
 	}
 	function index()
 	{				
-		
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
 				$where ="";
-				
-				if(!empty($_GET['statusid'])=="1"){
+				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
+				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
+				if(@$_GET['statusid']=="1"){
 					$_GET['idcard']=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
 				}
-							
+				if(!empty($_GET['hn']) && !empty($_GET['idcard']))	{
+					$where.="AND  hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
+				}else{
+					if(!empty($_GET['hn'])){
+						$where.=" AND hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."'";					
+						$sql="SELECT  information_historyid FROM n_information WHERE id=(select max(id) from n_information WHERE hospitalcode =?  AND hn= ? )";
+						// ให้มีปุ่มเพิ่มเฉพาะ historyid ล่าสุด
+						$data['historyid']=$this->db->GetOne($sql,array($_GET['hospitalcode'],$_GET['hn']));
+					}elseif(!empty($_GET['idcard'])){
+						$where.=" AND (idcard='".$_GET['idcard']."' AND statusid='".$_GET['statusid']."') AND idcard!='' and hospitalcode<>''";
+					}
+				}							
+								
 				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
 					$where .= " AND  (hospitalcode='".$_GET['hospitalcode']."' and hospitalprovince='".$_GET['hospital_province_id']."' 
 									  and hospitalamphur='".$_GET['hospital_amphur_id']."' and hospital_district_id='".$_GET['hospital_district_id']."')";
@@ -101,32 +113,20 @@ class Inform extends R36_Controller
 				}
 		
 				if(!empty($_GET['report_startdate']) && !empty($_GET['report_enddate'])){
-					$startdate=date2DB($_GET['report_startdate']);		
+					$startdate=date2DB($_GET['report_startdate']);	
 					$enddate=date2DB($_GET['report_enddate']);
 					$where.=" and reportdate BETWEEN '".$startdate."' and '".$enddate."'";
 				}elseif(!empty($_GET['report_startdate'])){
-						$where.=" and reportdate BETWEEN '".$startdate."' and '".$startdate."'";		
+					$where.=" and reportdate BETWEEN '".$startdate."' and '".$startdate."'";		
 				}
 										
-				if(!empty($_GET['hn']) && !empty($_GET['idcard']))	{
-					$where.="AND  hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
-				}else{
-					if(!empty($_GET['hn'])){
-						$where.=" AND hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."'";					
-						$sql="SELECT  information_historyid FROM n_information WHERE id=(select max(id) from n_information WHERE hospitalcode =?  AND hn= ? )";
-						// ให้มีปุ่มเพิ่มเฉพาะ historyid ล่าสุด
-						$data['historyid']=$this->db->GetOne($sql,array($_GET['hospitalcode'],$_GET['hn']));
-					}elseif(!empty($_GET['idcard'])){
-						$where.=" AND (idcard='".$_GET['idcard']."' AND statusid='".$_GET['statusid']."') AND idcard!='' and hospitalcode<>''";
-					}
-				}
-				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
+
+				$where .=(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['total_vaccine'])){
 					$total_vaccine=implode(',',$_GET['total_vaccine']);
 					$where.="  AND total_vaccine in(".$total_vaccine.")";
 				}
-				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
-				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
+
 		}// $_GET['action]
 		
 		if(!empty($where))
@@ -388,15 +388,24 @@ class Inform extends R36_Controller
 			}
 			echo json_encode($data);	
 	}
-	function delete($id,$historyid){
-		if($id && $historyid){
+	function delete($id=FALSE,$historyid=FALSE){
+		if(!empty($_GET['id']) && !empty($_GET['historyid'])){
+			$id = $_GET['id'];
+			$historyid = $_GET['historyid'];
+		}
+		if($id && $historyid){					
 			$this->inform->delete($id);
-			$this->history->delete("historyid",$historyid);
+			$idcard=$this->history->get_one("historyid",$historyid);
+			if($idcard){
+				$cnt=$this->db->GetOne("select count(idcard) as cnt from n_history inner join n_information on historyid = information_historyid where idcard= ? ",$idcard);
+				if($cnt=="1"){
+					$this->history->delete("historyid",$historyid);
+				}		
+			}						
 			$this->vaccine->delete("information_id",$id);
 			set_notify('success', DELETE_DATA_COMPLETE);				
 		}
-		redirect('inform/index');
-		
+		if(empty($_GET)){redirect('inform/index');}				
 	}
 	function checkDatetouch()
 	{

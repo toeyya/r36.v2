@@ -129,9 +129,8 @@ class Users extends Public_Controller
 		$chk=chk_idcard($idcard_arr,$_GET['digit_last']);
 		$dup1=($chk=="no")? true:false;
 		
-		if($register=="regsiter"){
-			$dup = $this->user->get_one('idcard','idcard',$_GET['idcard']);
-			echo $dup;exit;
+		if($register=="register"){
+			$dup = $this->user->get_one('idcard','idcard',$_GET['idcard']);			
 			echo ($dup1 || $dup)? "false":"true";
 			return true;
 		}

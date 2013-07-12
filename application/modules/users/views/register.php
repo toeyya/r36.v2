@@ -22,7 +22,14 @@ var ref1,ref2,ref3;
 		ref3=$("#h_district option:selected").val();
 		$('#input_hospital').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
 		$.ajax({url:'<?php echo base_url(); ?>users/getHospital',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
-	});		
+	});	
+		
+	 $.validator.setDefaults({
+	 	submitHandler:function(){
+	 	 document.form1.submit();	 	 			 				 	
+	 	}
+	 });
+
 	$('#form1').validate({
 		groups:{
 			groupname:'userfirstname usersurname',
