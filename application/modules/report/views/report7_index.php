@@ -57,12 +57,12 @@
 </form>
 </div><!--search -->
 
-<div id="report">
+<div id="report" style="width:100%;margin:0px;">
 <div id="title">
 	<p>รายงานผู้เสียชีวิต</p>
 </div>
 <div class="right">หน่วย: ราย</div>
-<div id="multiAccordion">
+<div id="multiAccordion" style="width:100%;margin:0px;">
 	<h3><a href="javascript:void(0)">ประวัติผู้เสียชีวิต</a></h3>
 	<div id="section1">
 	<table class="tbreport">
@@ -78,21 +78,23 @@
 			<th>ระยะฟักตัว</th>
 			<th>ผลตรวจทางห้องปฏิบัติการ</th>
 		</tr>
+		<? foreach($result as $item): ?>
 		<tr style="text-align: center;">
 			<td>1</td>			
-			<td>27 ต.ค. 2554</td>
+			<td><? echo (!empty($item['enddate'])) ? db_to_th($item['enddate']):''; ?></td>
 			<td>ชาย</td>
 			<td>16</td>
 			<td>นักเรียน/นักศึกษา</td>		
 			<td>เขตอบต. (จ.พิษณุโลก อ.เมือง ต.โพณพิษสัย)</td>
-			<td>13 ต.ค. 2554</td>
-			<td>23 ต.ค. 2254</td>
-			<td>11 วัน</td>	
+			<td><? echo (!empty($item['datetouch'])) ? db_to_th($item['datetouch']):''; ?></td>
+			<td><? echo (!empty($item['startdate'])) ? db_to_th($item['startdate']):'' ?></td>
+			<td></td>	
 		 	<td>สำนักสุขศาสตร์สัตว์และสุขศึกษาที่ 5 จ.เชียงใหม่ ผล:positive</td>	
 		</tr>
+		<?php endforeach; ?>
 		</table>
-				<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
-			<div id="btn_printout"><a href="report/dead/1/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
+			<div id="btn_printout"><a href="report/index/7/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 			<div id="area_btn_print">
 				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
@@ -124,7 +126,7 @@
 		</tr>
 		</table>
 			<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
-			<div id="btn_printout"><a href="report/dead/2/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<div id="btn_printout"><a href="report/index/7/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 			<div id="area_btn_print">
 				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

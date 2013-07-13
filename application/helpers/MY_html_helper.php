@@ -178,13 +178,15 @@ function compute_percent($val, $fullval,$n=2){
 		return number_format($percent,$n);
 	}
 }
-function getLevel($area,$total){
-	$i=($area=="1") ? 0:1;	
-	for($i;$i<=$total;$i++){
-		
-		$data[$i] = ($i==0) ? 'กทม.':'เขตที่ '.$i;
-	}
-	return $data;
+function getLevel($area,$total)
+{	
+		$i=($area=="1") ? 0:1;	
+		for($i;$i<=$total;$i++){
+			
+			$data[$i] = ($i==0) ? 'กทม.':'เขตที่ '.$i;
+		}
+		return $data;		
+	
 }
 
 

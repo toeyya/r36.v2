@@ -1,6 +1,6 @@
 <div id="title">ข้อมูลรายจังหวัด</div>
 <div id="search">
-<form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport6(this);">
 <table  class="tb_patient1">
   <tr>
 	<th>เขตความรับผิดชอบ</th>

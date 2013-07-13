@@ -1,10 +1,10 @@
   <tr>
 	<th>เขตความรับผิดชอบ</th>
-	<td><?php echo form_dropdown('area',get_option('id','name','n_area'),@$_GET['area'],'class="styled-select widthselect"  id="area"','กรุณาเลือกเขต');?>	</td>
+	<td><?php echo form_dropdown('area',get_option('id','name','n_area'),@$_GET['area'],'class="styled-select widthselect"  id="area"','ทั้งหมด','all');?>	</td>
 	<th>เขต</th>
 	<td>
-	<?php if(!empty($_GET['area'])){ ?>
-	<?		
+	<?php if(!empty($_GET['area']) && $_GET['area']!="all"){ ?>
+	<?
 		$total = $this->area->get_one("total","id",$_GET['area']);			
 		echo form_dropdown('group',getLevel($_GET['area'],$total),$_GET['group'],'class="styled-select" id="group"','ทั้งหมด'); 	
 	}else{ ?>

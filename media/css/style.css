@@ -179,7 +179,7 @@ margin-right:11px;
 
 	padding:5px 0px;
 }
-.footer{margin-top:15px;height:31px; padding-left:47px; width:96%; position:relative; padding-top:7px; background-image: url(../images/bg_footer.jpg); background-repeat: repeat-x;}
+.footer{margin-top:15px;height:31px; width:100%; position:relative; padding-top:7px; background-image: url(../images/bg_footer.jpg); background-repeat: repeat-x;}
 
 			
 /********************************      Login Page      ********************************/
@@ -212,11 +212,14 @@ ul.sublist label{display:inline-block;width:100px;}
 
 #login{width:100%;}
 #login table{background-color:#6394bd}
-.img						{width:16px; height: 16px;display:inline-block;padding:0px 2px;}
+.graph{margin:0 auto;display:inline-block;width:500px;text-align:center;}
+.img				{width:16px; height: 16px;display:inline-block;padding:0px 2px;border:none}
 .pie-chart 			{background:url(../images/pie-chart.png) no-repeat;}
-.bar-chart			{background:url(../images/bar-chart.png) no-repeat;}
-.horizontal-chart{background:url(../images/horizontal-chart.jpg) no-repeat;}
+.column-chart		{background:url(../images/bar-chart.png) no-repeat;}
+.bar-chart{background:url(../images/horizontal-chart.jpg) no-repeat;}
 .chart-graph{background:url(../images/chart_graph.png) no-repeat;width:32px;height: 28px;display:inline-block}
+.excel{background:url('../images/n_excel.gif') no-repeat;width:16px; height: 16px;display:inline-block;padding:0px 2px;border:none}
+
 #map				{width: 76%; border-color: #CCCCCC #CCCCCC #999999;border-style: solid;border-width: 1px;
     					box-shadow: 0 2px 5px rgba(64, 64, 64, 0.1);padding:5px;overflow:hidden;background: #FFF;margin-left:10px;}
 #map .canvas	{width:790px;float:right ;height: 800px;}
@@ -339,7 +342,8 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 
 .tbreport td strong {font-weight:700;}
 .tbreport td.red, span.red { color:#F00;}
-.tbreport tr:hover td,.tblist tr.active td {background:#FDB8EE;font-weight:bold;}
+.tbreport tr:hover td,.tblist tr.active td {background:#FDB8EE;}
+.tbreport tr:hover td.hasRowSpan {background:none;}
 .tbreport tr.total { border-top:1px solid #666; border-bottom:1px solid #666; font-weight:700;text-align: center;}
 .tbreport td.topic { background:#F5F5F5;}
 .tbreport td.topic p { padding:5px 0 5px 15px;}
@@ -448,7 +452,8 @@ vertical-align:top
 .badge-warning {
   background-color: #f89406;
 }
-.excel{
-	background:url('../images/n_excel.gif') no-repeat;width:16px;height:16px;
-	display:inline-block;
+
+.container{
+	width:637px;height:300px;margin: 0 auto;border:1px solid #CCCCCC
 }
+.btn_close{float:right;margin-right:73px;}

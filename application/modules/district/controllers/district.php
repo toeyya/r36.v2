@@ -118,7 +118,8 @@ class District extends Admin_Controller
 
 	function GetGroupByArea()
 	{
-		$area=$_GET['area']; 	
+		$area=$_GET['area'];
+		if($area=="all"){$area="";} 	
 		 if($area){
 				$total = $this->area->get_one("total","id",$_GET['area']);			
 				echo form_dropdown('group',getLevel($_GET['area'],$total),$_GET['group'],'class="styled-select" id="group"','ทั้งหมด'); 	
