@@ -47,14 +47,39 @@ class Dead extends R36_Controller
 		}
 		redirect('inform/dead/index');
 	}
+
 	function save()
 	{
-		$_POST['endate']=(empty($_POST['enddate'])) ? "":cld_date2my($_POST['endate']);
-		$_POST['startdate']=(empty($_POST['startdate'])) ? "":cld_date2my($_POST['startdate']);
+		//$this->db->debug=true;
+		//var_dump($_POST);	
+		$_POST['headbiteblood']=@$_POST['head_bite_blood']." ".@$_POST['head_bite_noblood'].@$_POST['head_claw_blood']." ".@$_POST['head_claw_noblood'].@$_POST['head_bite_blood']." ".@$_POST['head_bite_noblood'];
+		$_POST['facebiteblood']=@$_POST['face_bite_blood']." ".@$_POST['face_bite_noblood'].@$_POST['face_claw_blood']." ".@$_POST['face_claw_noblood'].@$_POST['face_bite_blood']." ".@$_POST['face_bite_noblood'];
+		$_POST['neckbiteblood']=@$_POST['neck_bite_blood']." ".@$_POST['neck_bite_noblood'].@$_POST['neck_claw_blood']." ".@$_POST['neck_claw_noblood'].@$_POST['neck_bite_blood']." ".@$_POST['neck_bite_noblood'];
+		$_POST['handbiteblood']=@$_POST['hand_bite_blood']." ".@$_POST['hand_bite_noblood'].@$_POST['hand_claw_blood']." ".@$_POST['hand_claw_noblood'].@$_POST['hand_bite_blood']." ".@$_POST['hand_bite_noblood'];
+		$_POST['armbiteblood']=@$_POST['arm_bite_blood']." ".@$_POST['arm_bite_noblood'].@$_POST['arm_claw_blood']." ".@$_POST['arm_claw_noblood'].@$_POST['arm_bite_blood']." ".@$_POST['arm_bite_noblood'];
+		$_POST['bodybiteblood']=@$_POST['body_bite_blood']." ".@$_POST['body_bite_noblood'].@$_POST['body_claw_blood']." ".@$_POST['body_claw_noblood'].@$_POST['body_bite_blood']." ".@$_POST['body_bite_noblood'];
+		$_POST['legbiteblood']=@$_POST['leg_bite_blood']." ".@$_POST['leg_bite_noblood'].@$_POST['leg_claw_blood']." ".@$_POST['leg_claw_noblood'].@$_POST['leg_bite_blood']." ".@$_POST['leg_bite_noblood'];
+		$_POST['feetbiteblood']=@$_POST['feet_bite_blood']." ".@$_POST['feet_bite_noblood'].@$_POST['feet_claw_blood']." ".@$_POST['feet_claw_noblood'].@$_POST['feet_bite_blood']." ".@$_POST['feet_bite_noblood'];
+		$_POST['idcard'] = @$_POST['cardW0'].@$_POST['cardW1'].@$_POST['cardW2'].@$_POST['cardW3'].@$_POST['cardW4'];
+		$_POST['exp_userig']=cld_date2my($_POST['exp_userig']);
+		$_POST['exp_vaccine']=cld_date2my($_POST['exp_vaccine']);
+		$_POST['brain_tumordate']=cld_date2my($_POST['brain_tumordate']);
+		$_POST['saliva_headachedate']=cld_date2my($_POST['saliva_headachedate']);
+		$_POST['csfdate']=cld_date2my($_POST['csfdate']);
+		$_POST['pissdate']=cld_date2my($_POST['pissdate']);
+		$_POST['rootdate']=cld_date2my($_POST['rootdate']);
+		$_POST['occipital_skindate']=(empty($_POST['occipital_skindate'])) ? "":cld_date2my($_POST['occipital_skindate']);
+		$_POST['corneal_cellsdate']=(empty($_POST['corneal_cellsdate'])) ? "":cld_date2my($_POST['corneal_cellsdate']);
+		$_POST['datetouch']=(empty($_POST['datetouch'])) ? "":cld_date2my($_POST['datetouch']);
+		$_POST['hr_date']=(empty($_POST['hr_date'])) ? "":cld_date2my($_POST['hr_date']);
+		$_POST['treatdate']=(empty($_POST['treatdate'])) ? "":cld_date2my($_POST['treatdate']);
+		$_POST['endate']=cld_date2my($_POST['endate']);
+		$_POST['vaccine_date']=cld_date2my($_POST['vaccine_date']);
+		$_POST['startdate']=cld_date2my($_POST['startdate']);
 		$_POST['reportdate']=cld_date2my($_POST['reportdate']);
-		$this->head->save($_POST);
-		redirect('inform/dead');
+		$this->dead->save($_POST);
+		redirect('inform/dead/index');
+	
 	}
-
-
+	
 }

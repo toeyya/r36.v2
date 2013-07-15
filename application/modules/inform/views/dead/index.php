@@ -198,10 +198,10 @@ $(document).ready(function(){
 			 	<td><?php echo $i;?></td>
 			 	<td><?php echo $item['idcard']; ?></td>
 			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
-			 	<td></td>
-			 	<td></td>
-			 	<td></td>
-			 	<td></td>
+			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
+			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
+			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
+			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
 			 	<td>
 			 		<a href="inform/form_dead/<?php echo $item['id'] ?>" target="_blank" class="btn_view" name="btn_view" title="ดู"></a>
 			 		<a href="inform/form_dead/<?php echo $item['id']?>" target="_blank" class="btn_edit" title="แก้ไข" name="btn_edit"></a>

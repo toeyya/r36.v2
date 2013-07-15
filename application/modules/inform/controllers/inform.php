@@ -423,5 +423,9 @@ class Inform extends R36_Controller
 		$this->template->build('popup_list');
 	}
 
+
+	
+	
+	
 }
 

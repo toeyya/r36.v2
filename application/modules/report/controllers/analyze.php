@@ -52,6 +52,7 @@ class Analyze extends R36_Controller
 			  	$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."'";		
 				$data['textamphur']=$this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id= ? ",array($_GET['province'],$_GET['amphur']));
 		  }
+
 		  if(!empty($_GET['district'])){
 		  		$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."' and hospitaldistrict='".$_GET['district']."'";
 				$data['textdistrict']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district']));
@@ -87,6 +88,7 @@ class Analyze extends R36_Controller
 				case "8":$this->report8($cond,$preview,$data);break;
 				case "9":$this->report9($cond,$preview,$data);break;
 			}			  							
+
 	}
 	function report1($cond= FALSE,$preview=FALSE,$data)
 	{   $data['head'] = "อายุผู้สัมผัส";
