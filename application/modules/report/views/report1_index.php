@@ -12,7 +12,6 @@ $(document).ready(function(){
 		$(this).closest('tr').fadeOut('slow');
 	})
 	function graph(title="เพศ",render="container1",t_graph="bar",arr=[],arr_val=[]){		
-		var chart;
         	$('#'+render).highcharts({
             chart: {                
                 type: t_graph,width:600,height:300
@@ -38,29 +37,30 @@ $(document).ready(function(){
 			
 	}
 	$('.img').click(function(){
-		var title 	= $(this).closest('tr').find('td:eq(0)').children('strong').html();
+		var title 	= $(this).closest('tr').find('td:eq(0)').children('strong:eq(0)').html();
 		var t_graph = $(this).attr('name');		
 		var render 	= $(this).closest('td').find('input[name=render]').val();									
-		var arr=[];	var arr_val=[];	
-		var padd_left;
-		$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){			
-			if($(this).find('td').hasClass('pad-left2')){			
-				padd_left = $(this).find('.pad-left2').next().next().html()
-				arr[i]=$(this).find('.pad-left2').html();
-				arr_val[i]=parseFloat(padd_left);				
-			}else{	
-				if($(this).find('td').length==1){
-					arr_val[i]=0;
-				}else{
-					
+		var arr=[],arr_val=[],arr_val_all=[];	
+		var padd_left,title_padd,j=0;
+
+			$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){			
+				if($(this).find('td').hasClass('pad-left2')){			
+					padd_left = $(this).find('.pad-left2').next().next().html()
+					arr[i]=$(this).find('.pad-left2').html();
+					arr_val[i]=parseFloat(padd_left);				
+				}else{	
+					if($(this).find('td').length==1){
+						arr_val[i]=0;
+					}else{				
+					padd_left = $(this).find('.pad-left').next().next().html();							
+					arr[i]=$(this).find('.pad-left').html();
+					arr_val[i]=parseFloat(padd_left);							
+					}																					
+				}
 				
-				padd_left = $(this).find('.pad-left').next().next().html();							
-				arr[i]=$(this).find('.pad-left').html();
-				arr_val[i]=parseFloat(padd_left);							
-				}																					
-			}
-			
-		});
+			});			
+		
+
 		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');
 		graph(title,render,t_graph,arr,arr_val);
 		
@@ -93,7 +93,7 @@ $(document).ready(function(){
 </form>
 
 </div>
-
+<?php if($cond): ?>
 <div id="report">
 <div id="title">				  
 	<p>รายงานผู้สัมผัสโรคในภาพรวม</p>
@@ -101,7 +101,7 @@ $(document).ready(function(){
 	<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 	<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 </div>
-<? if(!empty($cond)): ?>
+
 <div id="multiAccordion" style="width:80%;margin-left:10%;margin-right:10%">
     <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>
     <div id="section1">
@@ -112,8 +112,7 @@ $(document).ready(function(){
 			<th>จำนวน (N=<?php echo number_format($total_n); ?>)</th>
 			<th>ร้อยละ</th>
 		</tr>
-		<tr><td colspan="3"><strong>เพศ</strong>
-			<input type="hidden" name="gender" value="<?php echo  $gender;?>">
+		<tr><td colspan="3"><strong>เพศ</strong>			
 			<input type="hidden" name="render" value="container1">
 			<button class="bar-chart img"  name="bar"></button>
 			<button class="column-chart img" name="column"></button>
@@ -163,15 +162,18 @@ $(document).ready(function(){
 			<td><?php echo number_format($total_age0); ?></td>
 			<td><?php echo compute_percent($total_age0,$total_n); ?></td>		
 		</tr>
-		<tr><td colspan="3" class="pad-left2">(<strong>X</strong>= 36.20, <strong>SD</strong>= 23.59, <strong>Min</strong>= 0.00, <strong>Max</strong>= 85.00)</td></tr>
+		<tr><td colspan="3" class="pad-left2">
+			(<strong>X</strong>=<? echo number_format($avg_age) ?>, 
+			<strong>SD</strong>= <? echo number_format($stddev_age) ?>,
+			<strong>Min</strong>= <? echo number_format($min_age); ?>, 
+			<strong>Max</strong>= <? echo number_format($max_age); ?>)</td></tr>
 <tr class="tr-graph">
   	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
   		<div id="container2" class="container"></div>
   	</td>
 </tr>		
 		
-		<tr><td colspan="3"><strong>อาชีพขณะสัมผัสโรค</strong>
-			<input type="hidden" name="occupation" value="">
+		<tr><td colspan="3"><strong>อาชีพขณะสัมผัสโรค</strong>		
 			<input type="hidden" name="render" value="container3">
 			<button class="bar-chart img"  name="bar"></button>
 			<button class="column-chart img" name="column"></button>
@@ -275,7 +277,7 @@ $(document).ready(function(){
   		<div id="container4" class="container"></div>
   	</td>
 </tr>
-				<tr><td colspan="3"><strong>ลักษณะการสัมผัส (n=<?php echo number_format($totaltouch); ?>)</strong>
+				<tr><td colspan="3"><strong>ลักษณะการสัมผัส</strong><strong>(n=<?php echo number_format($totaltouch); ?>)</strong>
 					<input type="hidden" name="render" value="container5">
 					<button class="bar-chart img"  name="bar"></button>
 					<button class="column-chart img" name="column"></button>
@@ -330,7 +332,7 @@ $(document).ready(function(){
   		<div id="container5" class="container"></div>
   	</td>
 </tr>				
-				<tr><td colspan="4"><strong>ตำแหน่งที่สัมผัส (n=<?php echo number_format($total_position); ?>)</strong>
+				<tr><td colspan="4"><strong>ตำแหน่งที่สัมผัส</strong><strong>(n=<?php echo number_format($total_position); ?>)</strong>
 					<input type="hidden" name="render" value="container6">
 					<button class="bar-chart img"  name="bar"></button>
 					<button class="column-chart img" name="column"></button>
@@ -595,7 +597,7 @@ $(document).ready(function(){
   		<div id="container12" class="container"></div>
   	</td>
 </tr>
-				<tr ><td colspan="3"><strong>วิธีการล้างแผล (n=<?php echo number_format($total_washdetail_all); ?>)</strong>
+				<tr ><td colspan="3"><strong>วิธีการล้างแผล </strong><strong>(n=<?php echo number_format($total_washdetail_all); ?>)</strong>
 					<input type="hidden" name="render" value="container13">
 					<button class="bar-chart img" name="bar" ></button>
 					<button class="column-chart img" name="column"></button>
@@ -652,7 +654,7 @@ $(document).ready(function(){
   		<div id="container14" class="container"></div>
   	</td>
 </tr>
-				<tr ><td colspan="3"><strong>ชนิดยาที่ใช้ใส่ฆ่าเชื้อ (n = <? echo number_format($total_drugdetail_all) ?>)</strong>
+				<tr ><td colspan="3"><strong>ชนิดยาที่ใช้ใส่ฆ่าเชื้อ </strong><strong>(n = <? echo number_format($total_drugdetail_all) ?>)</strong>
 					<input type="hidden" name="render" value="container15">
 					<button class="bar-chart img" name="bar" ></button>
 					<button class="column-chart img" name="column"></button>
@@ -711,7 +713,7 @@ $(document).ready(function(){
   	</td>
 </tr>
 							
-				<tr ><td colspan="3"><strong>ระยะเวลาที่ฉีดวัคซีน (n= <? echo number_format($total_protect_all); ?>)</strong>
+				<tr ><td colspan="3"><strong>ระยะเวลาที่ฉีดวัคซีน </strong><strong>(n= <? echo number_format($total_protect_all); ?>)</strong>
 						<input type='hidden' name="render" value="container17">
 						<button class="bar-chart img" name="bar"></button>
 						<button class="column-chart img" name="column"></button>
@@ -778,7 +780,7 @@ $(document).ready(function(){
   		<div id="container18" class="container"></div>
   	</td>
 </tr>					
-				<tr ><td colspan="3"><strong>ชนิดของอิมมูโนโกลบูลิน (RIG) (n=<? echo $total_rig_all; ?>)</strong>
+				<tr ><td colspan="3"><strong>ชนิดของอิมมูโนโกลบูลิน (RIG) </strong><strong> (n=<? echo $total_rig_all; ?>)</strong>
 						<input type="hidden" name="render" value="container19">
 						<button class="bar-chart img" name="bar"></button>
 						<button class="column-chart img" name="column"></button>
@@ -805,7 +807,7 @@ $(document).ready(function(){
   	</td>
 </tr>					
 						
-				<tr ><td colspan="3"><strong>อาการหลังฉีดอิมมูโกลบูลิน (RIG) (n=<?php echo number_format($total_afterrig_all) ?>)</strong>
+				<tr ><td colspan="3"><strong>อาการหลังฉีดอิมมูโกลบูลิน (RIG) </strong><strong>(n=<?php echo number_format($total_afterrig_all) ?>)</strong>
 						<input type="hidden" name="render" value="container20">
 						<button class="bar-chart img" name="bar"></button>
 						<button class="column-chart img" name="column"></button>
@@ -833,7 +835,7 @@ $(document).ready(function(){
   	</td>
 </tr>					
 		
-				<tr><td colspan="3"><strong>อาการแพ้อิมมูโนโกลบูลิน (n= <?php echo number_format($total_detail) ?>)</strong>
+				<tr><td colspan="3"><strong>อาการแพ้อิมมูโนโกลบูลิน </strong><strong>(n= <?php echo number_format($total_detail) ?>)</strong>
 						<input type="hidden" name="render" value="container21">
 						<button class="bar-chart img" name="bar" ></button>
 						<button class="column-chart img" name="column"></button>
@@ -884,7 +886,7 @@ $(document).ready(function(){
   		<div id="container21" class="container"></div>
   	</td>
 </tr>	
-				<tr ><td colspan="3"><strong>ระยะเวลาที่มีอาการแพ้อิมมูโนโกลบุลิน (n= <?php echo number_format($total_longfeel); ?>)</strong>
+				<tr ><td colspan="3"><strong>ระยะเวลาที่มีอาการแพ้อิมมูโนโกลบุลิน </strong><strong>(n= <?php echo number_format($total_longfeel); ?>)</strong>
 						<input type="hidden" name="render" value="container22">
 						<button class="bar-chart img" name="bar"></button>
 						<button class="column-chart img" name="column"></button>
@@ -921,5 +923,5 @@ $(document).ready(function(){
 			</div>
 		</div><!--section5-->
 	</div><!-- multicordion -->
-<? endif; ?>
 </div><!--report -->
+<?php endif; ?>

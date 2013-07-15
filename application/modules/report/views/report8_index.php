@@ -30,6 +30,7 @@
 </form>
 
 </div>
+<?php if(!empty($cond)): ?>
 <div id="report">
 	<div id="title">				  
 		<p>รายงานการฉีดวัคซีนและอิมมูโนโกลบุลิน</p>
@@ -38,7 +39,7 @@
 		<p>สถานบริการ<?php echo $texthospital;?> </p>
 		<p>เดือน <?php echo $textmonth_start; ?> ปี <?php echo $textyear_start ?> ถึงเดือน <?php echo $textmonth_end; ?> ปี <?php echo $textyear_end ?></p>				
 	</div>
-	<?php if(!empty($cond)): ?>
+	
 	<div class="right">หน่วย : คน</div>
 	<table class="tbreport1">
 		<tr>
@@ -76,7 +77,7 @@
 			<td><? echo number_format($total10); ?></td>
 		</tr>
 	</table>	
-	<?php endif; ?>
+	
 	<div id="description">
 		<table class="tbdesc">
 			<tr>
@@ -108,3 +109,4 @@
 		<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 	</div>
 </div>
+<?php endif; ?>
