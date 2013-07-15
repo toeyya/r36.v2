@@ -1,13 +1,3 @@
-<script type="text/javascript">
-$(document).ready(function(){
-	$('input[type=submit]').click(function(){
-		if($('#area option:selected').val()==""){
-			alert("กรุณาเลือกรูปแบบเขตความรับผิดชอบในการออกรายงาน");
-		}
-	})
-})
-	
-</script>
 <div id="title">ข้อมูลการฉีดวัคซีน</div>
 <div id="search">
 <form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">

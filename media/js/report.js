@@ -29,7 +29,32 @@
 		})
 		return false;
 	}
-$(function(){
+	function graph(title,render,t_graph,arr,arr_val){		
+        	$('#'+render).highcharts({
+            chart: {                
+                type: t_graph,width:600,height:300
+            },
+            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
+            yAxis: {
+            	title:{
+            		text: '', style: {color: '#000000'}           		          		
+            	}            	
+            },			
+            tooltip: {valueSuffix: ' %'},
+            credits: {enabled: false},
+            legend: {enabled: false},
+            plotOptions: {            	
+            	bar: { dataLabels: {enabled: true}},            	
+            	column: { dataLabels: {enabled: true}},
+            	pie:{ dataLabels: {enabled: true}}
+               
+            },           
+            xAxis: {categories: arr},
+			series: [{data:arr_val}]
+		});	
+			
+	}
+$(document).ready(function(){
 	$('#area').click(List("GetGroupByArea","grouplist"))
 			  		.change(function(){Clear("all");List("GetGroupByArea","grouplist");});
 					
@@ -44,4 +69,7 @@ $(function(){
 							
 	$('#district').live('click',function(){List("getHospital","hospitallist","hospital")})
 				  .change(function(){Clear('district');List("getHospital","hospitallist","hospital");});							
+
+
+	
 });

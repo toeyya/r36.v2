@@ -1,5 +1,77 @@
 <script type="text/javascript">
+$(document).ready(function(){
+	function graph(title,render,t_graph,arr_val_all){	
+        
+        $('#'+render).highcharts({
+            chart: {                
+                type: t_graph,width:700,height:400
+            },
+            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
+            yAxis: {
+            	title:{
+            		text: 'จำนวนร้อยละ', style: {color: '#000000'}           		          		
+            	}            	
+            },			
+            tooltip: {valueSuffix: ' %'},
+            credits: {enabled: false},
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 5,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF',
+                shadow: true
+            },
+            plotOptions: {            	
+            	bar: { dataLabels: {enabled: true}},            	
+            	column: { dataLabels: {enabled: true}},
+            	pie:{ dataLabels: {enabled: true}}
+               
+            },           
+            xAxis:{ categories: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย', 'พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
+                title: {
+                    text: null
+                }
+             },
+			 series:arr_val_all			
+		});	
+			
+	}					
+	$('.tr-graph2').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
+	
+	$('.img').click(function(){
+		var title 	= $(this).closest('tr').find('td:eq(0)').children('strong:eq(0)').html();
+		var t_graph = $(this).attr('name');		
+		var render 	= $(this).closest('td').find('input[name=render]').val();									
+		var arr ={};
+		var arr_val=[],arr_val_all=[];	
+		var padd_left;
+		// create dom to json				
+			$(this).closest('tr').nextUntil('.tr-graph2').each(function(i,value){					
+				pad_left=$(this).find('.pad-left').html();
+				$(this).children().not('.pad-left').slice(0,12).each(function(index,vals){					
+					arr_val[index]=	parseFloat($(this).find('p').html());								
+				})			
+				 arr['name'] = pad_left;
+				 arr['data'] = arr_val;				
+				arr_val_all[i] = jQuery.parseJSON(JSON.stringify(arr));
+				  																
+			});			
+		console.log(arr_val_all);
+		graph(title,render,t_graph,arr_val_all)				
+		$(this).closest('tr').nextAll('.tr-graph2:eq(0)').fadeIn('slow');				
+	});	
 
+	 $('#button').click(function() {
+        var chart = $('#container').highcharts();
+        chart.print();
+    });	
+})
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - รายเดือน</div>
 <div id="search">
@@ -15,7 +87,7 @@
 </form>
 </div>
 <?php if($cond): ?>
-<div id="report">
+<div id="report" style="width:70%;margin-left:15%;margin-right:15%">
 		<div id="title">				  
 		<p>รายงานผู้สัมผัสโรครายเดือน</p>
 	    <p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
@@ -39,7 +111,12 @@
 			<?php endfor; ?>
 			<td><? echo number_format($total_n); ?></td>	
 		</tr>
-		<tr><td colspan="14"><strong>เพศ</strong></td></tr>
+		<tr><td colspan="14"><strong>เพศ</strong>
+			<input type="hidden" name="render" value="container1">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>			
+		</td></tr>
 		<tr class="para1">
 			<td class="pad-left">ชาย</td>			
 			<td><?php echo number_format($total_gender11) ?> <p class="percentage"><?php echo compute_percent($total_gender11,$total_m1); ?></p></td>
@@ -88,7 +165,19 @@
 			<td><?php echo  number_format($total_gender012) ?> <p class="percentage"><?php echo compute_percent($total_gender012,$total_m12); ?></p></td>
 			<td><?php echo  number_format($total_gender_all0) ?> <p class="percentage"><?php echo compute_percent($total_gender_all0,$total_n); ?></p></td>
 		</tr>
-		<tr ><td colspan="14"><strong>กลุ่มอายุ</strong></td></tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">  		
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container1" class="container"></div> 			
+  		</div>
+  	</td>
+</tr>
+		<tr ><td colspan="14"><strong>กลุ่มอายุ</strong>
+			<input type="hidden" name="render" value="container2">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>				
+		</td></tr>
 		<?php $age=array(1=>'ต่ำกว่า 1 ปี',2=>'1-5 ปี',3=>'6-10 ปี',4=>'11-15 ปี',5=>'16-25 ปี'
 						,6=>'26-35 ปี',7=>'36-45 ปี',8=>'46-55 ปี',9=>'56-65 ปี',10=>'66 ปีขึ้นไป'); ?>
 		<?php  for($i=1;$i<11;$i++):?>			
@@ -108,9 +197,21 @@
 			<td><?php echo number_format($total_age_all11); ?><p class="percentage"><?php echo compute_percent($total_age_all11,$total_n); ?></p></td>
 			
 		</tr>
-		
+ <tr class="tr-graph2">
+  	<td colspan="14">
+    	<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container2" class="container"></div> 			
+  		</div>
+ 		
+  	</td>
+</tr>		
 						
-		<tr ><td colspan="14"><strong>สถานที่สัมผัสโรค</strong></td></tr>
+		<tr ><td colspan="14"><strong>สถานที่สัมผัสโรค</strong>
+			<input type="hidden" name="render" value="container3">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>				
+		</td></tr>
 		<?php $place= array(1=>'เขต กทม.',2=>'เขตเมืองพัทยา',3=>'เขตเทศบาล',4=>'เขต อบต.',5=>'ไม่ระบุ'); ?>	
 		<?php for($i=1;$i<6;$i++): ?>
 		<tr class="para1">			
@@ -121,8 +222,20 @@
 			<td><?php echo number_format(${'total_place_all'.$i});?><p class="percentage"><?php echo compute_percent(${'total_place_all'.$i},$total_n); ?></p></td>
 		<?php endfor; ?>
 		</tr>
-		<tr class="page-break"></tr>	
-		<tr><td colspan="14"><strong>ชนิดสัตว์นำโรค</strong></td></tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container3" class="container"></div> 			
+  		</div>  		
+  	</td>
+</tr>			
+		<tr class="page-break"></tr>			
+		<tr><td colspan="14"><strong>ชนิดสัตว์นำโรค</strong>
+			<input type="hidden" name="render" value="container4">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>			
+		</td></tr>
 	<?php $animal = array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ',7=>'ไม่ระบุ'); ?>	
 		<?php for($i=1;$i<8;$i++): ?>
 		<tr class="para1">			
@@ -134,8 +247,20 @@
 		<?php endfor; ?>
 		</tr>
 
+ <tr class="tr-graph2">
+  	<td colspan="14">
+   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container4" class="container"></div> 			
+  		</div> 		
+  	</td>
+</tr>
 
-		<tr ><td colspan="14"><strong>อายุสัตว์</strong></td></tr>	
+		<tr ><td colspan="14"><strong>อายุสัตว์</strong>
+			<input type="hidden" name="render" value="container5">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>			
+		</td></tr>	
 		<?php $ageanimal = array(1=>'น้อยกว่า 3 เดือน',2=>'3-6 เดือน',3=>'6-12 เดือน',4=>'มากกว่า 1 ปี',5=>'ไม่ทราบ',6=>'ไม่ระบุ');  ?>
 		<?php for($i=1;$i<7;$i++):?>
 		<tr class="para1">			
@@ -146,8 +271,19 @@
 			<td><?php echo number_format(${'total_ageanimal_all'.$i})?><p class="percentage"><?php echo compute_percent(${'total_ageanimal_all'.$i},$total_n); ?></p></td>
 		<?php endfor; ?>
 		</tr>		
-		
-	<tr><td colspan="14"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong></td></tr>	
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container5" class="container"></div> 			
+  		</div>  		
+  	</td>
+</tr>		
+	<tr><td colspan="14"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong>
+			<input type="hidden" name="render" value="container6">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>			
+	</td></tr>	
 		<?php 
 		//$array[0][0] = "ไม่ระบุ";	$array[1][1] = "ตายเองภายใน 10 วัน";$array[1][2] = "ไม่ตายภายใน 10 วัน";$array[2][0] = "กักขังไม่ได้";$array[3][0] = "ถูกฆ่าตาย";$array[4][0] = "หนีหาย / จำไม่ได้";
 		?>
@@ -203,7 +339,19 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_detain_all00); ?> <p class="percentage"><?php echo compute_percent($total_detain_all00,$total_n); ?></p></td>
 		</tr>
-	<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong></td></tr>	
+ <tr class="tr-graph2">
+  	<td colspan="14">
+   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container6" class="container"></div> 			
+  		</div> 		
+  	</td>
+</tr>	
+	<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong>
+			<input type="hidden" name="render" value="container7">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>			
+	</td></tr>	
 		<tr class="para1">
 			<td class="pad-left">ไม่ทราบ</td>	
 			<?php  for($j=1;$j<13;$j++): ?>
@@ -262,8 +410,20 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_vaccinedog_all00); ?> <p class="percentage"><?php echo compute_percent($total_vaccinedog_all00,$total_n); ?></p></td>
 
-		</tr>	
-	<tr><td colspan="14"><strong>สาเหตุที่ถูกกัด</strong></td></tr>	
+		</tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container7" class="container"></div> 			
+  		</div>  		
+  	</td>
+</tr>		
+	<tr><td colspan="14"><strong>สาเหตุที่ถูกกัด</strong>
+			<input type="hidden" name="render" value="container8">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>		
+	</td></tr>	
 		<tr class="para1">
 			<td class="pad-left">ถูกกัดโดยไม่มีสาเหตุโน้มนำ</td>	
 			<?php  for($j=1;$j<13;$j++): ?>
@@ -299,7 +459,20 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_reason_all00); ?> <p class="percentage"><?php echo compute_percent($total_reason_all00,$total_n); ?></p></td>
 		</tr>	
-	<tr><td colspan="14"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong></td></tr>	
+
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container8" class="container"></div> 			
+  		</div>  		
+  	</td>
+</tr>
+	<tr><td colspan="14"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
+			<input type="hidden" name="render" value="container9">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>		
+	</td></tr>	
 		<tr class="para1">
 			<td class="pad-left">ไม่ได้ล้าง</td>	
 			<?php  for($j=1;$j<13;$j++): ?>
@@ -338,7 +511,19 @@
 
 		</tr>		
 
-	<tr><td colspan="14"><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong></td></tr>	
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container9" class="container"></div> 			
+  		</div>  		
+  	</td>
+</tr>	
+	<tr><td colspan="14"><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
+			<input type="hidden" name="render" value="container10">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>		
+	</td></tr>	
 		<tr class="para1">
 			<td class="pad-left">ไม่ได้ใส่ยา</td>	
 			<?php  for($j=1;$j<13;$j++): ?>
@@ -374,7 +559,19 @@
 			<td><?php echo number_format($total_drug_all00); ?> <p class="percentage"><?php echo compute_percent($total_drug_all00,$total_n); ?></p></td>
 
 		</tr>	
-	<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส</strong></td></tr>	
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container10" class="container"></div> 			
+  		</div>  		
+  	</td>
+</tr>			
+	<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส</strong>
+			<input type="hidden" name="render" value="container11">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>		
+	</td></tr>	
 		<tr class="para1">
 			<td class="pad-left">ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม</td>	
 			<?php  for($j=1;$j<13;$j++): ?>
@@ -382,8 +579,9 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_historyprotect_all10); ?><p class="percentage"><?php echo compute_percent($total_historyprotect_all10,$total_n); ?></p></td>
 
-		</tr>	
-		<tr class="para1"><td class="pad-left" colspan="14">ใส่ยา</td>	</tr>
+		</tr>
+		
+		<tr class="para1"><td class="pad-left" colspan="14">เคยฉีด 3 เข็มหรือมากกว่า</td>	</tr>
 		<?php $historyprotect = array(1=>'ภายใน 6 เดือน',2=>'เกิน 6 เดือน',3=>'อื่นๆ'); ?>
 		<?php for($i=1;$i<4;$i++): ?>
 		<tr class="para1">
@@ -409,7 +607,19 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_drug_all00); ?> <p class="percentage"><?php echo compute_percent($total_drug_all00,$total_n); ?></p></td>
 		</tr>
-		<tr><td colspan="14"><strong>สัญชาติ</strong></td></tr>	
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container11" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>
+		<tr><td colspan="14"><strong>สัญชาติ</strong>
+			<input type="hidden" name="render" value="container12">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>				
+		</td></tr>	
 		<?php $name = array(1=>'ไทย',2=>'จีน/ฮ่องกง/ใต้หวัน',3=>'พม่า',4=>'มาเลเซีย',5=>'กัมพูชา',6=>'ลาว',7=>'เวียดนาม'
 						   ,8=>'ยุโรป',9=>'อเมริกา',10=>'ไม่ทราบสัญชาติ',11=>'อื่นๆ'); ?>
 		<?php for($i=1;$i<12;$i++){ ?>
@@ -427,7 +637,14 @@
 			<td><?php echo number_format(${'total_nationalityname0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_nationalityname0'.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format($total_nationalityname_all12); ?> <p class="percentage"><?php echo compute_percent($total_nationalityname_all12,$total_n); ?></p></td>
-		</tr>			
+		</tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container12" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>					
 		</tbody>																							
 		
 <?php 	$name=array(1=>"นักเรียน นักศึกษา",2=>"ในปกครอง",3=>"เกษตร ทำนา ทำสวน",4=>"ข้าราชการ",5=>"กรรมกร"
@@ -436,7 +653,12 @@
 			,14=>"สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า"
 			,15=>"อาสาสมัครฉีดวัคซีนสุนัข",16=>"เจ้าหน้าที่สวนสัตว์",17=>"ไปรษณีย์",18=>"ป่าไม้"
 			,19=>"พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า",20=>"อื่นๆ",21=>"ไม่ระบุ");?>	
-		<tr><td colspan="14"><strong>อาชีพขณะสัมผัสโรค</strong></td></tr>		
+		<tr><td colspan="14"><strong>อาชีพขณะสัมผัสโรค</strong>
+			<input type="hidden" name="render" value="container13">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>				
+		</td></tr>		
 		<?php for($i=1;$i<22;$i++){ ?>
 		<tr class="para1">
 			<td class="pad-left"><?php echo  $name[$i] ?></td>
@@ -452,12 +674,24 @@
 			<td><?php echo number_format(${'total_occupation0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_occupation0'.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format($total_occupation_all12); ?> <p class="percentage"><?php echo compute_percent($total_occupation_all12,$total_n); ?></p></td>
-		</tr>		
+		</tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container13" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>				
 <?php $name=array(1=>"เกษตร ทำนา ทำสวน",2=>"ข้าราชการ",3=>"กรรมกร",4=>"รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)"
 ,5=>"ค้าขาย",6=>"งานบ้าน",7=>"ทหาร ตำรวจ",8=>"ประมง",9=>"ครู",10=>"เลี้ยงสัตว์ / จับสุนัข",11=>"นักบวช / ภิกษุสามเณร"
 ,12=>"ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ",13=>"สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า"
 ,14=>"อาสาสมัครฉีดวัคซีนสุนัข",15=>"เจ้าหน้าที่สวนสัตว์",16=>"ไปรษณีย์",17=>"ป่าไม้",18=>"พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า",19=>"อื่นๆ",20=>"ไม่ระบุ"); ?>	
-		<tr><td colspan="14"><strong>อาชีพผู้ปกครอง</strong></td></tr>		
+		<tr><td colspan="14"><strong>อาชีพผู้ปกครอง</strong>
+			<input type="hidden" name="render" value="container14">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>			
+		</td></tr>		
 		<?php for($i=1;$i<21;$i++){ ?>
 		<tr class="para1">
 			<td class="pad-left"><?php echo  $name[$i] ?></td>
@@ -474,7 +708,19 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_occparentsname_all12); ?> <p class="percentage"><?php echo compute_percent($total_occparentsname_all12,$total_n); ?></p></td>
 		</tr>			
-		<tr><td colspan="14"><strong>สถานภาพสัตว์</strong></td></tr>	
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container14" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>
+		<tr><td colspan="14"><strong>สถานภาพสัตว์</strong>
+			<input type="hidden" name="render" value="container15">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>			
+		</td></tr>	
 		<?php $statusanimal = array(1=>'มีเจ้าของ',2=>'ไม่มีเจ้าของ',3=>'ไม่ทราบ'); ?>
 		<? for($i=1;$i<4;$i++): ?>
 		<tr class="para1">
@@ -492,7 +738,19 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_statusanimal_all0); ?> <p class="percentage"><?php echo compute_percent($total_statusanimal_all0,$total_n); ?></p></td>
 		</tr>	
-		<tr><td><strong>การส่งหัวสัตว์ตรวจ</strong></td>			
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container15" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>		
+		<tr><td><strong>การส่งหัวสัตว์ตรวจ</strong>
+			<input type="hidden" name="render" value="container16">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>				
+		</td>			
 			<?php  for($i=1;$i<13;$i++): ?>
 			<td><?php echo number_format(${'total_head'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_head'.$i},${'total_m'.$i}); ?></p></td>
 			<?php endfor; ?>
@@ -503,8 +761,20 @@
 			<td><?php echo number_format(${'total_batteria'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_batteria'.$i},${'total_m'.$i}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format($total_batteria_all); ?> <p class="percentage"><?php echo compute_percent($total_batteria_all,$total_n); ?></p></td>		
-		</tr>	
-		<tr><td colspan="14"><strong>การฉีดอิมมูโนโกลบุลิน(RIG)</strong></td></tr>
+		</tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container16" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>				
+		<tr><td colspan="14"><strong>การฉีดอิมมูโนโกลบุลิน(RIG)</strong>
+			<input type="hidden" name="render" value="container17">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>				
+		</td></tr>
 		<tr class="para1">
 			<td class="pad-left">ERIG</td>	
 			<?php  for($j=1;$j<13;$j++): ?>
@@ -525,8 +795,20 @@
 			<td><?php echo number_format(${'total_rig0'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_rig0'.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format($total_rig_all0); ?> <p class="percentage"><?php echo compute_percent($total_rig_all0,$total_n); ?></p></td>		
-		</tr>		
-		<tr><td colspan="14"><strong>อาการหลังฉีดอิมมูโนโกลบุลิน (RIG)</strong></td></tr>					
+		</tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container17" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>				
+		<tr><td colspan="14"><strong>อาการหลังฉีดอิมมูโนโกลบุลิน (RIG)</strong>
+			<input type="hidden" name="render" value="container18">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+			<button class="pie-chart img" name="pie"></button>			
+		</td></tr>					
 		<tr class="para1">
 			<td class="pad-left">แพ้</td>	
 			<?php  for($j=1;$j<13;$j++): ?>
@@ -548,8 +830,19 @@
 			<?php endfor; ?>
 			<td><?php echo number_format($total_afterrig_all0); ?> <p class="percentage"><?php echo compute_percent($total_afterrig_all0,$total_n); ?></p></td>		
 		</tr>
-										
-		<tr><td colspan="14"><strong>วิธีการฉีดวัคซีน</strong></td></tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container18" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>										
+		<tr><td colspan="14"><strong>วิธีการฉีดวัคซีน</strong>
+			<input type="hidden" name="render" value="container19">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+			<button class="pie-chart img" name="pie"></button>			
+		</td></tr>
 		<?php $vaccine = array(1=>'เข้ากล้ามเนื้อ',2=>'เข้าผิวหนัง',3=>'ไม่ฉีด');?>	
 		<?php for($i=1;$i<4;$i++): ?>	
 		<tr class="para1">
@@ -560,8 +853,19 @@
 			<td><?php echo number_format(${'total_means_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_means_all'.$i},$total_n); ?></p></td>		
 		</tr>
 		<?php endfor; ?>	
-		
-		<tr><td colspan="14"><strong>ชนิดวัคซีน(จำนวนครั้งที่ใช้)</strong></td></tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container19" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>			
+		<tr><td colspan="14"><strong>ชนิดวัคซีน(จำนวนครั้งที่ใช้)</strong>
+			<input type="hidden" name="render" value="container20">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+			<button class="pie-chart img" name="pie"></button>			
+		</td></tr>
 		<?php $vaccine = array(1=>'PVRV',2=>'PCEC',3=>'HDCV',4=>'PDEV');?>	
 		<?php for($i=1;$i<5;$i++): ?>	
 		<tr class="para1">
@@ -572,7 +876,19 @@
 			<td><?php echo number_format(${'total_vaccine_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine_all'.$i},$total_n); ?></p></td>		
 		</tr>
 		<?php endfor; ?>
-		<tr><td colspan="14"><strong>การแพ้วัคซีน</strong></td></tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container20" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>			
+		<tr><td colspan="14"><strong>การแพ้วัคซีน</strong>
+			<input type="hidden" name="render" value="container21">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+			<button class="pie-chart img" name="pie"></button>			
+		</td></tr>
 		<tr class="para1">
 			<td class="pad-left">ไม่มี</td>	
 			<?php  for($i=1;$i<13;$i++): ?>
@@ -586,7 +902,14 @@
 			<td><?php echo number_format(${'total_aftervaccine2'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_aftervaccine2'.$i},${'total_m'.$i}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format($total_aftervaccine_all2); ?> <p class="percentage"><?php echo compute_percent($total_aftervaccine_all2,$total_n); ?></p></td>		
-		</tr>									
+		</tr>
+ <tr class="tr-graph2">
+  	<td colspan="14">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container21" class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>										
 	</table>	
 	<hr class="hr1">
 	<div id="reference"><?php echo $reference?></div>			

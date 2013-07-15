@@ -458,8 +458,13 @@ vertical-align:top
 .badge-warning {
   background-color: #f89406;
 }
+.tr-graph div{width:637px;margin:0 auto;text-align:center;}
+.tr-graph2 div{width:720px;margin:0 auto;text-align:center;}
 
-.container{
-	width:637px;height:301px;margin: 0 auto;border:1px solid #CCCCCC
+.tr-graph .container{
+	width:637px;height:300px;border:1px solid #CCCCCC
 }
-.btn_close{float:right;margin-right:73px;}
+.tr-graph2 .container{
+	height:422px;border:1px solid #CCCCCC
+}
+.btn_close{float:right;}

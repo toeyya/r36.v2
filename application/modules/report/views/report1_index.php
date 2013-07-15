@@ -1,4 +1,3 @@
-
 <script type="text/javascript">
 $(document).ready(function(){
    
@@ -6,12 +5,8 @@ $(document).ready(function(){
 	    heightStyle: "content",
 	    active:0
 	});
-	$('.tr-graph').hide();
-	$('td[colspan]').addClass('hasRowSpan');
-	$('[name=close]').click(function(){
-		$(this).closest('tr').fadeOut('slow');
-	})
-	function graph(title="เพศ",render="container1",t_graph="bar",arr=[],arr_val=[]){		
+
+	function graph(title,render,t_graph,arr,arr_val){		
         	$('#'+render).highcharts({
             chart: {                
                 type: t_graph,width:600,height:300
@@ -35,7 +30,11 @@ $(document).ready(function(){
 			series: [{data:arr_val}]
 		});	
 			
-	}
+	}					
+	$('.tr-graph').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
+	
 	$('.img').click(function(){
 		var title 	= $(this).closest('tr').find('td:eq(0)').children('strong:eq(0)').html();
 		var t_graph = $(this).attr('name');		
@@ -68,7 +67,9 @@ $(document).ready(function(){
 	 $('#button').click(function() {
         var chart = $('#container').highcharts();
         chart.print();
-    });
+    });	
+
+
 });	
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - ภาพรวม</div>
@@ -77,24 +78,16 @@ $(document).ready(function(){
 <table class="tb_patient1">
 <?php require 'include/conditionreport.php'; ?>
 	<tr>
-	    <th>ปีที่สัมผัสโรค</th>
-
-	    
+	    <th>ปีที่สัมผัสโรค</th>	    
 		<td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>	
-
 		<th>เดือนที่สัมผัสโรค</th>
 	    <td><?php echo form_dropdown('month_start',get_month(),@$_GET['month_start'],'class="styled-select"','ทั้งหมด'); ?></td>					
       </tr>   	
   </table>
-  <div class="btn_inline">
-      <ul>
-      	<li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
-      
-      </ul>
-</div>	
+  <div class="btn_inline"><ul><li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li></ul></div>	
 </form>
-
 </div>
+
 <?php if($cond): ?>
 <div id="report">
 <div id="title">				  
@@ -139,8 +132,10 @@ $(document).ready(function(){
 		</tr>
 <tr class="tr-graph">
   	<td colspan="3">  		 		
-  		<button name="close" title="close" value="close" class="btn btn_close">X</button>
-  		<div id="container1" class="container"></div>
+  		<div>
+  			<button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container1" class="container"></div>
+  		</div>  		  		
   	</td>
 </tr>
 		
@@ -170,8 +165,10 @@ $(document).ready(function(){
 			<strong>Min</strong>= <? echo number_format($min_age); ?>, 
 			<strong>Max</strong>= <? echo number_format($max_age); ?>)</td></tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
-  		<div id="container2" class="container"></div>
+  	<td colspan="3">   		
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container2" class="container"></div> 			
+  		</div>
   	</td>
 </tr>		
 		
@@ -194,8 +191,10 @@ $(document).ready(function(){
 		</tr>
 		<?php endfor; ?>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
-  		<div id="container3" class="container"></div>
+  	<td colspan="3">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container3" class="container"></div> 			
+  		</div>
   	</td>
 </tr>
 		</table>		
@@ -275,8 +274,10 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_placetouch00,$total_n); ?></td>	
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
-  		<div id="container4" class="container"></div>
+  	<td colspan="3">
+   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container4" class="container"></div> 			
+  		</div> 		
   	</td>
 </tr>
 				<tr><td colspan="3"><strong>ลักษณะการสัมผัส</strong><strong>(n=<?php echo number_format($totaltouch); ?>)</strong>
@@ -330,8 +331,10 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_food,$total_n); ?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
+  		
   		<div id="container5" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>				
 				<tr><td colspan="4"><strong>ตำแหน่งที่สัมผัส</strong><strong>(n=<?php echo number_format($total_position); ?>)</strong>
@@ -381,8 +384,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($rs['feet'],$total_position); ?></td>
 			    </tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container6" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>
 			</table>
@@ -427,8 +431,9 @@ $(document).ready(function(){
 				</tr>
 				<?php endfor; ?>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container7" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>
 				<tr><td colspan="14"><strong>อายุสัตว์</strong>
@@ -446,8 +451,9 @@ $(document).ready(function(){
 				<?php endfor; ?>
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container8" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>
 				<tr><td colspan="14"><strong>สถานภาพสัตว์</strong>
@@ -470,8 +476,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_statusanimal0,$total_n); ?></td>				
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container9" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>				
 				<tr class="page-break"><td colspan="14"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong>
@@ -517,8 +524,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_detain00,$total_n); ?></td>
 				</tr>	
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container10" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>	
 				<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong>
@@ -555,8 +563,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_vaccinedog00,$total_n); ?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container11" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>													
 			</table>
@@ -595,8 +604,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_wash0,$total_n); ?></td>			
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container12" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>
 				<tr ><td colspan="3"><strong>วิธีการล้างแผล </strong><strong>(n=<?php echo number_format($total_washdetail_all); ?>)</strong>
@@ -626,8 +636,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_washdetail0,$total_washdetail_all); ?></td>	
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container13" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>
 				<tr ><td colspan="3"><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
@@ -652,8 +663,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_drug0,$total_n); ?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container14" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>
 				<tr ><td colspan="3"><strong>ชนิดยาที่ใช้ใส่ฆ่าเชื้อ </strong><strong>(n = <? echo number_format($total_drugdetail_all) ?>)</strong>
@@ -683,8 +695,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_drugdetail0,$total_n); ?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container15" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>
 		
@@ -710,8 +723,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_protect00,$total_n); ?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container16" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>
 							
@@ -737,8 +751,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_protect20,$total_protect_all); ?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container17" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>				
 			</table>	
@@ -778,8 +793,9 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_rig00);?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container18" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>					
 				<tr ><td colspan="3"><strong>ชนิดของอิมมูโนโกลบูลิน (RIG) </strong><strong> (n=<? echo $total_rig_all; ?>)</strong>
@@ -804,8 +820,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_rig20,$total_rig_all); ?></td>			
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container19" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>					
 						
@@ -832,8 +849,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_afterrig0,$total_afterrig_all); ?></td>	
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container20" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>					
 		
@@ -884,8 +902,9 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_detailno,$total_detail); ?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  	<td colspan="3">
   		<div id="container21" class="container"></div>
+  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   	</td>
 </tr>	
 				<tr ><td colspan="3"><strong>ระยะเวลาที่มีอาการแพ้อิมมูโนโกลบุลิน </strong><strong>(n= <?php echo number_format($total_longfeel); ?>)</strong>
@@ -911,9 +930,9 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div>
-  			<button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div> 			
   			<div id="container22" class="container"></div>
+  			<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
   		</div>
   	</td>
 </tr>
