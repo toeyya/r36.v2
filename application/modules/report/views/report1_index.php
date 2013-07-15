@@ -910,8 +910,11 @@ $(document).ready(function(){
 					<td><?php echo compute_percent($total_longfeel0,$total_longfeel); ?></td>		
 				</tr>
 <tr class="tr-graph">
-  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
-  		<div id="container22" class="container"></div>
+  	<td colspan="3">
+  		<div>
+  			<button name="close" title="close" value="close" class="btn btn_close">x</button>
+  			<div id="container22" class="container"></div>
+  		</div>
   	</td>
 </tr>
 			</table>	

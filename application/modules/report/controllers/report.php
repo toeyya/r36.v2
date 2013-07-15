@@ -59,7 +59,8 @@ class Report extends R36_Controller
 					$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
 			  }else{
 				  if(!empty($_GET['area']) && !empty($_GET['group'])){
-				  	$provinceid= "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];  
+				  	$provinceid= "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];
+				  	var_dump($provinceid);exit;  
 				  	$cond .= " 1=1 AND hospitalprovince IN (".$provinceid.")";			  	   
 				  	if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
 					}else{$data['textgroup'] = $_GET['group'];}	  	  
@@ -209,43 +210,44 @@ class Report extends R36_Controller
 				}																			
 			}
 			## bite
-			
+			if($cond!=""){$cond1=$cond." and ";}else{$cond1="";}
 			$data['bite_blood']=0;
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid  
-				 where (head_bite_blood='1' OR face_bite_blood='1' OR neck_bite_blood='1' 
+				 where $cond1 (head_bite_blood='1' OR face_bite_blood='1' OR neck_bite_blood='1' 
 				 OR hand_bite_blood='1' OR arm_bite_blood='1' OR body_bite_blood='1' 
-				 OR leg_bite_blood='1' OR feet_bite_blood='1') $cond1";
+				 OR leg_bite_blood='1' OR feet_bite_blood='1') ";
 			$data['bite_blood'] = $this->db->GetOne($sql);	
 			$data['bite_noblood'] =0;			
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid  
-				 where (head_bite_noblood='1' OR face_bite_noblood='1' 
+				 where $cond1 (head_bite_noblood='1' OR face_bite_noblood='1' 
 				 	OR neck_bite_noblood='1' OR hand_bite_noblood='1' 
 				 	OR arm_bite_noblood='1' OR body_bite_noblood='1' 
-				 	OR leg_bite_noblood='1' OR feet_bite_noblood='1') $cond1";
+				 	OR leg_bite_noblood='1' OR feet_bite_noblood='1') ";
 			$data['bite_noblood'] = $this->db->GetOne($sql);
 			$data['claw_blood'] =0;			
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid  
-				 where (head_claw_blood='1' OR face_claw_blood='1' OR neck_claw_blood='1' 
+				 where $cond1 (head_claw_blood='1' OR face_claw_blood='1' OR neck_claw_blood='1' 
 				 		OR hand_claw_blood='1' OR arm_claw_blood='1' OR body_claw_blood='1' 
-				 		OR leg_claw_blood='1' OR feet_claw_blood='1') $cond1";
+				 		OR leg_claw_blood='1' OR feet_claw_blood='1') ";
 			$data['claw_blood'] = $this->db->GetOne($sql);
 			
 			$data['claw_noblood'] =0; 	
 			$sql="select count(historyid)as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid  
-				 where ( head_claw_noblood='1' OR face_claw_noblood='1' OR neck_claw_noblood='1' 
+				 where $cond1 ( head_claw_noblood='1' OR face_claw_noblood='1' OR neck_claw_noblood='1' 
 				 		OR hand_claw_noblood='1' OR arm_claw_noblood='1' OR body_claw_noblood='1' 
-				 		OR leg_claw_noblood='1' OR feet_claw_noblood='1') $cond1";
+				 		OR leg_claw_noblood='1' OR feet_claw_noblood='1') ";
 			$data['claw_noblood'] = $this->db->GetOne($sql);
 			
 			$data['lick_blood'] =0;
 			$sql="select count(historyid) FROM n_history INNER JOIN n_information ON historyid=information_historyid  
-				 where (head_lick_blood='1' OR face_lick_blood='1' OR neck_lick_blood='1' OR hand_lick_blood='1' OR arm_lick_blood='1' OR body_lick_blood='1' OR leg_lick_blood='1' OR feet_lick_blood='1') $cond1";
+				 where $cond1 (head_lick_blood='1' OR face_lick_blood='1' OR neck_lick_blood='1' OR hand_lick_blood='1' OR arm_lick_blood='1' 
+				 OR body_lick_blood='1' OR leg_lick_blood='1' OR feet_lick_blood='1') ";
 			$data['lick_blood'] = $this->db->GetOne($sql);			
 
 			$data['lick_noblood'] =0;
 			$sql="select count(historyid) FROM n_history INNER JOIN n_information ON historyid=information_historyid  
-				 where (head_lick_noblood='1' OR face_lick_noblood='1' OR neck_lick_noblood='1' 
-				 OR hand_lick_noblood='1' OR arm_lick_noblood='1' OR body_lick_noblood='1' OR leg_lick_noblood='1' OR feet_lick_noblood='1') $cond1";
+				 where $cond1 (head_lick_noblood='1' OR face_lick_noblood='1' OR neck_lick_noblood='1' 
+				 OR hand_lick_noblood='1' OR arm_lick_noblood='1' OR body_lick_noblood='1' OR leg_lick_noblood='1' OR feet_lick_noblood='1') ";
 			$data['lick_noblood'] = $this->db->GetOne($sql);				
 			
 			
@@ -458,7 +460,7 @@ class Report extends R36_Controller
 			## อาการแพ้ rig
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
 			where  $cond1 and after_rigdetail1 ='1' AND after_rig='2'";
-			echo $sql;exit;
+			//echo $sql;exit;
 			$data['total_detail1'] = $this->db->GetOne($sql);
 			
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
@@ -930,7 +932,7 @@ class Report extends R36_Controller
 	}
 	function report3($cond= FALSE,$preview=FALSE,$data){
 		if($cond){
-			if($cond=="1=1"){$cond1="";}else{$cond1=$cond;}	
+			if($cond!=""){$cond1=$cond." and ";}else{$cond1="";}	
 			$whmonth[1]="  month(datetouch) IN (1,2,3)";
 			$whmonth[2]="  month(datetouch) IN (4,5,6)";
 			$whmonth[3]="  month(datetouch) IN (7,8,9)";
@@ -942,7 +944,8 @@ class Report extends R36_Controller
 			####   จำนวน N แต่ละไตรมาส	####
 			for($i=1;$i<5;$i++){
 				$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				      where ".$whmonth[$i].$cond1;
+				      where $cond1".$whmonth[$i];
+				//echo $sql;exit;
 		    	$data['q'.$i] = $this->db->GetOne($sql);
 			}
 		    ## จำแนกตามเพศ
@@ -952,13 +955,13 @@ class Report extends R36_Controller
 		    $data['gender']     = array(1=>'ชาย',2=>'หญิง',0=>'ไม่ระบุ');
 			$data['age_group']  = array(1=>"ต่ำกว่า 1 ปี",2=>"1-5 ปี",3=>"6-10 ปี",4=>"11-15 ปี",5=>"16-25 ปี",6=>"26-35 ปี",7=>"36-45 ปี",8=>"46-55 ปี",9=>"56-65ปี",10=>"65 ปีขึ้นไป",0=>'ไม่ระบุ');
 			$data['placetouch'] = array(1=>"เขต กทม.",2=>"เขตเมืองพัทยา",3=>"เขตเทศบาล",4=>"เขตอบต.",0=>"ไม่ระบุ");
-			$data['typeanimal'] = array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ',7=>'ไม่ระบุ');
-			$data['ageanimal']  = array(1=>"น้อยกว่า 3 เดือน ",2=>"3 - 6 เดือน ",3=>"6 - 12 เดือน ",4=>"มากกว่า 1 ปี ",5=>"ไม่ทราบ",6=>"ไม่ระบุ");
+			$data['typeanimal'] = array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ',0=>'ไม่ระบุ');
+			$data['ageanimal']  = array(1=>"น้อยกว่า 3 เดือน ",2=>"3 - 6 เดือน ",3=>"6 - 12 เดือน ",4=>"มากกว่า 1 ปี ",5=>"ไม่ทราบ",0=>"ไม่ระบุ");
 			foreach($module as $field =>$name)
 			{	$quarter = array();						
 				for($i=1;$i<5;$i++){
 					$sql="select count(historyid) as cnt,$field FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-					  	where ".$whmonth[$i].$cond1." group by $field order by $field asc";		 
+					  	where $cond1 ".$whmonth[$i]." group by $field order by $field asc";		 
 					$result = $this->db->Execute($sql);
 					foreach($result as $item){
 						$quarter[$item[$field]][$i] = $item['cnt'];
@@ -973,9 +976,27 @@ class Report extends R36_Controller
 					}
 				}
 			}//endforeach;
+			## กักขัง
+			for($i=1;$i<5;$i++){
+					$rs=array();
+					$array=array_fill(0,3,0);			
+					$total1 =array_fill(0,5,$array);				
+					$sql="SELECT count(historyid) as cnt,detain,detaindate FROM n_history INNER JOIN  n_information ON historyid=information_historyid
+						  WHERE $cond1 ".$whmonth[$i]." GROUP BY detain,detaindate ORDER BY detain,detaindate asc";
+				    $result = $this->db->Execute($sql);						
+					foreach($result as $item){
+						$rs[$item['detain']][$item['detaindate']] = $item['cnt'];								
+					}
+			}
+			for($i=0;$i<5;$i++){
+				for($j=0;$j<5;$j++){									
+					$data['total_detain'.$i.$j] = (empty($rs[$i][$j])) ? 0:$rs[$i][$j];					
+					$data['total_detain_all'.$i] = (empty($total1[$i][$j])) ? 0 : $total1[$i][$j];
+				}								
+			}
+			
 		}//$cond
-		$data['cond'] = $cond;
-								
+		$data['cond'] = $cond;								
 		if($preview)$this->template->set_layout('print');	
 		$this->template->build("report3_index",$data);			
 	}

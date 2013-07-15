@@ -6,7 +6,7 @@
   </tr>
   <tr>
     <td background="themes/default/media/images/tbCol1_left.png">&nbsp;</td>
-    <td bgcolor="#FFFFFF" height="180" valign="top">
+    <td bgcolor="#FFFFFF" height="202" valign="top">
     <div class="login">
     	<?php if($this->session->userdata('R36_UID')): ?> 
     	<span class="text-loginSystem">ลงชื่อเข้าใช้ระบบ</span> 	
@@ -21,7 +21,7 @@
    <?php $link="inform/index"; ?>
    <?php endif; ?>			
    <a href="<? echo $link ?>" target="_blank" class="btn btn-mini btn-info">โปรแกรม ร.36</a>  
-   <a href="map/index" target="_blank" class="btn btn-mini btn">ระบบภูมิศาสตร์ ฯ(GIS)</a>
+   <a href="map/index" target="_blank" class="btn btn-mini btn-info">ระบบภูมิศาสตร์ ฯ(GIS)</a>
    <p style="text-align: center;"><a href="users/logout" class="btn btn-mini">logout</a></p>
  	
    </li>

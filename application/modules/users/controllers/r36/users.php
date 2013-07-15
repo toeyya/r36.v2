@@ -8,6 +8,7 @@ class Users extends R36_Controller
 		$this->load->model('inform/inform_model','inform');
 		$this->load->model('hospital/hospital_model','hospital');
 		$this->load->model('inform/vaccine_model','vaccine');
+		$this->load->model('user_level_model','level');
 		$this->user->primary_key("uid");
 		$this->template->append_metadata(js_idcard());
 	}
@@ -38,9 +39,9 @@ class Users extends R36_Controller
 	function save()
 	{
 		if($_POST){
-			if($_POST['userposition']=="00" || $_POST['userposition']=="01" || $_POST['userpostion']=="02"){
-				$_POST['userhospital']="";$_POST['userprovince']="";
-			}else if($_POST['userpostion']!="02"){
+			if($_POST['userposition']=="00" || $_POST['userposition']=="01" || $_POST['userposition']=="02"){
+				$_POST['userhospital']="";
+			}else if($_POST['userposition']!="02"){				
 				$_POST['userprovince']="";
 			}
 			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];					

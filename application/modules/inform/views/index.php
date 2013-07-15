@@ -199,6 +199,7 @@ $(document).ready(function(){
 });
 </script>
 <div id="title">แบบฟอร์มคนไข้ที่สัมผัสโรค</div>
+
 <div id="search">
 <form name="form1"  method="get" id="form1" action="inform/index">	
 <?php error_reporting(E_WARNING); 
@@ -361,21 +362,23 @@ $(document).ready(function(){
 	<ul><li><button class="btn_submit cencel" name="btn_submit" type="submit" value="btn_submit"></button></li></ul></div></div>
 <div id="boxAdd"><button class="btn_add" type="submit" name="btn_add"></button></div>
 </form>
-
- <table class="tb_search_Rabies1" >			  			
-          <tr> 
-            <th>ลำดับ</th>
-            <th>รหัสโรงพยาบาล/HN</th>
-            <th>บัตรประชาชน/เลขที่ passport</th>
-            <th>ชื่อ-นามสกุล</th>
-            <th>โรงพยาบาล</th>
-            <th>วันที่สัมผัสโรค</th>
-            <th>จำนวนวัคซีน(เข็ม)</th>
-            <th>การกระทำ</th>
-          </tr>                     	
+<?php if(empty($result) && !empty($_GET)): ?>
+<div class="alert alert-error" style="width:50%;margin:3% auto;text-align: center;font-weight: bold;">ไม่พบรายการที่ต้องการค้นหา </div>	
+<?php endif; ?>
+ <table class="tb_search_Rabies1" >			  			                  	
 			<?php
-			if(!empty($result)):
-			$i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 20)-20)+1:1;
+			if(!empty($result)): ?>
+	          <tr> 
+	            <th>ลำดับ</th>
+	            <th>รหัสโรงพยาบาล/HN</th>
+	            <th>บัตรประชาชน/เลขที่ passport</th>
+	            <th>ชื่อ-นามสกุล</th>
+	            <th>โรงพยาบาล</th>
+	            <th>วันที่สัมผัสโรค</th>
+	            <th>จำนวนวัคซีน(เข็ม)</th>
+	            <th>การกระทำ</th>
+	          </tr> 
+			<? $i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 20)-20)+1:1;
 			 foreach($result as $key =>$rec): ?>
               <tr> 
                 <td align="center"><?php echo $i++?></td>

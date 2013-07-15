@@ -26,6 +26,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 		$CI->session->set_userdata('confirm_email',$rs['confirm_email']);
 		$CI->session->set_userdata('confirm_province',$rs['confirm_province']);
 		$CI->session->set_userdata('confirm_admin',$rs['confirm_admin']);
+		$CI->session->set_userdata('confirm_admin',$rs['confirm_admin']);
 		
 				
 			if(!empty($rs['userhospital'])){

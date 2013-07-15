@@ -29,7 +29,7 @@ var ref1,ref2,ref3;
 	$('#admin_province').hide();
     function u_position(){   	
 				var value=$('select[name=userposition] option:selected').val();
-				if(value=="05"){
+				if(value=="05" || value=="03" || value=="04"){
 					$("#hospital").show();
 				}else if(value=="02"){
 					$('#admin_province').show();

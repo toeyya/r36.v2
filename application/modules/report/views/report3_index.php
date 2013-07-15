@@ -54,193 +54,62 @@
 				<td><? echo number_format(${$field.$key}); ?></td>
 			</tr>
 			<? endforeach; ?>
-		<? endforeach; ?>
-	
-		<tr ><td colspan="6"><strong>ชนิดสัตว์นำโรค</strong></td></tr>	
-		<tr class="para1">
-			<td class="pad-left">สุนัข</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">แมว</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">ลิง</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">ชะนี</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">หนู</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">อื่นๆ</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">ไม่ระบุ</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>
-		<tr ><td colspan="6"><strong>อายุสัตว์</strong></td></tr>	
-		<tr class="para1">
-			<td class="pad-left">น้อยกว่า 3 เดือน</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">3-6 เดือน</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">6-12 เดือน</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">มากกว่า 1 ปี</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">ไม่ทราบ</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">ไม่ระบุ</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
-		</tr>
-
+		<? endforeach; ?>		
 	<tr><td colspan="6"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong></td></tr>	
 		<tr class="para1">
+			<td class="pad-left" colspan="6">กักขังได้ / ติดตามได้</td>		
+		</tr>
+		<tr class="para1">
 			<td class="pad-left">กักขังได้ / ติดตามได้</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_detain10'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_detain10'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_detain_all10); ?> <p class="percentage"><?php echo compute_percent($total_detain_all10,$total_n); ?></p></td>
 		</tr>
 		<tr class="para1">
 			<td class="pad-left2">ตายภายใน 10 วัน</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_detain11'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_detain11'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_detain_all11); ?> <p class="percentage"><?php echo compute_percent($total_detain_all11,$total_n); ?></p></td>
 		</tr>
 		<tr class="para1">
 			<td class="pad-left2">ไม่ตายภายใน 10 วัน</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_detain12'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_detain12'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_detain_all12); ?> <p class="percentage"><?php echo compute_percent($total_detain_all12,$total_n); ?></p></td>
 		</tr>	
 		<tr class="para1">
 			<td class="pad-left">กักขังไม่ได้</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_detain20'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_detain20'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_detain_all20); ?> <p class="percentage"><?php echo compute_percent($total_detain_all20,$total_n); ?></p></td>
 
 		</tr>	
 		<tr class="para1">
 			<td class="pad-left">ถูกฆ่าตาย</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_detain30'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_detain30'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_detain_all30); ?> <p class="percentage"><?php echo compute_percent($total_detain_all30,$total_n); ?></p></td>
 
 		</tr>
 		<tr class="para1">
 			<td class="pad-left">หนีหาย / จำไม่ได้</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_detain40'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_detain40'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_detain_all40); ?> <p class="percentage"><?php echo compute_percent($total_detain_all40,$total_n); ?></p></td>
 
 		</tr>	
 		<tr class="para1">
 			<td class="pad-left">ไม่ระบุ</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>				
-			
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_detain00'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_detain00'.$j},${'total_m'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format($total_detain_all00); ?> <p class="percentage"><?php echo compute_percent($total_detain_all00,$total_n); ?></p></td>
 		</tr>
 		</tbody>				
 	</table>

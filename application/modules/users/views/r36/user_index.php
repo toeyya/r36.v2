@@ -29,7 +29,7 @@ var ref1,ref2,ref3;
 	$('#admin_province').hide();
     function u_position(){   	
 				var value=$('select[name=userposition] option:selected').val();
-				if(value=="05"){
+				if(value=="05" || value=="03" || value=="04"){
 					$("#hospital").show();
 				}else if(value=="02"){
 					$('#admin_province').show();
@@ -104,7 +104,9 @@ var ref1,ref2,ref3;
 <table  class="tbform">
   <tr>
     <th valign="top">สิทธิืการใช้งาน</th>
-    <td><?php echo form_dropdown('userposition',get_option('level_code','level_name','n_level_user'),@$rs['userposition'],'class="input_box_patient"','--โปรดเลือก--') ?></td> 
+    <td> <?php   echo form_dropdown('userposition',get_option('level_code','level_name','n_level_user'),@$rs['userposition'],'class="input_box_patient" disabled="disabled"','--โปรดเลือก--') ?>
+    <input type="hidden" name="userposition" value="<? echo $rs['userposition']  ?>">
+    </td> 
   </tr>  
   <tr>
     <th width="96" height="20"class="topic">ชื่อ <span class="alertred" >*</span></th>
