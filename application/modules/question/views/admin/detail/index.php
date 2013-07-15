@@ -1,6 +1,6 @@
 <h1>คำถามที่พบบ่อย</h1>
 <div class="search">
-<form action="question/admin/question_detail/index" method="get" name="form1" >
+<form action="question/admin/question_detail/index/<?php echo $question_id ?>" method="get" name="form1" >
 ประเภทคำถาม <?php echo form_dropdown('question_id',get_option('id','name','n_question'),@$_GET['question_id'],'','--โปรดเลือก--') ?>
 คำถาม <input type="text" name="question" value="<?php echo @$_GET['question'] ?>" class="input_box_patient">
 <input  class="btn" type="submit" value="ค้นหา">	 

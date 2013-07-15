@@ -5,6 +5,7 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
 		<title><?php echo $template['title']; ?></title> 
 		<script type="text/javascript" src="media/js/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="media/js/Highcharts/js/highcharts.js" ></script>
 		<script type="text/javascript" src="media/js/printreport.js"></script>
 		<link rel="stylesheet" type="text/css" href="media/css/default.css" />
 		<link rel="stylesheet" type="text/css" href="media/css/style.css" />

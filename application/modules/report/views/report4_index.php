@@ -1,6 +1,6 @@
-<script src="js/Highcharts/js/highcharts.js" type="text/javascript"></script>
+<script src="media/js/Highcharts/js/highcharts.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/javascript">
-$(function () { 
+$(document).(function(){ 
 	$('a[name=close]').click(function(){
 		$('#container').fadeOut();
 		$('#container').next("div").fadeOut('slow');
@@ -17,7 +17,7 @@ $(function () {
                 type: 'bar'
             },
             title: {
-                text: 'สรุปประวัติคนไข้ในเขตอำเภอและคนไข้นอกเขตอำเภอทั้งหมด'
+                text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้าแจกแจงตามเพศ'
             },
             subtitle: {
                 text: 'สัญชาติ(คน)'

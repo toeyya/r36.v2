@@ -1,16 +1,75 @@
+
 <script type="text/javascript">
 $(document).ready(function(){
-	     $('#multiAccordion').multiAccordion({
-            heightStyle: "content",
-            active:0
-        });
-	$('input[type=submit]').click(function(){
-		if($('#area option:selected').val()==""){
-			alert("กรุณาเลือกรูปแบบเขตความรับผิดชอบในการออกรายงาน");
-		}
+   
+	$('#multiAccordion').multiAccordion({
+	    heightStyle: "content",
+	    active:0
+	});
+	$('.tr-graph').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){
+		$(this).closest('tr').fadeOut('slow');
 	})
-})
-	
+	function graph(title="เพศ",render="container1",t_graph="bar",arr=[],arr_val=[]){		
+        	$('#'+render).highcharts({
+            chart: {                
+                type: t_graph,width:600,height:300
+            },
+            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
+            yAxis: {
+            	title:{
+            		text: '', style: {color: '#000000'}           		          		
+            	}            	
+            },			
+            tooltip: {valueSuffix: ' %'},
+            credits: {enabled: false},
+            legend: {enabled: false},
+            plotOptions: {            	
+            	bar: { dataLabels: {enabled: true}},            	
+            	column: { dataLabels: {enabled: true}},
+            	pie:{ dataLabels: {enabled: true}}
+               
+            },           
+            xAxis: {categories: arr},
+			series: [{data:arr_val}]
+		});	
+			
+	}
+	$('.img').click(function(){
+		var title 	= $(this).closest('tr').find('td:eq(0)').children('strong:eq(0)').html();
+		var t_graph = $(this).attr('name');		
+		var render 	= $(this).closest('td').find('input[name=render]').val();									
+		var arr=[],arr_val=[],arr_val_all=[];	
+		var padd_left,title_padd,j=0;
+
+			$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){			
+				if($(this).find('td').hasClass('pad-left2')){			
+					padd_left = $(this).find('.pad-left2').next().next().html()
+					arr[i]=$(this).find('.pad-left2').html();
+					arr_val[i]=parseFloat(padd_left);				
+				}else{	
+					if($(this).find('td').length==1){
+						arr_val[i]=0;
+					}else{				
+					padd_left = $(this).find('.pad-left').next().next().html();							
+					arr[i]=$(this).find('.pad-left').html();
+					arr_val[i]=parseFloat(padd_left);							
+					}																					
+				}
+				
+			});			
+		
+
+		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');
+		graph(title,render,t_graph,arr,arr_val);
+		
+	});	
+	 $('#button').click(function() {
+        var chart = $('#container').highcharts();
+        chart.print();
+    });
+});	
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - ภาพรวม</div>
 <div id="search">
@@ -36,7 +95,7 @@ $(document).ready(function(){
 </form>
 
 </div>
-
+<?php if($cond): ?>
 <div id="report">
 <div id="title">				  
 	<p>รายงานผู้สัมผัสโรคในภาพรวม</p>
@@ -44,18 +103,24 @@ $(document).ready(function(){
 	<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 	<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 </div>
-<? if(!empty($cond)): ?>
-<div id="multiAccordion">
+
+<div id="multiAccordion" style="width:80%;margin-left:10%;margin-right:10%">
     <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>
     <div id="section1">
 		<h6>ตารางที่ 1 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามข้อมูลทั่วไป <a href="" class="excel"></a></h6>
 		<table class="tbreport">
 		<tr>
 			<th>ข้อมูลทั่วไป</th>
-			<th>จำนวน (N=<?php echo $total_n ?>)</th>
+			<th>จำนวน (N=<?php echo number_format($total_n); ?>)</th>
 			<th>ร้อยละ</th>
 		</tr>
-		<tr><td colspan="3"><strong>เพศ</strong></td></tr>
+		<tr><td colspan="3"><strong>เพศ</strong>			
+			<input type="hidden" name="render" value="container1">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>
+    		
+		</td></tr>
 		<tr class="para1">
 			<td class="pad-left">ชาย</td>
 			<td><? echo number_format($total_gender1); ?></td>
@@ -72,10 +137,22 @@ $(document).ready(function(){
 			<td><? echo number_format($total_gender0); ?></td>
 			<td><? echo compute_percent($total_gender0,$total_n)?></td>
 		</tr>
-		<tr ><td colspan="3"><strong>กลุ่มอายุ</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3">  		 		
+  		<button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div id="container1" class="container"></div>
+  	</td>
+</tr>
+		
+		<tr ><td colspan="3"><strong>กลุ่มอายุ</strong>
 		<?php $age=array(1=>'ต่ำกว่า 1 ปี',2=>'1-5 ปี',3=>'6-10 ปี',4=>'11-15 ปี',5=>'16-25 ปี'
-						,6=>'26-35 ปี',7=>'36-45 ปี',8=>'46-55 ปี',9=>'56-65 ปี',10=>'66 ปีขึ้นไป'); ?>
-		<?php  for($i=1;$i<11;$i++):?>			
+						,6=>'26-35 ปี',7=>'36-45 ปี',8=>'46-55 ปี',9=>'56-65 ปี',10=>'66 ปีขึ้นไป'); ?>							
+			<input type="hidden" name="render" value="container2">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>
+		</td></tr>
+		<?php  for($i=1;$i<11;$i++):?>
 		<tr class="para1">
 			<td class="pad-left"><? echo $age[$i];?></td>
 			<td><?php echo number_format(${'total_age'.$i}); ?></td>
@@ -87,8 +164,23 @@ $(document).ready(function(){
 			<td><?php echo number_format($total_age0); ?></td>
 			<td><?php echo compute_percent($total_age0,$total_n); ?></td>		
 		</tr>
-		<tr class="para1"><td colspan="3" class="pad-left2">(<strong>X</strong>= 36.20, <strong>SD</strong>= 23.59, <strong>Min</strong>= 0.00, <strong>Max</strong>= 85.00)</td></tr>
-		<tr><td colspan="3"><strong>อาชีพขณะสัมผัสโรค</strong></td></tr>
+		<tr><td colspan="3" class="pad-left2">
+			(<strong>X</strong>=<? echo number_format($avg_age) ?>, 
+			<strong>SD</strong>= <? echo number_format($stddev_age) ?>,
+			<strong>Min</strong>= <? echo number_format($min_age); ?>, 
+			<strong>Max</strong>= <? echo number_format($max_age); ?>)</td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container2" class="container"></div>
+  	</td>
+</tr>		
+		
+		<tr><td colspan="3"><strong>อาชีพขณะสัมผัสโรค</strong>		
+			<input type="hidden" name="render" value="container3">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+    		<button class="pie-chart img" name="pie"></button>				
+		</td></tr>
 <?php $occupationname = array(1=>'นักเรียน นักศึกษา',2=>'ในปกครอง',3=>'เกษตรกรทำนา ทำสวน ',4=>'ข้าราชการ',5=>'กรรมกร'
 							 ,6=>'รับจ้าง( เช่น พนักงานบริษัท,ดารานักแสดง )',7=>'ค้าขาย',8=>'งานบ้าน',9=>'ทหาร ตำรวจ',10=>'ประมง'
 							 ,11=>'ครู',12=>'เลี้ยงสัตว์ / จับสุนัข ',13=>'นักบวช / ภิกษุสามเณร ',14=>'ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ '
@@ -101,21 +193,31 @@ $(document).ready(function(){
 			<td><?php echo compute_percent(${'total_occupationname'.$i},$total_n); ?></td>
 		</tr>
 		<?php endfor; ?>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container3" class="container"></div>
+  	</td>
+</tr>
 		</table>		
 		<hr class="hr1">		
-		<div id="btn_printout"><a href="report/index/1/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="btn_printout"><a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		</div> <!-- section1-->
 		<p class="page-break"></p>
 		 <h3><a href="javascript:void(0);">ส่วนที่ 2 : ตำแหน่งและลักษณะการสัมผัส</a></h3>
 		<div id="section2">
-			<h6>ตารางที่ 2 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามสถานที่สัมผัสโรค ลักษณะการสัมผัสโรค และตำแหน่งที่สัมผัส</h6>
+			<h6>ตารางที่ 2 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามสถานที่สัมผัสโรค ลักษณะการสัมผัสโรค และตำแหน่งที่สัมผัส <a href="" class="excel"></a></h6>
 			<table class="tbreport">
 				<tr>
 					<th>การสัมผัส</th>
 					<th>จำนวน (N=<?php echo $total_n; ?>)</th>
 					<th>ร้อยละ</th>
 				</tr>
-				<tr><td colspan="3"><strong>สถานที่สัมผัสโรค</strong></td></tr>
+				<tr><td colspan="3"><strong>สถานที่สัมผัสโรค</strong>
+				<input type="hidden" name="render" value="container4">
+				<button class="bar-chart img"  name="bar"></button>
+				<button class="column-chart img" name="column"></button>
+    			<button class="pie-chart img" name="pie"></button>						
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">เขต กทม.</td>
 					<td><?php echo number_format($total_placetouch10); ?></td>
@@ -172,8 +274,17 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_placetouch00); ?></td>
 					<td><?php echo compute_percent($total_placetouch00,$total_n); ?></td>	
 				</tr>
-
-				<tr><td colspan="3"><strong>ลักษณะการสัมผัส</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container4" class="container"></div>
+  	</td>
+</tr>
+				<tr><td colspan="3"><strong>ลักษณะการสัมผัส</strong><strong>(n=<?php echo number_format($totaltouch); ?>)</strong>
+					<input type="hidden" name="render" value="container5">
+					<button class="bar-chart img"  name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+		    		<button class="pie-chart img" name="pie"></button>						
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left" colspan="3">ถูกกัด</td>
 			    </tr>
@@ -218,7 +329,17 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_food); ?></td>
 					<td><?php echo compute_percent($total_food,$total_n); ?></td>		
 				</tr>
-				<tr><td colspan="4"><strong>ตำแหน่งที่สัมผัส (n=<?php echo number_format($total_position); ?>)</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container5" class="container"></div>
+  	</td>
+</tr>				
+				<tr><td colspan="4"><strong>ตำแหน่งที่สัมผัส</strong><strong>(n=<?php echo number_format($total_position); ?>)</strong>
+					<input type="hidden" name="render" value="container6">
+					<button class="bar-chart img"  name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+		    		<button class="pie-chart img" name="pie"></button>	
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ศีรษะ</td>
 					<td><?php echo number_format($rs['head']); ?></td>
@@ -259,22 +380,32 @@ $(document).ready(function(){
 					<td><?php echo number_format($rs['feet']); ?></td>
 					<td><?php echo compute_percent($rs['feet'],$total_position); ?></td>
 			    </tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container6" class="container"></div>
+  	</td>
+</tr>
 			</table>
 			<hr class="hr1">					
-			<div id="btn_printout"><a href="report/index/1/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<div id="btn_printout"><a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 
 		</div><!-- section2 -->
 		<p class="page-break"></p>
-		 <h3><a href="javascript:void(0);">ส่วนที่ 3 : สัตว์นำโรค</a></h3>
+		 <h3><a href="javascript:void(0);">ส่วนที่ 3 : สัตว์นำโรค </a></h3>
 		<div id="section3">
-			<h6>ตารางที่ 3 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้าแจกแจงตามชนิดและประวัติของสัตว์นำโรค </h6>
+			<h6>ตารางที่ 3 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้าแจกแจงตามชนิดและประวัติของสัตว์นำโรค <a href="" class="excel"></a> </h6>
 			<table class="tbreport">
 				<tr>
 					<th>ชนิดและประวัติของสัตว์</th>
 					<th>จำนวน (N=<?php echo $total_n; ?>)</th>
 					<th>ร้อยละ</th>
 				</tr>
-				<tr ><td colspan="3"><strong>ชนิดสัตว์</strong></td></tr>
+				<tr ><td colspan="3"><strong>ชนิดสัตว์</strong>
+					<input type="hidden" name="render" value="container7">
+					<button class="bar-chart img"  name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+		    		<button class="pie-chart img" name="pie"></button>					
+				</td></tr>
 				<?php $animal = array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู'); $j=0;?>	
 				<?php for($i=1;$i<6;$i++): ?>
 				<tr class="para1">
@@ -295,7 +426,17 @@ $(document).ready(function(){
 					<td><?php echo compute_percent(${'total_animal6'.$i},$total_n); ?></td>		
 				</tr>
 				<?php endfor; ?>
-				<tr><td colspan="14"><strong>อายุสัตว์</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container7" class="container"></div>
+  	</td>
+</tr>
+				<tr><td colspan="14"><strong>อายุสัตว์</strong>
+					<input type="hidden" name="render" value="container8">
+					<button class="bar-chart img" name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+					<button class="pie-chart img" name="pid"></button>					
+				</td></tr>
 				<?php $ageanimal = array(1=>'น้อยกว่า 3 เดือน',2=>'3-6 เดือน',3=>'6-12 เดือน',4=>'มากกว่า 1 ปี',5=>'ไม่ทราบ',6=>'ไม่ระบุ');  ?>
 				<?php for($i=1;$i<7;$i++):?>
 				<tr class="para1">			
@@ -304,7 +445,17 @@ $(document).ready(function(){
 					<td><?php echo compute_percent(${'total_ageanimal'.$i},$total_n)?></td>
 				<?php endfor; ?>
 				</tr>
-				<tr><td colspan="14"><strong>สถานภาพสัตว์</strong></td></tr>	
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container8" class="container"></div>
+  	</td>
+</tr>
+				<tr><td colspan="14"><strong>สถานภาพสัตว์</strong>
+					<input type="hidden" name="render" value="container9">
+					<button class="bar-chart img" name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+		    		<button class="pie-chart img" name="pie"></button>					
+				</td></tr>	
 				<?php $statusanimal = array(1=>'มีเจ้าของ',2=>'ไม่มีเจ้าของ',3=>'ไม่ทราบ'); ?>
 				<? for($i=1;$i<4;$i++): ?>
 				<tr class="para1">
@@ -318,11 +469,19 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_statusanimal0); ?></td>
 					<td><?php echo compute_percent($total_statusanimal0,$total_n); ?></td>				
 				</tr>
-				<tr class="page-break"><td colspan="14"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong></td></tr>	
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container9" class="container"></div>
+  	</td>
+</tr>				
+				<tr class="page-break"><td colspan="14"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong>
+					<input type="hidden" name="render" value="container10">
+					<button class="bar-chart img" name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+		    		<button class="pie-chart img" name="pie"></button>					
+				</td></tr>	
 				<tr class="para1">
-					<td class="pad-left">กักขังได้ / ติดตามได้</td>	
-					<td><?php echo number_format($total_detain10); ?></td>
-					<td><?php echo compute_percent($total_detain10,$total_n); ?></td>
+					<td class="pad-left" colspan="3">กักขังได้ / ติดตามได้</td>	
 				</tr>
 				<tr class="para1">
 					<td class="pad-left2">ตายภายใน 10 วัน</td>	
@@ -357,7 +516,17 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_detain00); ?></td>
 					<td><?php echo compute_percent($total_detain00,$total_n); ?></td>
 				</tr>	
-				<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong></td></tr>	
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container10" class="container"></div>
+  	</td>
+</tr>	
+				<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong>
+					<input type="hidden" name="render" value="container11">
+					<button class="bar-chart img" name="bar" ></button>
+					<button class="column-chart img" name="column"></button>
+		    		<button class="pie-chart img" name="pie"></button>					
+				</td></tr>	
 				<tr class="para1">
 					<td class="pad-left">ไม่ทราบ</td>						
 					<td><?php echo number_format($total_vaccinedog10); ?></td>					
@@ -384,22 +553,32 @@ $(document).ready(function(){
 					<td class="pad-left">ไม่ระบุ</td>	
 					<td><?php echo number_format($total_vaccinedog00); ?></td>
 					<td><?php echo compute_percent($total_vaccinedog00,$total_n); ?></td>		
-				</tr>													
+				</tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container11" class="container"></div>
+  	</td>
+</tr>													
 			</table>
 		<hr class="hr1">				
-		<div id="btn_printout"><a href="report/index/1/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="btn_printout"><a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		</div><!--section3 -->
 		<p class="page-break"></p>
 		 <h3><a href="javascript:void(0);">ส่วนที่ 4 : ประวัติการได้รับวัคซีน และการปฏิบัติตนของผู้สัมผัสโรค</a></h3>
 		<div id="section4">
-			<h6>ตารางที่ 4  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการดูแลบาดแผลและประวัติการได้รับวัคซีน </h6>
+			<h6>ตารางที่ 4  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการดูแลบาดแผลและประวัติการได้รับวัคซีน <a href="" class="excel"></a> </h6>
 			<table class="tbreport">
 				<tr>
 					<th>การดูแลบาดแผลและประวัติการได้รับวัคซีน</th>
 					<th>จำนวน (N=<?php echo $total_n; ?>)</th>
 					<th>ร้อยละ</th>
 				</tr>
-				<tr ><td colspan="3"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong></td></tr>
+				<tr ><td colspan="3"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
+					<input type="hidden" name="render" value="container12">
+					<button class="bar-chart img" name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+					<button class="pie-chart img" name="pie" ></button>					
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ไม่ได้ล้าง</td>
 					<td><?php echo number_format($total_wash1); ?></td>
@@ -415,7 +594,17 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_wash0); ?></td>
 					<td><?php echo compute_percent($total_wash0,$total_n); ?></td>			
 				</tr>
-				<tr ><td colspan="3"><strong>วิธีการล้างแผล (n=<?php echo number_format($total_washdetail_all); ?>)</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container12" class="container"></div>
+  	</td>
+</tr>
+				<tr ><td colspan="3"><strong>วิธีการล้างแผล </strong><strong>(n=<?php echo number_format($total_washdetail_all); ?>)</strong>
+					<input type="hidden" name="render" value="container13">
+					<button class="bar-chart img" name="bar" ></button>
+					<button class="column-chart img" name="column"></button>
+					<button class="pie-chart img" name="pie" ></button>					
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">น้ำ</td>
 					<td><?php echo number_format($total_washdetail1); ?></td>
@@ -436,7 +625,17 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_washdetail0); ?></td>
 					<td><?php echo compute_percent($total_washdetail0,$total_washdetail_all); ?></td>	
 				</tr>
-				<tr ><td colspan="3"><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container13" class="container"></div>
+  	</td>
+</tr>
+				<tr ><td colspan="3"><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
+					<input type="hidden" name="render" value="container14">
+					<button class="bar-chart img" name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+					<button class="pie-chart img" name="pie"></button>					
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ไม่ได้ใส่ยา</td>
 					<td><?php echo number_format($total_drug1); ?></td>
@@ -452,7 +651,17 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_drug0); ?></td>
 					<td><?php echo compute_percent($total_drug0,$total_n); ?></td>		
 				</tr>
-				<tr ><td colspan="3"><strong>ชนิดยาที่ใช้ใส่ฆ่าเชื้อ (n = <? echo number_format($total_drugdetail_all) ?>)</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container14" class="container"></div>
+  	</td>
+</tr>
+				<tr ><td colspan="3"><strong>ชนิดยาที่ใช้ใส่ฆ่าเชื้อ </strong><strong>(n = <? echo number_format($total_drugdetail_all) ?>)</strong>
+					<input type="hidden" name="render" value="container15">
+					<button class="bar-chart img" name="bar" ></button>
+					<button class="column-chart img" name="column"></button>
+					<button class="pie-chart img" name="pie"></button>					
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">สารละลายไอโอดีนที่ไม่มีแอลกอฮอล์ เช่น โพวิดีน เบตาดีน ฯลฯ</td>
 					<td><?php echo number_format($total_drugdetail1); ?></td>
@@ -473,7 +682,18 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_drugdetail0); ?></td>
 					<td><?php echo compute_percent($total_drugdetail0,$total_n); ?></td>		
 				</tr>
-				<tr ><td colspan="3"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัสหรือสงสัยว่าสัมผัส</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container15" class="container"></div>
+  	</td>
+</tr>
+		
+				<tr ><td colspan="3"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัสหรือสงสัยว่าสัมผัส</strong>
+					<input type='hidden' name="render" value="container16">
+					<button class="bar-chart img" name="bar"></button>
+					<button class="column-chart img" name="column"></button>
+					<button class="pie-chart img" name="pie"></button>				
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม</td>
 					<td><?php echo number_format($total_protect10); ?></td>
@@ -488,8 +708,19 @@ $(document).ready(function(){
 					<td class="pad-left">ไม่ระบุ</td>
 					<td><?php echo number_format($total_protect00); ?></td>
 					<td><?php echo compute_percent($total_protect00,$total_n); ?></td>		
-				</tr>					
-				<tr ><td colspan="3"><strong>ระยะเวลาที่ฉีดวัคซีน (n= <? echo number_format($total_protect_all); ?>)</strong></td></tr>
+				</tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container16" class="container"></div>
+  	</td>
+</tr>
+							
+				<tr ><td colspan="3"><strong>ระยะเวลาที่ฉีดวัคซีน </strong><strong>(n= <? echo number_format($total_protect_all); ?>)</strong>
+						<input type='hidden' name="render" value="container17">
+						<button class="bar-chart img" name="bar"></button>
+						<button class="column-chart img" name="column"></button>
+    					<button class="pie-chart img" name="pie"></button>				
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ภายใน 6 เดือน</td>
 					<td><?php echo number_format($total_protect21); ?></td>
@@ -504,23 +735,33 @@ $(document).ready(function(){
 					<td class="pad-left">ไม่ระบุ</td>
 					<td><?php echo number_format($total_protect20); ?></td>
 					<td><?php echo compute_percent($total_protect20,$total_protect_all); ?></td>		
-				</tr>				
+				</tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container17" class="container"></div>
+  	</td>
+</tr>				
 			</table>	
 			<hr class="hr1">		
-			<div id="btn_printout"><a href="report/index/1/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<div id="btn_printout"><a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 
 		</div><!--section4-->
 		 <p class="page-break"></p>
 		 <h3><a href="javascript:void(0);">ส่วนที่ 5 : การฉีดอิมมูโนโกลบุลินและวัคซีนในครั้งนี้</a></h3>
 		<div id="section5">
-			<h6>ตารางที่ 5  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการฉีดอิมมูโนโกลบุลินและวัคซีน </h6>
+			<h6>ตารางที่ 5  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการฉีดอิมมูโนโกลบุลินและวัคซีน  <a href="" class="excel"></a></h6>
 			<table class="tbreport">
 				<tr>
 					<th>การฉีดอิมมูโนโกลบุลินและวัคซีน</th>
 					<th>จำนวน (N=<?php echo $total_n;  ?>)</th>
 					<th>ร้อยละ</th>
 				</tr>
-				<tr ><td colspan="5"><strong>อิมมูโนโกลบุลิน (RIG)</strong></td></tr>
+				<tr ><td colspan="5"><strong>อิมมูโนโกลบุลิน (RIG)</strong>
+						<input type="hidden" name="render" value="container18">
+						<button class="bar-chart img" name="bar"></button>
+						<button class="column-chart img" name="column"></button>
+    					<button class="pie-chart img" name="pie"></button>					
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ไม่ฉีด</td>
 					<td><?php echo number_format($total_rig10);?></td>
@@ -536,7 +777,17 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_rig00);?></td>
 					<td><?php echo number_format($total_rig00);?></td>		
 				</tr>
-				<tr ><td colspan="3"><strong>ชนิดของอิมมูโนโกลบูลิน (RIG) (n=<? echo $total_rig_all; ?>)</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container18" class="container"></div>
+  	</td>
+</tr>					
+				<tr ><td colspan="3"><strong>ชนิดของอิมมูโนโกลบูลิน (RIG) </strong><strong> (n=<? echo $total_rig_all; ?>)</strong>
+						<input type="hidden" name="render" value="container19">
+						<button class="bar-chart img" name="bar"></button>
+						<button class="column-chart img" name="column"></button>
+    					<button class="pie-chart img" name="pie" ></button>					
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ERIG</td>
 					<td><?php echo number_format($total_rig21);?></td>
@@ -552,7 +803,19 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_rig20);?></td>
 					<td><?php echo compute_percent($total_rig20,$total_rig_all); ?></td>			
 				</tr>
-				<tr ><td colspan="3"><strong>อาการหลังฉีดอิมมูโกลบูลิน (RIG) (n=<?php echo number_format($total_afterrig_all) ?>)</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container19" class="container"></div>
+  	</td>
+</tr>					
+						
+				<tr ><td colspan="3"><strong>อาการหลังฉีดอิมมูโกลบูลิน (RIG) </strong><strong>(n=<?php echo number_format($total_afterrig_all) ?>)</strong>
+						<input type="hidden" name="render" value="container20">
+						<button class="bar-chart img" name="bar"></button>
+						<button class="column-chart img" name="column"></button>
+    					<button class="pie-chart img" name="pie"></button>
+    										
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ไม่แพ้</td>
 					<td><?php echo number_format($total_afterrig1);?></td>
@@ -568,7 +831,18 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_afterrig0);?></td>
 					<td><?php echo compute_percent($total_afterrig0,$total_afterrig_all); ?></td>	
 				</tr>
-				<tr ><td colspan="3"><strong>อาการแพ้อิมมูโนโกลบูลิน (n= <?php echo number_format($total_detail) ?>)</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container20" class="container"></div>
+  	</td>
+</tr>					
+		
+				<tr><td colspan="3"><strong>อาการแพ้อิมมูโนโกลบูลิน </strong><strong>(n= <?php echo number_format($total_detail) ?>)</strong>
+						<input type="hidden" name="render" value="container21">
+						<button class="bar-chart img" name="bar" ></button>
+						<button class="column-chart img" name="column"></button>
+    					<button class="pie-chart img" name="pie"></button>					
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">บวมแดง</td>
 					<td><?php echo number_format($total_detail1);?></td>
@@ -609,22 +883,37 @@ $(document).ready(function(){
 					<td><?php echo number_format($total_detailno);?></td>
 					<td><?php echo compute_percent($total_detailno,$total_detail); ?></td>		
 				</tr>
-				<tr ><td colspan="3"><strong>ระยะเวลาที่มีอาการแพ้อิมมูโนโกลบุลิน (n= <?php echo number_format($total_longfeel); ?>)</strong></td></tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container21" class="container"></div>
+  	</td>
+</tr>	
+				<tr ><td colspan="3"><strong>ระยะเวลาที่มีอาการแพ้อิมมูโนโกลบุลิน </strong><strong>(n= <?php echo number_format($total_longfeel); ?>)</strong>
+						<input type="hidden" name="render" value="container22">
+						<button class="bar-chart img" name="bar"></button>
+						<button class="column-chart img" name="column"></button>
+    					<button class="pie-chart img" name="pie" ></button>
+				</td></tr>
 				<tr class="para1">
 					<td class="pad-left">ภายใน 2 ชั่วโมง</td>
 					<td><?php echo number_format($total_longfeel1);?></td>
-					<td><?php echo compute_percent($total_longfeel1,$total_detail); ?></td>		
+					<td><?php echo compute_percent($total_longfeel1,$total_longfeel); ?></td>		
 				</tr>
 				<tr class="para1">
 					<td class="pad-left">หลัง 2 ชั่วโมง</td>
 					<td><?php echo number_format($total_longfeel2);?></td>
-					<td><?php echo compute_percent($total_longfeel2,$total_detail); ?></td>		
+					<td><?php echo compute_percent($total_longfeel2,$total_longfeel); ?></td>		
 				</tr>	
 				<tr class="para1">
 					<td class="pad-left">ไม่ระบุ</td>
 					<td><?php echo number_format($total_longfeel0);?></td>
-					<td><?php echo compute_percent($total_longfeel0,$total_detail); ?></td>		
+					<td><?php echo compute_percent($total_longfeel0,$total_longfeel); ?></td>		
 				</tr>
+<tr class="tr-graph">
+  	<td colspan="3"><button name="close" title="close" value="close" class="btn btn_close">x</button>
+  		<div id="container22" class="container"></div>
+  	</td>
+</tr>
 			</table>	
 			<hr class="hr1">		
 			<div id="reference"><?php echo $reference?></div>			
@@ -636,5 +925,5 @@ $(document).ready(function(){
 			</div>
 		</div><!--section5-->
 	</div><!-- multicordion -->
-<? endif; ?>
 </div><!--report -->
+<?php endif; ?>

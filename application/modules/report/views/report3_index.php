@@ -1,6 +1,6 @@
 <div id="title">ข้อมูลการสัมผัสโรค - รายไตรมาส</div>
 <div id="search">
-<form action="report/index/3" method="post" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/index/3" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
 <table class="tb_patient1">
 <?php require 'include/conditionreport.php'; ?>
 <tr><th>ปีที่สัมผัสโรค</th>
@@ -24,7 +24,7 @@
 		<tr><td colspan="6" style="text-align:right;">หน่วย:คน</td></tr>
 		<tr>
 			<th rowspan="2">ข้อมูล</th>
-			<th colspan="5">ไตรมาส (N=70,305)</th>
+			<th colspan="5">ไตรมาส (N=<?php echo number_format($total_n); ?>)</th>
 		</tr>
 		<tr>
 			<th>1</th>
@@ -37,167 +37,25 @@
 		<tbody>
 		<tr class="para1">
 			<td align="left"><strong>ผู้สัมผัสโรคพิษสุนัขบ้า</strong></td>
-			<td>34,335</td>
-			<td>15,437</td>
-			<td>4,023</td>
-			<td>15,623</td>
-			<td>69,418</td>
+			<td><? echo number_format($q1) ?></td>
+			<td><? echo number_format($q2) ?></td>
+			<td><? echo number_format($q3) ?></td>
+			<td><? echo number_format($q4) ?></td>
+			<td><? echo number_format($total_n); ?></td>
 		</tr>
-		<tr ><td colspan="6"><strong>เพศ</strong></td></tr>
-		<tr class="para1">
-			<td class="pad-left">ชาย</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">หญิง</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">ไม่ระบุ</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
-		<tr ><td colspan="6"><strong>กลุ่มอายุ</strong></td></tr>
-		<tr class="para1">
-			<td class="pad-left">ต่ำกว่า 1 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>												
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">1-5 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">6-10 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">11-15 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">16-25 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">26-35 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">36-45 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">46-55 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">56-65 ปี</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">66 ปีขึ้นไป</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>	
-		<tr class="para1">
-			<td class="pad-left">ไม่ระบุ</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>
-		<tr ><td colspan="6"><strong>สถานที่สัมผัสโรค</strong></td></tr>	
-		<tr class="para1">
-			<td class="pad-left">เขต กทม.</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">เขตเมืองพัทยา</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">เขตเทศบาล</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">เขต อบต.</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>
-		<tr class="para1">
-			<td class="pad-left">ไม่ระบุ</td>	
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>
-			<td>0</td>		
-		</tr>	
+		<? foreach($module as $field =>$name): ?>
+			<tr ><td colspan="6"><strong><? echo $name; ?></strong></td></tr>
+			<? foreach(${$field} as $key =>$i): ?>
+			<tr class="para1">
+				<td class="pad-left"><? echo $i ?></td>		
+				<? for($j=1;$j<5;$j++): ?>
+					<td><? echo number_format(${$field.$key.$j}) ?><p class="percentage">(<?php echo compute_percent(${$field.$key.$j},${$field.$key}); ?>)</p></td>
+				<? endfor; ?>
+				<td><? echo number_format(${$field.$key}); ?></td>
+			</tr>
+			<? endforeach; ?>
+		<? endforeach; ?>
+	
 		<tr ><td colspan="6"><strong>ชนิดสัตว์นำโรค</strong></td></tr>	
 		<tr class="para1">
 			<td class="pad-left">สุนัข</td>	

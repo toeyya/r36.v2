@@ -1,4 +1,4 @@
-<div class="alert alert-warning"><span class="label label-warning">ไม่สามารถเพิ่มข้อมูลได้</span> กรุณาปิดเคส จึงสามารถเพิ่มข้อมูลผู้สัมผัสโรครายต่อไปได้</div>
+<div class="alert alert-warning"><span class="label label-warning">ไม่สามารถเพิ่มข้อมูลได้</span> กรุณาปิดเคสที่อายุ มากกว่า 90 วัน จึงสามารถเพิ่มรายการได้</div>
 <table class="tb_search_Rabies1">
 	<tr>
     <th>วันที่สัมผัสโรค</th>
@@ -6,6 +6,7 @@
 	<th>ครั้งที่สัมผัสโรค</th>
 	<th>ชื่อ-นามสกุล</th>
 	<th>บัตรประชาชน/passport</th>
+	<th>จำนวนเข็ม</th>
 	<th></th>
 	</tr>
 	<?php 
@@ -16,6 +17,7 @@
 		<td><?php echo $item['hn_no'] ?></td>
 		<td><?php echo $item['firstname'].' '.$item['surname']?></td>
 		<td><?php echo $item['idcard'] ?></td>
+		<td><span class="syringe<?php echo $item['total_vaccine']?> syringe" title="<?php echo $item['total_vaccine'] ?> เข็ม"> </span></td>
 		<td><a href="inform/form/<?php echo $item['id'] ?>/<?php echo $item['information_historyid'] ?>" class="btn_edit vtip" target="_blank"></a>			
 		</td>
 	</tr>

@@ -24,7 +24,6 @@
                      			<li><a href="report/index/6">ข้อมูลรายจังหวัด   </a></li>
                      			<li><a href="report/index/7">ข้อมูลผู้เสียชีวิต   </a></li>
                      			<li><a href="report/index/8">ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบุลิน </a></li>
-
                      		</ul>
                      </li>                    
                      <li><a href="report/analyze/index/1">วิเคราะห์ตามปัจจัยต่างๆ</a></li>

@@ -10,7 +10,7 @@ class R36_Controller extends Controller
 			redirect('home');
 		}
 		//set theme
-		$this->template->set_theme('r36');		
+		$this->template->set_theme('R36');		
 		//set layout
 		$this->template->set_layout('layout');		
 		//set title

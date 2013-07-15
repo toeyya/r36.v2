@@ -8,10 +8,9 @@ $(document).ready(function(){
 			url:'<?php echo base_url() ?>district/getAmphur',
 			data:'name=hospital_amphur_id&ref1='+province_id,
 			success:function(data){
-				$('#input_amphur').html(data);
-				//$('select[name=hospital_district_id] option:[value=""]').attr('selected',true);
+				$('#input_amphur').html(data);				
 				$('#input_hospital').html('<select name="hospitalcode" class="styled-select" id="hospitalcode"><option value="">-โปรดเลือก-</option></select>');
-				//$('#input_district').html('<select name="hospital_district_id" class="input_box_patient" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');
+				$('#input_district').html('<select name="hospital_district_id" class="styled-select" id="hospital_district_id"><option value="">-โปรดเลือก-</option></select>');					
 			}
 		});
 	});
@@ -45,7 +44,8 @@ $(document).ready(function(){
 		}else{
 			var idcard=$('input[name=idcard]').val();
 		}
-		if(idcard.length==13){
+		$.colorbox({width:"70%", height:"80%", inline:true,href:"#load"});
+		if(idcard.length==13){			
 			$.ajax({
 				url:'<?php echo base_url() ?>inform/closecase_person/'+idcard,
 				dataType:'json',
@@ -54,34 +54,41 @@ $(document).ready(function(){
 						$('input[name=closecase_person]').val(data.chk);					  											
 					 	$('#closecase_person').html(data.tb);
 					 	$.colorbox({width:"70%", height:"80%", inline:true,href:"#closecase_person"});												  
+					}else{
+						$.colorbox.close();
 					}
 				}				
 			})
 		}	
 		
 	}
-	$('name=[ifm]').attr('src','#');
+	$('#ifm').attr('src','#');
+	$('#loading').hide();
 	var request;
 	function chk_closecase(){
 		$('.btn_add').attr('disabled',true);		
-		$.colorbox({width:"30%", height:"30%", inline:true,href:"#loading",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}
-																																											});							
+		$.colorbox({width:"70%", height:"80%", inline:true,href:"#load",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}																																											});							
 		request=$.ajax({
 			url:'<?php echo base_url() ?>inform/closecase/true',
 			dataType:'json',
 			success:function(data){
 				$('.btn_add').removeAttr('disabled');	
 				$('input[name=closecase]').val(data.chk);
-				if(data.chk=="yes"){								  				  	
-				  	$('name=[ifm]').attr('src','inform/index');											
-				  	$.colorbox({width:"70%", height:"80%", inline:true,href:"#closecase",onClosed:function(){request.abort();location.reload();}});					 						
+				if(data.chk=="yes"){
+					//$('#ifm').attr('src','inform/closecase');													  				  											
+				  	/*$.colorbox({width:"70%", height:"80%", inline:true,href:"#closecase"
+				  	,onLoad:function(){$('#loading').show();}
+				  	,onComplete:function(){$('#loading').hide();}
+				  	,onClosed:function(){request.abort();location.reload();}});	*/
+				  	
+				  	$.colorbox({iframe:true, width:"70%", height:"80%", href:'inform/closecase'})
+			 						
 				}else{
 					$.colorbox.close();
 				}						
 			}			
-		})
-			
-	}	
+		})			
+	}		
 
 	$('.btn_submit').click(function(e){
 		 $('name=[ifm]').attr('src','#');
@@ -99,7 +106,7 @@ $(document).ready(function(){
 		$('#form1').attr('action','inform/addNew');	
 		$('input[name=action]').val('');	
 		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้				
-				//chk_closecase(); // แสดงรายการที่ยังไมได้ปิดเคส											
+				chk_closecase(); // แสดงรายการที่ยังไมได้ปิดเคส											
 				$("#hospitalprovince option").filter(function(){return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
 				$('#hospital_amphur_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_amphur_id]').val()+'">'+$('input[name=amphur_name]').val()+'</option>');
 				$('#hospital_district_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_district_id]').val()+'">'+$('input[name=district_name]').val()+'</option>');
@@ -111,7 +118,6 @@ $(document).ready(function(){
 		 	submitHandler:function(){
 		 	  chk_closecase_person();
 		 	  var chk_p=$('input[name=closecase_person]').val();
-		 	  //alert(chk_p);
 		 		if(chk_p==''){
 		 	  		document.form1.submit();
 		 	 	}		 				 	
@@ -134,16 +140,13 @@ $(document).ready(function(){
 		 			required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true,	 		
 		 			remote:{
 		 				url:'<?php echo base_url(); ?>users/chkidcard/patient',
-		 				type:'get',
-				        data: {
-				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
-				          digit_last:function(){return $('#cardW4').val(); }				          
+				        data:{ idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
+				          	   digit_last:function(){return $('#cardW4').val(); }				          
 				        }
 		 			}		 		
 		 		}       			 		
 		 	},
-		 	messages:{
-		 		
+		 	messages:{		 		
 		 		hospital_province_id:" กรุณาระบุ",hospital_amphur_id:" กรุณาระบุ",hospital_district_id:" กรุณาระบุ",hospitalcode:" กรุณาระบุ",
 		 		hn:" กรุณาระบุ",idcard:"กรุณาระบุ",
 		 		cardW0:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
@@ -177,6 +180,20 @@ $(document).ready(function(){
 		$('input[name=search_adv]').trigger('click');
 	}
 	
+	$('.btn_delete').click(function(){
+		if(confirm('ยืนยันการลบข้อมูลนี้ ?')){	
+			var btn_del =$(this);		
+			var historyid= $(this).prev().val();
+			var information_id = $(this).prev().prev().val();
+			$.ajax({
+				data:'id='+information_id+'&historyid='+historyid,
+				url:'<? echo base_url();?>/inform/delete',
+				success:function(){
+					btn_del.closest("tr").fadeOut('slow');
+				}
+			})
+		}
+	})
 
 	
 });
@@ -352,6 +369,7 @@ $(document).ready(function(){
             <th>บัตรประชาชน/เลขที่ passport</th>
             <th>ชื่อ-นามสกุล</th>
             <th>โรงพยาบาล</th>
+            <th>วันที่สัมผัสโรค</th>
             <th>จำนวนวัคซีน(เข็ม)</th>
             <th>การกระทำ</th>
           </tr>                     	
@@ -365,13 +383,16 @@ $(document).ready(function(){
                 <td><?php echo $rec['idcard'] ?></td>
 				<td><?php echo $rec['firstname'].' '.$rec['surname'];?></td>
 				<td><?php echo $rec['hospital_name']?></td>
+				<td><?php echo cld_my2date($rec['datetouch'])?></td>
                 <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
             	<td><a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" class="btn_view vtip" target="_blank"></a> 			
 				<?php if($rec['closecase']=="1" || $rec['closecase']==""): ?>
 				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
 					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>"  class="btn_edit vtip" target="_blank" ></a>
-					<a title="ลบ" href="inform/delete/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>" class="btn_delete"  onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a>	
-				 <?   }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03') && ($this->session->userdata('R36_HOSPITAL')==$rec['hospitalcode'])){ ?>											
+					<input type="hidden" name="information_id" value="<?php echo $rec['id'] ?>" />
+					<input type="hidden" name="historyid" value="<?php echo $rec['historyid'] ?>"/>
+					<a title="ลบ"   href="javascript:void(0)" class="btn_delete vtip"></a>	
+				 <?   }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03')){ ?>											
 						<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>								
 				 <?   } ?>
 					<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine"  class="btn_syring vtip"  target="_blank"></a>
@@ -383,14 +404,13 @@ $(document).ready(function(){
 			 <?php endif; ?>			    
 </table>	
 <?php echo (isset($pagination))? $pagination:''; ?>
-
+<div id="loading" style="padding-top:20%;padding-left:40%"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div>
 <div style="display:none;">
 <div id="closecase" style="height:100%;width:100%;">
-	<iframe name="ifm"  src="#" ALIGN="top" HSPACE="0" VSPACE="0" frameborder="0" style="height:100%;width:100%;" ></iframe>
+	<iframe name="ifm"  id="ifm" src="#" ALIGN="top" HSPACE="0" VSPACE="0" frameborder="0" style="height:100%;width:100%;" ></iframe>
 </div>
 </div>
-
 <div style="display:none;"><div id="closecase_person"></div></div>
-<div style="display:none;"><div id="loading" style="text-align:center;margin-top:15%;"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div></div>
+<div style="display:none;"><div id="load" style="padding-top:20%;padding-left:40%"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div></div>
 
 

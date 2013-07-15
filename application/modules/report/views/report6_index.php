@@ -1,6 +1,24 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.btn_submit').click(function(){			
+		if($('#area').val()==''){
+			alert('กรุณาเลือกรูปแบบเขตความรับผิดชอบในการออกรายงาน');
+			return false;
+		}
+		if($('#group option:selected').val()==''){
+			alert('กรุณาเลือกข้อมูลรายเขต');
+			return false;
+		}
+		if($('#province option:selected').val()==''){
+			alert('กรุณาเลือกจังหวัดในการออกรายงาน');
+			return false;
+		}
+	});
+})
+</script>
 <div id="title">ข้อมูลรายจังหวัด</div>
 <div id="search">
-<form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_Analyze5(this);">
 <table  class="tb_patient1">
   <tr>
 	<th>เขตความรับผิดชอบ</th>
@@ -35,7 +53,7 @@
 		<?php if(!empty($_GET['province'])){
 		echo form_dropdown('province',get_option('province_id','province_name','n_province'),$_GET['province'],'class="styled-select" id="prvince"','ทั้งหมด');
 		}else{ ?>
-		<span id="provincelist"><select name="province" class="styled-select widthselect"><option value="">ทั้งหมด</option></select></span>		
+		<span id="provincelist"><select name="province" class="styled-select widthselect" id="province"><option value="">ทั้งหมด</option></select></span>		
 		<? } ?>			
 	</td>
   	</tr>

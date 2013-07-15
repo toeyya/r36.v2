@@ -34,7 +34,7 @@ class Inform extends R36_Controller
 			$tb.= '</tr>';
 			foreach($result as $item){
 				$tb.= '<tr>';
-				$tb.= '<td>'.$item['datetouch'].'</td>';
+				$tb.= '<td>'.cld_my2date($item['datetouch']).'</td>';
 				$tb.= '<td>'.$item['hn'].'</td>';
 				$tb.= '<td>'.$item['hn_no'].'</td>';
 				$tb.= '<td>'.$item['firstname'].' '.$item['surname'].'</td>';
@@ -53,61 +53,35 @@ class Inform extends R36_Controller
 		
 	}
 	function closecase($chk=FALSE)
-	{
-	
+	{	
 		$hospitalcode =	$this->session->userdata('R36_HOSPITAL');			 	
-		$result=$this->inform->select("id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch,vaccine_date ")
+		$result=$this->inform->select("id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch,vaccine_date,total_vaccine")
 							 ->join("LEFT JOIN n_history ON historyid=information_historyid
 									 LEFT JOIN (select information_id,vaccine_date from n_vaccine 
 			  			 			 WHERE datediff(now(),vaccine_date) >=90 
 			  			             ORDER BY vaccine_date  limit 1)vaccine ON vaccine.information_id=n_information.id							 			
 							 ")->where("hospitalcode = $hospitalcode and closecase=1")
-							 ->sort('')->order("n_information.datetouch asc")->get();					
-		/*$data['chk']=($result) ?"yes":"no";	
+							 ->sort('')->order("n_information.datetouch asc")->limit(20)->get();					
+		$data['result'] = $result;
+		$data['chk']=($result) ?"yes":"no";	
 		if($chk){
 			echo json_encode($data);
 			return true;
-		}*/
-		var_dump($result);exit;
-		$data['result'] = $result;		
+		}			
 		$data['pagination']=$this->inform->pagination();
 		$this->template->set_layout('blank');
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
-	{				
-		
+	{			
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
 				$where ="";
-				
-				if(!empty($_GET['statusid'])=="1"){
+				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
+				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
+				if(@$_GET['statusid']=="1"){
 					$_GET['idcard']=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
 				}
-							
-				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
-					$where .= " AND  (hospitalcode='".$_GET['hospitalcode']."' and hospitalprovince='".$_GET['hospital_province_id']."' 
-									  and hospitalamphur='".$_GET['hospital_amphur_id']."' and hospital_district_id='".$_GET['hospital_district_id']."')";
-				}else{
-					$where.=(!empty($_GET['hospitalcode']))? " and hospitalcode='".$_GET['hospitalcode']."'":"";
-					$where.=(!empty($_GET['hospital_province_id']))? " and hospitalprovince='".$_GET['hospital_province_id']."'":"";
-					$where.=(!empty($_GET['hospital_amphur_id']))? " and hospitalamphur='".$_GET['hospital_amphur_id']."'":"";
-					$where.=(!empty($_GET['hospital_district_id']))? " and hospital_district_id='".$_GET['hospital_district_id']."'":"";					
-				}
-				if(!empty($_GET['enddate']) && !empty($_GET['startdate'])){
-					$where.=" and datetouch BETWEEN '".date2DB($_GET['startdate'])."' AND  '".date2DB($_GET['enddate'])."' ";
-				}else if(!empty($_GET['enddate'])){
-					$where.=" and datetouch BETWEEN '".date2DB($_GET['startdate'])."' and '".date2DB($_GET['startdate'])."'";	
-				}
-		
-				if(!empty($_GET['report_startdate']) && !empty($_GET['report_enddate'])){
-					$startdate=date2DB($_GET['report_startdate']);		
-					$enddate=date2DB($_GET['report_enddate']);
-					$where.=" and reportdate BETWEEN '".$startdate."' and '".$enddate."'";
-				}elseif(!empty($_GET['report_startdate'])){
-						$where.=" and reportdate BETWEEN '".$startdate."' and '".$startdate."'";		
-				}
-										
 				if(!empty($_GET['hn']) && !empty($_GET['idcard']))	{
 					$where.="AND  hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
 				}else{
@@ -119,19 +93,51 @@ class Inform extends R36_Controller
 					}elseif(!empty($_GET['idcard'])){
 						$where.=" AND (idcard='".$_GET['idcard']."' AND statusid='".$_GET['statusid']."') AND idcard!='' and hospitalcode<>''";
 					}
+				}							
+								
+				if(!empty($_GET['hospital_province_id']) && !empty($_GET['hospital_amphur_id']) && !empty($_GET['hospital_district_id'])){
+					$where .= " AND  (hospitalcode='".$_GET['hospitalcode']."' and hospitalprovince='".$_GET['hospital_province_id']."' 
+									  and hospitalamphur='".$_GET['hospital_amphur_id']."' and hospital_district_id='".$_GET['hospital_district_id']."')";
+				}else{
+					$where.=(!empty($_GET['hospitalcode']))? " and hospitalcode='".$_GET['hospitalcode']."'":"";
+					$where.=(!empty($_GET['hospital_province_id']))? " and hospitalprovince='".$_GET['hospital_province_id']."'":"";
+					$where.=(!empty($_GET['hospital_amphur_id']))? " and hospitalamphur='".$_GET['hospital_amphur_id']."'":"";
+					$where.=(!empty($_GET['hospital_district_id']))? " and hospital_district_id='".$_GET['hospital_district_id']."'":"";					
 				}
-				$where =(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
+				if(!empty($_GET['enddate']) && !empty($_GET['startdate'])){
+					$where.=" and datetouch BETWEEN '".cld_date2my($_GET['startdate'])."' AND  '".cld_date2my($_GET['enddate'])."' ";
+				}else{
+					if(!empty($_GET['startdate'])){
+						$where.=" and datetouch = '".cld_date2my($_GET['startdate'])."'";	
+					}elseif(!empty($_GET['enddate'])){
+						$where.=" and datetouch = '".cld_date2my($_GET['enddate'])."'";	
+					}					
+				} 
+		
+				if(!empty($_GET['report_startdate']) && !empty($_GET['report_enddate'])){
+					$where.=" and reportdate BETWEEN '".cld_date2my($_GET['report_startdate'])."' and '".cld_date2my($_GET['report_enddate'])."'";
+				}else{
+					if(!empty($_GET['report_startdate'])){
+						$where.=" and reportdate = '".cld_date2my($_GET['report_startdate'])."'";		
+					}elseif(!empty($_GET['report_enddate'])){
+						$where.=" and reportdate = '".cld_date2my($_GET['report_enddate'])."'";
+					}					
+				}
+
+										
+
+				$where .=(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['total_vaccine'])){
 					$total_vaccine=implode(',',$_GET['total_vaccine']);
 					$where.="  AND total_vaccine in(".$total_vaccine.")";
 				}
-				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
-				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
+
 		}// $_GET['action]
 		
 		if(!empty($where))
 		{
-			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id,hospital_name,in_out,closecase									
+			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id
+				 ,hospital_name,in_out,closecase,datetouch									
 				FROM n_history
 				INNER JOIN n_information ON n_history.historyid=n_information.information_historyid
 				INNER JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
@@ -388,15 +394,24 @@ class Inform extends R36_Controller
 			}
 			echo json_encode($data);	
 	}
-	function delete($id,$historyid){
-		if($id && $historyid){
+	function delete($id=FALSE,$historyid=FALSE){
+		if(!empty($_GET['id']) && !empty($_GET['historyid'])){
+			$id = $_GET['id'];
+			$historyid = $_GET['historyid'];
+		}
+		if($id && $historyid){					
 			$this->inform->delete($id);
-			$this->history->delete("historyid",$historyid);
+			$idcard=$this->history->get_one("historyid",$historyid);
+			if($idcard){
+				$cnt=$this->db->GetOne("select count(idcard) as cnt from n_history inner join n_information on historyid = information_historyid where idcard= ? ",$idcard);
+				if($cnt=="1"){
+					$this->history->delete("historyid",$historyid);
+				}		
+			}						
 			$this->vaccine->delete("information_id",$id);
 			set_notify('success', DELETE_DATA_COMPLETE);				
 		}
-		redirect('inform/index');
-		
+		if(empty($_GET)){redirect('inform/index');}				
 	}
 	function checkDatetouch()
 	{

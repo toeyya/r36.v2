@@ -14,7 +14,7 @@
 <div class="btn_inline"><ul><li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li></ul></div>	
 </form>
 </div>
-<?php if(!empty($cond)):?>
+<?php if($cond): ?>
 <div id="report">
 		<div id="title">				  
 		<p>รายงานผู้สัมผัสโรครายเดือน</p>
@@ -598,4 +598,4 @@
 		<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 	</div>
 </div>
-<?php endif; ?>
+<? endif; ?>
