@@ -61,7 +61,6 @@ class Dead extends R36_Controller
 		$_POST['legbiteblood']=@$_POST['leg_bite_blood']." ".@$_POST['leg_bite_noblood'].@$_POST['leg_claw_blood']." ".@$_POST['leg_claw_noblood'].@$_POST['leg_bite_blood']." ".@$_POST['leg_bite_noblood'];
 		$_POST['feetbiteblood']=@$_POST['feet_bite_blood']." ".@$_POST['feet_bite_noblood'].@$_POST['feet_claw_blood']." ".@$_POST['feet_claw_noblood'].@$_POST['feet_bite_blood']." ".@$_POST['feet_bite_noblood'];
 		$_POST['idcard'] = @$_POST['cardW0'].@$_POST['cardW1'].@$_POST['cardW2'].@$_POST['cardW3'].@$_POST['cardW4'];
-		
 		$_POST['exp_userig']=cld_date2my($_POST['exp_userig']);
 		$_POST['exp_vaccine']=cld_date2my($_POST['exp_vaccine']);
 		$_POST['brain_tumordate']=cld_date2my($_POST['brain_tumordate']);
