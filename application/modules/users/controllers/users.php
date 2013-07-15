@@ -71,10 +71,10 @@ class Users extends Public_Controller
 	function confirm_email($id,$c)
 	{	
 		$id=clean_url($id);
-		$result=$this->db->GetOne("SELECT uid FROM n_user WHERE uid= ? and gen_id = ? ",array($id,$c));
-		if($result){
+		$data['result']=$this->db->GetRow("SELECT uid,confirm_admin,confirm_province FROM n_user WHERE uid= ? and gen_id = ? ",array($id,$c));
+		if($data['result']['uid']){
 			$this->user->save(array('uid'=>$id,'confirm_email'=>'1'));
-			$this->template->build('confirm_email');
+			$this->template->build('confirm_email',$data);
 		}		
 	}
 	function sendmail()
@@ -151,7 +151,7 @@ class Users extends Public_Controller
 		}else{
 			$rs = $this->user->get_one("uid","usermail",$_GET['usermail']);
 		}		
-		echo ($rs) ? "false" :"true";
+		echo (!empty($rs)) ? "false" :"true";
 	}
 	function notice_email(){
 		$this->template->build('notice_email');

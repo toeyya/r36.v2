@@ -9,6 +9,7 @@ class Users extends R36_Controller
 		$this->load->model('hospital/hospital_model','hospital');
 		$this->load->model('inform/vaccine_model','vaccine');
 		$this->user->primary_key("uid");
+		$this->template->append_metadata(js_idcard());
 	}
 	function index($id=FALSE)
 	{ //$this->db->debug=TRUE;
@@ -42,11 +43,27 @@ class Users extends R36_Controller
 			}else if($_POST['userpostion']!="02"){
 				$_POST['userprovince']="";
 			}
-			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];		
-			$this->user->save($_POST);
+			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];					
+			$_POST['gen_id']=generate_password(20);
+			$id=$this->user->save($_POST);
 			set_notify('success',SAVE_DATA_COMPLETE);
+			if(empty($_POST['confirm_email'])){							   
+			   	$subject = "ยืนยันการลงทะเบียน(ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
+			    $message ='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
+				$message.='<hr>';
+				$message.='<p>เรียนคุณ'.$_POST['userfirstname'].' '.$_POST['usersurname'].', </p>';
+				$message.='<p>ขอบคุณสำหรับการลงทะเบียนค่ะ  ข้อมูลบัญชีของคุณจะใช้ได้เมื่อ คุณยืนยันการลงทะเบียน/p>';
+				$message.='<p>กรุณาคลิกลิงค์ด้านล่างเพื่อยืนยันการลงทะเบียน</p>';
+				$message.='<a href="'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'">'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'</a>';
+				$redirect="users/notice_email";
+				$address=$_POST['usermail'];		
+				phpmail($subject,$address,$message,$redirect);				 
+			}else{
+				redirect('users/r36/users/index/'.$_POST['uid']);
+			}			
+			
 		}
-		redirect('users/r36/users/index/'.$_POST['uid']);
+		
 	}
 	
 	

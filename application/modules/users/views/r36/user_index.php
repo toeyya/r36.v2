@@ -62,8 +62,6 @@ var ref1,ref2,ref3;
 		 		}			 					
 				,userfirstname:"required",usersurname:"required"
 				,userprovince:{ required: {depends: function(element) {return $('select[name=userposition] option:selected').val() =='02' }}}
-				//,userprovince2:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="03"}}}
-				//,useramphur:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="03"}}}
 				,h_province:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="05";}}}
 				,h_amphur:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="05";}}}
 				,h_district:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="05";}}}
@@ -86,8 +84,6 @@ var ref1,ref2,ref3;
 		 		,cardW4:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข",remote :" ระบุไม่ถูกต้อง หรือมีบัตรประชาชนนี้แล้วในระบบ"}	
 				,userfirstname:" กรุณาระบุ",usersurname:" กรุณาระบุด้วย"
 				,userprovince:" กรุณาระบุ"
-				//,useramphur:" กรุณาระบุด้วยค่ะ",userdistrict:" กรุณาระบุด้วยค่ะ"
-				//,userprovince2:" กรุณาระบุด้วยค่ะ"
 				,usermail:{required:" กรุณาระบุ",email:" ระบุไม่ถูกต้อง",remote:"มีอีเมล์นี้แล้วในระบบ"}
 				,h_province:" กรุณาระบุ",h_amphur:" กรุณาระบุ",h_district:"กรุณาระบุ",userhospital:" กรุณาระบุ"
 				,userpassword:" กรุณาระบุ"
@@ -219,6 +215,7 @@ var ref1,ref2,ref3;
   <tr>
     <th>ยืนยันรหัสผ่าน  <span class="alertred">*</span></th>
     <td><input type="password" name="repassword" class="input_box_patient " value="<?php echo (empty($rs['userpassword']))?$gen_pass: @$rs['userpassword'];?>">
+       <input type="hidden" name="confirm_email" value="<? echo $rs['confirm_email'] ?>">
        <input type="hidden" name="uid" value="<?php echo $rs['uid'] ?>">
        <input type="hidden" name="updated" value="<?php echo date('Y-m-d H:i:s') ?>">
     </td>

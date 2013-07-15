@@ -360,7 +360,7 @@ class Report extends R36_Controller
 			$rs=array();			
 			$total1 =array_fill(0,4,0);									
 			$sql="SELECT count(historyid) as cnt,washbeforedetail FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  WHERE ".$cond1." AND washbefore='2'  and  washbeforedetail<>'0'   GROUP BY washbeforedetail ORDER BY washbeforedetail asc";
+				  WHERE ".$cond." AND washbefore='2'  and  washbeforedetail<>'0'   GROUP BY washbeforedetail ORDER BY washbeforedetail asc";
 		    //echo $sql;
 		    $result = $this->db->Execute($sql);						
 			foreach($result as $item){
@@ -387,7 +387,7 @@ class Report extends R36_Controller
 			
 			$rs=array();												
 			$sql="SELECT count(historyid) as cnt,putdrugdetail FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  WHERE ".$cond1." AND putdrug='2'   GROUP BY putdrugdetail ORDER BY putdrugdetail asc";
+				  WHERE ".$cond." AND putdrug='2'   GROUP BY putdrugdetail ORDER BY putdrugdetail asc";
 		    $result = $this->db->Execute($sql);						
 			foreach($result as $item){
 				$rs[$item['putdrugdetail']] = $item['cnt'];	
@@ -458,7 +458,7 @@ class Report extends R36_Controller
 			## อาการแพ้ rig
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
 			where  $cond1 and after_rigdetail1 ='1' AND after_rig='2'";
-			//echo $sql;exit;
+			echo $sql;exit;
 			$data['total_detail1'] = $this->db->GetOne($sql);
 			
 			$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid  
