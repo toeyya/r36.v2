@@ -61,6 +61,7 @@ $(document).ready(function(){
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
 	</div>
+	<div class="right"><button class="column-chart img" name="column"></button> <a href="" class="excel"></a></div>
 	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม <?php echo $head; ?>และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>	
 	<table class="tbreport">
 		<?php $row=(!empty($minordetail_head))? "4":"3"; ?>

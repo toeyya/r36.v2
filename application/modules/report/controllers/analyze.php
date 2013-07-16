@@ -28,50 +28,55 @@ class Analyze extends R36_Controller
 		 $data['texttype']="ทั้งหมด";
 		 $data['textgroup'] = "ทั้งหมด";
 		 $type=array(1=>'จำแนกตามคนไข้ปัจจุบัน',2=>'จำแนกตามคนไข้ขาจร');	
-		 $cond ="1=1";
-		  if(!empty($_GET['province'])){
-		  	 	$col="hospitalprovince";	
-		  	 	if($no=="6") $col="n_amphur.province_id";
-			  	$cond .= " AND ".$col." = '".$_GET['province']."'";
-				$data['province_id'] = $_GET['province'];
-				
-				$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);
-				$cond = " AND hospitalprovince='".$_GET['province']."'";	
-		  }else{
-			  if(!empty($_GET['area']) && !empty($_GET['group']))
-			  {$provinceid= "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];  
-			  $cond .= " AND hospitalprovince IN (".$provinceid.")";			  	   
-			  	if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
-				}else{$data['textgroup'] = $_GET['group'];}	  	  
-			  }else if(!empty($_GET['area'])){
-			 	 // หมายถึงเลือกทั้งประเทศ ไม่ว่าจะเขตไหน			  	   					 					
-			 	 $data['textarea'] = $this->area->get_one("name","id",$_GET['area']);	  
-			  }			  	
-		  }			  
-  		 if(!empty($_GET['amphur'])){
-			  	$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."'";		
-				$data['textamphur']=$this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id= ? ",array($_GET['province'],$_GET['amphur']));
-		  }
-
-		  if(!empty($_GET['district'])){
-		  		$cond = " AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."' and hospitaldistrict='".$_GET['district']."'";
-				$data['textdistrict']=$this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district']));
-		  }		  
-		  if(!empty($_GET['hospital'])){
-		  		$cond = " AND hospitalcode='".$_GET['hospital']."'";
+		 $cond ="";
+		if(!empty($_GET['hospital'])){
+		  		$cond .= " 1=1  AND hospitalcode='".$_GET['hospital']."'";
 			  	$data['texthospital']=$this->hospital->get_one("hospital_name","hospital_code",$_GET['hospital']);
+		  }else{			  				  		 
+			  if(!empty($_GET['province'])){
+			  	 	$col="hospitalprovince";	
+			  	 	if($no=="6") $col="n_amphur.province_id";
+				  	$cond .=" 1=1 AND ".$col." = '".$_GET['province']."'";
+					$data['province_id'] = $_GET['province'];
+					
+			  }else{
+				  if(!empty($_GET['area']) && !empty($_GET['group'])){
+				  	$provinceid= "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];
+				  	$provinceid = $this->province->get($provinceid);
+					foreach($provinceid as $item){
+						$p_id[] = $item['province_id'];
+					}
+					$pid =implode(',',$p_id);					
+				  	$cond .= " 1=1 AND hospitalprovince IN (".$pid.")";			  	   
+ 	  
+				  }else if(!empty($_GET['area'])){
+				  		$cond="1=1";		  	   					 
+				 			  
+				  }	  	
+			  }	
+	  		 if(!empty($_GET['amphur'])){
+				  	$cond = " 1=1 AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."'";		
+					
+			  }
+			  if(!empty($_GET['district'])){
+			  		$cond = " 1=1 AND hospitalamphur='".$_GET['amphur']."' AND hospitalprovince='".$_GET['province']."' and hospitaldistrict='".$_GET['district']."'";
+					
+			  }		  
 		  }
-		  		  
+		$data['select_date_type']="";
+		$data['date_type'] ="";
 		if(!empty($_GET['year_start'])){
 				    $cond.= " AND year(datetouch) ='".$_GET['year_start']."'";	
 				    $data['textyear_start'] = $_GET['year_start'];
-					$data['date_type'] ="year(datetouch)";
+					$data['date_type'] ="year(datetouch),";
+					$data['select_date_type']="year(datetouch) as y,";
 		
 		}		  			  				  		    
 		if(!empty($_GET['year_report_start'])){
 				$cond.= " AND year(reportdate)='".$_GET['year_report_start']."'";
 				$data['textyear_start'] = $_GET['year_report_start'];
-				$data['date_type'] ="year(reportdate)";
+				$data['date_type'] ="year(reportdate),";
+				$data['select_date_type']="year(reportdate) as y,";
 		}  
 		 	 				  	  			  		   											   
 		    $data['cond']=$cond;
@@ -159,11 +164,11 @@ class Analyze extends R36_Controller
 		}
 		if($cond){
 											
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$field_minor]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$field_minor]."
 					,".$data['detail_minor_type'][$data['detail_main']].$minorvalue_sub[0]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE ".$cond." 
-					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			echo $sql;
 			$result = $this->db->Execute($sql);	
@@ -259,11 +264,11 @@ class Analyze extends R36_Controller
 		}
 		if($cond)
 		{											
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
 					,".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
-					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			//echo $sql;
 			$result = $this->db->Execute($sql);	
@@ -361,11 +366,11 @@ class Analyze extends R36_Controller
 		}
 		if($cond)
 		{											
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
 					,".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
-					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			echo $sql;
 			$result = $this->db->Execute($sql);	
@@ -441,11 +446,11 @@ class Analyze extends R36_Controller
 		}
 		if($cond)
 		{											
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
 					,".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
-					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			echo $sql;
 			$result = $this->db->Execute($sql);	
@@ -537,11 +542,11 @@ class Analyze extends R36_Controller
 		}
 		if($cond)
 		{											
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
 					,".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
-					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			//echo $sql;
 			$result = $this->db->Execute($sql);	
@@ -596,11 +601,11 @@ class Analyze extends R36_Controller
 		}
 		if($cond)
 		{											
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0]."
 					,".$data['detail_minor_type'][$field_minor]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
-					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."  
+					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]." ASC";
 			echo $sql;
 			$result = $this->db->Execute($sql);	
@@ -672,11 +677,11 @@ class Analyze extends R36_Controller
 		}	
 		if($cond)
 		{											
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
+			$sql = "SELECT ".$data['select_date_type']." ,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
 				   ".$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
-					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."  
+					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]." ASC";
 			echo $sql;
 			$result = $this->db->Execute($sql);	
@@ -746,11 +751,11 @@ class Analyze extends R36_Controller
 		}
 		if($cond)
 		{											
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
 				    ,".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
-					group by ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			echo $sql;
 			$result = $this->db->Execute($sql);	
@@ -837,11 +842,11 @@ class Analyze extends R36_Controller
 		}
 		
 		if($cond){
-			$sql = "SELECT ".$data['date_type']." as y,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
 				    ,".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
-					GROUP BY ".$data['date_type']." ,".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
+					GROUP BY ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			//echo $sql;
 			$result = $this->db->Execute($sql);

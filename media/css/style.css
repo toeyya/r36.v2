@@ -458,13 +458,15 @@ vertical-align:top
 .badge-warning {
   background-color: #f89406;
 }
-.tr-graph div{width:637px;margin:0 auto;text-align:center;}
-.tr-graph2 div{width:720px;margin:0 auto;text-align:center;}
+.tr-graph div{width:662px;margin:0 auto;text-align:center;}
+.tr-graph2 div{width:662;margin:0 auto;text-align:center;}
 
 .tr-graph .container{
-	width:637px;height:300px;border:1px solid #CCCCCC
+	width:660px;height:305px;border:1px solid #CCCCCC
 }
-.tr-graph2 .container{
-	height:422px;border:1px solid #CCCCCC
+.tr-graph2 .container1{
+	width:1311px;height:560px;
+	border:1px solid #CCCCCC
 }
+
 .btn_close{float:right;}

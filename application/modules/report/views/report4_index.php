@@ -1,7 +1,72 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.tr-graph').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');});
+	function graph(title,render,t_graph,arr,arr_val){		
+        	var r=0,a="center";yy=10;
+        	if(render=="container7"){
+        		r=90;a="left";yy=20;
+        	}
+        	$('#'+render).highcharts({
+            chart: {                
+                type: t_graph,width:620,height:302,marginLeft:15
+            },
+            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามสิทธิการรักษาและ'+title,style: {color: '#000000',fontSize: '14px'}},
+            yAxis: {
+            	title:{
+            		text: null, style: {color: '#000000'}         		          		
+            	}            	
+            },			
+            tooltip: {valueSuffix: ' %'},
+            credits: {enabled: false},
+            legend: {enabled: false},
+            plotOptions: {            	
+            	bar: { dataLabels: {enabled: true}},            	
+            	column: { dataLabels: {enabled: true}},
+            	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.1f} %'}}
+               
+            },           
+            xAxis: {categories: ['สิทธิการรักษาสถานบริการนี้','สิทธิการรักษาสถานบริการอื่น']},
+            /*series: [{data:arr_val}]*/
+			series:[{
+			 data: [
+                ['ไทย', 45.0],
+                ['จีน/ฮ่องกง/ใต้หวัน', 26.8],
+                ['พม่า', 26.8]]
+               }]
+		});	
+			
+	}// function graph
+	$('.img').click(function(){
+		var title 	= $(this).closest('tr').find('td:eq(0)').children('strong:eq(0)').html();
+		var t_graph = $(this).attr('name');		
+		var render 	= $(this).closest('td').find('input[name=render]').val();									
+		var arr=[],arr_val=[],arr_val_all=[],pre=[];	
+		var padd_left,title_padd,j=0,k=0;
+		var obj={};				
+				$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){													
+						padd_left = $(this).find('.pad-left').next().next().html();							
+						arr[j]=$(this).find('.pad-left').html();
+						arr_val[j]=parseFloat(padd_left);								
+																																																							
+					if(padd_left != null){j++;}
+				});					
+				
+		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');
+		graph(title,render,t_graph,arr,arr_val);
+		
+	});	
+	 $('#button').click(function() {
+        var chart = $('#container').highcharts();
+        chart.print();
+    });			
+});
+</script>
 <div id="title">ข้อมูลผู้รับวัคซีนจำแนกตามสิทธิการรักษาของสถานบริการ</div>
 <div id="search">
-<?php if(empty($cond)): ?>
-<form action="report/index/4" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+
+<form action="report/index/4" method="get" name="formreport">
 	<table  class="tb_patient1">
 	<?php require 'include/conditionreport.php'; ?>
 		<tr>
@@ -14,8 +79,9 @@
   <div class="btn_inline"><ul><li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li> </ul>
 </div>	
 </form>
-<?php endif; ?>
+
 </div>
+<?php if(!empty($cond)): ?>
 <div id="report">
 <div id="title">				  
 	<p>รายงานผู้สัมผัสโรคจำแนกตามสิทธิการรักษาของสถานบริการ <?php echo $texttype;?></p>
@@ -24,7 +90,7 @@
 	<p>สถานบริการ<?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 </div>
 
-<?php if(!empty($cond)): ?>
+
 <table class="tbreport">         
   <tr>
     <th style="text-align: center" rowspan="2"><strong>รายการ</strong></th>
@@ -35,12 +101,12 @@
     <th align="center"><strong>สถานบริการอื่น</strong></th>
   </tr> 
   <tr>
-    <td><strong>1. จำนวนผู้สัมผัสโรค ( N = <?php echo number_format($total); ?> )</strong></td>
+    <td><strong> จำนวนผู้สัมผัสโรค ( N = <?php echo number_format($total); ?> )</strong></td>
     <td align="center"><strong><?php echo number_format($in_out1); ?></strong></td>
     <td align="center"><strong><?php echo number_format($in_out2); ?></strong></td>
   </tr>
   <tr>
-    <td colspan="3"><strong>2. สัญชาติ (คน) </strong>
+    <td colspan="3"><strong> สัญชาติ (คน) </strong>
 		<input type="hidden" name="render" value="container1">
 		<button class="bar-chart img" name="bar" ></button>
 		<button class="column-chart img" name="column"></button>
@@ -104,8 +170,9 @@
   </tr>
  <tr class="tr-graph">
   	<td colspan="3">
-  		<div id="container1" class="container"></div>
-  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container1" class="container"></div>		
+  		</div>
   	</td>
 </tr>	
 		
@@ -115,7 +182,7 @@
     <td align="center"><strong><?php echo number_format($total4); ?></strong></td>
   </tr>
   <tr>
-    <td colspan="3"><strong>3. ชนิดของอิมมูโนโกลบุลิน (RIG) (โด๊ส)
+    <td colspan="3"><strong> ชนิดของอิมมูโนโกลบุลิน (RIG) (โด๊ส)
 		<input type="hidden" name="render" value="container2">
 		<button class="bar-chart img" name="bar" ></button>
 		<button class="column-chart img" name="column"></button>
@@ -133,8 +200,10 @@
   </tr>
   <tr class="tr-graph">
   	<td colspan="3">
-  		<div id="container2" class="container"></div>
-  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
+   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container2" class="container"></div>		
+  		</div>
+
   	</td>
  </tr>	
 		
@@ -144,7 +213,7 @@
     <td align="center"><strong><?php echo number_format($total4); ?></strong></td>
   </tr>            
   <tr>
-    <td colspan="3"><strong>4. ชนิดของวัคซีน (โด๊ส)</strong>		
+    <td colspan="3"><strong> ชนิดของวัคซีน (โด๊ส)</strong>		
     	<input type="hidden" name="render" value="container3">
 		<button class="bar-chart img" name="bar" ></button>
 		<button class="column-chart img" name="column"></button>
@@ -173,8 +242,9 @@
   </tr>
   <tr class="tr-graph">
   	<td colspan="3">
-  		<div id="container3" class="container"></div>
-  		<button name="close" title="close" value="close" class="btn btn_close">ปิด</button>
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container3" class="container"></div>		
+  		</div>  		
   	</td>
 </tr>	
 		

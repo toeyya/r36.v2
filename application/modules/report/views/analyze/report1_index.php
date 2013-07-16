@@ -16,7 +16,17 @@ $(document).ready(function(){
 	});
 	$('.btn_submit').click(function(){
 		var index = $('#detail_main option:selected').val();
-		$('#formreport').attr('action','report/analyze/index/'+index);
+		var minor = $('select[name=detail_minor] option:selected').val();
+		if(index.length<1){
+			alert('กรุณาเลือกปัจจับหลัก');
+			return false;
+		}else if(minor.length<1){
+			alert('กรุณาเลือกปัจจัยรอง');
+			return false;
+		}else{
+			$('#formreport').attr('action','report/analyze/index/'+index);
+		}
+		
 	})
 	
  	
@@ -46,7 +56,7 @@ $(document).ready(function(){
 	<?php require 'include/conditionreport.php'; ?>
 	  <tr>
 	    <th>ปีที่สัมผัสโรค</th>
-	 	<td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>						
+	 	<td><?php //echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>						
  
 	  <th>ปีที่บันทึกรายการ</th>
 	    <td><?php echo form_dropdown('year_report_start',get_year_option(),@$_GET['year_report_start'],'class="styled-select"','ทั้งหมด') ?></td>
@@ -56,13 +66,14 @@ $(document).ready(function(){
  </form>
 </div>
 <?php if($cond): ?>
- <div id="report">
+ <div id="report">	
 	<div id="title">				  
 		<p>ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</p>
 		<p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
-	</div>  
+	</div> 
+	<div class="right"><button class="column-chart img" name="column"></button> <a href="" class="excel"></a></div> 
 	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม <?php echo $head; ?>และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>	
 	<table class="tbreport">
 		<?php $row=(!empty($minordetail_head))? "4":"3"; ?>

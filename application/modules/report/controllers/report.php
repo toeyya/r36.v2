@@ -201,12 +201,13 @@ class Report extends R36_Controller
 				$data['total_occupationname'.$i] = (empty($rs[$i])) ? 0:$rs[$i];
 													
 			}			
-			## detailplacetouch
+			## สถานที่สัมผัสโรค detailplacetouch
 			$rs = array();
 			$array = array(0,4,0);
 			$total = array(0,5,$array);		
 			$sql="select count(historyid) as cnt,placetouch,detailplacetouch  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
 				  where  ".$cond." group by placetouch,detailplacetouch order by placetouch,detailplacetouch  asc";
+		    //echo $sql;
 		    $result = $this->db->Execute($sql);						
 			foreach($result as $key =>$item){
 				$rs[$item['placetouch']][$item['detailplacetouch']] = $item['cnt'];	
@@ -585,6 +586,7 @@ class Report extends R36_Controller
 			$total1=array_fill(0,8,0);
 			$sql="select month(datetouch) as m ,count(historyid) as cnt,placetouch  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
 				  where   ".$cond." group by month(datetouch),placetouch  order by month(datetouch),placetouch  asc";
+		    
 		    $result = $this->db->Execute($sql);						
 			foreach($result as $item){
 				$rs[$item['placetouch']][$item['m']] = $item['cnt'];								
@@ -1032,8 +1034,11 @@ class Report extends R36_Controller
 			$sql="select nationalityname,count(historyid) as cnt,in_out from n_history INNER JOIN n_information on historyid=information_historyid   WHERE  $cond1 nationalityname!='0'
 				  GROUP BY nationalityname,in_out ORDER BY nationalityname,in_out  asc";			
 			$result=$this->inform->get($sql);	
+			$total1[0]=0;$total1[1]=0;$total1[2]=0;
 			foreach($result as $item){
+				
 				$in_out1[$item['in_out']][$item['nationalityname']]=$item['cnt'];
+				
 				$total1[$item['in_out']]=$total1[$item['in_out']]+$item['cnt'];
 			}
 			 $data['in_out3']=(empty($in_out1[1][1])) ? 0 : $in_out1[1][1];
@@ -1064,7 +1069,7 @@ class Report extends R36_Controller
 			 $data['total2'] =(empty($total1[2])) ? 0 : $total1[2];			
 			
 			## erig,hrig
-			$total1[1]=0;$total1[2]=0;$total2[1]=0;$total2[2]=0;$total3[1]=0;$total3[2]=0;
+			$total1[1]=0;$total1[2]=0;$total2[0]=0;$total2[1]=0;$total2[2]=0;$total3[1]=0;$total3[2]=0;
 			$sql="SELECT erig_hrig,count(id) as cnt,in_out FROM n_history INNER JOIN n_information  on historyid=information_historyid  WHERE $cond1 erig_hrig<>'0' GROUP BY erig_hrig,in_out order by erig_hrig,in_out asc";
 			$result=$this->inform->get($sql);	
 			foreach($result as $item){
@@ -1080,7 +1085,7 @@ class Report extends R36_Controller
 			 $data['total3'] =(empty($total2[1])) ? 0 : $total2[1];
 			 $data['total4'] =(empty($total2[2])) ? 0 : $total2[2];			 
 			 ## vaccine_name
-			 $total1[1]=0;$total1[2]=0;$total2[1]=0;$total2[2]=0;$total3[1]=0;$total3[2]=0;
+			 $total1[1]=0;$total1[2]=0;$total2[1]=0;$total2[2]=0;$total3[0]=0;$total3[1]=0;$total3[2]=0;
 			 $sql="SELECT  vaccine_name,count(id) as cnt,in_out FROM n_history INNER JOIN n_information   on historyid=information_historyid  INNER JOIN n_vaccine ON n_information.id=information_id
 				   WHERE $cond1 vaccine_name<>'0'  GROUP BY vaccine_name,in_out order by vaccine_name,in_out asc";	
 			$result=$this->inform->get($sql);	

@@ -22,6 +22,7 @@
 		var module='district';
 		place='#'+place;
 		if(name=="hospital")module="hospital";
+		$(place).html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
 		$.ajax({						
 			url:module+'/'+funct,
 			data:'area='+objarea_id+'&group='+objgroup_id+'&ref1='+objprovince_id+'&ref2='+objamphur_id+'&ref3='+objdistrict_id+'&class=widthselect&default=ทั้งหมด&name='+name,
@@ -29,32 +30,8 @@
 		})
 		return false;
 	}
-	function graph(title,render,t_graph,arr,arr_val){		
-        	$('#'+render).highcharts({
-            chart: {                
-                type: t_graph,width:600,height:300
-            },
-            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
-            yAxis: {
-            	title:{
-            		text: '', style: {color: '#000000'}           		          		
-            	}            	
-            },			
-            tooltip: {valueSuffix: ' %'},
-            credits: {enabled: false},
-            legend: {enabled: false},
-            plotOptions: {            	
-            	bar: { dataLabels: {enabled: true}},            	
-            	column: { dataLabels: {enabled: true}},
-            	pie:{ dataLabels: {enabled: true}}
-               
-            },           
-            xAxis: {categories: arr},
-			series: [{data:arr_val}]
-		});	
-			
-	}
-$(document).ready(function(){
+	
+  $(document).ready(function(){
 	$('#area').click(List("GetGroupByArea","grouplist"))
 			  		.change(function(){Clear("all");List("GetGroupByArea","grouplist");});
 					
@@ -69,7 +46,7 @@ $(document).ready(function(){
 							
 	$('#district').live('click',function(){List("getHospital","hospitallist","hospital")})
 				  .change(function(){Clear('district');List("getHospital","hospitallist","hospital");});							
-
-
+	
+	
 	
 });

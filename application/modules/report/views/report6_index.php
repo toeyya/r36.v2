@@ -14,49 +14,82 @@ $(document).ready(function(){
 			return false;
 		}
 	});
+	function graph(title,render,t_graph,arr,arr_val){		
+        	var r=0,a="center";yy=10;
+        	if(render=="container7"){
+        		r=90;a="left";yy=20;
+        	}
+        	$('#'+render).highcharts({
+            chart: {                
+                type: t_graph,width:680,height:302,marginLeft:15
+            },
+            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้าแจกแจง ตามสิทธิการรักษาของจังหวัด'+title,style: {color: '#000000',fontSize: '14px'}},
+            yAxis: {
+            	title:{
+            		text: '', style: {color: '#000000'}         		          		
+            	}            	
+            },			
+            tooltip: {valueSuffix: ' %'},
+            credits: {enabled: false},
+            legend: {enabled: false},
+            plotOptions: {            	
+            	bar: { dataLabels: {enabled: true}},            	
+            	column: { dataLabels: {enabled: true}},
+            	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.1f} %'}}
+               
+            },           
+            xAxis: {categories:['สิทธิการรักษาสถานบริการนี้','สิทธิการรักษาสถานบริการอื่น'],             		         	
+	            	labels: {
+	                	rotation: r,
+	                	align:a,
+	                	x: 0,
+	                	y: yy
+	            	}             		            	         	          
+            },
+            /*series: [{data:arr_val}]*/
+			series:arr_val	
+		});	
+			
+	}					
+	$('.tr-graph').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
+	
+	$('.img').click(function(){
+		
+		var title 	=$('#province option:selected').text();
+		var t_graph = $(this).attr('name');		
+		var render 	= "container1"								
+		var arr={},arr_val=[],arr_val_all=[],pre=[];	
+		var padd_left,title_padd,j=0,k=0;
+		var obj={};
+									
+					$(this).closest('div').next('table').find('tr:eq(2)').nextUntil('.total').each(function(i,value){																				
+																					
+							arr_val[0]=parseFloat( $(this).find('.pad-left').next().next().html());	
+							arr_val[1]=parseFloat($(this).find('.pad-left').next().html());																																																														
+				 			arr['name'] = $(this).find('.pad-left').html();
+				 			arr['data'] = arr_val;					 		
+							arr_val_all[i] = jQuery.parseJSON(JSON.stringify(arr));
+																								
+					});									   
+		console.log(arr_val_all);
+		$(this).closest('div').next('table').find('.tr-graph').fadeIn('slow');
+		graph(title,render,t_graph,arr,arr_val_all);
+		
+	});	
+	 $('#button').click(function() {
+        var chart = $('#container').highcharts();
+        chart.print();
+    });
+   
 })
 </script>
 <div id="title">ข้อมูลรายจังหวัด</div>
 <div id="search">
-<form action="report/index/6" method="get" name="formreport" onsubmit="return Chk_Analyze5(this);">
+<form action="report/index/6" method="get" name="formreport">
 <table  class="tb_patient1">
-  <tr>
-	<th>เขตความรับผิดชอบ</th>
-	<td><?php echo form_dropdown('area',get_option('id','name','n_area'),@$_GET['area'],'class="styled-select widthselect"  id="area"','กรุณาเลือกเขต');?>	</td>
-	<th>เขต</th>
-	<td>
-	<?php if(!empty($_GET['area'])){ ?>
-		<select name="group" class="styled-select" id="group">
-		<option value="">ทั้งหมด</option>
-	<?		$area=$_GET['area']; 	
-		 	if($area=='1' || $area=='2'){
-				if($area=='1'){
-					$province=$this->province->select("province_level_old as groupno")->groupby("province_level_old")->sort("")->order("province_level_old")->get();
-				}else{
-					$province=$this->province->select("province_level_new as groupno")->groupby("province_level_new")->sort("")->order("province_level_new")->get();
-				}									
-				foreach($province as $rec){
-				  if($rec['groupno']=='0'){
-					$groupname = "กทม.";
-				  }else{
-					$groupname = "เขต ".$rec['groupno'];
-				  } ?>
-				  <option value="<? echo $rec['groupno'] ?>" <?php echo ($rec['groupno'] ==$_GET['group']) ? 'selected="selected"':'';?>><?php echo $groupname ?></option>
-			<?php } ?>
-			</select>								
-	<?php }}else{ ?>
-	<span id="grouplist"><select name="group" class="styled-select widthselect" id="group"><option value="">ทั้งหมด</option></select></span>
-	<?php }; ?>
-	</td>
-	<th>จังหวัด</th>
-	<td>			
-		<?php if(!empty($_GET['province'])){
-		echo form_dropdown('province',get_option('province_id','province_name','n_province'),$_GET['province'],'class="styled-select" id="prvince"','ทั้งหมด');
-		}else{ ?>
-		<span id="provincelist"><select name="province" class="styled-select widthselect" id="province"><option value="">ทั้งหมด</option></select></span>		
-		<? } ?>			
-	</td>
-  	</tr>
+<?php require 'include/conditionreport.php'; ?>
 	<tr>
 	   <th>ปีสัมผัสโรค</th>
 	   <td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>
@@ -79,6 +112,7 @@ $(document).ready(function(){
 <div id="title">
 	<p>รายงานจังหวัด<?php echo $textprovince ?>  เดือน  <?php echo $textmonth_start ?> ปี  <? echo $textyear_start ?></p>
 </div>
+<div class="right"><button class="column-chart img" name="column"></button> <button href="" class="excel" name="btn_excel"></button></div>
 <table class="tbreport">
 	<tr><td colspan="4" style="text-align: right;">หน่วย: คน</td></tr>
 	<tr>
@@ -106,6 +140,14 @@ $(document).ready(function(){
 		<td><?php echo number_format($total2); ?></td>
 		<td><?php echo number_format($total_all); ?></td>
 	</tr>
+<tr class="tr-graph" height="700">
+  	<td colspan="4">  		 		
+  		<div>
+  			<button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container1" class="container" style="width:700px;height:305px;"></div>
+  		</div>  		  		
+  	</td>
+</tr>
 </table>
 	<hr class="hr1">
 	<div id="reference"><?php echo $reference?></div>	
