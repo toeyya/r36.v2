@@ -6,14 +6,13 @@ $(document).ready(function(){
 	    active:0
 	});
 
-	function graph(title,render,t_graph,arr,arr_val){		
-        	var r=0,a="center";yy=10;
-        	if(render=="container7"){
-        		r=90;a="left";yy=20;
-        	}
+	function graph(title,render,t_graph,arr,arr_val)
+	{		        	       	
+        	var r=0,a="center";yy=10;       	
+        	if(render=="container7"){r=90;a="left";yy=20;}        	
         	$('#'+render).highcharts({
             chart: {                
-                type: t_graph,width:620,height:302,marginLeft:15
+                type: t_graph,width:620,height:302
             },
             title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
             yAxis: {
@@ -27,11 +26,11 @@ $(document).ready(function(){
             plotOptions: {            	
             	bar: { dataLabels: {enabled: true}},            	
             	column: { dataLabels: {enabled: true}},
-            	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.1f} %'}}
+            	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.2f} %'}}
                
             },           
             xAxis: {categories: arr, 
-            		         	
+           		         	
 	            	labels: {
 	                	rotation: r,
 	                	align:a,
@@ -71,14 +70,19 @@ $(document).ready(function(){
 					$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){																		
 						if(title=="สถานที่สัมผัสโรค"){
 							padd_left = $(this).find('.pad-left').next().next().html()
-							arr_val[j]= parseFloat(padd_left);							
+							arr_val[j]= parseFloat(padd_left);
+							arr_val_all[j] = [arr[j],arr_val[j]];
+							//console.log(arr[j]);
+							
 						}else{													
 							if($(this).find('td').hasClass('pad-left2')){
 								padd_left = $(this).find('.pad-left2').next().next().html();
-								arr_val[j]= parseFloat(padd_left);																													
+								arr_val[j]= parseFloat(padd_left);	
+								arr_val_all[j] = [arr[j],arr_val[j]];																												
 							}else{
 								padd_left = $(this).find('.pad-left').next().next().html()
 								arr_val[j]= parseFloat(padd_left);	
+								arr_val_all[j] = [arr[j],arr_val[j]];
 							}
 						}
 						if(padd_left != null){j++;}																		
@@ -89,29 +93,38 @@ $(document).ready(function(){
 						if($(this).find('td').hasClass('pad-left2')){			
 							padd_left = $(this).find('.pad-left2').next().next().html()
 							arr[j]=$(this).find('.pad-left2').html();
-							arr_val[j]=parseFloat(padd_left);				
+							arr_val[j]=parseFloat(padd_left);
+							arr_val_all[j] = [arr[j],arr_val[j]];				
 						}else{
 							if($(this).children('td').length>1){
 								padd_left = $(this).find('.pad-left').next().next().html();							
 								arr[j]=$(this).find('.pad-left').html();
-								arr_val[j]=parseFloat(padd_left);								
-							}																																											
+								arr_val[j]=parseFloat(padd_left);
+								arr_val_all[j] = [arr[j],arr_val[j]];																																																
+							}										
+																																								
 						}
-						if(padd_left != null){j++;}
+												
+						if(padd_left != null){j++;}					
 					});					
 				}
 						
-		
-		//console.log(pre);
-		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');
-		graph(title,render,t_graph,arr,arr_val);
+		if(t_graph=="pie"){
+			graph(title,render,t_graph,arr,arr_val_all);			
+		}else{
+			graph(title,render,t_graph,arr,arr_val);
+		}			
+		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');		
 		
 	});	
 	 $('#button').click(function() {
         var chart = $('#container').highcharts();
         chart.print();
     });	
-
+	$('.excel').click(function(){
+		
+		$(this).closest('h6').next().show().css('background-color','blue');
+	})
 
 });	
 </script>
@@ -143,7 +156,7 @@ $(document).ready(function(){
 <div id="multiAccordion" style="width:80%;margin-left:10%;margin-right:10%">
     <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>
     <div id="section1">
-		<h6>ตารางที่ 1 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามข้อมูลทั่วไป <a href="" class="excel"></a></h6>
+		<h6>ตารางที่ 1 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามข้อมูลทั่วไป <button  name="btn_excel" class="excel"></button></h6>
 		<table class="tbreport">
 		<tr>
 			<th>ข้อมูลทั่วไป</th>
@@ -491,7 +504,7 @@ $(document).ready(function(){
 					<input type="hidden" name="render" value="container8">
 					<button class="bar-chart img" name="bar"></button>
 					<button class="column-chart img" name="column"></button>
-					<button class="pie-chart img" name="pid"></button>					
+					<button class="pie-chart img" name="pie"></button>					
 				</td></tr>
 				<?php $ageanimal = array(1=>'น้อยกว่า 3 เดือน',2=>'3-6 เดือน',3=>'6-12 เดือน',4=>'มากกว่า 1 ปี',5=>'ไม่ทราบ',6=>'ไม่ระบุ');  ?>
 				<?php for($i=1;$i<7;$i++):?>

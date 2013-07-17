@@ -1,3 +1,11 @@
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.tr-graph').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})		
+})
+
+</script>
 <div id="title">ข้อมูลการฉีดวัคซีน</div>
 <div id="search">
 <form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
@@ -31,6 +39,7 @@
 	<p>สถานบริการ <?php echo $texthospital ?> <span>ปี <?php echo $textyear_start ?></span> เดือน  <?php echo $textmonth_start ?> ถึง <?php echo $textmonth_end ?></p>
  </div>
 	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;">
+		<tr><td colspan="2" style="text-align:right;"><button class="excel" name="btn_excel"></button></td></tr>
 		<tr><td colspan="2" style="text-align:right;">หน่วย:คน</td></tr>
 		<tr>
 			<th style="text-align:center">เงื่อนไข</th><th style="text-align:left">จำนวน (N=<?php echo number_format($total_n); ?>)</th>
@@ -40,8 +49,13 @@
 			<td><strong><?php echo $total; ?></strong></td>			
 		</tr>	
 		<tr>
-			<td>2. ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน</td>
-			<td></td>
+			<td colspan="2">2. ผู้สัมผัสโรค <strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน
+				<input type="hidden" name="render" value="container1">
+				<button class="bar-chart img"  name="bar"></button>
+				<button class="column-chart img" name="column"></button>
+	    		<button class="pie-chart img" name="pie"></button>			
+			</td>
+			
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
@@ -67,9 +81,20 @@
 			<td style="text-align:center"><strong>รวม</strong></td>
 			<td ><strong><?php echo number_format($total2) ?></strong></td>
 		</tr>
+		<tr class="tr-graph">
+		  	<td colspan="2">
+		  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+		  			<div id="container1" class="container"></div> 			
+		  		</div>
+		  	</td>
+		</tr>		
 		<tr>
-			<td><strong>3.ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>เกิน 6 เดือน</strong> ได้รับการฉีดวัคซีน</strong></td>
-			<td></td>
+			<td colspan="2"><strong>3.ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>เกิน 6 เดือน</strong> ได้รับการฉีดวัคซีน</strong>
+				<input type="hidden" name="render" value="container2">
+				<button class="bar-chart img"  name="bar"></button>
+				<button class="column-chart img" name="column"></button>
+	    		<button class="pie-chart img" name="pie"></button>				
+			</td>
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
@@ -95,9 +120,21 @@
 			<td style="text-align:center"><strong>รวม</strong></td>
 			<td ><strong><?php echo number_format($total3) ?></strong></td>
 		</tr>
+		<tr class="tr-graph">
+		  	<td colspan="2">
+		  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+		  			<div id="container2" class="container"></div> 			
+		  		</div>
+		  	</td>
+		</tr>		
 		<tr>
-			<td><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์<strong>ไม่ตายภายใน 10 วัน</strong> โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong></td>
-			<td></td>
+			<td colspan="2"><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์<strong>ไม่ตายภายใน 10 วัน</strong> โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong>
+				<input type="hidden" name="render" value="container3">
+				<button class="bar-chart img"  name="bar"></button>
+				<button class="column-chart img" name="column"></button>
+	    		<button class="pie-chart img" name="pie"></button>				
+			</td>
+			
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
@@ -123,12 +160,24 @@
 			<td style="text-align:center"><strong>รวม</strong></td>
 			<td ><strong><?php echo number_format($total4) ?></strong></td>
 		</tr>
+		<tr class="tr-graph">
+		  	<td colspan="3">
+		  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+		  			<div id="container3" class="container"></div> 			
+		  		</div>
+		  	</td>
+		</tr>		
 		<tr>
 			<td>5. ผู้สัมผัสโรคพิษสุนัขบ้า<strong>ฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong></td>
 			<td><strong><?php echo number_format($total5) ?></strong></td>
 		</tr>
 		<tr>
-			<td><strong>6. ชนิดของวัคซีน (โด๊ส)</strong></td>
+			<td colspan="2"><strong>6. ชนิดของวัคซีน (โด๊ส)</strong>
+				<input type="hidden" name="render" value="container4">
+				<button class="bar-chart img"  name="bar"></button>
+				<button class="column-chart img" name="column"></button>
+	    		<button class="pie-chart img" name="pie"></button>				
+			</td>
 			<td></td>
 		</tr>
 			<tr>

@@ -1,27 +1,4 @@
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#detail_main").change(function(){
-	//onchange="url='js/getlist.php?mode=D_main&ref1='+formreport.detail_main.value;load_divForm(url,'show_minor');"
-	 var ref1=$("#detail_main option:selected").val();
-		 $.ajax({
-		 	type:'get',
-			url:'<?php echo base_url() ?>media/js/getlist.php',
-			data:'mode=D_main&ref1='+ref1,
-			success:function(data){
-				$("#show_minor").html(data);
-				
-				
-			}
-		 })
-	});
-	$('.btn_submit').click(function(){
-		var index = $('#detail_main option:selected').val();
-		$('#formreport').attr('action','report/analyze/index/'+index);
-	})
-	
- 	
-})
-</script>
+<script type="text/javascript" src="media/js/report_analyze.js"></script>
 <div id="title">ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</div>
 <div id="search">
 <form action="report/analyze/" method="get" name="formreport"  id="formreport" onsubmit="return Chk_AnalyzeReport(this);">
@@ -78,7 +55,8 @@ $(document).ready(function(){
 		</tr>		
 		<?php endif; ?>
 		<tr>
-			<?php foreach($minordetail as $item): ?>
+			<?php $row_sum=0;
+				foreach($minordetail as $item): ?>
 			<th><?php echo $item; ?></th>
 			<?php endforeach; ?>
 			<th>รวม</th>
@@ -88,17 +66,20 @@ $(document).ready(function(){
 			<td><strong><?php echo $detail_main_name_head[$key] ?></strong></td>
 			<td><strong><?php echo $detail_main_name[$key] ?></strong></td>
 			<?php foreach($minorvalue as $j): ?>
-				<td><?php echo ${'main'.$i.$j}; ?><p class="percentage">(<?php  echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
+				<td><?php echo number_format(${'main'.$i.$j}); ?><p class="percentage">(<?php  echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
 			<?php endforeach; ?>			
-			<td><?php echo ${'total_main'.$i}; ?></td>			
+			<td><?php $row_sum =$row_sum + ${'total_main'.$i};
+					 echo number_format(${'total_main'.$i}); ?></td>			
 		</tr>		
 		<?php endforeach; ?>
 		
 		<tr class="total">			
 			<td>รวม</td>
-			
-			<td></td>
-							
+			<?php if(!empty($detail_main_name_head)): ?><td></td><? endif; ?>
+		<?php foreach($minorvalue as $j): ?>			
+			<td></td>			
+		<?php endforeach; ?>
+			<td><? echo number_format($row_sum); ?></td>					
 		</tr>
 	</table>
 			<hr class="hr1">		

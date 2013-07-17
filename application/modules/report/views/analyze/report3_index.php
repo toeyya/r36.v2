@@ -1,27 +1,4 @@
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#detail_main").change(function(){
-	//onchange="url='js/getlist.php?mode=D_main&ref1='+formreport.detail_main.value;load_divForm(url,'show_minor');"
-	 var ref1=$("#detail_main option:selected").val();
-		 $.ajax({
-		 	type:'get',
-			url:'<?php echo base_url() ?>media/js/getlist.php',
-			data:'mode=D_main&ref1='+ref1,
-			success:function(data){
-				$("#show_minor").html(data);
-				
-				
-			}
-		 })
-	});
-	$('.btn_submit').click(function(){
-		var index = $('#detail_main option:selected').val();
-		$('#formreport').attr('action','report/analyze/index/'+index);
-	})
-	
- 	
-})
-</script>
+<script type="text/javascript" src="media/js/report_analyze.js"></script>
 <div id="title">ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</div>
 <div id="search">
 <form action="report/analyze/" method="get" name="formreport"  id="formreport" onsubmit="return Chk_AnalyzeReport(this);">
@@ -61,7 +38,7 @@ $(document).ready(function(){
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
 	</div>
-	<div class="right"><button class="column-chart img" name="column"></button> <a href="" class="excel"></a></div>
+	<div class="right"><button class="column-chart img" name="column"></button> <button class="excel" name="btn_excel"></button></div>
 	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม <?php echo $head; ?>และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>	
 	<table class="tbreport">
 		<?php $row=(!empty($minordetail_head))? "4":"3"; ?>
@@ -82,22 +59,26 @@ $(document).ready(function(){
 			<th><?php echo $item; ?></th>
 			<?php endforeach; ?>
 			<th>รวม</th>
-		</tr>
-		<?php foreach($detail_main_type as $key=>$i): ?>
+		</tr>		
+		<?php 
+		$row_sum=0;
+		foreach($detail_main_type as $key=>$i): ?>
 		<tr class="para1">
 			<td><strong><?php echo $detail_main_name[$key] ?></strong></td>
 			<?php foreach($minorvalue as $j): ?>
-				<td><?php echo  ${'main'.$i.$j}; ?><p class="percentage">(<?php  echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
+				<td><?php echo  number_format(${'main'.$i.$j}); ?><p class="percentage">(<?php  echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
 			<?php endforeach; ?>			
-			<td><?php  echo ${'total_main'.$i}; ?></td>			
+			<td><?php  $row_sum =$row_sum + ${'total_main'.$i};
+			echo number_format(${'total_main'.$i}); ?></td>			
 		</tr>		
 		<?php endforeach; ?>
 		
 		<tr class="total">			
 			<td>รวม</td>
-			
+		<?php foreach($minorvalue as $j): ?>	
 			<td></td>
-							
+		<?php endforeach; ?>
+			<td><? echo number_format($row_sum); ?></td>					
 		</tr>
 	</table>
 			<hr class="hr1">		

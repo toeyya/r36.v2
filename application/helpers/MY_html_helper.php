@@ -188,7 +188,10 @@ function getLevel($area,$total)
 		return $data;		
 	
 }
-
+function sum_vertical($sum,$val){
+	
+	return $sum + $val;
+}
 
 
 

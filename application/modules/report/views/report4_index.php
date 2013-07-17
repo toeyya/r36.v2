@@ -81,16 +81,16 @@ $(document).ready(function(){
 </form>
 
 </div>
+
 <?php if(!empty($cond)): ?>
 <div id="report">
-<div id="title">				  
+	<div id="title">				  
 	<p>รายงานผู้สัมผัสโรคจำแนกตามสิทธิการรักษาของสถานบริการ <?php echo $texttype;?></p>
     <p>เขตความรับผิดชอบ <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
 	<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 	<p>สถานบริการ<?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 </div>
-
-
+<div class="right"></button> <button class="excel" name="btn_excel"></button></div>
 <table class="tbreport">         
   <tr>
     <th style="text-align: center" rowspan="2"><strong>รายการ</strong></th>
@@ -101,7 +101,7 @@ $(document).ready(function(){
     <th align="center"><strong>สถานบริการอื่น</strong></th>
   </tr> 
   <tr>
-    <td><strong> จำนวนผู้สัมผัสโรค ( N = <?php echo number_format($total); ?> )</strong></td>
+    <td><strong> จำนวนผู้สัมผัสโรค ( N = <?php echo number_format($in_out1+$in_out2); ?> )</strong></td>
     <td align="center"><strong><?php echo number_format($in_out1); ?></strong></td>
     <td align="center"><strong><?php echo number_format($in_out2); ?></strong></td>
   </tr>
@@ -182,7 +182,7 @@ $(document).ready(function(){
     <td align="center"><strong><?php echo number_format($total4); ?></strong></td>
   </tr>
   <tr>
-    <td colspan="3"><strong> ชนิดของอิมมูโนโกลบุลิน (RIG) (โด๊ส)
+    <td colspan="3"><strong> ชนิดของอิมมูโนโกลบุลิน (RIG)
 		<input type="hidden" name="render" value="container2">
 		<button class="bar-chart img" name="bar" ></button>
 		<button class="column-chart img" name="column"></button>
@@ -213,7 +213,7 @@ $(document).ready(function(){
     <td align="center"><strong><?php echo number_format($total4); ?></strong></td>
   </tr>            
   <tr>
-    <td colspan="3"><strong> ชนิดของวัคซีน (โด๊ส)</strong>		
+    <td colspan="3"><strong> ชนิดของวัคซีน </strong>		
     	<input type="hidden" name="render" value="container3">
 		<button class="bar-chart img" name="bar" ></button>
 		<button class="column-chart img" name="column"></button>

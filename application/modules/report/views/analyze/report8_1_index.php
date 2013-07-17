@@ -1,27 +1,4 @@
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#detail_main").change(function(){
-	//onchange="url='js/getlist.php?mode=D_main&ref1='+formreport.detail_main.value;load_divForm(url,'show_minor');"
-	 var ref1=$("#detail_main option:selected").val();
-		 $.ajax({
-		 	type:'get',
-			url:'<?php echo base_url() ?>media/js/getlist.php',
-			data:'mode=D_main&ref1='+ref1,
-			success:function(data){
-				$("#show_minor").html(data);
-				
-				
-			}
-		 })
-	});
-	$('.btn_submit').click(function(){
-		var index = $('#detail_main option:selected').val();
-		$('#formreport').attr('action','report/analyze/index/'+index);
-	})
-	
- 	
-})
-</script>
+<script type="text/javascript" src="media/js/report_analyze.js"></script>
 <div id="title">ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</div>
 <div id="search">
 <form action="report/analyze/" method="get" name="formreport"  id="formreport" onsubmit="return Chk_AnalyzeReport(this);">
@@ -61,7 +38,7 @@ $(document).ready(function(){
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
 	</div>
-	<div class="right"><button class="column-chart img" name="column"></button> <a href="" class="excel"></a></div>
+	<div class="right"><button class="column-chart img" name="column"></button> <button class="excel" name="btn_excel"></button></div>
 	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม <?php echo $head; ?>และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>		
 	<table class="tbreport">
 	<tr>
@@ -80,13 +57,37 @@ $(document).ready(function(){
 		<th>ไม่มีเลือดออก</th>
 		
 	</tr>
-	<? foreach($detailmain_B as $i=>$item): ?>
-	<tr>
-		<td><?php echo $item ?></td>
-		<? foreach($detailmain_B as $i=>$item): ?>
-		<? endforeach; ?>
-	</tr>
-	<? endforeach; ?>
+		<? $grp =(!empty($date_type)) ? "group by ".$date_type."  order by ".$date_type : '';
+		
+			for($main=0;$main<count($detailmain_B);$main++){
+					for($main_sub=1;$main_sub<count($detailminor_name);$main_sub++){
+						$sql ="SELECT count(historyid) as cnt 
+							   FROM n_history inner join n_information on historyid=information_historyid
+							   WHERE  $cond and $detailmain_T[$main]='1' AND use_rig = '".$detailminor_T[$main_sub]."'";														
+						$sumrow = $this->db->GetOne($sql);								
+		?>
+	  <tr>
+			<td height="20"><strong><? echo $detailmain_B[$main]?></strong></td>
+			<td><strong><? echo $detailminor_name[$main_sub]?></strong></td>
+				<?  
+					for($numWH=0;$numWH<count($detailmain_wh);$numWH++){
+						$sql ="SELECT  count(historyid) as cnt 
+								FROM n_history inner join n_information on historyid=information_historyid
+								WHERE  $cond and $detailmain_T[$main]$detailmain_wh[$numWH] ='1' AND use_rig = '".$detailminor_T[$main_sub]."'";
+						$sum  = $this->db->GetOne($sql);						
+						if($sum!='0'){
+							$sumpercent=$sum/$sumrow*100;
+						}else{
+							$sumpercent=0;
+						}
+				?>
+				<td><? echo number_format($sum).'<br>('.number_format($sumpercent,1).')';?></td>
+				<? }
+				?>
+				<td><? echo number_format($sumrow).'<br>(100.0)';?></td>
+	  </tr>
+	  <?	 $detailmain_B[$main]='';	} 
+	  }?>
 	</table>
   </div>  
 <?php endif; ?>

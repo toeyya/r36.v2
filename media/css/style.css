@@ -213,12 +213,12 @@ ul.sublist label{display:inline-block;width:100px;}
 #login{width:100%;}
 #login table{background-color:#6394bd}
 .graph{margin:0 auto;display:inline-block;width:500px;text-align:center;}
-.img				{width:16px; height: 16px;display:inline-block;padding:0px 2px;border:none}
+.img				{width:16px; height: 16px;display:inline-block;padding:0px 2px;border:none;cursor:pointer;}
 .pie-chart 			{background:url(../images/pie-chart.png) no-repeat;}
 .column-chart		{background:url(../images/bar-chart.png) no-repeat;}
 .bar-chart{background:url(../images/horizontal-chart.jpg) no-repeat;}
 .chart-graph{background:url(../images/chart_graph.png) no-repeat;width:32px;height: 28px;display:inline-block}
-.excel{background:url('../images/n_excel.gif') no-repeat;width:16px; height: 16px;display:inline-block;padding:0px 2px;border:none}
+.excel{background:url('../images/n_excel.gif') no-repeat;width:16px; height: 16px;display:inline-block;padding:0px 2px;border:none;cursor:pointer;}
 
 #map				{width: 76%; border-color: #CCCCCC #CCCCCC #999999;border-style: solid;border-width: 1px;
     					box-shadow: 0 2px 5px rgba(64, 64, 64, 0.1);padding:5px;overflow:hidden;background: #FFF;margin-left:10px;}
@@ -460,7 +460,7 @@ vertical-align:top
 }
 .tr-graph div{width:662px;margin:0 auto;text-align:center;}
 .tr-graph2 div{width:662;margin:0 auto;text-align:center;}
-
+.tr-graph3 div{width:662;margin:0 auto;text-align:center;}
 .tr-graph .container{
 	width:660px;height:305px;border:1px solid #CCCCCC
 }
@@ -468,5 +468,8 @@ vertical-align:top
 	width:1311px;height:560px;
 	border:1px solid #CCCCCC
 }
-
+.tr-graph .container3{
+	width:1311px;height:560px;
+	border:1px solid #CCCCCC
+}
 .btn_close{float:right;}
