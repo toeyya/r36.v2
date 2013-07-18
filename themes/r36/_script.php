@@ -9,6 +9,7 @@
 <link rel="stylesheet" type="text/css" 	href="media/css/vtip.css" />
 
 <script type="text/javascript" src="media/js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="media/js/jquery.livequery.js" ></script>
 <script type="text/javascript" src="media/js/Highcharts/js/highcharts.js" ></script>
 <script type="text/javascript" src="media/js/jquery.colorbox.js"></script>
 <script type="text/javascript" src="media/js/jquery.datepick/jquery.datepick.js"></script>
@@ -16,7 +17,7 @@
 <script type="text/javascript" src="media/js/jquery.rowcount-1.0.js"></script>
 <script type="text/javascript" src="media/js/jquery.validate.js"></script>
 <script type="text/javascript" src="media/js/checkobj.js" ></script>
-<script type="text/javascript" src="media/js/jquery.livequery.js" ></script>
+
 <script type="text/javascript" src="media/js/jquery-multi-open-accordion/jquery-ui-1.8.13.custom.min.js"></script>
 <script type="text/javascript" src="media/js/jquery-multi-open-accordion/jquery.multi-accordion-1.5.3.js"></script>
 <script type="text/javascript" src="media/js/vtip.js"></script>

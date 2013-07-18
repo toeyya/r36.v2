@@ -62,7 +62,7 @@ class Report extends R36_Controller
 			  	 	if($no=="6") $col="n_amphur.province_id";
 				  	$cond .=" 1=1 AND ".$col." = '".$_GET['province']."'";
 					$data['province_id'] = $_GET['province'];
-					
+					$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);
 			  }else{
 				  if(!empty($_GET['area']) && !empty($_GET['group'])){
 				  	$provinceid= "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];
@@ -89,7 +89,9 @@ class Report extends R36_Controller
 		  }
 	 		  
 		  if((!empty($_GET['month_start'])  && !empty($_GET['year_start']))   && (!empty($_GET['month_end']) && !empty($_GET['year_end']))){
-		  	 	$cond.= " AND (month(datetouch) BETWEEN '".$_GET['month_start']."' AND '".$_GET['month_end']."') AND (year(datetouch) BETWEEN '".$_GET['year_start']."' AND '".$_GET['year_end']."')";
+		  	 	$startdate = $_GET['year_start']."-".$_GET['month_start']."-01";
+				$enddate = $_GET['year_end']."-".$_GET['month_end']."-31";			  	 	
+		 		$cond .= " AND datetouch BETWEEN '".$startdate."' AND '".$enddate."'";
 		 		$data['textyear_start'] = $_GET['year_start'];
 				$data['textmonth_start'] = convert_month($_GET['month_start'],"longthai");
 			 	$data['textyear_end'] = $_GET['year_end'];
@@ -102,7 +104,10 @@ class Report extends R36_Controller
 		  }
 		    
 		  if((!empty($_GET['month_report_start'])  && !empty($_GET['year_report_start']))   && (!empty($_GET['month_report_end']) && !empty($_GET['year_report_end']))){
-		  	 	$cond.= " AND (month(reportdate) BETWEEN '".$_GET['month_report_start']."' AND '".$_GET['month_report_end']."') AND (year(reportdate) BETWEEN '".$_GET['year_report_start']."' AND '".$_GET['year_report_end']."')";
+		  	 	
+		  	 	$startdate = $_GET['year_report_start']."-".$_GET['month_report_start']."-01";
+				$enddate = $_GET['year_report_end']."-".$_GET['month_report_end']."-31";			  	 	
+		 		$cond .= " AND reportdate BETWEEN '".$startdate."' AND '".$enddate."'";		 		
 		 		$data['textyear_start'] = $_GET['year_report_start'];
 				$data['textmonth_start'] = convert_month($_GET['month_report_start'],"longthai");
 			 	$data['textyear_end'] = $_GET['year_report_end'];

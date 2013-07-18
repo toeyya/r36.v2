@@ -1,4 +1,78 @@
 <script type="text/javascript" src="media/js/report_analyze.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	function graph(title,arr_x,arr_val_all){	
+        
+        $('#container1').highcharts({
+            chart: {                
+                type: 'column',width:860,height:450,marginBottom: 60
+            },
+            title: { marginBottom:15,text: title,style: {color: '#000000',fontSize: '14px'}},
+            yAxis: {
+            	title:{
+            		text: null          		          		
+            	}            	
+            },			
+            tooltip: {valueSuffix: ' %'},
+            credits: {enabled: false},
+            legend: {
+                layout: 'horizontal',
+                align: 'bottom',
+                verticalAlign: 'bottom',
+                align :'left',
+                rotation:90,
+                x: 40,
+                y: 20,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF',
+                shadow: true
+            },
+            plotOptions: {            	           	           	
+            	column: { 
+            		dataLabels: {enabled: true,rotation:270,align:'left'
+            		}
+            	},
+            	
+               
+            },           
+            xAxis:{ categories: arr_x,
+                title: {
+                    text: null
+                }
+             },
+			 series:arr_val_all			
+		});	
+	}
+	$('.tr-graph3').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})	
+		var arr ={};
+		var arr_val=[],arr_val_all=[],arr_x=[];	
+		var padd_left,j=0;	
+	$('.img').click(function(){
+		var title 	= $(this).closest('div').next().html();
+			$(this).closest('div').next().next().find('tr:eq(2)').children().not('.totalx').each(function(index){
+				arr_x[index]=$(this).html();				
+			})
+			$(this).closest('div').next().next().find('.para1').each(function(){									
+					arr['name']=$(this).find('td:eq(0)').html();
+					$(this).find('td').slice(1).not('.totalx').each(function(index,vals){
+						arr_val[index]=parseFloat($(this).find('p').html());												
+					})
+					arr['data']=arr_val;
+					arr_val_all[j] = jQuery.parseJSON(JSON.stringify(arr));	
+					j=j+1;						
+																									  																
+			});	
+			
+		console.log(arr_val_all);
+		graph(title,arr_x,arr_val_all);				
+		$('.tr-graph3').fadeIn('slow');			
+	});
+	
+});
+</script>
 <div id="title">ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</div>
 <div id="search">
 <form action="report/analyze/" method="get" name="formreport"  id="formreport" onsubmit="return Chk_AnalyzeReport(this);">
@@ -20,7 +94,7 @@
 		</td>
 	
 	  </tr>
-	<?php require 'include/conditionreport.php'; ?>
+	<?php include('include/conditionreport.php'); ?>
 	  <tr>
 	    <th>ปีที่สัมผัสโรค</th>
 	 	<td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>						
@@ -40,7 +114,8 @@
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
 	</div> 
-	<div class="right"><button class="column-chart img" name="column"></button> <button class="excel" name="btn_excel"></button></div> 
+	<div class="right"><button class="column-chart img" name="column"></button>
+		<a href="report/analyze/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 
 	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม <?php echo $head; ?>และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>	
 	<table class="tbreport">
 		<?php $row=(!empty($minordetail_head))? "4":"3"; ?>
@@ -58,33 +133,36 @@
 			<?php foreach($minordetail as $item): ?>
 			<th><?php echo $item; ?></th>
 			<?php endforeach; ?>
-			<th>รวม</th>
+			<th class="totalx">รวม</th>
 		</tr>					
 		<?php 
 		 	$row_sum=0;
-			foreach($detail_main_type as $i): 			 
+			foreach($detail_main_type as $i){ 			 
 		?>
 		<tr class="para1">
 			<td><strong><?php echo $detail_main_name[$i] ?></strong></td>
-			<?php foreach($minorvalue as $j): ?>
-			<td><?php echo number_format(${'main'.$i.$j}); ?><p class="percentage">(<?php echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
-			<?php endforeach; ?>			
-			<td><?php $row_sum =$row_sum + ${'total_main'.$i};
-					echo number_format(${'total_main'.$i}); ?></td>
+			<?php foreach($minorvalue as $j){ ?>
+			<td><?php 
+				$sum[$j]=	${'main'.$i.$j};			
+				if(empty($sum_all[$j])){$sum_all[$j]=0;}
+				$sum_all[$j] += $sum[$j];			
+				echo number_format(${'main'.$i.$j}); ?><p class="percentage"><?php echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?></p></td>							
+			<?php } ?>			
+			<td class="totalx"><?php $row_sum =$row_sum + ${'total_main'.$i};
+				echo number_format(${'total_main'.$i}); ?></td>
 		</tr>	
 		<?php 
-			endforeach; 
+			
+			} 
 		?>
 		<tr class="total">			
 			<td>รวม</td>	
 			<?php foreach($minorvalue as $j): ?>
-			<td></td>
+			<td><?php echo number_format($sum_all[$j]); ?></td>
 			<? endforeach; ?>
 			<td><? echo number_format($row_sum); ?></td>				
 		</tr>
-	
-	
-		
+
 	</table>
 			<hr class="hr1">		
 			<div id="reference"><?php echo $reference?></div>			

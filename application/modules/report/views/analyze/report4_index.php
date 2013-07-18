@@ -40,7 +40,8 @@
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
 	</div>  
-	<div class="right"><button class="column-chart img" name="column"></button> <button class="excel" name="btn_excel"></button></div>
+	<div class="right"><button class="column-chart img" name="column"></button>
+		<a href="report/analyze/index/4<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 
 	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม <?php echo $head; ?>และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>	
 	<table class="tbreport">
 		<?php $row=(!empty($minordetail_head))? "4":"3"; ?>
@@ -65,7 +66,11 @@
 		<tr class="para1">
 			<td><strong><?php echo $detail_main_name[$i] ?></strong></td>
 			<?php foreach($minorvalue as $j): ?>
-			<td><?php echo number_format(${'main'.$i.$j}); ?><p class="percentage">(<?php echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
+			<td><?php 
+				$sum[$j] =	${'main'.$i.$j};			
+				if(empty($sum_all[$j])){$sum_all[$j]=0;}
+				$sum_all[$j] += $sum[$j];				
+				echo number_format(${'main'.$i.$j}); ?><p class="percentage">(<?php echo compute_percent(${'main'.$i.$j},${'total_main'.$i},1) ?>)</p></td>							
 			<?php endforeach; ?>			
 			<td><?php $row_sum =$row_sum + ${'total_main'.$i};
 			 echo number_format(${'total_main'.$i}); ?></td>
@@ -74,9 +79,8 @@
 		
 		<tr class="total">			
 			<td>รวม</td>
-
 		<?php foreach($minorvalue as $j): ?>	
-			<td></td>
+			<td><?php echo number_format($sum_all[$j]); ?></td>
 		<?php endforeach; ?>
 			<td><? echo number_format($row_sum); ?></td>					
 		</tr>

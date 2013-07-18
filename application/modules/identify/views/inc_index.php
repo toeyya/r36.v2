@@ -7,23 +7,7 @@
 <hr clas="hr1">	
 <div class="accordion" id="accordion2">
 <?php foreach($result as $key=>$item): ?>
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-				Collapsible Group Item #1
-			</a>
-		</div>
-		<div id="collapseOne" class="accordion-body collapse in">
-			<div class="accordion-inner">
-				<div id="news-pr">
-				<ul>
-					
-					<li>ddd</li>
-				</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 <?php endforeach; ?>
 </div>
 

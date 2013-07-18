@@ -38,7 +38,8 @@
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> </p>				
 	</div>
-	<div class="right"><button class="column-chart img" name="column"></button> <button class="excel" name="btn_excel"></button></div>
+	<div class="right"><button class="column-chart img" name="column"></button>
+		<a href="report/analyze/index/8<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 
 	<h6>ตาราง จำนวนของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม <?php echo $head; ?>และ <?php echo $detail_minor_name[$detail_minor]; ?></h6>		
 	<table class="tbreport">
 	<tr>
@@ -66,7 +67,7 @@
 							   WHERE  $cond and $detailmain_T[$main]='1' AND use_rig = '".$detailminor_T[$main_sub]."'";														
 						$sumrow = $this->db->GetOne($sql);								
 		?>
-	  <tr>
+	  <tr class="para1">
 			<td height="20"><strong><? echo $detailmain_B[$main]?></strong></td>
 			<td><strong><? echo $detailminor_name[$main_sub]?></strong></td>
 				<?  
@@ -89,5 +90,13 @@
 	  <?	 $detailmain_B[$main]='';	} 
 	  }?>
 	</table>
+			<hr class="hr1">		
+			<div id="reference"><?php echo $reference?></div>			
+			<div id="btn_printout">
+			<a href="report/analyze/index/8<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<div id="area_btn_print">
+				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
+				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
+			</div>  	
   </div>  
 <?php endif; ?>

@@ -18,15 +18,19 @@ class Analyze extends R36_Controller
 		 $data['detail_main'] = (empty($_GET['detail_main'])) ? '':$_GET['detail_main'];
 		 $data['detail_minor'] = (empty($_GET['detail_minor'])) ? '':$_GET['detail_minor'];		
 		 $data['reference'] = $this->reference;
-		 $data['textarea'] ="ทั้งหมด";
-		 $data['textprovince'] = "ทั้งหมด";
-		 $data['textamphur'] = "ทั้งหมด";
-		 $data['textdistrict']="ทั้งหมด";
+		 $data['textarea'] =(!empty($_GET['area'])) ? $this->area->get_one("name","id",$_GET['area']) :"ทั้งหมด";		
+		 $data['textprovince'] = (!empty($_GET['province'])) ? $this->province->get_one("province_name","province_id",$_GET['province']) : 'ทั้งหมด';	
+		 $data['textamphur'] = (!empty($_GET['amphur'])) ? $this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id= ? ",array($_GET['province'],$_GET['amphur'])):"ทั้งหมด";
+		 $data['textdistrict']=(!empty($_GET['district'])) ? $this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district'])):"ทั้งหมด";
 		 $data['texthospital'] = "ทั้งหมด";
 		 $data['textyear_start']="ทั้งหมด";
 		 $data['textmonth_start']="ทั้งหมด";
 		 $data['texttype']="ทั้งหมด";
 		 $data['textgroup'] = "ทั้งหมด";
+		 if(!empty($_GET['group'])){
+		 	if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
+		 	}else{$data['textgroup'] = $_GET['group'];}			 	
+		 }	 
 		 $type=array(1=>'จำแนกตามคนไข้ปัจจุบัน',2=>'จำแนกตามคนไข้ขาจร');	
 		 $cond ="";
 		if(!empty($_GET['hospital'])){
@@ -38,6 +42,7 @@ class Analyze extends R36_Controller
 			  	 	if($no=="6") $col="n_amphur.province_id";
 				  	$cond .=" 1=1 AND ".$col." = '".$_GET['province']."'";
 					$data['province_id'] = $_GET['province'];
+					$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);
 					
 			  }else{
 				  if(!empty($_GET['area']) && !empty($_GET['group'])){
@@ -81,22 +86,40 @@ class Analyze extends R36_Controller
 		 	if($cond!=""){$cond1=$cond." and ";}else{$cond1="";}				  	  			  		   											   
 		    $data['cond']=$cond;
 		    $preview = (empty($_GET['p'])) ? '':'preview';
+			$excel = (empty($_GET['excel'])) ? '':'excel';
 			switch($no)
 			{
-				case "1":$this->report1($cond,$preview,$data);break;
-				case "2":$this->report2($cond,$preview,$data);break;
-				case "3":$this->report3($cond,$preview,$data);break;
-				case "4":$this->report4($cond,$preview,$data);break;
-				case "5":$this->report5($cond,$preview,$data);break;
-				case "6":$this->report6($cond,$preview,$data);break;
-				case "7":$this->report7($cond,$preview,$data);break;
-				case "8":$this->report8($cond,$preview,$data);break;
-				case "9":$this->report9($cond,$preview,$data);break;
+				case "1":$this->report1($cond,$preview,$data,$excel);break;
+				case "2":$this->report2($cond,$preview,$data,$excel);break;
+				case "3":$this->report3($cond,$preview,$data,$excel);break;
+				case "4":$this->report4($cond,$preview,$data,$excel);break;
+				case "5":$this->report5($cond,$preview,$data,$excel);break;
+				case "6":$this->report6($cond,$preview,$data,$excel);break;
+				case "7":$this->report7($cond,$preview,$data,$excel);break;
+				case "8":$this->report8($cond,$preview,$data,$excel);break;
+				case "9":$this->report9($cond,$preview,$data,$excel);break;
 			}			  							
 
 	}
-	function report1($cond= FALSE,$preview=FALSE,$data)
-	{   $data['head'] = "อายุผู้สัมผัส";
+	function downloadFile($file){
+	    $file_name = $file;
+	    $mime = 'application/force-download';
+	    header('Pragma: public');  // required
+	    header('Expires: 0');  // no cache
+	    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+	    header('Cache-Control: private',false);
+	    header('Content-Type: '.$mime);
+		header("Content-Type: application/excel");
+	    header('Content-Disposition: attachment; filename="'.basename($file_name).'"');
+	    header('Content-Transfer-Encoding: binary');
+	    header('Connection: close');
+	    //readfile($file_name);  // push it out
+	    
+	}
+	function report1($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
+	{
+			
+		$data['head'] = "อายุผู้สัมผัส";
 		$data['detail_minor_name'] = array('','เพศ','อาชีพ','อาชีพผู้ปกครอง','สถานที่สัมผัส','ชนิดสัตว์นำโรค','อายุสัตว์','สถานภาพสัตว์','สาเหตุที่ถูกกัด','การล้างแผล','การใส่ยาฆ่าเชื้อ');
 		$data['detail_minor_type'] = array('',"age_group","gender","occupationname","occparentsname","placetouch","typeanimal","ageanimal","statusanimal","causedetail","washbefore","putdrug");
 		$data['detail_main_name'] = array('ไม่ระบุ',"ต่ำกว่า 1 ปี","1-5 ปี","6-10 ปี","11-15 ปี","16-25 ปี","26-35 ปี","36-45 ปี","46-55 ปี","56-65ปี","65 ปีขึ้นไป");
@@ -193,7 +216,7 @@ class Analyze extends R36_Controller
 			if($minor_sub==""){
 				for($i=0;$i<$main;$i++){
 					$data['total_main'.$i]=0;
-					for($j=0;$j<$minor;$j++){					
+					for($j=0;$j<$minor;$j++){											
 						$data['main'.$i.$j] = (empty($rs['main'][$i][$j])) ? 0 : $rs['main'][$i][$j];
 						$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j];										
 					}
@@ -217,11 +240,23 @@ class Analyze extends R36_Controller
 			$data['minor']= $minor;
 			$data['cond'] = $cond;
  		}			
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report1_index',$data);
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('analyze/report1_index',$data);
+		}else if($excel){				
+			$filename ="report1_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('analyze/report1_export',$data);	
+			$this->downloadFile($filename);						
+		}else{
+			$this->template->build('analyze/report1_index',$data);
+		}
+		
+		
 	}
-	function report2($cond= FALSE,$preview=FALSE,$data)
+	function report2($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{
+		
 		$data['detail_main'] = $data['detail_main']-1; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "สถานที่สัมผัส";	
 		$data['detail_minor_name']=array("",'ชนิดสัตว์นำโรค','สถานภาพสัตว์','ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์','การส่งหัวสัตว์ตรวจ');
@@ -303,7 +338,7 @@ class Analyze extends R36_Controller
 						for($j=0;$j<$minor;$j++){					
 							$data['main'.$h.$i.$j] = (empty($rs['main'][$h][$i][$j])) ? 0 : $rs['main'][$h][$i][$j];
 							$data['total_main'.$h.$i] = $data['total_main'.$h.$i] + $data['main'.$h.$i.$j];										
-						}				
+						}									
 					}
 				}				
 			}else{
@@ -323,12 +358,22 @@ class Analyze extends R36_Controller
 			$data['main'] = $main;
 			$data['minor']= $minor;
 			$data['cond'] = $cond;
- 		}		
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report2_index',$data);		
+ 		}						
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('analyze/report2_index',$data);
+		}else if($excel){				
+			$filename ="report2_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('analyze/report2_export',$data);	
+			$this->downloadFile($filename);						
+		}else{
+			$this->template->build('analyze/report2_index',$data);
+		}		
 	}
-	function report3($cond= FALSE,$preview=FALSE,$data)
+	function report3($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{
+			
 		$data['detail_main'] = $data['detail_main']-2; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "ชนิดสัตว์นำโรค";				
 		$data['detail_minor_name']=array("","สถานภาพสัตว์","การกักขัง/ติดตามดูอาการสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","การส่งหัวสัตว์ตรวจ");
@@ -431,10 +476,21 @@ class Analyze extends R36_Controller
 			$data['minor']= $minor;
 			$data['cond'] = $cond;
  		}		
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report3_index',$data);		
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('analyze/report3_index',$data);
+		}else if($excel){				
+			$filename ="report3_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('analyze/report3_export',$data);	
+			$this->downloadFile($filename);						
+		}else{
+			$this->template->build('analyze/report3_index',$data);
+		}		
 	}
-	function report4($cond= FALSE,$preview=FALSE,$data){
+	function report4($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
+	{
+		
 		$data['detail_main'] = $data['detail_main']-3; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "อายุสัตว์";	
 		$data['detail_minor_name']=array("","ชนิดสัตว์นำโรค","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์");
@@ -533,11 +589,22 @@ class Analyze extends R36_Controller
 			$data['minor']= $minor;
 			$data['cond'] = $cond;
  		}		
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report4_index',$data);			
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('analyze/report4_index',$data);
+		}else if($excel){				
+			$filename ="report4_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('analyze/report4_export',$data);	
+			$this->downloadFile($filename);						
+		}else{
+			$this->template->build('analyze/report4_index',$data);
+		}			
 				
 	}
-	function report5($cond= FALSE,$preview=FALSE,$data){
+	function report5($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
+	{
+		
 		$data['detail_main'] = $data['detail_main']-4; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "สัตว์ถูกฆ่าตาย กับ สัตว์ตายเองภายใน 10 วัน";	
 		$data['detail_minor_name']=array("","จำนวนหัวสัตว์ที่ส่งตรวจ");
@@ -599,12 +666,23 @@ class Analyze extends R36_Controller
 			$data['main'] = $main;
 			$data['minor']= $minor;
 			$data['cond'] = $cond;
- 		}		
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report5_index',$data);					
+ 		}						
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('analyze/report5_index',$data);
+		}else if($excel){				
+			$filename ="report5_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('analyze/report5_export',$data);	
+			$this->downloadFile($filename);						
+		}else{
+			$this->template->build('analyze/report5_index',$data);
+		}					
 	}
-	function report6($cond= FALSE,$preview=FALSE,$data)
-	{	$data['detail_main'] = $data['detail_main']-5; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
+	function report6($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
+	{
+		
+		$data['detail_main'] = $data['detail_main']-5; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์";
 		$data['detail_minor_name'] = array("",'ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ' );
 		$data['detail_minor_type'] = array('',"historyvacine","batteria");
@@ -653,11 +731,24 @@ class Analyze extends R36_Controller
 				}			
 			
 		}
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report6_index',$data);				
+			$data['main'] = $main;
+			$data['minor']= $minor;
+			$data['cond'] = $cond;		
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('analyze/report6_index',$data);
+		}else if($excel){				
+			$filename ="report6_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('analyze/report6_export',$data);	
+			$this->downloadFile($filename);						
+		}else{
+			$this->template->build('analyze/report6_index',$data);
+		}				
 	}
-	function report7($cond= FALSE,$preview=FALSE,$data)
+	function report7($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{
+				
 		$data['detail_main'] = $data['detail_main']-6; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "ประวัติการฉีดวัคซีนของผู้สัมผัส";					
 		$data['detail_minor_name'] = array("",'อาชีพ','อาชีพผู้ปกครอง','อายุ','การฉีดอิมมูโนโกลบุลิน','จำนวนเข็มของการฉีด','ผลการส่งหัวสัตว์ตรวจที่พบเชื้อ ');
@@ -697,7 +788,7 @@ class Analyze extends R36_Controller
 		}	
 		if($cond)
 		{											
-			$sql = "SELECT ".$data['select_date_type']." ,count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
+			$sql = "SELECT ".$data['select_date_type']." count(historyid) as cnt,".$data['detail_minor_type'][$data['detail_main']]."
 				   ".$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
@@ -727,12 +818,24 @@ class Analyze extends R36_Controller
 					}				
 				}						
 			
-		}//$cond						
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report7_index',$data);	
+		}//$cond
+			$data['main'] = $main;
+			$data['minor']= $minor;
+			$data['cond'] = $cond;						
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('analyze/report7_index',$data);
+		}else if($excel){				
+			$filename ="report7_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('analyze/report7_export',$data);	
+			$this->downloadFile($filename);						
+		}else{
+			$this->template->build('analyze/report7_index',$data);
+		}	
 	}
-	function report8($cond= FALSE,$preview=FALSE,$data)
-	{
+	function report8($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
+	{		
 		$data['detail_main'] = $data['detail_main']-7; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "การฉีดอิมมูโนโกลบุลิน";	
 		$data['detail_minor_name'] = array("","ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","วิธีฉีดวัคซีนในคน");
@@ -749,9 +852,18 @@ class Analyze extends R36_Controller
 			$data['detailminor_T']    = array('',"2","1");
 			$data['detailmain_wh']    = array("_bite_blood","_bite_noblood","_claw_blood","_claw_noblood","_lick_blood","_lick_noblood");					
 			$data['cond'] = $cond;
-			
-			if($preview)$this->template->set_layout('print');		
-			$this->template->build('analyze/report8_1_index',$data);
+			if($preview){
+				$this->template->set_layout('print');
+				$this->template->build('analyze/report8_1_index',$data);
+			}else if($excel){				
+				$filename ="report8_1_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+				$this->template->set_layout('print');
+				$this->load->view('analyze/report8_1_export',$data);	
+				$this->downloadFile($filename);						
+			}else{
+				$this->template->build('analyze/report8_1_index',$data);
+			}	
+
 		}else{
 				if($data['detail_minor']==2){
 				$data['minordetail_head'] = array("กักขังได้","กักขังไม่ได้","ถูกฆ่าตาย","หนีหาย / จำไม่ได้","ไม่ระบุ");
@@ -824,18 +936,30 @@ class Analyze extends R36_Controller
 			}// $cond
 			
 			$data['cond'] = $cond;
-			if($preview)$this->template->set_layout('print');				
-			$this->template->build('analyze/report8_index',$data);
-		}
+							
+			if($preview){
+				$this->template->set_layout('print');
+				$this->template->build('analyze/report8_index',$data);
+			}else if($excel){				
+				$filename ="report8_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+				$this->template->set_layout('print');
+				$this->load->view('analyze/report8_export',$data);	
+				$this->downloadFile($filename);						
+			}else{
+				$this->template->build('analyze/report8_index',$data);
+			}
+		}// report8
 						
 	}
-	function report9($cond= FALSE,$preview=FALSE,$data){
+	function report9($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){
+			
 		$data['detail_main'] = $data['detail_main']-8; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "จำนวนครั้งที่ฉีดวัคซีนในคน";			
 		$data['detail_minor_name'] = array("","การกักขังสัตว์ได้/ติดตามได้","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","การส่งหัวสัตว์ตรวจ");
 		$data['detail_minor_type'] = array("","total_vaccine","detaindate","historyvacine","headanimal");
 		$data['detail_main_name'] = array("1 ครั้ง ","2 ครั้ง","3 ครั้ง","4 ครั้ง","5 ครั้ง", "ไม่ระบุ");
 		$data['detail_main_type'] = array("1","2","3","4","5","0");
+		
 		$num_main=count($data['detail_main_name']);
 		$field_minor = $data['detail_minor']+1;
 	
@@ -910,8 +1034,17 @@ class Analyze extends R36_Controller
 		}
 			
 		$data['cond'] = $cond;
-		if($preview)$this->template->set_layout('print');		
-		$this->template->build('analyze/report9_index',$data);		
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('analyze/report9_index',$data);
+		}else if($excel){				
+			$filename ="report9_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('analyze/report9_export',$data);	
+			$this->downloadFile($filename);						
+		}else{
+			$this->template->build('analyze/report9_index',$data);
+		}	
 	}
 }
 ?>

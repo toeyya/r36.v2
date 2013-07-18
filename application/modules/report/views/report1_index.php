@@ -8,8 +8,16 @@ $(document).ready(function(){
 
 	function graph(title,render,t_graph,arr,arr_val)
 	{		        	       	
-        	var r=0,a="center";yy=10;       	
-        	if(render=="container7"){r=90;a="left";yy=20;}        	
+        	var r=0,a="right";yy=10;       	
+        	if(t_graph=="column"){
+        		a="center"
+        		 if(render=="container7" || render=="container3"){        		
+        			r=-45;a="right";yy=20;	       		 		
+        		  } 
+        	}else if(t_graph=="bar"){
+        		a="right";
+        	}	
+       	
         	$('#'+render).highcharts({
             chart: {                
                 type: t_graph,width:620,height:302
@@ -37,14 +45,8 @@ $(document).ready(function(){
 	                	x: 0,
 	                	y: yy
 	            	}             		            	         	          
-            },
-            series: [{data:arr_val}]
-			/*series:[{
-			 data: [
-                ['ชาย', 45.0],
-                ['หญิง', 26.8],
-                 ['ไม่ระบุ', 26.8]]
-               }]*/
+            },          
+            series: [{data:arr_val}]			
 		});	
 			
 	}					
@@ -123,7 +125,7 @@ $(document).ready(function(){
     });	
 	$('.excel').click(function(){
 		
-		$(this).closest('h6').next().show().css('background-color','blue');
+		//$(this).closest('h6').next().show().css('background-color','blue');
 	})
 
 });	
@@ -1017,7 +1019,8 @@ $(document).ready(function(){
 			<hr class="hr1">		
 			<div id="reference"><?php echo $reference?></div>			
 			<div id="btn_printout">
-			<a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+				
+			<a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>?<script> alert("ddd") </script>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 			<div id="area_btn_print">
 				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
