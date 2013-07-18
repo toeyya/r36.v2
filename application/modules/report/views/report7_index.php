@@ -27,11 +27,13 @@
 </form>
 </div><!--search -->
 <? if($cond): ?>
-<div id="report" style="width:100%;margin:0px;">
+<div id="report">
 <div id="title">
 	<p>รายงานผู้เสียชีวิต</p>
 	<p>รายจังหวัด : <?php echo $textprovince;?></p>	
 </div>
+<div style="float:right;margin-top:-40px;clear: both;width:20%;text-align:right;">
+<a href="report/index/7<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 
 <div class="right">หน่วย: ราย</div>
 <div id="multiAccordion" style="width:100%;margin:0px;">
 	<h3><a href="javascript:void(0)">ประวัติผู้เสียชีวิต</a></h3>

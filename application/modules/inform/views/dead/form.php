@@ -307,7 +307,7 @@ else if(id == 'ไม่ได้ส่งเซลล์กระจกตา�
 <? error_reporting(E_ALL ^ E_NOTICE); ?>
 <div id="title">แบบฟอร์มผู้เสียชีวิตด้วยโรคพิษสุนัขบ้า</div>
 <form id="form1" name="form1" method="post"  action="inform/dead/save" > 
-<div id="multiAccordion">
+<div id="multiAccordion" style="width:70%;margin-left: 15%;margin-right: 15%">
 	<h3><a href="javascript:void(0)">ส่วนที่ 1 ข้อมูลทั่วไป</a></h3>
 	<div id="section1">
 		<table class="tbdead">
@@ -946,7 +946,7 @@ else if(id == 'ไม่ได้ส่งเซลล์กระจกตา�
 	</div><!-- section 8 -->
 	
 </div><!-- cordion -->
-		<table class="tbform">
+		<table class="tbform" style="width:70%;margin-left: 15%;margin-right: 15%">
 			<tr>
 				<th>ชื่อ-สกุลผู้รายงาน</th><td><input type="text" class="input_box_patient" name="reportname"></td>
 				<th>ตำแหน่ง</th><td><input type="text" class="input_box_patient" name="positionname"></td>
@@ -964,15 +964,8 @@ else if(id == 'ไม่ได้ส่งเซลล์กระจกตา�
 
 				    </td>
 			</tr>
+			<tr><td colspan="3" style="border:none;"><small><strong>หมายเหตุ :</strong>ระยะฟักตัวของโรค (Incubation period) ที่เชื่อถือได้สั้นที่สุด 7 วัน ยาวนานที่สุด 3 ปี (โดยเฉลี่ย 30-90 วัน)</small></td></tr>
 		</table>
-<small><strong>หมายเหตุ :</strong>ระยะฟักตัวของโรค (Incubation period) ที่เชื่อถือได้สั้นที่สุด 7 วัน ยาวนานที่สุด 3 ปี (โดยเฉลี่ย 30-90 วัน)</small>
-
-
-
-
-
-
-
 
 
  <div class="btn_inline">
@@ -980,7 +973,7 @@ else if(id == 'ไม่ได้ส่งเซลล์กระจกตา�
       	<li><button class="btn_save" type="submit">&nbsp;&nbsp;&nbsp;</button></li>
       	<li><button class="btn_cancel" type="reset">&nbsp;&nbsp;&nbsp;</button></li></ul>
 </div> 
-	</form>
+</form>
 	
 
 

@@ -1220,14 +1220,25 @@ class Report extends R36_Controller
 
 	function report7($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){
 			
-		$data['result']=$this->dead->select("n_historydead.*,province_name,amphur_name,district_name")->join("LEFT JOIN n_province ON n_province.province_id =provinceid
+		$data['result']=$this->dead->select("n_historydead.*,province_name,amphur_name,district_name")
+									->join("LEFT JOIN n_province ON n_province.province_id =provinceid
 										   LEFT JOIN n_amphur ON  n_province.province_id = n_amphur.province_id and amphur_id=amphurid
 										   LEFT JOIN n_district ON n_district.district_id =districtid 
 										   and n_district.province_id = n_province.province_id
 										   and n_district.amphur_id = n_amphur.amphur_id")
 										   ->where("1=1 $cond")->sort("")->order("province_name asc")->get();	
-		if($preview) $this->template->set_layout('print');
-		$this->template->build('report7_index',$data);
+		$data['cond'] =$cond;		
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('report7_index',$data);
+		}else if($excel){				
+			$filename ="report7_".date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('report7_export',$data);	
+			downloadFile($filename);						
+		}else{
+			$this->template->build("report7_index",$data);
+		}		
 	}			
 
 	function report8($cond= FALSE,$preview=FALSE,$data){
