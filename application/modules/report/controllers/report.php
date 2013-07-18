@@ -1325,8 +1325,18 @@ class Report extends R36_Controller
 		  
 		}//$cond	
 		$data['cond']=$cond;
-		if($preview)$this->template->set_layout('print');			
-		$this->template->build("report5_index",$data);			
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('report5_index',$data);
+		}else if($excel){				
+			$filename ="report5_".date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('report5_export',$data);	
+			downloadFile($filename);						
+		}else{
+			$this->template->build("report5_index",$data);
+		}		
+	
 	}
 	function report6($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{

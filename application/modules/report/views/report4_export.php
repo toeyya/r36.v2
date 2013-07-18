@@ -1,11 +1,11 @@
 
 <div id="title" style="text-align:center;width:400px;font-size:14px;font-weight:bold">				  
-	<span>รายงานผู้สัมผัสโรคจำแนกตามสิทธิการรักษาของสถานบริการ <?php echo $texttype;?></span>
+	<span>รายงานผู้สัมผัสโรคจำแนกตามสิทธิการรักษาของสถานบริการ <?php echo $texttype;?></span><br/>
  	<span>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></span><br/>
 	<span>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></span></br>
 	<span>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?> เดือน  <?php echo $textmonth_start;?></span>					
 </div>
-<table class="tbreport">         
+<table class="tbreport"  border="1" width="864">         
   <tr>
     <th style="text-align: center" rowspan="2"><strong>รายการ</strong></th>
     <th colspan="2" style="text-align:center"><strong>สิทธิการรักษา</strong></th>

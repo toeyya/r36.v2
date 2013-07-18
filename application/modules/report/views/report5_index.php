@@ -39,7 +39,7 @@ $(document).ready(function(){
 	<p>สถานบริการ <?php echo $texthospital ?> <span>ปี <?php echo $textyear_start ?></span> เดือน  <?php echo $textmonth_start ?> ถึง <?php echo $textmonth_end ?></p>
  </div>
 	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;">
-		<tr><td colspan="2" style="text-align:right;"><button class="excel" name="btn_excel"></button></td></tr>
+		<tr><td colspan="2" style="text-align:right;"><a href="report/index/5<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></td></tr>
 		<tr><td colspan="2" style="text-align:right;">หน่วย:คน</td></tr>
 		<tr>
 			<th style="text-align:center">เงื่อนไข</th><th style="text-align:left">จำนวน (N=<?php echo number_format($total_n); ?>)</th>
