@@ -193,7 +193,21 @@ function sum_vertical($sum,$val){
 	return $sum + $val;
 }
 
-
+function downloadFile($file){
+    $file_name = $file;
+    $mime = 'application/force-download';
+    header('Pragma: public');  // required
+    header('Expires: 0');  // no cache
+    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+    header('Cache-Control: private',false);
+    header('Content-Type: '.$mime);
+	header("Content-Type: application/excel");
+    header('Content-Disposition: attachment; filename="'.basename($file_name).'"');
+    header('Content-Transfer-Encoding: binary');
+    header('Connection: close');
+    //readfile($file_name);  // push it out
+    
+}
 
 
 

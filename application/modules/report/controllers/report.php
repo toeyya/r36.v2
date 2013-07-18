@@ -129,15 +129,16 @@ class Report extends R36_Controller
 	}// $no==7
 		    $data['cond']=$cond;
 		    $preview = (empty($_GET['p'])) ? '':'preview';
+		    $excel = (empty($_GET['excel'])) ? '':'excel';
 			switch($no){
-				case "1":$this->report1($cond,$preview,$data);break;
-				case "2":$this->report2($cond,$preview,$data);break;
-				case "3":$this->report3($cond,$preview,$data);break;
-				case "4":$this->report4($cond,$preview,$data);break;
-				case "5":$this->report5($cond,$preview,$data);break;
-				case "6":$this->report6($cond,$preview,$data);break;
-				case "7":$this->report7($cond,$preview,$data);break;
-				case "8":$this->report8($cond,$preview,$data);break;
+				case "1":$this->report1($cond,$preview,$data,$excel);break;
+				case "2":$this->report2($cond,$preview,$data,$excel);break;
+				case "3":$this->report3($cond,$preview,$data,$excel);break;
+				case "4":$this->report4($cond,$preview,$data,$excel);break;
+				case "5":$this->report5($cond,$preview,$data,$excel);break;
+				case "6":$this->report6($cond,$preview,$data,$excel);break;
+				case "7":$this->report7($cond,$preview,$data,$excel);break;
+				case "8":$this->report8($cond,$preview,$data,$excel);break;
 			   
 			}			  							
 	}
@@ -148,7 +149,7 @@ class Report extends R36_Controller
 		return (empty($total_n)) ? 0 : $total_n;
 				
 	}
-	function report1($cond= FALSE,$preview=FALSE,$data)
+	function report1($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{
 		if($cond){
 			if($cond!=""){$cond1=$cond." and ";}else{$cond1=$cond;}
@@ -533,7 +534,7 @@ class Report extends R36_Controller
 		$this->template->build("report1_index",$data);		
 	}
 		
-	function report2($cond= FALSE,$preview=FALSE,$data)
+	function report2($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{	
 		  if($cond){
 			if($cond!=""){$cond1 = $cond." and ";}else{$cond1 = $cond;}	
@@ -950,7 +951,7 @@ class Report extends R36_Controller
 		if($preview){$this->template->set_layout('print');}
 		$this->template->build("report2_index",$data);			
 	}
-	function report3($cond= FALSE,$preview=FALSE,$data){
+	function report3($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){
 		if($cond){
 			if($cond!=""){$cond1=$cond." and ";}else{$cond1="";}	
 			$whmonth[1]="  month(datetouch) IN (1,2,3)";
@@ -1134,7 +1135,7 @@ class Report extends R36_Controller
 		if($preview)$this->template->set_layout('print');	
 		$this->template->build("report3_index",$data);			
 	}
-	function report4($cond= FALSE,$preview=FALSE,$data)
+	function report4($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{   
 		if($cond){
 			if($cond!=""){$cond1=$cond." and ";}else{$cond1=$cond;}	
@@ -1227,10 +1228,20 @@ class Report extends R36_Controller
 		}//$cond
 		
 		$data['cond']=$cond;
-		if($preview)$this->template->set_layout('print');	
-		$this->template->build("report4_index",$data);		
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('report4_index',$data);
+		}else if($excel){				
+			$filename ="report4_".date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('report4_export',$data);	
+			downloadFile($filename);						
+		}else{
+			$this->template->build("report4_index",$data);
+		}	
+					
 	}
-	function report5($cond= FALSE,$preview=FALSE,$data)
+	function report5($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{	
 		if($cond)
 		{ //$this->db->debug=true;
@@ -1317,7 +1328,7 @@ class Report extends R36_Controller
 		if($preview)$this->template->set_layout('print');			
 		$this->template->build("report5_index",$data);			
 	}
-	function report6($cond= FALSE,$preview=FALSE,$data)
+	function report6($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{
 		if($cond=="1=1"){$cond1="";}else{$cond1=$cond;}									 
 		$sql="SELECT n_amphur.amphur_name as amphur_name,a.province_name,cnt1,in_out1,cnt2,in_out2,n_amphur.amphur_id as amphur_id 
@@ -1340,10 +1351,20 @@ class Report extends R36_Controller
 			$data['result']=$this->inform->get($sql);				
 		}
 		$data['cond'] = $cond;
-		if($preview){$this->template->set_layout('print');}	
-		$this->template->build("report6_index",$data);			
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('report6_index',$data);
+		}else if($excel){				
+			$filename ="report6_".date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('report6_export',$data);	
+			downloadFile($filename);						
+		}else{
+			$this->template->build("report6_index",$data);
+		}		
+					
 	}
-	function report7($cond= FALSE,$preview=FALSE,$data){
+	function report7($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){
 			
 		$data['result']=$this->dead->select("n_historydead.*,province_name,amphur_name,district_name")->join("LEFT JOIN n_province ON n_province.province_id =provinceid
 										   LEFT JOIN n_amphur ON  n_province.province_id = n_amphur.province_id and amphur_id=amphurid
@@ -1354,7 +1375,7 @@ class Report extends R36_Controller
 		if($preview) $this->template->set_layout('print');
 		$this->template->build('report7_index',$data);
 	}			
-	function report8($cond= FALSE,$preview=FALSE,$data){
+	function report8($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){
 	## ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบูลิน		
 		if($cond!=""){$cond1=$cond." and ";}else{$cond1=$cond;}
 		if($cond){			
@@ -1387,10 +1408,20 @@ class Report extends R36_Controller
 			$data['total10']=$this->db->GetOne($sql);									
 		}
 			$data['cond'] = $cond;
-			if($preview) $this->template->set_layout('print');				
-			$this->template->build("report8_index",$data);			
+			if($preview){
+				$this->template->set_layout('print');
+				$this->template->build('report8_index',$data);
+			}else if($excel){				
+				$filename ="report8_".date('YmdHis').".xls";			;						
+				$this->template->set_layout('print');
+				$this->load->view('report8_export',$data);	
+				downloadFile($filename);						
+			}else{
+				$this->template->build("report8_index",$data);
+			}
+			
 	}
-	function schedule($preview=FALSE,$popup=FALSE)
+	function schedule($preview=FALSE,$popup=FALSE,$excel=FALSE)
 	{ ## ต้องมาแก้ ให้  n_vaccine.hospital_id=n_hospital_1.hospital_id ##
 	  ## vaccine_date เปลี่ยน พ.ศ. เป็น ค.ศ. โดยเริ่มจากวันที่เริ่มเปิดให้เทสโปรแกรมใหม่ 		
 		$today=date('Y-m-d');

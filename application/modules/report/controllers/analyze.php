@@ -101,21 +101,7 @@ class Analyze extends R36_Controller
 			}			  							
 
 	}
-	function downloadFile($file){
-	    $file_name = $file;
-	    $mime = 'application/force-download';
-	    header('Pragma: public');  // required
-	    header('Expires: 0');  // no cache
-	    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-	    header('Cache-Control: private',false);
-	    header('Content-Type: '.$mime);
-		header("Content-Type: application/excel");
-	    header('Content-Disposition: attachment; filename="'.basename($file_name).'"');
-	    header('Content-Transfer-Encoding: binary');
-	    header('Connection: close');
-	    //readfile($file_name);  // push it out
-	    
-	}
+
 	function report1($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{
 			
@@ -247,7 +233,7 @@ class Analyze extends R36_Controller
 			$filename ="report1_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 			$this->template->set_layout('print');
 			$this->load->view('analyze/report1_export',$data);	
-			$this->downloadFile($filename);						
+			downloadFile($filename);						
 		}else{
 			$this->template->build('analyze/report1_index',$data);
 		}
@@ -366,7 +352,7 @@ class Analyze extends R36_Controller
 			$filename ="report2_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 			$this->template->set_layout('print');
 			$this->load->view('analyze/report2_export',$data);	
-			$this->downloadFile($filename);						
+			downloadFile($filename);						
 		}else{
 			$this->template->build('analyze/report2_index',$data);
 		}		
@@ -483,7 +469,7 @@ class Analyze extends R36_Controller
 			$filename ="report3_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 			$this->template->set_layout('print');
 			$this->load->view('analyze/report3_export',$data);	
-			$this->downloadFile($filename);						
+			downloadFile($filename);						
 		}else{
 			$this->template->build('analyze/report3_index',$data);
 		}		
@@ -596,7 +582,7 @@ class Analyze extends R36_Controller
 			$filename ="report4_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 			$this->template->set_layout('print');
 			$this->load->view('analyze/report4_export',$data);	
-			$this->downloadFile($filename);						
+			downloadFile($filename);						
 		}else{
 			$this->template->build('analyze/report4_index',$data);
 		}			
@@ -674,7 +660,7 @@ class Analyze extends R36_Controller
 			$filename ="report5_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 			$this->template->set_layout('print');
 			$this->load->view('analyze/report5_export',$data);	
-			$this->downloadFile($filename);						
+			downloadFile($filename);						
 		}else{
 			$this->template->build('analyze/report5_index',$data);
 		}					
@@ -741,7 +727,7 @@ class Analyze extends R36_Controller
 			$filename ="report6_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 			$this->template->set_layout('print');
 			$this->load->view('analyze/report6_export',$data);	
-			$this->downloadFile($filename);						
+			downloadFile($filename);						
 		}else{
 			$this->template->build('analyze/report6_index',$data);
 		}				
@@ -829,7 +815,7 @@ class Analyze extends R36_Controller
 			$filename ="report7_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 			$this->template->set_layout('print');
 			$this->load->view('analyze/report7_export',$data);	
-			$this->downloadFile($filename);						
+			downloadFile($filename);						
 		}else{
 			$this->template->build('analyze/report7_index',$data);
 		}	
@@ -859,7 +845,7 @@ class Analyze extends R36_Controller
 				$filename ="report8_1_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 				$this->template->set_layout('print');
 				$this->load->view('analyze/report8_1_export',$data);	
-				$this->downloadFile($filename);						
+				downloadFile($filename);						
 			}else{
 				$this->template->build('analyze/report8_1_index',$data);
 			}	
@@ -944,7 +930,7 @@ class Analyze extends R36_Controller
 				$filename ="report8_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 				$this->template->set_layout('print');
 				$this->load->view('analyze/report8_export',$data);	
-				$this->downloadFile($filename);						
+				downloadFile($filename);						
 			}else{
 				$this->template->build('analyze/report8_index',$data);
 			}
@@ -1041,7 +1027,7 @@ class Analyze extends R36_Controller
 			$filename ="report9_".$data['detail_minor'].'_'.date('YmdHis').".xls";			;						
 			$this->template->set_layout('print');
 			$this->load->view('analyze/report9_export',$data);	
-			$this->downloadFile($filename);						
+			downloadFile($filename);						
 		}else{
 			$this->template->build('analyze/report9_index',$data);
 		}	

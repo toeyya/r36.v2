@@ -40,7 +40,7 @@
 		<p>เดือน <?php echo $textmonth_start; ?> ปี <?php echo $textyear_start ?> ถึงเดือน <?php echo $textmonth_end; ?> ปี <?php echo $textyear_end ?></p>				
 	</div>
 	<div style="float:right;margin-top:-40px;clear: both;width:20%;text-align:right;"><button class="column-chart img" name="column"></button>
-		<a href="report/analyze/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 	
+		<a href="report/index/8<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 	
 	<div class="right">หน่วย : คน</div>
 	<table class="tbreport1">
 		<tr>

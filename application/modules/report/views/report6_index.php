@@ -112,7 +112,8 @@ $(document).ready(function(){
 <div id="title">
 	<p>รายงานจังหวัด<?php echo $textprovince ?>  เดือน  <?php echo $textmonth_start ?> ปี  <? echo $textyear_start ?></p>
 </div>
-<div class="right"><button class="column-chart img" name="column"></button> <button href="" class="excel" name="btn_excel"></button></div>
+	<div style="float:right;margin-top:-40px;clear: both;width:20%;text-align:right;"><button class="column-chart img" name="column"></button>
+		<a href="report/index/6<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 
 <table class="tbreport">
 	<tr><td colspan="4" style="text-align: right;">หน่วย: คน</td></tr>
 	<tr>
