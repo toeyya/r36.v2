@@ -28,9 +28,9 @@ if(!function_exists('get_year_option'))
 
 	
 	function DateTH2DB($date){
-		list($d,$m,$y) = explode('/', $date);
-	    $y-=543;
-	    return $y.'-'.$m.'-'.$d;
+		list($d,$m,$y) = explode('-', $date);
+	    //$y-=543;
+	    return $y.'/'.$m.'/'.$d ;
 	
 	}
 
@@ -58,7 +58,7 @@ if ( ! function_exists('DateTime2DB'))
 		if($date!=NULL && $date!="0000-00-00")
 		{
 			list($y,$m,$d) = explode('-', $date);
-	    	$y+=543;
+	    	$y-=543;
 	    	return $y.'-'.$m.'-'.$d;
 		}else{
 			$date="";
@@ -227,6 +227,116 @@ if(! function_exists('timespan'))
 function convert_month($month,$language){
 	if($language=='longthai'){
 		if($month=='01'){
+			$month = 1;
+		}elseif($month=='02'){
+			$month = 2;
+		}elseif($month=='03'){
+			$month = 3;
+		}elseif($month=='04'){
+			$month = 4;
+		}elseif($month=='05'){
+			$month = 5;
+		}elseif($month=='06'){
+			$month = 6;
+		}elseif($month=='07'){
+			$month = 7;
+		}elseif($month=='08'){
+			$month = 8;
+		}elseif($month=='09'){
+			$month = 9;
+		}elseif($month=='10'){
+			$month = 10;
+		}elseif($month=='11'){
+			$month = 11;
+		}elseif($month=='12'){
+			$month = 12;
+		}
+		return $month;
+	}elseif($language=='shortthai'){
+		if($month=='01'){
+			$month = "ม.ค.";
+		}elseif($month=='02'){
+			$month = "ก.พ.";
+		}elseif($month=='03'){
+			$month = "มี.ค.";
+		}elseif($month=='04'){
+			$month = "เม.ย.";
+		}elseif($month=='05'){
+			$month = "พ.ค.";
+		}elseif($month=='06'){
+			$month = "มิ.ย.";
+		}elseif($month=='07'){
+			$month = "ก.ค.";
+		}elseif($month=='08'){
+			$month = "ส.ค.";
+		}elseif($month=='09'){
+			$month = "ก.ย.";
+		}elseif($month=='10'){
+			$month = "ต.ค.";
+		}elseif($month=='11'){
+			$month = "พ.ย.";
+		}elseif($month=='12'){
+			$month = "ธ.ค.";
+		}
+		return $month;
+	}elseif($language=='shorteng'){
+		if($month=='01'){
+			$month = "Jan";
+		}elseif($month=='02'){
+			$month = "Feb";
+		}elseif($month=='03'){
+			$month = "Mar";
+		}elseif($month=='04'){
+			$month = "Apr";
+		}elseif($month=='05'){
+			$month = "May";
+		}elseif($data[1]=='06'){
+			$month = "Jun";
+		}elseif($month=='07'){
+			$month = "Jul";
+		}elseif($month=='08'){
+			$month = "Aug";
+		}elseif($month=='09'){
+			$month = "Sep";
+		}elseif($month=='10'){
+			$month = "October";
+		}elseif($month=='11'){
+			$month = "Nov";
+		}elseif($month=='12'){
+			$month = "Dec";
+		}
+		return $month;
+	}elseif($language=='longeng'){
+		if($month=='01'){
+			$month = "January";
+		}elseif($month=='02'){
+			$month = "February";
+		}elseif($month=='03'){
+			$month = "March";
+		}elseif($month=='04'){
+			$month = "April";
+		}elseif($month=='05'){
+			$month = "May";
+		}elseif($month=='06'){
+			$month = "June";
+		}elseif($month=='07'){
+			$month = "July";
+		}elseif($month=='08'){
+			$month = "August";
+		}elseif($month=='09'){
+			$month = "September";
+		}elseif($month=='10'){
+			$month = "October";
+		}elseif($month=='11'){
+			$month = "November";
+		}elseif($month=='12'){
+			$month = "December";
+		}
+	}
+}
+/*function convert_month($month,$language){
+	if($language=='longthai'){
+		if($month=='01'){
 			$month = "มกราคม";
 		}elseif($month=='02'){
 			$month = "กุมภาพันธ์";
@@ -333,7 +443,7 @@ function convert_month($month,$language){
 			$month = "December";
 		}
 	}
-}
+}*/
 
 
 function cld_date2my($date_input){//format dd/mm/year_th -> year_th-mm-dd
@@ -384,4 +494,27 @@ if(!function_exists('get_month'))
 	}
 }
 
+function mysql_to_date($date,$is_date_thai = FALSE,$lang)
+{
+	//$month['th'] = array('','01'=>'01','02'=>'02','03'=>'03','04'=>'04','05'=>'05','06'=>'06','07'=>'07','08'=>'08','09'=>'09','10'=>'10','11'=>'11','12'=>'12');
+	$month['th'] = array('','01'=>'มกราคม','02'=>'กุมภาพันธ์','03'=>'มีนาคม','04'=>'เมษายน','05'=>'พฤษภาคม','06'=>'มิถุนายน','07'=>'กรกฏาคม','08'=>'สิงหาคม','09'=>'กันยายน','10'=>'ตุลาคม','11'=>'พฤศจิกายน','12'=>'ธันวาคม');
+	$month['en'] = array('','01'=>'January','02'=>'February','03'=>'March','04'=>'April','05'=>'May','06'=>'June','07'=>'July','08'=>'August','09'=>'September','10'=>'October','11'=>'November','12'=>'December');
+	@list($y,$m,$d) = @explode('-', $date);
+	$y = ($is_date_thai) ? $y  : $y;
+	return @$date ? $d.' '.$month[$lang][$m].' '.$y : NULL;
+}
+
+function dateDiff($dformat, $endDate, $beginDate)
+{
+    $date_parts1=explode($dformat, $beginDate);
+    $date_parts2=explode($dformat, $endDate);
+    $start_date=gregoriantojd($date_parts1[0], $date_parts1[1], $date_parts1[2]);
+    $end_date=gregoriantojd($date_parts2[0], $date_parts2[1], $date_parts2[2]);
+    return $end_date - $start_date;
+}
+
+function check_to_day($today,$lastday){
+//รวมวันนี้ด้วย ถ้าไม่ต้องการร่วมวันนี้ให้เอา ''+1''ออก
+return round(abs(strtotime($today)-strtotime($lastday))/86400);
+}
 ?>
