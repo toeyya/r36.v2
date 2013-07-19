@@ -956,8 +956,8 @@ class Report extends R36_Controller
 		    $data['gender']     = array(1=>'ชาย',2=>'หญิง',0=>'ไม่ระบุ');
 			$data['age_group']  = array(1=>"ต่ำกว่า 1 ปี",2=>"1-5 ปี",3=>"6-10 ปี",4=>"11-15 ปี",5=>"16-25 ปี",6=>"26-35 ปี",7=>"36-45 ปี",8=>"46-55 ปี",9=>"56-65ปี",10=>"65 ปีขึ้นไป",0=>'ไม่ระบุ');
 			$data['placetouch'] = array(1=>"เขต กทม.",2=>"เขตเมืองพัทยา",3=>"เขตเทศบาล",4=>"เขตอบต.",0=>"ไม่ระบุ");
-			$data['typeanimal'] = array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ',7=>'ไม่ระบุ');
-			$data['ageanimal']  = array(1=>"น้อยกว่า 3 เดือน ",2=>"3 - 6 เดือน ",3=>"6 - 12 เดือน ",4=>"มากกว่า 1 ปี ",5=>"ไม่ทราบ",6=>"ไม่ระบุ");
+			$data['typeanimal'] = array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ',0=>'ไม่ระบุ');
+			$data['ageanimal']  = array(1=>"น้อยกว่า 3 เดือน ",2=>"3 - 6 เดือน ",3=>"6 - 12 เดือน ",4=>"มากกว่า 1 ปี ",5=>"ไม่ทราบ",0=>"ไม่ระบุ");
 			foreach($module as $field =>$name)
 			{	$quarter = array();						
 				for($i=1;$i<5;$i++){
@@ -980,142 +980,141 @@ class Report extends R36_Controller
 				}
 			}//endforeach;
 			
-	## จำนวน N จำแนกตามการกักขัง
-$rs=array();
-$array=array_fill(0,3,0);	
-$total1 =array_fill(0,5,$array);	
-for($i=1;$i<5;$i++){
-$sql="SELECT count(historyid) as cnt,detain,detaindate FROM n_history INNER JOIN n_information ON historyid=information_historyid
-WHERE $cond1 ".$whmonth[$i]." GROUP BY detain,detaindate ORDER BY detain,detaindate asc";
-$result = $this->db->Execute($sql);	
-if(!empty($result)){
-foreach($result as $item){
-$rs[$item['detain']][$item['detaindate']][$i] = $item['cnt'];	
-}	
-}	
-}	
-for($i=0;$i<5;$i++){	
-for($j=0;$j<3;$j++){
-$data['total_detain_all'.$i.$j]=0;
-for($k=1;$k<5;$k++){
-$data['total_detain'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
-$data['total_detain_all'.$i.$j] = $data['total_detain_all'.$i.$j] + $data['total_detain'.$i.$j.$k];	
-}	
-}	
-}	
-## ประวัติการฉีดวัคซีนของสัตว์
-$rs=array();	
-for($i=1;$i<5;$i++){
-$sql="SELECT count(historyid) as cnt,historyvacine,historyvacine_within FROM n_history INNER JOIN n_information ON historyid=information_historyid
-WHERE $cond1 ".$whmonth[$i]." GROUP BY historyvacine,historyvacine_within ORDER BY historyvacine,historyvacine_within asc";
-$result = $this->db->Execute($sql);
-if(!empty($result)){
-foreach($result as $item){
-$rs[$item['historyvacine']][$item['historyvacine_within']][$i] = $item['cnt'];	
-}	
-}	
-}
-
-for($i=0;$i<5;$i++){
-for($j=0;$j<3;$j++){
-$data['total_vaccinedog_all'.$i.$j]=0;
-for($k=1;$k<5;$k++){	
-$data['total_vaccinedog'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
-$data['total_vaccinedog_all'.$i.$j] = $data['total_vaccinedog_all'.$i.$j] + $data['total_vaccinedog'.$i.$j.$k];
-}
-}	
-}
-## สาเหตุถูกกัด
-$rs=array();
-for($i=1;$i<5;$i++){	
-$sql="SELECT count(historyid) as cnt,reasonbite,causedetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
-WHERE $cond1 ".$whmonth[$i]." GROUP BY reasonbite,causedetail ORDER BY reasonbite,causedetail asc";
-$result = $this->db->Execute($sql);	
-if(!empty($result)){	
-foreach($result as $item){
-$rs[$item['reasonbite']][$item['causedetail']][$i] = $item['cnt'];	
-}
-}
-}
-for($i=0;$i<3;$i++){
-for($j=0;$j<7;$j++){
-$data['total_reason_all'.$i.$j]=0;
-for($k=1;$k<5;$k++){	
-$data['total_reason'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
-$data['total_reason_all'.$i.$j] = $data['total_reason_all'.$i.$j]+ $data['total_reason'.$i.$j.$k];
-}
-
-}	
-}	
-## การล้างแผล
-$rs=array();	
-for($i=1;$i<5;$i++){	
-$sql="SELECT count(historyid) as cnt,washbefore,washbeforedetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
-WHERE $cond1 ".$whmonth[$i]." GROUP BY washbefore,washbeforedetail ORDER BYwashbefore,washbeforedetail asc";
-$result = $this->db->Execute($sql);	
-if(!empty($result)){	
-foreach($result as $item){
-$rs[$item['washbefore']][$item['washbeforedetail']][$i] = $item['cnt'];	
-}	
-}	
-}
-for($i=0;$i<3;$i++){
-for($j=0;$j<5;$j++){
-$data['total_wash_all'.$i.$j]=0;
-for($k=1;$k<5;$k++){	
-$data['total_wash'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
-$data['total_wash_all'.$i.$j] = $data['total_wash_all'.$i.$j] + $data['total_wash'.$i.$j.$k];
-}	
-}	
-}
-## การใส่ยา
-$rs=array();	
-for($i=1;$i<5;$i++){	
-$sql="SELECT count(historyid) as cnt,putdrug,putdrugdetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
-WHERE $cond1 ".$whmonth[$i]." GROUP BY putdrug,putdrugdetail ORDER BY putdrug,putdrugdetail asc";
-$result = $this->db->Execute($sql);	
-if(!empty($result)){	
-foreach($result as $item){
-$rs[$item['putdrug']][$item['putdrugdetail']][$i] = $item['cnt'];	
-}
-}
-}
-for($i=0;$i<3;$i++){
-for($j=0;$j<5;$j++){
-$data['total_drug_all'.$i.$j]=0;
-for($k=1;$k<5;$k++){	
-$data['total_drug'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
-$data['total_drug_all'.$i.$j] = $data['total_drug_all'.$i.$j] + $data['total_drug'.$i.$j.$k];
-}	
-}	
-}
-
-## ประวัติการฉีดวัคซีนของคน
-$rs=array();	
-for($i=1;$i<5;$i++){
-$sql="SELECT count(historyid) as cnt,historyprotect,historyprotectdetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
-WHERE $cond1 ".$whmonth[$i]." GROUP BY historyprotect,historyprotectdetail ORDER BY historyprotect,historyprotectdetail asc";
-$result = $this->db->Execute($sql);
-if(!empty($result)){
-foreach($result as $item){
-$rs[$item['historyprotect']][$item['historyprotectdetail']][$i] = $item['cnt'];	
-}	
-}	
-}
-
-for($i=0;$i<3;$i++){
-for($j=0;$j<3;$j++){
-$data['total_historyprotect_all'.$i.$j]=0;
-for($k=1;$k<5;$k++){	
-$data['total_historyprotect'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
-$data['total_historyprotect_all'.$i.$j] = $data['total_historyprotect_all'.$i.$j] + $data['total_historyprotect'.$i.$j.$k];
-}
-}	
-}	
-}//$cond
-$data['cond'] = $cond;	
-if($preview)$this->template->set_layout('print');	
-$this->template->build("report3_index",$data);				
+		## จำนวน N จำแนกตามการกักขัง
+		$rs=array();
+		$array=array_fill(0,3,0);	
+		$total1 =array_fill(0,5,$array);	
+		for($i=1;$i<5;$i++){
+		$sql="SELECT count(historyid) as cnt,detain,detaindate FROM n_history INNER JOIN n_information ON historyid=information_historyid
+		WHERE $cond1 ".$whmonth[$i]." GROUP BY detain,detaindate ORDER BY detain,detaindate asc";
+		$result = $this->db->Execute($sql);	
+			if(!empty($result)){
+				foreach($result as $item){
+				$rs[$item['detain']][$item['detaindate']][$i] = $item['cnt'];	
+				}	
+			}	
+		}	
+		for($i=0;$i<5;$i++){	
+			for($j=0;$j<3;$j++){
+				$data['total_detain_all'.$i.$j]=0;
+				for($k=1;$k<5;$k++){
+					$data['total_detain'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
+					$data['total_detain_all'.$i.$j] = $data['total_detain_all'.$i.$j] + $data['total_detain'.$i.$j.$k];	
+				}	
+			}	
+		}	
+		## ประวัติการฉีดวัคซีนของสัตว์
+		$rs=array();	
+		for($i=1;$i<5;$i++){
+		$sql="SELECT count(historyid) as cnt,historyvacine,historyvacine_within FROM n_history INNER JOIN n_information ON historyid=information_historyid
+		WHERE $cond1 ".$whmonth[$i]." GROUP BY historyvacine,historyvacine_within ORDER BY historyvacine,historyvacine_within asc";
+		$result = $this->db->Execute($sql);
+			if(!empty($result)){
+				foreach($result as $item){
+				$rs[$item['historyvacine']][$item['historyvacine_within']][$i] = $item['cnt'];	
+			}	
+			}	
+		}
+		
+		for($i=0;$i<5;$i++){
+			for($j=0;$j<3;$j++){
+				$data['total_vaccinedog_all'.$i.$j]=0;
+				for($k=1;$k<5;$k++){	
+					$data['total_vaccinedog'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
+					$data['total_vaccinedog_all'.$i.$j] = $data['total_vaccinedog_all'.$i.$j] + $data['total_vaccinedog'.$i.$j.$k];
+				}
+			}	
+		}
+		## สาเหตุถูกกัด
+		$rs=array();
+		for($i=1;$i<5;$i++){	
+		$sql="SELECT count(historyid) as cnt,reasonbite,causedetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
+		WHERE $cond1 ".$whmonth[$i]." GROUP BY reasonbite,causedetail ORDER BY reasonbite,causedetail asc";
+		$result = $this->db->Execute($sql);	
+			if(!empty($result)){	
+				foreach($result as $item){
+				$rs[$item['reasonbite']][$item['causedetail']][$i] = $item['cnt'];	
+				}
+			}
+		}
+		for($i=0;$i<3;$i++){
+				for($j=0;$j<7;$j++){
+				$data['total_reason_all'.$i.$j]=0;
+				for($k=1;$k<5;$k++){	
+					$data['total_reason'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
+					$data['total_reason_all'.$i.$j] = $data['total_reason_all'.$i.$j]+ $data['total_reason'.$i.$j.$k];
+				}	
+			}	
+		}	
+		## การล้างแผล
+		$rs=array();	
+		for($i=1;$i<5;$i++){	
+		$sql="SELECT count(historyid) as cnt,washbefore,washbeforedetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
+		WHERE $cond1 ".$whmonth[$i]." GROUP BY washbefore,washbeforedetail ORDER BYwashbefore,washbeforedetail asc";
+		$result = $this->db->Execute($sql);	
+			if(!empty($result)){	
+				foreach($result as $item){
+				$rs[$item['washbefore']][$item['washbeforedetail']][$i] = $item['cnt'];	
+				}	
+			}	
+		}
+		for($i=0;$i<3;$i++){
+			for($j=0;$j<5;$j++){
+			$data['total_wash_all'.$i.$j]=0;
+				for($k=1;$k<5;$k++){	
+				$data['total_wash'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
+				$data['total_wash_all'.$i.$j] = $data['total_wash_all'.$i.$j] + $data['total_wash'.$i.$j.$k];
+				}	
+			}	
+		}
+		## การใส่ยา
+		$rs=array();	
+		for($i=1;$i<5;$i++){	
+		$sql="SELECT count(historyid) as cnt,putdrug,putdrugdetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
+		WHERE $cond1 ".$whmonth[$i]." GROUP BY putdrug,putdrugdetail ORDER BY putdrug,putdrugdetail asc";
+		$result = $this->db->Execute($sql);	
+			if(!empty($result)){	
+				foreach($result as $item){
+				$rs[$item['putdrug']][$item['putdrugdetail']][$i] = $item['cnt'];	
+				}
+			}
+		}
+		for($i=0;$i<3;$i++){
+			for($j=0;$j<5;$j++){
+			$data['total_drug_all'.$i.$j]=0;
+				for($k=1;$k<5;$k++){	
+				$data['total_drug'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
+				$data['total_drug_all'.$i.$j] = $data['total_drug_all'.$i.$j] + $data['total_drug'.$i.$j.$k];
+				}	
+			}	
+		}
+	
+		## ประวัติการฉีดวัคซีนของคน
+		$rs=array();	
+		for($i=1;$i<5;$i++){
+		$sql="SELECT count(historyid) as cnt,historyprotect,historyprotectdetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
+		WHERE $cond1 ".$whmonth[$i]." GROUP BY historyprotect,historyprotectdetail ORDER BY historyprotect,historyprotectdetail asc";
+		$result = $this->db->Execute($sql);
+			if(!empty($result)){
+				foreach($result as $item){
+					$rs[$item['historyprotect']][$item['historyprotectdetail']][$i] = $item['cnt'];	
+				}	
+			}	
+		}
+		
+		for($i=0;$i<3;$i++){
+			for($j=0;$j<3;$j++){
+			$data['total_historyprotect_all'.$i.$j]=0;
+				for($k=1;$k<5;$k++){	
+				$data['total_historyprotect'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
+				$data['total_historyprotect_all'.$i.$j] = $data['total_historyprotect_all'.$i.$j] + $data['total_historyprotect'.$i.$j.$k];
+				}
+			}	
+		}	
+	}//$cond
+	$data['cond'] = $cond;	
+	if($preview)$this->template->set_layout('print');	
+	$this->template->build("report3_index",$data);				
 	}
 	function report4($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{   
