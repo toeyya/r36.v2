@@ -7,7 +7,7 @@
 
 <div class="right">หน่วย: ราย</div>
 <div id="multiAccordion">
-	<h3>ประวัติผู้เสียชีวิต</h3>
+	<h6>ประวัติผู้เสียชีวิต</h6>
 	<div id="section1">
 	<table class="tbreport">
 		<tr>
@@ -134,7 +134,7 @@
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 			</div>
 	</div>
-	<h3>ประวัติของสัตว์ที่กัด</h3>
+	<h6>ประวัติของสัตว์ที่กัด</h6>
 	<div id="section2">
 		<table class="tbreport">
 		<tr>

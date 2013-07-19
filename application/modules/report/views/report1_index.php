@@ -6,9 +6,10 @@ $(document).ready(function(){
 	    active:0
 	});
 
+	
 	function graph(title,render,t_graph,arr,arr_val)
-	{		        	       	
-        	var r=0,a="right";yy=10;       	
+	{		       	       	
+        	var r=0,a="right";yy=10;      	
         	if(t_graph=="column"){
         		a="center"
         		 if(render=="container7" || render=="container3"){        		
@@ -17,9 +18,11 @@ $(document).ready(function(){
         	}else if(t_graph=="bar"){
         		a="right";
         	}	
-       	
-        	$('#'+render).highcharts({
-            chart: {                
+       		
+        	//$('#'+render).highcharts({
+            chart = new Highcharts.Chart({
+            chart: {  
+            	renderTo :render,              
                 type: t_graph,width:620,height:302
             },
             title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
@@ -37,8 +40,7 @@ $(document).ready(function(){
             	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.2f} %'}}
                
             },           
-            xAxis: {categories: arr, 
-           		         	
+            xAxis: {categories: arr,            		         	
 	            	labels: {
 	                	rotation: r,
 	                	align:a,
@@ -48,7 +50,11 @@ $(document).ready(function(){
             },          
             series: [{data:arr_val}]			
 		});	
-			
+		canvg(document.getElementById('canvas'), chart.getSVG())		    
+		var canvas = document.getElementById("canvas");
+		var img = canvas.toDataURL("image/png");
+		$('#'+render).next().val('<img src="'+img+'"/>');
+				
 	}					
 	$('.tr-graph').hide();
 	$('td[colspan]').addClass('hasRowSpan');
@@ -115,24 +121,27 @@ $(document).ready(function(){
 			graph(title,render,t_graph,arr,arr_val_all);			
 		}else{
 			graph(title,render,t_graph,arr,arr_val);
-		}			
+		}				
 		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');		
 		
+	
 	});	
-	 $('#button').click(function() {
-        var chart = $('#container').highcharts();
-        chart.print();
-    });	
-	$('.excel').click(function(){
-		
-		//$(this).closest('h6').next().show().css('background-color','blue');
+	$('a[name=preview]').click(function(){
+		var container1 = $('input[name=container1]').val();
+		var loc = $(this).prev().val();
+		window.location='<? echo base_url(); ?>'+loc+'&container1='+container1;
+		console.log($(this).prev().val(),container1);
+	});
+	$('[name=btn_preview]').click(function(){
+		$('input[name=preview]').val('preview');
+		$('#frm_report').submit();
 	})
-
+	
 });	
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - ภาพรวม</div>
 <div id="search">
-<form action="report/index/1" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/index/1" method="get" name="formreport" >
 <table class="tb_patient1">
 <?php require 'include/conditionreport.php'; ?>
 	<tr>
@@ -155,6 +164,10 @@ $(document).ready(function(){
 	<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 </div>
 
+
+<canvas id="canvas" width="1000px" height="600px" style="display:none;"></canvas> 
+
+
 <div id="multiAccordion" style="width:80%;margin-left:10%;margin-right:10%">
     <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>
     <div id="section1">
@@ -167,9 +180,9 @@ $(document).ready(function(){
 		</tr>
 		<tr><td colspan="3"><strong>เพศ</strong>			
 			<input type="hidden" name="render" value="container1">
-			<button class="bar-chart img"  name="bar"></button>
-			<button class="column-chart img" name="column"></button>
-    		<button class="pie-chart img" name="pie"></button>
+			<button class="bar-chart img"  name="bar" type="button"></button>
+			<button class="column-chart img" name="column" type="button"></button>
+    		<button class="pie-chart img" name="pie" type="button"></button>
     		
 		</td></tr>
 		<tr class="para1">
@@ -190,9 +203,11 @@ $(document).ready(function(){
 		</tr>
 <tr class="tr-graph">
   	<td colspan="3">  		 		
-  		<div>
-  			<button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph">
+  			<button name="close" title="close" value="close" class="btn btn_close">X</button>  			
   			<div id="container1" class="container"></div>
+  			<input class="svg-to-img" name="container1" type="hidden" value="">
+  					
   		</div>  		  		
   	</td>
 </tr>
@@ -224,7 +239,7 @@ $(document).ready(function(){
 			<strong>Max</strong>= <? echo number_format($max_age); ?>)</td></tr>
 <tr class="tr-graph">
   	<td colspan="3">   		
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container2" class="container"></div> 			
   		</div>
   	</td>
@@ -250,16 +265,20 @@ $(document).ready(function(){
 		<?php endfor; ?>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container3" class="container"></div> 			
   		</div>
   	</td>
 </tr>
 		</table>		
 		<hr class="hr1">		
-		<div id="btn_printout"><a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+		<div id="btn_printout">							
+			<a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>" >
+				<img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a>
+		</div>
 		</div> <!-- section1-->
 		<p class="page-break"></p>
+		
 		 <h3><a href="javascript:void(0);">ส่วนที่ 2 : ตำแหน่งและลักษณะการสัมผัส</a></h3>
 		<div id="section2">
 			<h6>ตารางที่ 2 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามสถานที่สัมผัสโรค ลักษณะการสัมผัสโรค และตำแหน่งที่สัมผัส <a href="" class="excel"></a></h6>
@@ -338,7 +357,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+   		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container4" class="container"></div> 			
   		</div> 		
   	</td>
@@ -395,7 +414,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+   		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container5" class="container"></div> 			
   		</div> 	  		
   	</td>
@@ -448,7 +467,7 @@ $(document).ready(function(){
 			    </tr>
 <tr class="tr-graph">
   	<td colspan="3">
-   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+   		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container6" class="container"></div> 			
   		</div>
   	</td>
@@ -496,7 +515,7 @@ $(document).ready(function(){
 				<?php endfor; ?>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container7" class="container"></div> 			
   		</div>
 
@@ -518,7 +537,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container8" class="container"></div> 			
   		</div>
   	</td>
@@ -544,7 +563,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container9" class="container"></div> 			
   		</div>
   	</td>
@@ -593,7 +612,7 @@ $(document).ready(function(){
 				</tr>	
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container10" class="container"></div> 			
   		</div>
   	</td>
@@ -633,7 +652,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container11" class="container"></div> 			
   		</div>  		
   	</td>
@@ -675,7 +694,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container12" class="container"></div> 			
   		</div>
   	</td>
@@ -708,7 +727,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container13" class="container"></div> 			
   		</div>  		
   	</td>
@@ -736,7 +755,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container14" class="container"></div> 			
   		</div>  		
   	</td>
@@ -769,7 +788,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container15" class="container"></div> 			
   		</div>  		
   	</td>
@@ -798,7 +817,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container16" class="container"></div> 			
   		</div>  		
   	</td>
@@ -827,7 +846,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container17" class="container"></div> 			
   		</div>  		
   	</td>
@@ -870,7 +889,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container18" class="container"></div> 			
   		</div>  		
   	</td>
@@ -898,7 +917,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container19" class="container"></div> 			
   		</div>  		
   	</td>
@@ -928,7 +947,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container20" class="container"></div> 			
   		</div>  		
   	</td>
@@ -982,7 +1001,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3"> 		
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container21" class="container"></div> 			
   		</div>
   	</td>
@@ -1010,7 +1029,7 @@ $(document).ready(function(){
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container22" class="container"></div> 			
   		</div>
   	</td>
@@ -1020,12 +1039,13 @@ $(document).ready(function(){
 			<div id="reference"><?php echo $reference?></div>			
 			<div id="btn_printout">
 				
-			<a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>?<script> alert("ddd") </script>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 			<div id="area_btn_print">
 				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 			</div>
 		</div><!--section5-->
 	</div><!-- multicordion -->
+
 </div><!--report -->
 <?php endif; ?>

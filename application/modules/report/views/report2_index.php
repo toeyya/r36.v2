@@ -1,11 +1,11 @@
 <script type="text/javascript">
 $(document).ready(function(){
-	function graph(title,render,t_graph,arr_val_all,w=1200,h=560){	
+	function graph(title,render,t_graph,arr_val_all,w=900,h=302){	
         
         $('#'+render).highcharts({
             // 700,560
             chart: {                
-                type: t_graph,width:w,height:h,marginBottom: 60
+                type: t_graph,width:600,height:302,marginBottom: 60
             },
             title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
             yAxis: {
@@ -174,7 +174,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">  		
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container1" class="container1"></div> 			
   		</div>
   	</td>
@@ -206,7 +206,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2" >
   	<td colspan="14">
-    	<div><button name="close" title="close" value="close" class="btn btn_close" >X</button>
+    	<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close" >X</button>
   			<div id="container2" class="container1" style="width:720px;height:575px;"></div> 			
   		</div>
  		
@@ -231,7 +231,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container3" class="container1"></div> 			
   		</div>  		
   	</td>
@@ -256,7 +256,7 @@ $(document).ready(function(){
 
  <tr class="tr-graph2">
   	<td colspan="14">
-   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+   		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container4" class="container1"></div> 			
   		</div> 		
   	</td>
@@ -280,7 +280,7 @@ $(document).ready(function(){
 		</tr>		
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container5" class="container1"></div> 			
   		</div>  		
   	</td>
@@ -348,7 +348,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">
-   		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+   		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container6" class="container1"></div> 			
   		</div> 		
   	</td>
@@ -420,7 +420,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container7" class="container1"></div> 			
   		</div>  		
   	</td>
@@ -469,7 +469,7 @@ $(document).ready(function(){
 
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container8" class="container1"></div> 			
   		</div>  		
   	</td>
@@ -520,7 +520,7 @@ $(document).ready(function(){
 
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container9" class="container1"></div> 			
   		</div>  		
   	</td>
@@ -568,7 +568,7 @@ $(document).ready(function(){
 		</tr>	
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container10" class="container1"></div> 			
   		</div>  		
   	</td>
@@ -616,7 +616,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container11" class="container1"></div> 			
   		</div>   		
   	</td>
@@ -647,7 +647,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container12" class="container1"></div> 			
   		</div>   		
   	</td>
@@ -730,7 +730,7 @@ $(document).ready(function(){
 		</tr>	
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container15" class="container1"></div> 			
   		</div>   		
   	</td>
@@ -778,7 +778,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container17" class="container1"></div> 			
   		</div>   		
   	</td>
@@ -812,7 +812,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container18" class="container1"></div> 			
   		</div>   		
   	</td>
@@ -835,7 +835,7 @@ $(document).ready(function(){
 		<?php endfor; ?>	
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container19" class="container1"></div> 			
   		</div>   		
   	</td>
@@ -858,7 +858,7 @@ $(document).ready(function(){
 		<?php endfor; ?>
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container20" class="container1"></div> 			
   		</div>   		
   	</td>
@@ -885,7 +885,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph2">
   	<td colspan="14">
-  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container21" class="container1"></div> 			
   		</div>   		
   	</td>

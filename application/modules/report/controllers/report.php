@@ -523,6 +523,7 @@ class Report extends R36_Controller
 
 		  if($cond){
 			#### 	จำนวน N ทั้งหมด  		####	
+			if($cond=="1=1"){$cond1="";}else{$cond1=$cond;}
 			$data['total_n'] =$this->total_n($cond);
 			####   จำนวน N แต่ละเดือน		####
 			$sql="select month(datetouch) as m ,count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
@@ -560,7 +561,7 @@ class Report extends R36_Controller
 			$rs = array();
 			$total1 = array_fill(0, 11, 0);							
 			$sql="select month(datetouch) as m ,count(historyid) as cnt,age_group  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where age<>0  ".$cond1." group by month(datetouch),age_group  order by month(datetouch),age_group  asc";
+				  where $cond1 and age<>0  group by month(datetouch),age_group  order by month(datetouch),age_group  asc";
 		    $result = $this->db->Execute($sql);						
 			foreach($result as $key =>$item){
 				$rs[$item['age_group']][$item['m']] = $item['cnt'];
@@ -773,7 +774,7 @@ class Report extends R36_Controller
 			$rs=array();		
 			$total1 =array_fill(0,22,0);										
 			$sql="SELECT month(datetouch) as m ,count(historyid) as cnt,occparentsname FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  WHERE  age < '15'  ".$cond1." GROUP BY month(datetouch),occparentsname ORDER BY month(datetouch),occparentsname asc";
+				  WHERE  $cond1 and age < '15'   GROUP BY month(datetouch),occparentsname ORDER BY month(datetouch),occparentsname asc";
 		    $result = $this->db->Execute($sql);						
 			foreach($result as $item){
 				$rs[$item['occparentsname']][$item['m']] = $item['cnt'];
@@ -806,7 +807,7 @@ class Report extends R36_Controller
 			$rs=array();			
 			$data['total_head'] = 0;			
 			$sql="select month(datetouch) as m ,count(historyid) as cnt,headanimal  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where headanimal='2'  ".$cond1." group by month(datetouch),headanimal  order by month(datetouch),headanimal  asc";
+				  where $cond1 and headanimal='2'  group by month(datetouch),headanimal  order by month(datetouch),headanimal  asc";
 		    $result = $this->db->Execute($sql);						
 			foreach($result as $item){
 				$rs[$item['m']] = $item['cnt'];						
@@ -822,7 +823,7 @@ class Report extends R36_Controller
 			$rs=array();
 			$data['total_batteria_all'] = 0;			
 			$sql="select month(datetouch) as m ,count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where batteria='1' ".$cond1." group by month(datetouch) order by month(datetouch)  asc";
+				  where  $cond1 and batteria='1'  group by month(datetouch) order by month(datetouch)  asc";
 		    $result = $this->db->Execute($sql);				
 			foreach($result as $item){
 				$rs[$item['m']] = $item['cnt'];						
@@ -836,7 +837,7 @@ class Report extends R36_Controller
 		## การฉีดอิมมูโนโกลบุลิน(RIG)use_rig,hrig_erig				
 			$rs=array();					
 			$sql="select month(datetouch) as m ,count(historyid) as cnt,erig_hrig  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where use_rig='2' ".$cond1." group by month(datetouch),erig_hrig order by month(datetouch),erig_hrig asc";
+				  where $cond1 and use_rig='2'  group by month(datetouch),erig_hrig order by month(datetouch),erig_hrig asc";
 		    $result = $this->db->Execute($sql);						
 			if(!empty($result)){
 				foreach($result as $item){
@@ -854,7 +855,7 @@ class Report extends R36_Controller
 		## อาการหลังฉีดอิมมูโนโกลบุลิน (RIG)
 			$rs=array();					
 			$sql="select month(datetouch) as m ,count(historyid) as cnt,after_rig  FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where use_rig='2' ".$cond1." group by month(datetouch),after_rig order by month(datetouch),after_rig   asc";
+				  where $cond1 and use_rig='2'  group by month(datetouch),after_rig order by month(datetouch),after_rig   asc";
 		    $result = $this->db->Execute($sql);						
 			if(!empty($result)){
 				foreach($result as $item){
@@ -872,7 +873,7 @@ class Report extends R36_Controller
 			
 			$rs=array();					
 			$sql="select month(datetouch) as m ,count(historyid) as cnt,means FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where means <>'0' ".$cond1." group by month(datetouch),means order by month(datetouch),means  asc";
+				  where $cond1 and  means <>'0'  group by month(datetouch),means order by month(datetouch),means  asc";
 		    $result = $this->db->Execute($sql);						
 			if(!empty($result)){
 				foreach($result as $item){
@@ -891,7 +892,7 @@ class Report extends R36_Controller
 			
 			$rs=array();					
 			$sql="select month(datetouch) as m ,count(historyid) as cnt,vaccine_name FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where vaccine_name <>'0' ".$cond1." group by month(datetouch),vaccine_name order by month(datetouch),vaccine_name  asc";
+				  where  $cond1 and vaccine_name <>'0'  group by month(datetouch),vaccine_name order by month(datetouch),vaccine_name  asc";
 		    $result = $this->db->Execute($sql);						
 			if(!empty($result)){
 				foreach($result as $item){
@@ -910,7 +911,7 @@ class Report extends R36_Controller
 			
 			$rs=array();					
 			$sql="select month(datetouch) as m ,count(historyid) as cnt,after_vaccine FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				  where after_vaccine <>'0' ".$cond1." group by month(datetouch),after_vaccine order by month(datetouch),after_vaccine  asc";
+				  where $cond1 and after_vaccine <>'0'  group by month(datetouch),after_vaccine order by month(datetouch),after_vaccine  asc";
 		    $result = $this->db->Execute($sql);						
 			if(!empty($result)){
 				foreach($result as $item){
@@ -931,13 +932,13 @@ class Report extends R36_Controller
 		if($preview){$this->template->set_layout('print');}
 		$this->template->build("report2_index",$data);			
 	}
-	function report3($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){
+	function report3($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){	
 		if($cond){
 			if($cond=="1=1"){$cond1="";}else{$cond1=$cond;}	
-			$whmonth[1]="  month(datetouch) IN (1,2,3)";
-			$whmonth[2]="  month(datetouch) IN (4,5,6)";
-			$whmonth[3]="  month(datetouch) IN (7,8,9)";
-			$whmonth[4]="  month(datetouch) IN (10,11,12)";
+			$whmonth[1]=" $cond1 and month(datetouch) IN (1,2,3)";
+			$whmonth[2]=" $cond1 and month(datetouch) IN (4,5,6)";
+			$whmonth[3]=" $cond1 and month(datetouch) IN (7,8,9)";
+			$whmonth[4]=" $cond1 and month(datetouch) IN (10,11,12)";
 			
 			#### 	จำนวน N ทั้งหมด  		####	
 			$data['total_n'] =$this->total_n($cond);
@@ -945,7 +946,7 @@ class Report extends R36_Controller
 			####   จำนวน N แต่ละไตรมาส	####
 			for($i=1;$i<5;$i++){
 				$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				      where ".$whmonth[$i].$cond1;
+				      where ".$whmonth[$i];
 		    	$data['q'.$i] = $this->db->GetOne($sql);
 			}
 		    ## จำแนกตามเพศ
@@ -961,10 +962,12 @@ class Report extends R36_Controller
 			{	$quarter = array();						
 				for($i=1;$i<5;$i++){
 					$sql="select count(historyid) as cnt,$field FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-					  	where ".$whmonth[$i].$cond1." group by $field order by $field asc";		 
+					  	where ".$whmonth[$i]." group by $field order by $field asc";		 
 					$result = $this->db->Execute($sql);
-					foreach($result as $item){
-						$quarter[$item[$field]][$i] = $item['cnt'];
+					if($result){											
+						foreach($result as $item){
+							$quarter[$item[$field]][$i] = $item['cnt'];
+						}
 					}				
 				}
 				$num =count($data[$field]);
@@ -976,11 +979,143 @@ class Report extends R36_Controller
 					}
 				}
 			}//endforeach;
-		}//$cond
-		$data['cond'] = $cond;
-								
-		if($preview)$this->template->set_layout('print');	
-		$this->template->build("report3_index",$data);			
+			
+	## จำนวน N จำแนกตามการกักขัง
+$rs=array();
+$array=array_fill(0,3,0);	
+$total1 =array_fill(0,5,$array);	
+for($i=1;$i<5;$i++){
+$sql="SELECT count(historyid) as cnt,detain,detaindate FROM n_history INNER JOIN n_information ON historyid=information_historyid
+WHERE $cond1 ".$whmonth[$i]." GROUP BY detain,detaindate ORDER BY detain,detaindate asc";
+$result = $this->db->Execute($sql);	
+if(!empty($result)){
+foreach($result as $item){
+$rs[$item['detain']][$item['detaindate']][$i] = $item['cnt'];	
+}	
+}	
+}	
+for($i=0;$i<5;$i++){	
+for($j=0;$j<3;$j++){
+$data['total_detain_all'.$i.$j]=0;
+for($k=1;$k<5;$k++){
+$data['total_detain'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
+$data['total_detain_all'.$i.$j] = $data['total_detain_all'.$i.$j] + $data['total_detain'.$i.$j.$k];	
+}	
+}	
+}	
+## ประวัติการฉีดวัคซีนของสัตว์
+$rs=array();	
+for($i=1;$i<5;$i++){
+$sql="SELECT count(historyid) as cnt,historyvacine,historyvacine_within FROM n_history INNER JOIN n_information ON historyid=information_historyid
+WHERE $cond1 ".$whmonth[$i]." GROUP BY historyvacine,historyvacine_within ORDER BY historyvacine,historyvacine_within asc";
+$result = $this->db->Execute($sql);
+if(!empty($result)){
+foreach($result as $item){
+$rs[$item['historyvacine']][$item['historyvacine_within']][$i] = $item['cnt'];	
+}	
+}	
+}
+
+for($i=0;$i<5;$i++){
+for($j=0;$j<3;$j++){
+$data['total_vaccinedog_all'.$i.$j]=0;
+for($k=1;$k<5;$k++){	
+$data['total_vaccinedog'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
+$data['total_vaccinedog_all'.$i.$j] = $data['total_vaccinedog_all'.$i.$j] + $data['total_vaccinedog'.$i.$j.$k];
+}
+}	
+}
+## สาเหตุถูกกัด
+$rs=array();
+for($i=1;$i<5;$i++){	
+$sql="SELECT count(historyid) as cnt,reasonbite,causedetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
+WHERE $cond1 ".$whmonth[$i]." GROUP BY reasonbite,causedetail ORDER BY reasonbite,causedetail asc";
+$result = $this->db->Execute($sql);	
+if(!empty($result)){	
+foreach($result as $item){
+$rs[$item['reasonbite']][$item['causedetail']][$i] = $item['cnt'];	
+}
+}
+}
+for($i=0;$i<3;$i++){
+for($j=0;$j<7;$j++){
+$data['total_reason_all'.$i.$j]=0;
+for($k=1;$k<5;$k++){	
+$data['total_reason'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
+$data['total_reason_all'.$i.$j] = $data['total_reason_all'.$i.$j]+ $data['total_reason'.$i.$j.$k];
+}
+
+}	
+}	
+## การล้างแผล
+$rs=array();	
+for($i=1;$i<5;$i++){	
+$sql="SELECT count(historyid) as cnt,washbefore,washbeforedetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
+WHERE $cond1 ".$whmonth[$i]." GROUP BY washbefore,washbeforedetail ORDER BYwashbefore,washbeforedetail asc";
+$result = $this->db->Execute($sql);	
+if(!empty($result)){	
+foreach($result as $item){
+$rs[$item['washbefore']][$item['washbeforedetail']][$i] = $item['cnt'];	
+}	
+}	
+}
+for($i=0;$i<3;$i++){
+for($j=0;$j<5;$j++){
+$data['total_wash_all'.$i.$j]=0;
+for($k=1;$k<5;$k++){	
+$data['total_wash'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
+$data['total_wash_all'.$i.$j] = $data['total_wash_all'.$i.$j] + $data['total_wash'.$i.$j.$k];
+}	
+}	
+}
+## การใส่ยา
+$rs=array();	
+for($i=1;$i<5;$i++){	
+$sql="SELECT count(historyid) as cnt,putdrug,putdrugdetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
+WHERE $cond1 ".$whmonth[$i]." GROUP BY putdrug,putdrugdetail ORDER BY putdrug,putdrugdetail asc";
+$result = $this->db->Execute($sql);	
+if(!empty($result)){	
+foreach($result as $item){
+$rs[$item['putdrug']][$item['putdrugdetail']][$i] = $item['cnt'];	
+}
+}
+}
+for($i=0;$i<3;$i++){
+for($j=0;$j<5;$j++){
+$data['total_drug_all'.$i.$j]=0;
+for($k=1;$k<5;$k++){	
+$data['total_drug'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
+$data['total_drug_all'.$i.$j] = $data['total_drug_all'.$i.$j] + $data['total_drug'.$i.$j.$k];
+}	
+}	
+}
+
+## ประวัติการฉีดวัคซีนของคน
+$rs=array();	
+for($i=1;$i<5;$i++){
+$sql="SELECT count(historyid) as cnt,historyprotect,historyprotectdetail FROM n_history INNER JOIN n_information ON historyid=information_historyid
+WHERE $cond1 ".$whmonth[$i]." GROUP BY historyprotect,historyprotectdetail ORDER BY historyprotect,historyprotectdetail asc";
+$result = $this->db->Execute($sql);
+if(!empty($result)){
+foreach($result as $item){
+$rs[$item['historyprotect']][$item['historyprotectdetail']][$i] = $item['cnt'];	
+}	
+}	
+}
+
+for($i=0;$i<3;$i++){
+for($j=0;$j<3;$j++){
+$data['total_historyprotect_all'.$i.$j]=0;
+for($k=1;$k<5;$k++){	
+$data['total_historyprotect'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];	
+$data['total_historyprotect_all'.$i.$j] = $data['total_historyprotect_all'.$i.$j] + $data['total_historyprotect'.$i.$j.$k];
+}
+}	
+}	
+}//$cond
+$data['cond'] = $cond;	
+if($preview)$this->template->set_layout('print');	
+$this->template->build("report3_index",$data);				
 	}
 	function report4($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{   
