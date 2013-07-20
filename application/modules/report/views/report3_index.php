@@ -27,7 +27,9 @@ $(document).ready(function(){
 		<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 		<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 	</div>
-	<div class="right"><button class="excel" name="btn_excel"></button></div>
+		<div class="right">
+		<a href="report/index/3<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 
+
 	<table class="tbreport">
 		<thead>
 		<tr><td colspan="6" style="text-align:right;">หน่วย:คน</td></tr>

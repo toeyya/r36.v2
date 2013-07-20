@@ -950,7 +950,7 @@ $data['total_longfeel'] = $data['total_longfeel'] +	$data['total_longfeel'.$i];
 	}
 	function report3($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){	
 		if($cond){
-			if($cond=="1=1"){$cond1="";}else{$cond1=$cond;}	
+			if($cond!=""){$cond1=$cond." and ";}else{$cond1="";}	
 			$whmonth[1]="  month(datetouch) IN (1,2,3)";
 			$whmonth[2]="  month(datetouch) IN (4,5,6)";
 			$whmonth[3]="  month(datetouch) IN (7,8,9)";
@@ -962,7 +962,7 @@ $data['total_longfeel'] = $data['total_longfeel'] +	$data['total_longfeel'.$i];
 			####   จำนวน N แต่ละไตรมาส	####
 			for($i=1;$i<5;$i++){
 				$sql="select count(historyid) as cnt FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-				      where ".$whmonth[$i];
+				      where $cond1 ".$whmonth[$i];					  
 		    	$data['q'.$i] = $this->db->GetOne($sql);
 			}
 		    ## จำแนกตามเพศ
@@ -978,7 +978,7 @@ $data['total_longfeel'] = $data['total_longfeel'] +	$data['total_longfeel'.$i];
 			{	$quarter = array();						
 				for($i=1;$i<5;$i++){
 					$sql="select count(historyid) as cnt,$field FROM n_history INNER JOIN  n_information ON historyid=information_historyid
-					  	where ".$whmonth[$i]." group by $field order by $field asc";		 
+					  	where $cond1 ".$whmonth[$i]." group by $field order by $field asc";		 
 					$result = $this->db->Execute($sql);
 					if($result){											
 						foreach($result as $item){
@@ -1129,8 +1129,18 @@ $data['total_longfeel'] = $data['total_longfeel'] +	$data['total_longfeel'.$i];
 		}	
 	}//$cond
 	$data['cond'] = $cond;	
-	if($preview)$this->template->set_layout('print');	
-	$this->template->build("report3_index",$data);				
+	if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('report3_index',$data);
+	}else if($excel){				
+			$filename ="report3_".date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('report3_export',$data);	
+			downloadFile($filename);						
+	}else{
+			$this->template->build("report3_index",$data);
+	}		
+				
 	}
 	function report4($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{   
