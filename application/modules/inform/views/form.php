@@ -336,6 +336,7 @@ $('select[name=prefix_name]').click(disableChkage);
 	$(".btn_save").attr( 'disabled',false); 
 	 $.validator.setDefaults({
 		   	submitHandler: function(){
+		   	  	
 		   	  	$(".btn_save").attr('disabled','disabled'); 	
 		   	  	$(":disabled").removeAttr('disabled');	
 				document.form1.submit();			
@@ -355,7 +356,7 @@ $('select[name=prefix_name]').click(disableChkage);
 				checks: checkbox_names,
 		},
 		rules:{
-			hospital_id_other: { required: {depends: function(element) {	return $('input[name=in_out]:checked').val() == '2' }}},   
+			hospital_id_other: { required: {depends: function(element) {return $('input[name=in_out]:checked').val() == '2' }}},   
 			firstname:"required",surname:"required",
 			age:{required:true,number:true},
 			provinceid:"required",amphurid:"required",districtid:"required", doctorname:"required",reportname:"required",
@@ -458,6 +459,7 @@ $('select[name=prefix_name]').click(disableChkage);
 
 
 <div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($rs['in_out']=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($rs['in_out']=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
+<div style="display:none"><div id="loading"></div></div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
 	<?php error_reporting(E_ERROR); 
 			@$rs['daterig'] =($rs['daterig'] =='0000-00-00')?'': cld_my2date(@$rs['daterig']);

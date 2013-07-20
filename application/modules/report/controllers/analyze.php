@@ -25,6 +25,7 @@ class Analyze extends R36_Controller
 		 $data['texthospital'] = "ทั้งหมด";
 		 $data['textyear_start']="ทั้งหมด";
 		 $data['textmonth_start']="ทั้งหมด";
+		  $data['textmonth_end']="ทั้งหมด";
 		 $data['texttype']="ทั้งหมด";
 		 $data['textgroup'] = "ทั้งหมด";
 		 if(!empty($_GET['group'])){

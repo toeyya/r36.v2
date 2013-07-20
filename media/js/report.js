@@ -32,9 +32,11 @@
 	}
 	
   $(document).ready(function(){
-  	
-	$('#area').click(List("GetGroupByArea","grouplist"))
-			  .change(function(){Clear("all");List("GetGroupByArea","grouplist");});
+	
+	$('#area').change(function(){
+		Clear("all");List("GetGroupByArea","grouplist");
+	})
+			 // .change(function(){Clear("all");List("GetGroupByArea","grouplist");});
 					
 	$('#group').live('click',function(){List("GetProvinceByGroup","provincelist","province")})
 			   .change(function(){Clear('group');List("GetProvinceByGroup","provincelist","amphur"); });

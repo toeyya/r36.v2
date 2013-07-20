@@ -307,7 +307,7 @@ else if(id == 'ไม่ได้ส่งเซลล์กระจกตา�
 <? error_reporting(E_ALL ^ E_NOTICE); ?>
 <div id="title">แบบฟอร์มผู้เสียชีวิตด้วยโรคพิษสุนัขบ้า</div>
 <form id="form1" name="form1" method="post"  action="inform/dead/save" > 
-<div id="multiAccordion" style="width:70%;margin-left: 15%;margin-right: 15%">
+<div id="multiAccordion">
 	<h3><a href="javascript:void(0)">ส่วนที่ 1 ข้อมูลทั่วไป</a></h3>
 	<div id="section1">
 		<table class="tbdead">

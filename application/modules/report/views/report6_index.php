@@ -1,7 +1,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('.btn_submit').click(function(){			
-		if($('#area').val()==''){
+		if($('#area option:selected').val()==''){
 			alert('กรุณาเลือกรูปแบบเขตความรับผิดชอบในการออกรายงาน');
 			return false;
 		}

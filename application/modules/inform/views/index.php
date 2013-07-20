@@ -1,5 +1,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
+	$('.btn_add').removeAttr('disabled');
+	$('input[name=closecase_person]').val('');
+	$('input[name=closecase]').val('');
 	var province_id,amphur_id,district_id;	
 	$("select[name=hospital_province_id]").change(function(){
 		province_id=$("select[name=hospital_province_id] option:selected").val();
@@ -37,61 +40,65 @@ $(document).ready(function(){
 			}
 		});
 	});
-
+	var chk_p;
 	function chk_closecase_person(){		
+		console.log("person");
 		if($('select[name=statusid] option:selected').val()=="1"){
 			var idcard=$('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val();					
 		}else{
 			var idcard=$('input[name=idcard]').val();
 		}
-		$.colorbox({width:"70%", height:"80%", inline:true,href:"#load"});
-		if(idcard.length==13){			
-			$.ajax({
-				url:'<?php echo base_url() ?>inform/closecase_person/'+idcard,
-				dataType:'json',
-				success:function(data){
-					if(data.chk=="yes"){
-						$('input[name=closecase_person]').val(data.chk);					  											
-					 	$('#closecase_person').html(data.tb);
-					 	$.colorbox({width:"70%", height:"80%", inline:true,href:"#closecase_person"});												  
-					}else{
-						$.colorbox.close();
-					}
-				}				
-			})
-		}	
-		
+		$.colorbox({width:"90%", height:"80%", inline:true,href:"#load"});
+			if(idcard.length==13){											
+				$.ajax({
+					url:'<?php echo base_url() ?>inform/closecase_person/'+idcard,
+					dataType:'json',
+					success:function(data){
+						$('input[name=closecase_person]').val(data.chk);					
+						//console.log("chk-p = "+data.chk);
+						if(data.chk=="yes"){											  											
+						 	$('#closecase_person').html(data.tb);
+						 	$.colorbox({width:"90%", height:"80%", inline:true,href:"#closecase_person"});												  
+						}else{
+							//document.form1.submit();
+							$.colorbox.close();
+							document.form1.submit();
+						}
+					}				
+				})	
+			}else{
+				$.colorbox.close();
+			}	
+			return true;				
 	}
 	$('#ifm').attr('src','#');
 	$('#loading').hide();
 	var request;
-	function chk_closecase(){
+	var chk_c;
+	function chk_closecase(){		
 		$('.btn_add').attr('disabled',true);		
-		$.colorbox({width:"70%", height:"80%", inline:true,href:"#load",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}																																											});							
+		$.colorbox({width:"90%", height:"80%", inline:true,href:"#load",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}																																											});							
+		
 		request=$.ajax({
 			url:'<?php echo base_url() ?>inform/closecase/true',
 			dataType:'json',
 			success:function(data){
 				$('.btn_add').removeAttr('disabled');	
 				$('input[name=closecase]').val(data.chk);
+				//chk_c = data.chk;
+				console.log("chk_c ="+data.chk);
 				if(data.chk=="yes"){
-					//$('#ifm').attr('src','inform/closecase');													  				  											
-				  	/*$.colorbox({width:"70%", height:"80%", inline:true,href:"#closecase"
-				  	,onLoad:function(){$('#loading').show();}
-				  	,onComplete:function(){$('#loading').hide();}
-				  	,onClosed:function(){request.abort();location.reload();}});	*/
-				  	
-				  	$.colorbox({iframe:true, width:"70%", height:"80%", href:'inform/closecase'})
-			 						
-				}else{
-					$.colorbox.close();
+					$('#load').html('<img src="media/images/loadingmove.gif" width="78px" height="20px">');		  	
+				  	$.colorbox({iframe:true, width:"90%", height:"80%", href:'inform/closecase'})				  				 						
+				}else{															
+					chk_closecase_person();
 				}						
 			}			
-		})			
+		})					 			
 	}		
 
 	$('.btn_submit').click(function(e){
-		 $('name=[ifm]').attr('src','#');
+		 //$('name=[ifm]').attr('src','#');
 		 $('#form1').validate({ignore: "#form1 *" });	 
 		 $('input').removeClass('error');
 		 $('label.error').remove();
@@ -101,30 +108,32 @@ $(document).ready(function(){
 		 e.preventDefault();	
 	});
 	// START ####  กรณีเพิ่มรายการ  ####
-	$('.btn_add').click(function(){	
-		var chk_c=$('input[name=closecase]').val();			 		
+	$('.btn_add').click(function(e){
+		console.log("btn_add");					
 		$('#form1').attr('action','inform/addNew');	
 		$('input[name=action]').val('');	
 		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้				
-				chk_closecase(); // แสดงรายการที่ยังไมได้ปิดเคส											
+																		
 				$("#hospitalprovince option").filter(function(){return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
 				$('#hospital_amphur_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_amphur_id]').val()+'">'+$('input[name=amphur_name]').val()+'</option>');
 				$('#hospital_district_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_district_id]').val()+'">'+$('input[name=district_name]').val()+'</option>');
 				$('#hospitalcode').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_code]').val()+'">'+$('input[name=h_name]').val()+'</option>');																																			
-		}
-		return (chk_c=="yes")? false:true;	
+		}	
 	})	
 		 $.validator.setDefaults({
-		 	submitHandler:function(){
-		 	  chk_closecase_person();
-		 	  var chk_p=$('input[name=closecase_person]').val();
-		 		if(chk_p==''){
-		 	  		document.form1.submit();
-		 	 	}		 				 	
+		 	submitHandler:function(event){
+		 		//console.log("submitHandler");
+		 		if($('input[name=level]').val()=="05"){
+			 		if($('input[name=closecase]').val() =="yes" || $('input[name=closecase]').val().length == 0){
+						chk_closecase(); // แสดงรายการที่ยังไมได้ปิดเคส	
+					}
+				}else{
+					document.form1.submit();
+				}			 	 	 				 	
 		 	}
 		 });
 		 $('#form1').validate({
-		 	 onkeyup: false,onfocusout:false,
+		 	 onkeyup: false,
 		 	 groups: {
     				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
   			},

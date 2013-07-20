@@ -8,7 +8,7 @@ $(document).ready(function(){
 </script>
 <div id="title">ข้อมูลการฉีดวัคซีน</div>
 <div id="search">
-<form action="report/index/5" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
+<form action="report/index/5" method="get" name="formreport">
 	<table  class="tb_patient1">
 	<?php require 'include/conditionreport.php'; ?>	
 	  <tr>
@@ -35,7 +35,7 @@ $(document).ready(function(){
 <? if(!empty($cond)): ?>
 <div id="report">
 	<div id="title"><p>รายงานการฉีดวัคซีน</p>
-	<p>เขตความรับผิดชอบ <?php echo $textarea; ?>  : เขต <?php echo $textarea ?> จังหวัด <?php echo $textprovince ?>  อำเภอ <?php echo $textamphur ?>  ตำบล <?php echo $textdistrict ?></p>
+	<p>เขตความรับผิดชอบ <?php echo $textarea; ?>  : เขต <?php echo $textgroup ?> จังหวัด <?php echo $textprovince ?>  อำเภอ <?php echo $textamphur ?>  ตำบล <?php echo $textdistrict ?></p>
 	<p>สถานบริการ <?php echo $texthospital ?> <span>ปี <?php echo $textyear_start ?></span> เดือน  <?php echo $textmonth_start ?> ถึง <?php echo $textmonth_end ?></p>
  </div>
 	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;">

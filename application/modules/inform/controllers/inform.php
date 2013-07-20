@@ -54,20 +54,24 @@ class Inform extends R36_Controller
 	}
 	function closecase($chk=FALSE)
 	{	
-		$hospitalcode =	$this->session->userdata('R36_HOSPITAL');			 	
-		$result=$this->inform->select("id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch,vaccine_date,total_vaccine")
-							 ->join("LEFT JOIN n_history ON historyid=information_historyid
-									 LEFT JOIN (select information_id,vaccine_date from n_vaccine 
-			  			 			 WHERE datediff(now(),vaccine_date) >=90 
-			  			             ORDER BY vaccine_date  limit 1)vaccine ON vaccine.information_id=n_information.id							 			
-							 ")->where("hospitalcode = $hospitalcode and closecase=1")
-							 ->sort('')->order("n_information.datetouch asc")->limit(20)->get();					
-		$data['result'] = $result;
-		$data['chk']=($result) ?"yes":"no";	
+		$hospitalcode =	$this->session->userdata('R36_HOSPITAL');	
+		if($this->session->userdata('R36_LEVEL')=="05" ){			
+			$sql="select datetouch,firstname,surname,idcard,hn,hn_no,total_vaccine,information_historyid,id  from n_information 
+				inner join n_history on n_information.information_historyid=n_history.historyid
+				inner join n_vaccine on n_information.id=n_vaccine.information_id
+				where  hospitalcode = $hospitalcode and  datediff(now(),vaccine_date) >=90 and closecase=1
+				group by information_id";					 									 	
+			$result = $this->inform->get($sql);				
+			$data['result'] = $result;
+			$data['chk']=($result) ?"yes":"no";				
+		}else{
+			$data['chk']="no";	
+		}
 		if($chk){
-			echo json_encode($data);
-			return true;
+				echo json_encode($data);
+				return true;
 		}			
+			
 		$data['pagination']=$this->inform->pagination();
 		$this->template->set_layout('blank');
 		$this->template->build('view_closecase',$data);
@@ -415,9 +419,9 @@ class Inform extends R36_Controller
 	}
 	function checkDatetouch()
 	{
-		$datetouch=strtotime(DateTH2DB($_GET['datetouch']));
-		$now=strtotime(date("Y-m-d H:i:s"));
-		echo ($datetouch >$now)? "false":"true";					
+		$datetouch=strtotime(date2DB($_GET['datetouch']));	
+		$now=strtotime(date("Y-m-d"));
+		echo ($datetouch > $now)? "false":"true";					
 	}
 	function popuplist(){
 		$this->template->build('popup_list');

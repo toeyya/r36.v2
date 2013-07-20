@@ -1,7 +1,7 @@
 
 <div id="title" style="text-align:center;width:400px;font-size:14px;font-weight:bold">
 	<span>รายงานการฉีดวัคซีน</span></br>
-	<span>เขตความรับผิดชอบ <?php echo $textarea; ?>  : เขต <?php echo $textarea ?></span><br/> 
+	<span>เขตความรับผิดชอบ <?php echo $textarea; ?>  : เขต<?php echo $textgroup ?></span><br/> 
      <span>จังหวัด <?php echo $textprovince ?>  อำเภอ <?php echo $textamphur ?>  ตำบล <?php echo $textdistrict ?></span><br/>
 	<span>สถานบริการ <?php echo $texthospital ?> <span>ปี <?php echo $textyear_start ?></span> เดือน  <?php echo $textmonth_start ?> ถึง <?php echo $textmonth_end ?></span>
  </div>
@@ -15,8 +15,7 @@
 			<td><strong><?php echo $total; ?></strong></td>			
 		</tr>	
 		<tr>
-			<td colspan="2">2. ผู้สัมผัสโรค <strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน</td>
-			
+			<td colspan="2">2. ผู้สัมผัสโรค <strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน</td>			
 		</tr>
 		<tr>
 			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
