@@ -10,13 +10,14 @@ class Webboards extends Public_Controller
 		$this->load->model("webboard_category_model",'category');
 		$this->load->model('webboard_quiz_model','quiz');
 		$this->load->model('webboard_answer_model','answer');
+		$this->load->model('webboard_relate_del_model','relate');
 		$this->load->model('users/user_model','user');
 		
 		
 	}
 	
 	function index()
-	{		
+	{	//$this->db->debug=true;	
 		$data['categories'] = $this->category->sort("")->order("orderlist asc")->get();
 		$this->template->build('webboard_index',$data);
 	}
@@ -34,7 +35,8 @@ class Webboards extends Public_Controller
 													->where("webboard_quizs.webboard_category_id = $id and stick = 0")
 													->sort("")->order('webboard_quizs.id desc')->get();*/
 													
-		$data['webboard_quizs'] = $this->quiz->where("webboard_quizs.webboard_category_id = $id and stick = 0")->sort("")->order('webboard_quizs.id desc')->get();													
+		$data['webboard_quizs'] = $this->quiz->select("webboard_quizs.*,userfirstname,usersurname")->join("INNER JOIN n_user ON user_id=uid")
+										->where("webboard_quizs.webboard_category_id = $id and stick = 0")->sort("")->order('webboard_quizs.id desc')->get();													
 		$data['webboard_quizs_stick'] = $this->quiz->where("webboard_category_id = $id and stick = 1")
 											 ->sort("")->order('id desc')->get();
 		$data['pagination'] = $this->quiz->pagination();
@@ -47,34 +49,34 @@ class Webboards extends Public_Controller
 		$data['webboard_quizs'] = $this->quiz->get_row($id);
 		$data['webboard_category']= $this->category->get_row($data['webboard_quizs']['webboard_category_id']);
 		if($data['webboard_quizs']['user_id']){
-			$data['users'] = $this->user->get_row($data['webboard_quizs']['user_id']);
+			$data['users'] = $this->user->get_row("uid",$data['webboard_quizs']['user_id']);
 		}else{
 			$data['users']=array('avatar'=>'');
 		}
 	
 		$data['counter'] = $this->quiz->counter($id);
-		$data['webboard_answers'] =$this->answer->select("webboard_answers.*,fullname")
-																		   ->join("LEFT JOIN users ON webboard_answers.user_id=users.id")
-																		   ->where("webboard_quiz_id = '$id'")
-																		   ->sort("")->order("id asc")->get();
+		$data['webboard_answers'] =$this->answer->select("webboard_answers.*,userfirstname,usersurname")
+											   ->join("LEFT JOIN n_user ON webboard_answers.user_id=n_user.uid")
+											   ->where("webboard_quiz_id = '$id'")
+											   ->sort("")->order("id asc")->get();
 		$data['webboard_answer_counter'] = $this->answer->get_one("count(*)","webboard_quiz_id",$id);
 		$data['pagination'] = $this->answer->pagination();
 	
-		$data['user_session'] = $this->session->userdata('id');
+		$data['user_session'] = $this->session->userdata('UID');
 		$this->template->build('webboard_view_topic',$data);
 	}
 	
 	function newtopic($cat_id,$type,$id=FALSE)
 	{
 		//$data['slug'] = 'main';
-        /*
+        
 		if(!is_login()){
 			set_notify('error','กรุณาเข้าสู่ระบบ');
 			$site_redirect = "webboards/category/".$cat_id;
 			redirect($site_redirect);
-		}
-        */
+		}        
 		//$this->db->debug=TRUE;
+		
 		$data['topic_type'] = $type;
 		$data['categories'] = $this->category->get_row($cat_id);
 		$data['webboard_quizs'] = $this->quiz->get_row($id);
@@ -99,6 +101,7 @@ class Webboards extends Public_Controller
 				$_POST['ip']=$this->input->ip_address();
 				$_POST['category_id']=$cat_id;
 				$_POST['id']=$id;
+				$_POST['user_id'] = $this->session->userdata('R36_UID');
 
 				$this->quiz->save($_POST);							
 				set_notify('success',SAVE_DATA_COMPLETE);
@@ -111,15 +114,12 @@ class Webboards extends Public_Controller
 	function reply($topic_id,$quote_id=FALSE,$type=FALSE)
 	{
 		//$data['slug'] = 'main';
-        /*
+        
 		if(!is_login()){
 			set_notify('error','กรุณาเข้าสู่ระบบ');
 			$site_redirect = "webboards/view_topic/".$topic_id;
 			redirect($site_redirect);
 		}
-		*/
-		//$data['webboard_quiz'] = new Webboard_quiz($topic_id);
-		
 		$data['webboard_quiz'] = $this->quiz->get_row($topic_id);
 		$data['webboard_quiz_user'] = $this->user->get_row($data['webboard_quiz']['user_id']);
 		$data['webboard_category_name']=$this->category->get_one("name","id",$topic_id);
@@ -131,7 +131,7 @@ class Webboards extends Public_Controller
 		$data['webboard_answer'] = $this->answer->get_row($quote_id);
 		
 		
-		if($type == "edit" && !is_owner($data['webboard_answer']->user_id)){
+		if($type == "edit" && !is_owner($data['webboard_answer']['user_id'])){
 			set_notify('error','ไม่สามารถเข้าถึงได้');
 			$site_redirect = "webboards/view_topic/".$topic_id;
 			redirect($site_redirect);
@@ -158,10 +158,7 @@ class Webboards extends Public_Controller
 				}*/
 				$_POST['id'] = $id;
 				$_POST['webboard_quiz_id'] =  $topic_id;
-				$_POST['user_id'] = $this->session->userdata('id');
-				//$webboard_answer->ip = $this->input->ip_address();
-				//$webboard_answer->from_array($_POST);
-				//$webboard_answer->save();
+				$_POST['user_id'] = $this->session->userdata('R36_UID');
 				$_POST['ip'] =$this->input->ip_address();
 				$this->answer->save($_POST);
 				set_notify('success', 'Save Data Complete');
@@ -188,10 +185,8 @@ class Webboards extends Public_Controller
             redirect($_SERVER['HTTP_REFERER']);
         }
 		if($_POST && is_login()){
-			$webboard_relate_dels = new Webboard_relate_del();
-			$_POST['user_id'] = $this->session->userdata('id');
-			$webboard_relate_dels->from_array($_POST);
-			$webboard_relate_dels->save();
+			$_POST['user_id'] = $this->session->userdata('R36_UID');
+			$this->relate->save($_POST);
 			set_notify('success', 'แจ้งลบความเห็นเรียบร้อย');
 			redirect($_SERVER['HTTP_REFERER']);
 		}
@@ -236,7 +231,7 @@ order by id asc")->get_page();
 	
 	function delete_topic($id)
 	{
-		if(login_data('fullname')=="Administrators"){
+		if(login_data('userposition')=="00"){
 			if($id)
 			{
 				$category_id=$this->quiz->get_one("webboard_category_id","id",$id);			
@@ -250,20 +245,16 @@ order by id asc")->get_page();
 	
 	function delete_answer($id)
 	{
-		$webboard_answer = new Webboard_answer($id);
-		if(is_login('Administrator') or is_owner($webboard_answer->user_id)){
+		$webboard_answer = $this->answer->get_row($id);
+		if(login_data("userpositon")=="00" or is_owner($webboard_answer['user_id'])){
 			if($id){
-				$webboard_answer = new webboard_answer($id);
-				$topic_id = $webboard_answer->webboard_quiz->id;
-				$webboard_answer->delete();
+				$this->answer->delete($id);
 				set_notify('success', 'ลบคำตอบเรียบร้อย');
 			} 
-			redirect('webboards/view_topic/'.$topic_id);
+			redirect('webboards/view_topic/'.$webboard_answer['webboard_quiz_id']);
 		}else{
-			$webboard_answer = new webboard_answer($id);
-			$topic_id = $webboard_answer->webboard_quiz->id;
 			set_notify('error','ไม่สามารถเข้าถึงได้');
-			redirect('webboards/view_topic/'.$topic_id);
+			redirect('webboards/view_topic/'.$webboard_answer['webboard_quiz_id']);
 			redirect($site_redirect);
 		}
 	}

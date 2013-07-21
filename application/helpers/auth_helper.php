@@ -51,11 +51,23 @@ function is_login()
 {
 	$CI =& get_instance();
 	$sql="SELECT uid FROM n_user 
-				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
-				WHERE uid= ? ";
+		  INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
+		  WHERE uid= ? ";
 	
 	$id = $CI->db->GetOne($sql,$CI->session->userdata('R36_UID'));
 	return ($id) ? true : false;
+}
+function is_owner($id)
+{
+    $CI =& get_instance();
+    if($id == $CI->session->userdata('R36_UID') && $CI->session->userdata('R36_UID') != 0)
+    {
+        return TRUE;
+    }
+    else
+    {
+        return FALSE;
+    }
 }
 function login_data($field)
 {
@@ -70,7 +82,20 @@ function logout()
 	$CI->session->sess_destroy();
 
 }
-
+function permission($module, $action)
+{
+	$CI =& get_instance();
+	$CI->load->model('users/user_level_model','level');
+	$CI->load->model('permissions/permission_model','permission');
+	$level_id = $CI->level->get_one('lid','level_code',$CI->session->userdata('R36_LEVEL'));
+	$perm = $CI->permission->where("level_id = ".$level_id." and module = '".$module."'")->get();
+	
+	if($perm[0][$action]){
+		return TRUE;
+	}else{
+		return FALSE;
+	}
+}
 
 
 		

@@ -44,9 +44,11 @@ function lang_filter($orm)
 function censor($string)
 {
 	$CI =& get_instance();
+	$CI->load->model('webboards/webboard_bad_word_model','bad_word');
 	$CI->load->helper('text');
-	$word = new Webboard_bad_word(1);
-	$word = explode("\n",$word->badword);
+	//$word = new Webboard_bad_word(1);
+	$word = $CI->bad_word->get_row(1);
+	$word = explode("\n",$word['badword']);
 	
 	$wordchange = "<img src=\"media/tiny_mce/plugins/emotions/img/cry.gif\">"; //ข้อความที่ต้องการให้เปลี่ยนเป็น
 
@@ -64,8 +66,10 @@ function link_filter($string)
 {
 	$CI =& get_instance();
 	$CI->load->helper('text');
-	$link = new Webboard_bad_word(2);
-	$link = explode("\n",$link->badword);
+	$CI->load->model('webboards/webboard_bad_word_model','bad_word');
+	$link = $CI->bad_word->get_row(1);
+	//$link = new Webboard_bad_word(2);
+	$link = explode("\n",$link['badword']);
 	return word_censor($string,$link,'<span style=display:none;></span>');
 }
 

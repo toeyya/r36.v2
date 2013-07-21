@@ -12,7 +12,7 @@ class Users extends Admin_Controller
 	}
 	public $level;
 	function index($show="search",$id=FALSE)
-	{	
+	{	//$this->db->debug=true;
 				$this->level=$this->session->userdata('R36_LEVEL');				
 				$wh="uid <> '' ";
 				if(!empty($_GET['name']))$wh.=" AND (userfirstname LIKE '%".$_GET['name']."%' OR usersurname LIKE '%".$_GET['name']."%' OR hospital_name LIKE '%".$_GET['name']."%' OR username LIKE '%".$_GET['name']."%')";		
@@ -38,7 +38,7 @@ class Users extends Admin_Controller
 									 									 ,province_name,hospital_name,active,confirm_province,confirm_admin")
 														    ->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
 																	   LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
-																	   LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code")
+																	   LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code and hospital_code <>''")
 													      ->where($wh)->sort("")->order("uid desc")->get();
 
 					$data['pagination']=$this->user->pagination();				

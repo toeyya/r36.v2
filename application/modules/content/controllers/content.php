@@ -6,24 +6,24 @@ class Content extends Public_Controller
 	{
 		parent::__construct();
 		$this->load->model('content_model','content');
-		$this->load->model('category_model','cat');
-		$this->load->model('vote_model','vote');
+		$this->load->model('categories_model','cat');
+		
 
 		
 	}
 	function index($category_id,$layout=FALSE){
 		//$this->db->debug=TRUE;	
 		$data['contents']=$this->content->where("category_id='".$category_id."' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and status = 'approve'")
-																  ->sort("")->order("id desc")->limit(20)->get();
+							   ->sort("")->order("id desc")->limit(20)->get();
 		$data['pagination']=$this->content->pagination();	
 		$data['category_id']=$category_id;
 		$data['category']=$this->cat->get_row($category_id);
 		if($category_id=="16"){
 			$this->template->build('content_contact');
-		}else if($layout=="page"){
+		}else if($data['category']['structure']=="page"){
 			$data['contents']=$this->content->get_row("category_id",$category_id);			
 			$this->template->build('content_page',$data);
-		}else if($data['category']['type']=="download"){
+		}else if($data['category']['structure']=="download"){
 			$this->template->build('inc_download',$data);
 		}else{
 			$this->template->build('inc_index',$data);

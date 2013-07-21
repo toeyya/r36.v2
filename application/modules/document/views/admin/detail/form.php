@@ -2,7 +2,7 @@
 $(document).ready(function(){
 	$('.option a[rel=del]').live('click',function(){
 		var id =$('input[name=id]').val();				
-		var url = 'research/admin/research/delete_file/' + id;
+		var url = 'document/admin/document/delete_file/';
 		if(confirm('ยืนยันการลบข้อมูล')){
 			$.post(url,{'id':id},function(data){
 				$('.option').hide();
@@ -43,7 +43,7 @@ $(document).ready(function(){
 	<br /><input type="file" name="file" />
 	<?php if($rs['file']): ?>
 	 <span class="option">
-	 	<a href="document/admin/document/download/<?php echo $rs['id'] ?>">ดาวน์โหลด</a> 
+	 	<a href="document/download/<?php echo $rs['id'] ?>">ดาวน์โหลด</a> 
 	 	<a href="#" rel="del">ลบไฟล์</a>
 	 </span>
 	 <?php endif; ?>

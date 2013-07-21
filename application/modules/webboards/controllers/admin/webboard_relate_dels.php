@@ -13,13 +13,13 @@ class Webboard_relate_dels extends Admin_Controller
 	function index()
 	{
 		//$this->db->debug=TRUE;
-		$data['webboard_relate_dels']=$this->dels->select("webboard_answers.detail as detail,webboard_quizs.title as title,webboard_relate_dels.*,display")
-																				  ->join("LEFT JOIN  webboard_answers ON  webboard_answers.id=webboard_answer_id
-																				  			    LEFT JOIN  webboard_quizs ON webboard_quizs.id=webboard_relate_dels.webboard_quiz_id
-																				  			    LEFT JOIN users ON users.id=webboard_relate_dels.user_id
-																				  			    ")
-																				  				
-																				   ->sort("")->order("webboard_relate_dels.id desc")->get();
+		$data['webboard_relate_dels']=$this->dels->select("webboard_answers.detail as detail,webboard_quizs.title as title,webboard_relate_dels.*,userfirstname,usersurname")
+										   ->join("LEFT JOIN  webboard_answers ON  webboard_answers.id=webboard_answer_id
+										  		   LEFT JOIN  webboard_quizs ON webboard_quizs.id=webboard_relate_dels.webboard_quiz_id
+										  		   LEFT JOIN  n_user ON n_user.uid=webboard_relate_dels.user_id
+										  			    ")
+										  				
+										   ->sort("")->order("webboard_relate_dels.id desc")->get();
 		$this->template->append_metadata(js_lightbox());
 		$this->template->build('admin/webboard_relate_del_index',$data);
 	}

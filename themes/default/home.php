@@ -112,7 +112,7 @@
         </table>
         </div>
          <div class="clr"></div>
-           <div id="footer">© Copyright All Right Reserved. ระบบการรายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า</div>     
+           <?php include('_footer.php'); ?>     
     </div>
 </div>
 </body>

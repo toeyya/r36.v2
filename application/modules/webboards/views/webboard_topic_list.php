@@ -1,9 +1,9 @@
 <style>
 .admin_action{font-size:12px;}
 </style>
-<ul id="breadcrumbs">
-  <li><a href="home">หน้าแรก</a></li>
-  <li><a href="webboards">เว็บบอร์ด</a></li>
+<ul class="breadcrumb">
+  <li><a href="home">หน้าแรก</a> <span class="divider">/</span></li>
+  <li><a href="webboards">เว็บบอร์ด</a> <span class="divider">/</span></li>
   <li class="active"><?php echo $category['name']?></li>
 </ul>
 
@@ -14,11 +14,11 @@
 		<div class="corner_right"></div>
 	</h1>
 	<div id="data">
-		<div class="addtopic right"><a href="webboards/newtopic/<?echo $category_id?>/normal"><img src="media/images/webboard/btn_newpost.png" height="29" width="102" style="margin-bottom:10px;"></a></div><br clear="all">
-		<table class="tbwebboard">
+		<div class="addtopic right"><a href="webboards/newtopic/<?echo $category_id?>/normal"><img src="themes/default/media/images/webboards/btn_newpost.png" height="29" width="102" style="margin-bottom:10px;"></a></div><br clear="all">
+		<table class="tbwebboard table">
 			<tbody>
-				<tr style="background: url(&quot;images/bg_topboard.gif&quot;) repeat-x scroll 0% 0% transparent;">
-					<th width="24"><img src="media/images/webboard/ico_pin.png" alt="กระทู้ปักหมุด" title="กระทู้ปักหมุด" style="max-width:24px;height:24px;"></th>
+				<tr>
+					<th width="22"><img src="themes/default/media/images/webboards/pinning.png" alt="กระทู้ปักหมุด" title="กระทู้ปักหมุด" style="max-width:22px;height:22px;"></th>
 					<th width="61%">กระทู้</th>
 					<th width="6%">อ่าน</th>
 					<th width="6%">ตอบ</th>
@@ -30,21 +30,20 @@
 					<td>
 							<?php  $result_count=$this->db->GetOne("select count(*)as cnt from webboard_quizs left join webboard_answers on webboard_quiz_id=webboard_quizs.id");?>
 							<?php if($result_count > 15):?>							
-							<img src="media/images/webboard/ico_hit.png" alt="กระทู้น่าสนใจ" title="กระทู้น่าสนใจ" />
+							<img src="themes/default/media/images/webboards/bookmark.png" alt="กระทู้น่าสนใจ" title="กระทู้น่าสนใจ" />
 							<?php else:?>
 								<?php if($webboard_quiz['type'] == "normal"):?>
-								<img src="media/images/webboard/ico_regular.png" alt="กระทู้ปกติ" title="กระทู้ปกติ" />
-								<?php elseif($webboard_quiz['type'] == "vote"):?>
-								<img src="media/images/webboard/ico_pollboard.png" alt="โพล" title="โพล" />
+								<img src="themes/default/media/images/webboards/chat.png" alt="กระทู้ปกติ" title="กระทู้ปกติ" />
+					
 								<?php endif;?>
 							<?php endif;?>
 					</td>
 					<td>
 						<a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>" class="topicpost"><?php echo $webboard_quiz['title']?></a><br>
-โดย <a href="users/profile/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['author'] ?></a><img src="media/images/webboard/ico_time.png" style="margin-bottom: -2px;" height="12"  width="12"> 
-		<span class="f10"><?php echo mysql_to_th($webboard_quiz['created'],'S',TRUE) ?></span>
+โดย <a href="users/profile/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['author'] ?></a><i class="icon-time"></i>
+		<span class="f10"><?php echo db_to_th($webboard_quiz['created'],'S',TRUE) ?></span>
 
-						<?php if (login_data('fullname')=='Administrators'):?>
+						<?php if (login_data('userposition')=='00'):?>
 						<div class="admin_action">
 							<?php if($webboard_quiz['stick'] == 0):?>
 							<a href="webboards/stick_thread/<?php echo $webboard_quiz['id']?>">ปักหมุด</a> | 
@@ -71,7 +70,7 @@
 							</span>
 							โดย 
 							<?php if($rs['user_id']): ?>						
-							 	<a href="users/profile/<?php echo $rs['user_id']?>" ><?php echo $this->user->get_one("fullname","id",$rs['user_id']); ?></a>
+							 	<a href="users/profile/<?php echo $rs['user_id']?>" ><?php $u=$this->user->get_row("uid",$rs['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?></a>
 							<?php else: ?>						
 								<?php echo $rs['author'] ?>
 							<?php endif; ?>
@@ -96,12 +95,11 @@
 
 							<?php  $result_count=$this->db->GetOne("select count(*)as cnt from webboard_answers where webboard_quiz_id=".$webboard_quiz['id']);?>
 							<?php if($result_count > 15):?>
-								<img src="media/images/webboard/ico_hit.png" alt="กระทู้น่าสนใจ" title="กระทู้น่าสนใจ" />
+								<img src="themes/default/media/images/webboards/bookmark.png" alt="กระทู้น่าสนใจ" title="กระทู้น่าสนใจ" />
 							<?php else:?>
 								<?php if($webboard_quiz['type'] == "normal"):?>
-								<img src="media/images/webboard/ico_regular.png" alt="กระทู้ปกติ" title="กระทู้ปกติ" />
-								<?php elseif($webboard_quiz['type'] == "vote"):?>
-								<img src="media/images/webboard/ico_pollboard.png" alt="โพล" title="โพล" />
+								<img src="themes/default/media/images/webboards/chat.png" alt="กระทู้ปกติ" title="กระทู้ปกติ" />
+								
 								<?php endif;?>
 							<?php endif;?>
 
@@ -109,18 +107,18 @@
 					<td>
 						<a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>" class="topicpost"><?php echo $webboard_quiz['title']?></a><br />
 						<?php if($webboard_quiz['user_id']): ?>
-						โดย <a href="users/profile/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['fullname'] ?></a>
+						โดย <a href="users/profile/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['userfirstname'].' '.$webboard_quiz['usersurname'] ?></a>
 						<?php else: ?>
 						โดย <a href="javascript:;" ><?php echo $webboard_quiz['author'] ?></a>    
 						<?php endif; ?>
-						<img src="media/images/webboard/ico_time.png" style="margin-bottom: -2px;" height="12" width="12"> 
-						<span class="f10"><?php echo mysql_to_th($webboard_quiz['created'],'S',TRUE) ?> 
+						<i class="icon-time"></i>
+						<span class="f10"><?php echo db_to_th($webboard_quiz['created'],'S',TRUE) ?> 
 														<?php if($webboard_quiz['group_id'] != 0):?>
 															(<?php echo $webboard_quiz['group_name'] ?>)
 														<?php endif;?>
 						</span>
 
-						<?php if (login_data('fullname')=='Administrators'):?>
+						<?php if (login_data('userposition')=='OO'):?>
 						<div class="admin_action">
 							<?php if($webboard_quiz['stick'] == 0):?>
 							<a href="webboards/stick_thread/<?php echo $webboard_quiz['id']?>">ปักหมุด</a> | 
@@ -142,12 +140,12 @@
 						<span class="f10">
 							<?php //echo mysql_to_th($webboard_quiz->webboard_answer->order_by("id", "desc")->limit(1)->get()->created,'S',TRUE)
 									$rs=$this->db->GetRow("SELECT *,max(created) as max_created FROM webboard_answers WHERE webboard_quiz_id=".$webboard_quiz['id']);
-									echo mysql_to_th($rs['max_created'],"S",TRUE);
+									echo db_to_th($rs['max_created'],"S",TRUE);
 							?>	
 							</span>
 							โดย 
 							<?php if($rs['user_id']): ?>						
-							 	<a href="users/profile/<?php echo $rs['user_id']?>" ><?php echo $this->user->get_one("fullname","id",$rs['user_id']); ?></a>
+							 	<a href="users/profile/<?php echo $rs['user_id']?>" ><?php echo $this->user->get_one("concat(firstname,'',surname)","id",$rs['user_id']); ?></a>
 							<?php else: ?>						
 								<?php echo $rs['author'] ?>
 							<?php endif; ?>
@@ -162,9 +160,9 @@
 				</tbody></table>
 			<div style="padding-top: 5px;"><?php echo $pagination ?></div>
 		<div id="explain">
-			<img src="media/images/webboard/2.png" alt="กระทู้ปกติ" title="กระทู้ปกติ" height="24" width="24" />กระทู้ปกติ
-			<img src="media/images/webboard/3.png" alt="กระทู้น่าสนใจ" title="กระทู้น่าสนใจ" height="24" width="24"/>กระทู้น่าสนใจ
-			<img src="media/images/webboard/4.png" alt="กระทู้ปักหมุด" title="กระทู้ปักหมุด" height="24" width="24">กระทู้ปักหมุด
+			<img src="themes/default/media/images/webboards/chat.png" alt="กระทู้ปกติ" title="กระทู้ปกติ" height="24" width="24" />กระทู้ปกติ
+			<img src="themes/default/media/images/webboards/bookmark.png" alt="กระทู้น่าสนใจ" title="กระทู้น่าสนใจ" height="24" width="24"/>กระทู้น่าสนใจ
+			<img src="themes/default/media/images/webboards/pinning.png" alt="กระทู้ปักหมุด" title="กระทู้ปักหมุด" height="22" width="22">กระทู้ปักหมุด
 			</div>
 </div>
 	</div>

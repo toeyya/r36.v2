@@ -175,4 +175,20 @@ if ( ! function_exists('js_idcard')){
 			</script>";
 	}
 }
+if(!function_exists('js_lightbox'))
+{
+	function js_lightbox()
+	{
+		$js = '<link rel="stylesheet" href="media/js/prettyPhoto_3.1.4/css/prettyPhoto.css" type="text/css" media="screen" />';
+		$js .= '<script type="text/javascript" src="media/js/prettyPhoto_3.1.4/js/jquery.prettyPhoto.js"></script>';
+		    $js .= '<script type="text/javascript">
+		    				$(function () {
+						  		$("[rel^=lightbox]").prettyPhoto({theme:\'facebook\',hideflash: true});
+							});
+						</script>';
+			return $js; 
+		
+	}
+}
+
 ?>

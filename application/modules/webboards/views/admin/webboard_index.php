@@ -11,9 +11,9 @@
 		<th>โดย</th>
 		<th>หมวดหมู่</th>
 		<th width="95">
-			<?php //if(permission('webboards', 'create')):?>
+			<?php if(permission('webboards', 'act_create')):?>
 			<a class="btn" href="webboards/admin/webboard_quizs/form">ตั้งกระทู้ใหม่</a>
-			<?php //endif;?>
+			<?php endif;?>
 		</th>
 	</tr>
 	

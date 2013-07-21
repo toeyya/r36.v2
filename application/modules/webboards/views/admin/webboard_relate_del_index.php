@@ -19,7 +19,7 @@
 			<?php endif;?>
 		</td>
 		<td><?php echo $row['reason']?></td>
-		<td><?php echo $row['display']?></td>
+		<td><?php echo $row['userfirstname'].' '.$row['usersurname']?></td>
 		<td>
 			<a class="btn" href="webboards/admin/webboard_relate_dels/delete/<?php echo $row['id']?>/<?php echo $row['webboard_quiz_id'] ?>/<?php echo $row['webboard_answer_id'] ?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE;?>')">ลบ</a>
 		</td>

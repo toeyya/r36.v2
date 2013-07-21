@@ -32,23 +32,15 @@ padding:1px 0 2px;
 }
 </style>
 
-<script type="text/javascript">
-	$(function(){
-		$('.addvote').click(function(){
-			$('<tr><th></th><td>ตัวเลือก : <input type="text" name="name[]" class="text small" /></td></tr>').insertBefore($('.textarea'));
-			return false;
-		});
-	});
-</script>
 
 <!-- Load TinyMCE -->
 <script type="text/javascript" src="media/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="media/tiny_mce/tinymce.js"></script>
 
-<ul id="breadcrumbs">
-  <li><a href="home">หน้าแรก</a></li>
-  <li><a href="webboards">เว็บบอร์ด</a></li>
-  <li><a href="webboards/category/<?php echo $categories['id']?>"><?php echo $categories['name']?></a></li>
+<ul class="breadcrumb">
+  <li><a href="home">หน้าแรก</a><span class="divider">/</span></li>
+  <li><a href="webboards">เว็บบอร์ด</a><span class="divider">/</span></li>
+  <li><a href="webboards/category/<?php echo $categories['id']?>"><?php echo $categories['name']?></a><span class="divider">/</span></li>
   <li class="active">ตั้งกระทู้ใหม่</li>
 </ul>
 <div id="webboardpage">
@@ -76,14 +68,12 @@ padding:1px 0 2px;
 								<?php echo form_hidden('type',$topic_type)?>
 							</td>
 						</tr>
-						<?php if(empty($item)): ?>
-						<tr><th>ชื่อ</th><td><input type="text" name="author" class="textbox" <?php echo (is_login()) ? 'value="'.login_data("fullname").'" readonly' : null ?> > 
-					    <?php else: echo form_hidden('author', $item['author']); ?>
-					    <?php endif; ?>
+						
+						<tr><th>ชื่อ</th><td><?php echo (is_login()) ? login_data("userfirstname").' '.login_data('usersurname'):''  ?> 					  			   
 						</td></tr>
 						<tr><th></th><td><?php echo img('content/captcha'); ?></td></tr>
 						<tr><th>รหัสลับ</th><td><?php echo form_input('captcha', NULL, 'size="14" class="input-small"'); ?></td></tr>
-						<tr><th></th><td><input type="submit" value="บันทึก"></td></tr>
+						<tr><th></th><td><button type="submit"  class="btn btn-primary">บันทึก</button></td></tr>
 					</table>
 					<?php echo ($webboard_quizs['id']) ? form_hidden('updated',time()) : form_hidden('created',time())?>
 				</form>
@@ -96,13 +86,11 @@ padding:1px 0 2px;
             rules: 
             {
                 title: {required: true },
-                author: { required: true },
                 captcha: { required: true, remote: "users/check_captcha" }
             },
             messages:
             {
-                title: { required: "กรุณากรอกหัวข้อค่ะ" },
-                author: { required: "กรุณากรอกชื่อค่ะ" },
+                title: { required: "กรุณากรอกหัวข้อค่ะ" },              
                 captcha: { required: "กรุณากรอกตัวอักษรตัวที่เห็นในภาพค่ะ", remote: "กรุณากรอกตัวอักษรให้ตรงกับภาพค่ะ" }
             }
         });

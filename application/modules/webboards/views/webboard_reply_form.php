@@ -39,11 +39,11 @@ padding:1px 0 2px;
 <script type="text/javascript" src="media/tiny_mce/tiny_mce.js"></script>
 <script type="text/javascript" src="media/tiny_mce/tinymce.js"></script>
 
-<ul id="breadcrumbs">
-  <li><a href="home">หน้าแรก</a> </li>
-  <li><a href="webboards">เว็บบอร์ด</a> </li>
-  <li><a href="webboards/category/<?php echo $webboard_quiz['webboard_category_id']?>"><?php echo $webboard_category_name?></a> </li>
-  <li><a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>"><?php echo $webboard_quiz['title']?></a> </li>
+<ul class ="breadcrumb">
+  <li><a href="home">หน้าแรก</a> <span class="divider">/</span></li>
+  <li><a href="webboards">เว็บบอร์ด</a><span class="divider">/</span> </li>
+  <li><a href="webboards/category/<?php echo $webboard_quiz['webboard_category_id']?>"><?php echo $webboard_category_name?></a><span class="divider">/</span> </li>
+  <li><a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>"><?php echo $webboard_quiz['title']?></a><span class="divider">/</span> </li>
   <li class="active">แสดงความเห็น/ตอบกระทู้</li>
 </ul>
 
@@ -78,10 +78,7 @@ padding:1px 0 2px;
 								</textarea>
 							</td>
 						</tr>
-						<?php if(empty($webboard_answer['id'])): ?>
-                        <tr><th>ชื่อ :</th><td><input type="text" name="author" class="textbox" <?php echo (is_login()) ? 'value="'.login_data("fullname").'" readonly' : null ?> /> 
-                        <?php else: echo form_hidden('author', $webboard_answer['author']); ?>
-                        <?php endif; ?>
+						<tr><th>ชื่อ</th><td><?php echo (is_login()) ? login_data("userfirstname").' '.login_data('usersurname'):''  ?> 
 						<tr>
 							<td><?php echo form_hidden('webboard_category_id',$webboard_quiz['webboard_category_id']);
 												 echo form_hidden('created',(empty($webboard_answer['id'])) ? date('Y-m-d H:i:s'):$webboard_answer['created']);
@@ -90,7 +87,7 @@ padding:1px 0 2px;
 						</tr>
 						<tr><th></th><td><img src="content/captcha" /> </td></tr>
 						<tr><th>Captcha :</th><td><input type="text" name="captcha" class="textbox"> </td></tr>
-						<tr><th></th><td><input type="submit" value="บันทึก"></td></tr>
+						<tr><th></th><td><button type="submit" name="btn_submit" class="btn btn-primary">บันทึก</button></td></tr>
 					</table>
 				</form>
 	</div>

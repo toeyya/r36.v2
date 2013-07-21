@@ -14,12 +14,38 @@ if(!function_exists('menu_active'))
 		}
 	}
 }
-
-function cycle($key,$odd = 'odd',$even = '')
+if(!function_exists('cycle'))
 {
-	return ($key&1) ? 'class="'.$even.'"' : 'class="'.$odd.'"';
+	function cycle()
+	{
+		static $i;	
+		
+		if (func_num_args() == 0)
+		{
+			$args = array('even','odd');
+		}
+		else
+		{
+			$args = func_get_args();
+		}
+		return 'class="'.$args[($i++ % count($args))].'"';
+	}
 }
-
+if(!function_exists('menu_active2'))
+{
+    function menu_active2($module,$controller = FALSE,$class='active')
+    {
+        $CI =& get_instance();
+        if($controller)
+        {
+            return ($CI->router->fetch_module() == $module && $CI->router->fetch_class() == $controller) ? 'class='.$class : '';    
+        }
+        else
+        {
+            return ($CI->router->fetch_module() == $module) ? 'class='.$class : ''; 
+        }
+    }
+}
 function get_option($value,$text,$table,$order = FALSE,$where =FALSE)
 {
 	$CI =& get_instance();

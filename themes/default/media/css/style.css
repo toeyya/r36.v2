@@ -17,7 +17,7 @@ a:hover {color:#0190fe;}
 
 *:focus {outline: none;}
 
-
+.right{float:right;}
 #wrap{position:relative; padding:0; margin:0 auto; width:100%; height:auto;clear:both;}
 .main {clear:both;position:relative; padding:0; margin:0 auto; width:1016px; height:192px; background: url("../images/bg-header4.png") no-repeat;}
 .logo{float:left; margin-top:3px; width:104px; height:104px; background: url(../images/logo.png); background-repeat:no-repeat;}
@@ -105,10 +105,11 @@ ul.question span{margin-left:10px;}
 #research ul li label{font-size:14px;font-weight:700;text-align:left;color:#E01B5D;width:250px;}
 ul#description{margin:-13px 0 70px 16px;list-style:none;}
 ul#description li{float:left;width:100px;}
-#brochure{margin-left:10px;}
-#brochure ul{ list-style:none;}
-#brochure ul li{float:left;}
-#brochure ul li.image{width:108px;}
-#brochure ul li.title{width:150px;border-bottom:solid 1px #BBBBBB;}
+.brochure{width:657px;border-bottom: 1px dashed #6f6f6f;
+		  margin:10px;clear:both;height:100px;overflow:none}
+.brochure ul{list-style:none; display:block;width:656px;height:100%;padding:5px;}
+.brochure ul li{float:left;width:50%;line-height: 17px;}
+.brochure ul li.image{width:100px;padding:5px;border:1px solid #BBBBBB;margin-right:10px;text-align:center;}
+.brochure ul li.title{width:80%;}
 
 
