@@ -11,15 +11,16 @@ class Content extends Public_Controller
 
 		
 	}
-	function index($category_id,$layout=FALSE){
-		//$this->db->debug=TRUE;	
-		$data['contents']=$this->content->where("category_id='".$category_id."' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and status = 'approve'")
+	function index($category_id,$layout=FALSE){	
+		$data['contents']=$this->content
+							   ->where("category_id='".$category_id."' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and status = 'approve'")
 							   ->sort("")->order("id desc")->limit(20)->get();
 		$data['pagination']=$this->content->pagination();	
 		$data['category_id']=$category_id;
 		$data['category']=$this->cat->get_row($category_id);
-		if($category_id=="16"){
-			$this->template->build('content_contact');
+		if($category_id=="8"){
+			$data['contents']=$this->content->get_row("category_id",$category_id);
+			$this->template->build('content_contact',$data);
 		}else if($data['category']['structure']=="page"){
 			$data['contents']=$this->content->get_row("category_id",$category_id);			
 			$this->template->build('content_page',$data);
@@ -53,30 +54,25 @@ class Content extends Public_Controller
 	
 	
 
-	
-	
-	function inc_hilight($cat_id,$limit)
+	function view_all($id)
 	{
-		$data['result'] = $this->content->select("*,ifnull((datediff(curdate(),created)),0) as new,ifnull((datediff(modified,created)),0) as updated")->where('active=1 and cat_id = '.$cat_id)->limit($limit)->sort('')->order('created desc')->get();
-		$this->load->view('inc_hilight',$data);
-	}
-	
-	
-	function vote()
-	{		
-		$data = array('cat_id'=>$_POST['cat_id'],'content_id' => $_POST['content_id'],'value' => $_POST['value'],'ip' => getIP());
-		$this->db->autoexecute('votes',$data,'INSERT');
-	
-	}
-	function inc_report(){
+		$data['contents']=$this->content->where("category_id=$id and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
+						->sort("")->order("id desc")->limit(20)->get();						
+		$data['category']  = $this->cat->get_row($id);
+		$data['pagination'] = $this->content->pagination();
+		$this->template->build('inc_index',$data);	
+	}	
+	function inc_knowledge(){
 		//$this->db->debug=TRUE;	
-		$data['contents']=$this->content->where("category_id='11' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and status = 'approve'")->sort("")
-																->sort("")->order("id desc")->limit(6)->get();
-		$this->load->view('inc_report',$data);		
+		$data['contents']=$this->content->where("category_id='7' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
+								        ->sort("")->order("id desc")->limit(4)->get();
+		$data['category_id'] ="7";
+		$this->load->view('inc_knowledge',$data);		
 	}
 	function inc_information(){
-		$data['contents']=$this->content->where("category_id='1' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and status = 'approve'")->sort("")
-																->sort("")->order("id desc")->limit(3)->get();
+		$data['contents']=$this->content->where("category_id='1' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
+										->sort("")->order("id desc")->limit(3)->get();
+		$data['category_id'] ="1";
 		$this->load->view('inc_information',$data);
 	}
 	function inc_marquee()

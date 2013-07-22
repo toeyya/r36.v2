@@ -11,7 +11,7 @@ ul.unstyled li{list-style-image:none; font-size: 12px; margin:0;}
 </ul>
 
 <div id="webboardpage">
-	<h1><span>เว็บบอร์ด</span></h1>
+	<h1><img src="themes/default/media/images/title_webboard.png" width="75" height="28"></h1>
             <div class="addtopic right" style="margin:0 0 10px 0;"><a href="webboards/reply/<?php echo $webboard_quizs['id']?>/-1"><img src="themes/default/media/images/webboards/btn_post.png" height="29" width="107"></a></div><br clear="all">
 				<table class="tbwebboard table table-bordered">
                 <tbody>
@@ -21,7 +21,7 @@ ul.unstyled li{list-style-image:none; font-size: 12px; margin:0;}
                 	</tr>
 					<tr>
 						<td valign="top" style="padding:10px 25px; vertical-align:top;">
-							<img src="<?php //echo avatar($users['avatar'],'thumbs/') ?>" style="padding:2px; border:1px solid #ccc;"><br>
+							<img src="<?php echo avatar($users['image'],'thumbs/') ?>" style="padding:2px; border:1px solid #ccc;"><br>
 							<ul class="unstyled">
 							    <?php if($webboard_quizs['user_id']): ?>
 								<li><b><?php echo $users['userfirstname']." ".$users['usersurname']?></b></li>								
@@ -61,7 +61,7 @@ ul.unstyled li{list-style-image:none; font-size: 12px; margin:0;}
 					<?php foreach($webboard_answers as $webboard_ans): ?>
 					<tr>
 						<td valign="top"  style="padding:10px 25px; vertical-align:top;">						
-							<img src="<?php //echo avatar($users['avatar'],'thumbs/') ?>" style="padding:2px; border:1px solid #ccc;"><br>
+							<img src="<?php echo avatar($users['image'],'thumbs/') ?>" style="padding:2px; border:1px solid #ccc;"><br>
 							<ul class="unstyled">
 							    <?php if($webboard_ans['user_id']): ?>
 								<li><b><?php echo $webboard_ans['userfirstname']." ".$webboard_ans['usersurname'] ?></b></li>

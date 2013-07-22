@@ -89,11 +89,11 @@
 		</tr>
 	<tr>
 		<th width="100">เริ่มวันที่</th>
-		<td><input type="text" name="start_date" value="<?php echo DB2Date($rs['start_date'])?>" class="datepicker" style="width:100px;" /></td>
+		<td><input type="text" name="start_date" value="<?php echo ($rs['start_date']!="0000-00-00") ? DB2Date($rs['start_date'],false) : ''?>" class="datepicker" style="width:100px;" /></td>
 	</tr>
 	<tr>
 		<th width="100">สิ้นสุดวันที่</th>
-		<td><input type="text" name="end_date" value="<?php echo DB2Date($rs['end_date'])?>" class="datepicker" style="width:100px;" /></td>
+		<td><input type="text" name="end_date" value="<?php echo ($rs['end_date']!='0000-00-00') ? DB2Date($rs['end_date']) : ''?>" class="datepicker" style="width:100px;" /></td>
 	</tr>
 	<tr><th>แท็ก </th><td><small>กด Enter เพื่อเพิ่มแท็ก</small><br /><input type="text" name="tag" value="" /></td></tr>	
 		<tr>

@@ -471,7 +471,7 @@ function DB2date($date_input,$show_time=FALSE){
 		$d=$arr_date[2];
 		$m=$arr_date[1];
 		$year_th=$arr_date[0]+543;
-		if($show_time==FALSE){$time='';}
+		if(!$show_time){$time='';}
 	return $d.'/'.$m.'/'.$year_th.' '.$time;				
 }
 function cld_my2date($date_input){//format year_th-mm-dd -> dd/mm/year_th

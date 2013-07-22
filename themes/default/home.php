@@ -86,21 +86,8 @@
              </div>
              <input class="btn_readAll" type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;" >
              <br><br><br>
-            <img src="themes/default/media/images/title_2.png" width="69" height="25" /><hr class="hr1">
-               <div class="pic">
-                <ul>
-                 <li><img src="themes/default/media/images/pic1.png" width="133" height="94" /><li>
-                 <li><img src="themes/default/media/images/pic2.png" width="133" height="94" /><li>
-                 <li><img src="themes/default/media/images/pic3.png" width="133" height="94" /><li>
-                 <li><img src="themes/default/media/images/pic4.png" width="133" height="94" /><li>
-                </ul>
-               </div>
-               <div class="content-rabies">
-               <span class="title-rabies">โรคพิษสุนัขบ้า (Rabies)</span>
-               <p>โรคพิษสุนัขบ้า เป็นโรคติดต่อจากสัตว์มาสู่คนที่มีความรุนแรงมาก ผู้ป่วยต้องเสียชีวิตทุกราย อาการแสดงของโรคมักเป็นแบบสมองและเยื่อสมองอักเสบเฉียบพลัน ผู้ป่วยจะมีไข้ ปวดเมื่อยตามเนื้อตัว คันหรือปวดบริเวณรอยแผลที่ถูกสัตว์กัด  ต่อมาจะหงุดหงิด ตื่นเต้นไวต่อสิ่งเร้า (แสง เสียง ลมฯ) ม่านตาขยาย น้ำลายไหลมาก</p>
-               
-               </div>
-               <br><br>
+                <?php echo modules::run('content/inc_knowledge'); ?>
+                
             </td>
             <td background="themes/default/media/images/tbCol2_right.png">&nbsp;</td>
           </tr>

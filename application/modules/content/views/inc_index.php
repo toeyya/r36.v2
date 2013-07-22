@@ -1,19 +1,19 @@
-<ul id="breadcrumbs"> 
-	<li><a href="home">หน้าแรก</a></li> 
+<ul class="breadcrumb"> 
+	<li><a href="home">หน้าแรก</a><span class="divider">/</span></li> 
 	<li><a href="content/index/<?php echo $category['id'] ?>"><?php echo $category['name'] ?></a></li> 
 </ul>
-<div id="contentNewsPR">
+<div class="pic">
 	<ul>
 		<?php foreach($contents as $content): ?>
 		 <li>
 		 	<?php if($content['image']): ?>
-        	<img src="uploads/content/thumbnail/<?php echo $content['image'] ?>" width="92" height="67" class="imgNews"/>
+        	<img  class="content-img img-polaroid" src="uploads/content/thumbnail/<?php echo $content['image'] ?>" width="92px" height="67px" />
         	<?php endif; ?>
-        	<a href="content/view/<?php echo $category_id ?>/<?php echo $content['id']?>"/><?php echo $content['title'] ?></a><br/>
+        	<a href="content/view/<?php echo $category['id'] ?>/<?php echo $content['id']?>"/><?php echo $content['title'] ?></a><br/>
         	<span class="textNews">      		
         		<?php echo $content['intro']; ?>
         	</span> 
-        	<span class="dataNew">(<?php echo mysql_to_th($content['start_date']) ?>)</span>
+        	<span class="dataNew">(<?php echo db_to_th($content['start_date']) ?>)</span>
         </li>
         <div class="clr"></div><hr class="hr1">    
 		<?php endforeach; ?>

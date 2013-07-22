@@ -9,7 +9,7 @@
 
 <div id="webboardpage">
 	<h1 class="green">
-		<span>เว็บบอร์ด</span>
+		<h1><img src="themes/default/media/images/title_webboard.png" width="75" height="28"></h1>
 		<div class="corner_left"></div>
 		<div class="corner_right"></div>
 	</h1>
@@ -65,7 +65,7 @@
 						<span class="f10">
 							<?php //echo mysql_to_th($webboard_quiz->webboard_answer->order_by("id", "desc")->limit(1)->get()->created,'S',TRUE)
 								$rs=$this->db->GetRow("SELECT *,max(created) as max_created FROM webboard_answers WHERE webboard_quiz_id=".$webboard_quiz['id']);
-									echo mysql_to_th($rs['max_created'],"S",TRUE);
+									echo db_to_th($rs['max_created'],"S",TRUE);
 							?>	
 							</span>
 							โดย 
@@ -117,8 +117,8 @@
 															(<?php echo $webboard_quiz['group_name'] ?>)
 														<?php endif;?>
 						</span>
-
-						<?php if (login_data('userposition')=='OO'):?>
+						
+						<?php if (login_data('userposition')=='00'):?>
 						<div class="admin_action">
 							<?php if($webboard_quiz['stick'] == 0):?>
 							<a href="webboards/stick_thread/<?php echo $webboard_quiz['id']?>">ปักหมุด</a> | 

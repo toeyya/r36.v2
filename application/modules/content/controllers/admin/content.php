@@ -52,7 +52,7 @@ class Content extends Admin_Controller
 			//var_dump($_POST);exit;	
 			if(!empty($_POST['start_date']))$_POST['start_date'] = Date2DB($_POST['start_date']);	 else $_POST['start_date'] = date('Y-m-d');
 			if(!empty($_POST['end_date']))$_POST['end_date'] = Date2DB($_POST['end_date']);	else $_POST['end_date'] = "0000-00-00";
-			if($_POST['user_id']=="")$_POST['user_id'] = $this->session->userdata('id');
+			if($_POST['user_id']=="")$_POST['user_id'] = $this->session->userdata('R36_UID');
 			$id = $this->content->save($_POST);
 			if(@$_FILES['image']['name'])
 			{

@@ -46,6 +46,13 @@ if(!function_exists('menu_active2'))
         }
     }
 }
+if(!function_exists('avatar'))
+{
+    function avatar($img=FALSE,$size = NULL)
+    {
+        return ($img)?'uploads/users/'.$size.$img:'themes/default/media/images/webboards/noavatar.gif';
+    }
+}
 function get_option($value,$text,$table,$order = FALSE,$where =FALSE)
 {
 	$CI =& get_instance();

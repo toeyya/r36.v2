@@ -171,7 +171,8 @@ $(document).ready(function(){
 <div id="multiAccordion" style="width:80%;margin-left:10%;margin-right:10%">
     <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>
     <div id="section1">
-		<h6>ตารางที่ 1 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามข้อมูลทั่วไป <button  name="btn_excel" class="excel"></button></h6>
+		<h6>ตารางที่ 1 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามข้อมูลทั่วไป 
+			<a href="report/index/1?export=1<?php echo '&'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></h6>
 		<table class="tbreport">
 		<tr>
 			<th>ข้อมูลทั่วไป</th>
@@ -281,7 +282,8 @@ $(document).ready(function(){
 		
 		 <h3><a href="javascript:void(0);">ส่วนที่ 2 : ตำแหน่งและลักษณะการสัมผัส</a></h3>
 		<div id="section2">
-			<h6>ตารางที่ 2 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามสถานที่สัมผัสโรค ลักษณะการสัมผัสโรค และตำแหน่งที่สัมผัส <a href="" class="excel"></a></h6>
+			<h6>ตารางที่ 2 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามสถานที่สัมผัสโรค ลักษณะการสัมผัสโรค และตำแหน่งที่สัมผัส 
+				<a href="report/index/1?export=2<?php echo '&'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></h6>
 			<table class="tbreport">
 				<tr>
 					<th>การสัมผัส</th>
@@ -480,7 +482,9 @@ $(document).ready(function(){
 		<p class="page-break"></p>
 		 <h3><a href="javascript:void(0);">ส่วนที่ 3 : สัตว์นำโรค </a></h3>
 		<div id="section3">
-			<h6>ตารางที่ 3 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้าแจกแจงตามชนิดและประวัติของสัตว์นำโรค <a href="" class="excel"></a> </h6>
+			<h6>ตารางที่ 3 จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้าแจกแจงตามชนิดและประวัติของสัตว์นำโรค 
+			<a href="report/index/1?export=3<?php echo '&'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a>			
+			 </h6>
 			<table class="tbreport">
 				<tr>
 					<th>ชนิดและประวัติของสัตว์</th>
@@ -664,7 +668,9 @@ $(document).ready(function(){
 		<p class="page-break"></p>
 		 <h3><a href="javascript:void(0);">ส่วนที่ 4 : ประวัติการได้รับวัคซีน และการปฏิบัติตนของผู้สัมผัสโรค</a></h3>
 		<div id="section4">
-			<h6>ตารางที่ 4  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการดูแลบาดแผลและประวัติการได้รับวัคซีน <a href="" class="excel"></a> </h6>
+			<h6>ตารางที่ 4  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการดูแลบาดแผลและประวัติการได้รับวัคซีน 
+			<a href="report/index/1?export=4<?php echo '&'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a>				
+				</h6>
 			<table class="tbreport">
 				<tr>
 					<th>การดูแลบาดแผลและประวัติการได้รับวัคซีน</th>
@@ -859,7 +865,8 @@ $(document).ready(function(){
 		 <p class="page-break"></p>
 		 <h3><a href="javascript:void(0);">ส่วนที่ 5 : การฉีดอิมมูโนโกลบุลินและวัคซีนในครั้งนี้</a></h3>
 		<div id="section5">
-			<h6>ตารางที่ 5  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการฉีดอิมมูโนโกลบุลินและวัคซีน  <a href="" class="excel"></a></h6>
+			<h6>ตารางที่ 5  จำนวนและร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตามการฉีดอิมมูโนโกลบุลินและวัคซีน  
+<a href="report/index/1?export=5<?php echo '&'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a>			</h6>
 			<table class="tbreport">
 				<tr>
 					<th>การฉีดอิมมูโนโกลบุลินและวัคซีน</th>

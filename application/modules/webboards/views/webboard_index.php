@@ -4,7 +4,7 @@
 </ul>
 
 <div id="webboardpage">
-	<h1 class="green">เว็บบอร์ด</h1>
+<h1><img src="themes/default/media/images/title_webboard.png" width="75" height="28"></h1>
 	<div id="data">
 		<table class="tbwebboard table">
 			<tbody>

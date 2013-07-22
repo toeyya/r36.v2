@@ -234,7 +234,7 @@ order by id asc")->get_page();
 		if(login_data('userposition')=="00"){
 			if($id)
 			{
-				$category_id=$this->quiz->get_one("webboard_category_id","id",$id);			
+				$category_id = $this->quiz->get_one("webboard_category_id","id",$id);			
 				$this->answer->delete("webboard_quiz_id",$id);
 				$this->quiz->delete($id);				
 				set_notify('success', DELETE_DATA_COMPLETE);

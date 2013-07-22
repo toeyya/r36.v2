@@ -9,12 +9,6 @@
 <form action="content/admin/content/save/<?php echo @$content['id'] ?>" method="post" enctype="multipart/form-data" >
 <table class="form">
 	<tr>
-		<th>อีเมล์</th>
-		<td>
-			<input class="full" type="text" name="email" value="<?php echo @$content['email'] ?>" />
-		</td>
-	</tr>
-	<tr>
 		<th>รายละเอียด </th>
 		<td>
 			<textarea name="detail" class="full tinymce"><?php echo @$content['detail'] ?></textarea>
