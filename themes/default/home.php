@@ -71,20 +71,7 @@
           <tr>
             <td background="themes/default/media/images/tbCol2_left.png">&nbsp;</td>
             <td bgcolor="#FFFFFF"><img src="themes/default/media/images/title_pr.png" width="141" height="25" /><hr class="hr1">
-            <div id="news-pr">
-              <ul>
-            	<li><a href="#">โครงการประกวด รางวัลโรคพิษสุนัขบ้าประจำปี 2554 (MoPH.-MoAC. Rabies Award 2011)</a></li>
-                <li><a href="#">ผลการประกวดรางวัลโรคพิษสุนัขบ้าประจำปี 2554 ระดับเทศบาล และ อบต.</a></li>
-                <li><a href="#">โครงการประกวดรางวัลโรคพิษสุนัขบ้าประจำปี 2554</a></li>
-                <li><a href="#">เกณฑ์การประเมินผลงานการควบคุมโรคพิษสุนัขบ้าประจำปี 2554</a></li>
-                <li><a href="#">กฎกระทรวง ฉบับที่ 2 (พ.ศ. 2535) ออกในพรบ.โรคพิษสุนัขบ้า พ.ศ. 2535</a></li>
-                <li><a href="#">กฎกระทรวง (พ.ศ. 2535) ออกในพรบ.โรคพิษสุนัขบ้า พ.ศ. 2535</a></li>
-                <li><a href="#">พระราชบัญญัติโรคพิษสุนัขบ้า พ.ศ. 2535</a></li>
-                <li><a href="#">คู่มือแนวทางเวชปฏิบัติโรคพิษสุนัขบ้า</a></li>
-                <li><a href="#">การประเมินเพื่อพัฒนาแนวทางเวชปฏิบัติโรคพิษสุนัขบ้า</a></li>
-              </ul>
-             </div>
-             <input class="btn_readAll" type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;" >
+				<?php echo modules::run('content/inc_information'); ?>
              <br><br><br>
                 <?php echo modules::run('content/inc_knowledge'); ?>
                 

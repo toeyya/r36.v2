@@ -111,12 +111,12 @@ ul#description li{float:left;width:100px;}
 .brochure ul li{float:left;width:50%;line-height: 17px;}
 .brochure ul li.image{width:100px;padding:5px;border:1px solid #BBBBBB;margin-right:10px;text-align:center;}
 .brochure ul li.title{width:80%;}
-.pic{width: 655px;height:230px;}
+.pic{width: 655px;}
 .pic .span4{margin-bottom:10px;}
 .pic .span4 a{font-weight:bold;}
-.pic .span4 .content-img{float:left;margin-right:10px;}
-.pic .span4 .textNews{height:60px;overflow: hidden;width:160px;}
-.pic .span4 .dataNew{display:block;font-size:11px;}
+.content-img{float:left;margin-right:10px;}
+.textNews{height:60px;overflow: hidden;width:160px;}
+.dataNew{display:block;font-size:11px;}
 .pic ul{list-style: none;}
 .pic ul li .content-img{float:left;margin-right:10px;}
 .pic ul li a{font-weight:bold;}

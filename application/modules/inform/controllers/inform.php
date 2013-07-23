@@ -77,7 +77,7 @@ class Inform extends R36_Controller
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
-	{			
+	{	
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
 				$where ="";
@@ -197,11 +197,10 @@ class Inform extends R36_Controller
 	}		
 	function addnew()
 	{//กรอกข้อมูลการสัมผัสโรค
-	   
 		$idcard=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
-		$historyid=$this->db->GetOne("select historyid from n_history where idcard= ? ",$idcard);
+		$historyid=$this->db->GetOne("select historyid from n_history where idcard= ? ",$idcard);		
 		if(!empty($historyid)){
-			$data['rs'] = $this->history->get_row("historyid",$historyid);			
+			$data['rs'] = $this->history->get_row("historyid",$historyid);		
 			$data['rs']['hn_no']=$this->db->GetOne('SELECT hn_no+1 as cnt from n_information where information_historyid= ? order by id desc',$historyid);																   	
 		}else{
 			$data['rs']['hn_no']=1;

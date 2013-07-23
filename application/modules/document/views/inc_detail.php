@@ -7,7 +7,7 @@
 <?php foreach($result as $item): ?>
 <div class="brochure">	
 	<ul>
-		<li class="image"><?php echo (!empty($item['image'])) ? img(array('src'=>'uploads/document/thumbnail/'.$item['image'],'width'=>'100px','height'=>'80px')): img(array('src'=>'themes/default/media/images/133x94.gif','width'=>'133px','height'=>'94px'))?></li>
+		<li class="image"><?php echo (!empty($item['image'])) ? img(array('src'=>'uploads/document/thumbnail/'.$item['image'],'width'=>'100px','height'=>'80px')): img(array('src'=>'themes/default/media/images/logo60x60.png','width'=>'60px','height'=>'60px'))?></li>
 		<li class ="title">
 			<?php echo $item['title'] ?>
 			<p><?php echo $item['intro'] ?></p>

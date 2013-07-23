@@ -105,7 +105,7 @@
 	</tr>
 	<tr>
 		<th width="150">หัวข้อ</th>
-		<td><input type="text" name="title" value="<?php echo $rs['title']?>" size="50" /></td>
+		<td><input type="text" name="title" value="<?php echo $rs['title']?>" class="full" /></td>
 	</tr>
 	<tr><th>ไฟล์เอกสาร </th>
 		<td>

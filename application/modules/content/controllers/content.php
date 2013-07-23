@@ -70,9 +70,9 @@ class Content extends Public_Controller
 		$this->load->view('inc_knowledge',$data);		
 	}
 	function inc_information(){
-		$data['contents']=$this->content->where("category_id='1' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
-										->sort("")->order("id desc")->limit(3)->get();
-		$data['category_id'] ="1";
+		$data['contents']=$this->content->where("category_id='6' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
+										->sort("")->order("id desc")->limit(10)->get();
+		$data['category_id'] ="6";
 		$this->load->view('inc_information',$data);
 	}
 	function inc_marquee()
