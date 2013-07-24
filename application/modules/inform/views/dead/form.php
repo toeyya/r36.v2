@@ -307,6 +307,10 @@ else if(id == 'ไม่ได้ส่งเซลล์กระจกตา�
 <? error_reporting(E_ALL ^ E_NOTICE); ?>
 <div id="title">แบบฟอร์มผู้เสียชีวิตด้วยโรคพิษสุนัขบ้า</div>
 <form id="form1" name="form1" method="post"  action="inform/dead/save" > 
+<?php echo (!empty($rs['id'])) ? form_hidden('updated',time()) : form_hidden('created',time());
+	  echo form_hidden('id',$rs['id']);
+	  //echo form_hidden('user_id',@$rs['user_id']);	
+?>
 <div id="multiAccordion">
 	<h3><a href="javascript:void(0)">ส่วนที่ 1 ข้อมูลทั่วไป</a></h3>
 	<div id="section1">
@@ -349,14 +353,14 @@ else if(id == 'ไม่ได้ส่งเซลล์กระจกตา�
 			</tr>
 			<tr>				
 				<td><span class="topic">อายุ<span class="alertred">*</span></span>
-                            <input name="age" id="age"  type="text" size="2" maxlength="2" value="<?php echo @$rs['age'];?>" class="input_box_patient auto"  onKeyUp="chk_than15(this.value);"></td>
+                 <input name="age" id="age"  type="text" size="2" maxlength="2" value="<?php echo @$rs['age'];?>" class="input_box_patient auto"  onKeyUp="chk_than15(this.value);"></td>
 				<td><span class="topic">ผู้ปกครอง</span> <input name="parentname" type="text" class="input_box_patient " id="parentname" value="<?php echo $rs['parentname'];?>" size="50" style="width:300px;"/>
 		    	<td colspan="3"><small>(กรณีผู้ป่วยอายุต่ำกว่า 15 ปี กรุณากรอกชื่อ-นามสกุล ผู้ปกครอง)</small></td>							    			
 			</tr>
 			<tr>
 				<th>2. </th>
 				<td><span class="topic radio">เชื้อชาติ</span>
-											<input name="nationality" type="radio" value="1" <? if(@$rs['nationalityname']=='1'){ echo "checked";}?> onClick="show_hide_nationality(document.form1);"> ไทย&nbsp;&nbsp;
+						<input name="nationality" type="radio" value="1" <? if(@$rs['nationalityname']=='1'){ echo "checked";}?> onClick="show_hide_nationality(document.form1);"> ไทย&nbsp;&nbsp;
 						<input name="nationality" type="radio" value="2" <? if(@$rs['nationalityname']=='2'){ echo "checked";}?> onClick="show_hide_nationality(document.form1);"> อื่นๆ 
 						<span id="nationality_tr1" <? if(@$rs['nationalityname']!='2'){ print 'style = "display:none"';}?>>
 						สัญชาติ :&nbsp; 
@@ -386,23 +390,12 @@ else if(id == 'ไม่ได้ส่งเซลล์กระจกตา�
 					<input type="radio" value="4" name="religion">อื่นๆ
 				</td>
 				<td><span class="topic">อาชีพ</span>
-							<?php echo form_dropdown('occupationname',get_option('id','name','n_occupations'),@$rs['occupationname'],'class="styled-select " onChange="return show_hide_clear_otheroccupationname(this);" id="occupation_than15"','- กรุณาเลือกอาชีพ-'); ?>
-							<?php 
-							$class='class="styled-select" onChange="return show_hide_clear_otheroccupationname(this);" id="occupation_less15"';
-							echo form_dropdown('occupationname_b',get_option('id','name','n_occupations where id in(1,2,3)'),@$rs['occupationname'],$class,'- กรุณาเลือกอาชีพ-'); ?>
-						<? if(@$rs['age']>15){ 
-										echo	"<script>document.getElementById ('occupation_less15').style.display='none'</script>";
-								}else{ 
-										echo	"<script>document.getElementById ('occupation_than15').style.display='none'</script>";
-								}
-						?>
-							<span  id="otheroccupationname_tr" <? if(@$rs['occupationname']!='20'){ print 'style = "display:none"'; }?>>
-							<span class="alertred">(โปรดระบุ)&nbsp;
-						<input name="otheroccupationname" id="otheroccupationname"  type="text" class="input_box_patient " size="10" value="<?php echo @$rs['otheroccupationname'];?>" /></span>
-						</span>
-				</td>
-			</tr>	
-			
+				<?php echo form_dropdown('occupationname',get_option('id','name','n_occupations'),@$rs['occupationname'],'class="styled-select" onChange="show_hide_clear_otheroccupationname(this);"','- กรุณาเลือกอาชีพ-'); ?>				
+					<span  id="otheroccupationname_tr" <? if(@$rs['otheroccupationname']!='21'){ print 'style = "display:none"';}?>>
+					<span class="alertred">(โปรดระบุ)&nbsp;
+					<input name="otheroccupationname" id="otheroccupationname"  type="text" class="input_box_patient " size="10" value="<?php echo @$rs['otheroccupationname'];?>" /></span>
+					</span>
+				</td>			
 		<tr>
 			<th rowspan="4">3.</th>
 			<td><span class="topic radio">สถานที่สัมผัสโรค</span></td>

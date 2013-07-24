@@ -8,7 +8,7 @@ class Content extends Admin_Controller
 		$this->load->model('content_model','content');
 		$this->load->model('categories_model','category');		
 		$this->template->append_metadata(js_checkbox());
-		$this->template->append_metadata(js_datepicker());
+		//$this->template->append_metadata(js_datepicker());
 		
 	
 	}
@@ -61,7 +61,7 @@ class Content extends Admin_Controller
 				$this->content->delete_file($id,'uploads/content/','image');
 				$this->content->delete_file($id,'uploads/content/thumbnail/','image');
 				
-				$this->content->save(array('id' => $id, 'image' => $this->content->upload($_FILES['image'],'uploads/content/',600,300)));
+				$this->content->save(array('id' => $id, 'image' => $this->content->upload($_FILES['image'],'uploads/content/',false,600,300)));
 				$this->content->thumb('uploads/content/thumbnail/',92,67,'x');
 				}
 				

@@ -8,11 +8,12 @@ class Document_detail extends Admin_Controller
 		$this->template->append_metadata(js_checkbox());
 	}
 	function index($document_id=FALSE){
+		$name =(!empty($_GET['name'])) ? " and title like '%".$_GET['name']."%'":'';
 		$data['result']=$this->detail->select("n_document_detail.*,name,userfirstname,usersurname")
-														->join("LEFT JOIN n_document ON n_document.id=n_document_detail.document_id
-																LEFT JOIN n_user ON n_document_detail.user_id=uid")
-													    ->where("document_id=$document_id")
-														->sort("")->order("n_document_detail.id desc")->get();
+									->join("LEFT JOIN n_document ON n_document.id=n_document_detail.document_id
+											LEFT JOIN n_user ON n_document_detail.user_id=uid")
+									->where("document_id=$document_id $name")
+									->sort("")->order("n_document_detail.id desc")->get();
 		$data['document_id']=$document_id;
 		$data['pagination']=$this->detail->pagination();
 		$this->template->build('admin/detail/index',$data);
@@ -31,7 +32,9 @@ class Document_detail extends Admin_Controller
 		}
 		redirect('document/admin/document_detail/index/'.$_GET['document_id']);
 	}
-	function save(){
+	function save()
+	{
+		//$this->db->debug=true;		
 		if($_POST){
 			$_POST['user_id']=(!empty($_POST['user_id']))? $_POST['user_id']:$this->session->userdata('R36_UID');
 			$id=$this->detail->save($_POST);

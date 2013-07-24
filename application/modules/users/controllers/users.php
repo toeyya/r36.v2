@@ -146,8 +146,9 @@ class Users extends Public_Controller
 	
 	}
 	public function checkEmail(){
+		//$this->db->debug=true;
 		if(!empty($_GET['uid'])){
-			$rs=$this->db->GetOne("select uid from n_user where usermail = ?  and uid <> ? ",array($_GET['usermail'],$_GET['uid']));			
+			$rs = $this->db->GetOne("select uid from n_user where usermail = ?  and uid <> ? ",array($_GET['usermail'],$_GET['uid']));			
 		}else{
 			$rs = $this->user->get_one("uid","usermail",$_GET['usermail']);
 		}		

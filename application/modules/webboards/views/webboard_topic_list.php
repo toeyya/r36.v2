@@ -40,7 +40,7 @@
 					</td>
 					<td>
 						<a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>" class="topicpost"><?php echo $webboard_quiz['title']?></a><br>
-โดย <a href="users/profile/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['author'] ?></a><i class="icon-time"></i>
+โดย <a href="users/r36/users/index/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['author'] ?></a><i class="icon-time"></i>
 		<span class="f10"><?php echo db_to_th($webboard_quiz['created'],'S',TRUE) ?></span>
 
 						<?php if (login_data('userposition')=='00'):?>
@@ -70,7 +70,7 @@
 							</span>
 							โดย 
 							<?php if($rs['user_id']): ?>						
-							 	<a href="users/profile/<?php echo $rs['user_id']?>" ><?php $u=$this->user->get_row("uid",$rs['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?></a>
+							 	<a href="users/r36/users/index/<?php echo $rs['user_id']?>" ><?php $u=$this->user->get_row("uid",$rs['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?></a>
 							<?php else: ?>						
 								<?php echo $rs['author'] ?>
 							<?php endif; ?>
@@ -107,7 +107,7 @@
 					<td>
 						<a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>" class="topicpost"><?php echo $webboard_quiz['title']?></a><br />
 						<?php if($webboard_quiz['user_id']): ?>
-						โดย <a href="users/profile/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['userfirstname'].' '.$webboard_quiz['usersurname'] ?></a>
+						โดย <a href="users/r36/users/index/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['userfirstname'].' '.$webboard_quiz['usersurname'] ?></a>
 						<?php else: ?>
 						โดย <a href="javascript:;" ><?php echo $webboard_quiz['author'] ?></a>    
 						<?php endif; ?>
@@ -145,7 +145,7 @@
 							</span>
 							โดย 
 							<?php if($rs['user_id']): ?>						
-							 	<a href="users/profile/<?php echo $rs['user_id']?>" ><?php echo $this->user->get_one("concat(firstname,'',surname)","id",$rs['user_id']); ?></a>
+							 	<a href="users/r36/users/index/<?php echo $rs['user_id']?>" ><?php echo $this->user->get_one("concat(firstname,'',surname)","id",$rs['user_id']); ?></a>
 							<?php else: ?>						
 								<?php echo $rs['author'] ?>
 							<?php endif; ?>

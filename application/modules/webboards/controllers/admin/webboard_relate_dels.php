@@ -20,7 +20,7 @@ class Webboard_relate_dels extends Admin_Controller
 										  			    ")
 										  				
 										   ->sort("")->order("webboard_relate_dels.id desc")->get();
-		$this->template->append_metadata(js_lightbox());
+		//$this->template->append_metadata(js_lightbox());
 		$this->template->build('admin/webboard_relate_del_index',$data);
 	}
 	

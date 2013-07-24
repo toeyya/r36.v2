@@ -42,7 +42,7 @@ ul.unstyled li{list-style-image:none; font-size: 12px; margin:0;}
 							<?php endif;?>					
 						<br><i class="icon-time"></i> <span class="f10"><?php echo db_to_th($webboard_quizs['created'],'S',TRUE)?> </span>
 						<div class="boxrequestdel">
-							<i class="icon-remove"></i> <a id="relate-quiz" data-toggle="modal" href='#relate' class="link_prev">แจ้งลบความคิดเห็นนี้</a><input class="quiz-id" type="hidden" name="quiz-id" value="<?=$webboard_quizs['id']?>"> 
+							<i class="icon-remove"></i> <a id="relate-quiz" data-toggle="modal" href='#relate' class="link_prev">แจ้งลบความคิดเห็นนี้</a><input class="quiz-id" type="hidden" name="quiz-id" value="<? echo $webboard_quizs['id']?>"> 
 							|<i class="icon-edit"></i> <a href="webboards/reply/<?php echo $webboard_quizs['id']?>/0" class="link_prev">อ้างถึงข้อความนี้</a></div></div>
 						<div class="post">
 							<?php if(login_data('userposition')=="00"):?>

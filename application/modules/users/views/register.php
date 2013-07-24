@@ -13,12 +13,14 @@ var ref1,ref2,ref3;
 			}
 		});
 	});
-	$("#h_amphur").live('change',function(){	
+
+	$("body").on('change','#h_amphur',function(){
+			
 	 	ref2=$("#h_amphur option:selected").val();
 	 	$('#input_district').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
 		$.ajax({url:'<?php echo base_url(); ?>users/getDistrict',data:'name=h_district&ref1='+ref1+'&ref2='+ref2,success:function(data){$("#input_district").html(data);}});	
 	});			
-	$('#h_district').live('change',function(){
+	$('body').on('change','#h_district',function(){
 		ref3=$("#h_district option:selected").val();
 		$('#input_hospital').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
 		$.ajax({url:'<?php echo base_url(); ?>users/getHospital',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
@@ -94,7 +96,7 @@ var ref1,ref2,ref3;
 		}
 	});
 
- 	$('#mobile').children().bind('keydown',function(e){											
+ 	$('#mobile').children().on('keydown',function(e){											
 		if(e.keyCode != 46 && e.keyCode!=8){														
 			var txtBox=$('#mobile').children();
 			var key=$(this).index();
@@ -106,7 +108,7 @@ var ref1,ref2,ref3;
 				}																					
 			}							
 	});
- 	$('#tel').children().bind('keydown',function(e){											
+ 	$('#tel').children().on('keydown',function(e){											
 		if(e.keyCode != 46 && e.keyCode!=8){														
 			var txtBox=$('#tel').children();
 			var key=$(this).index();
@@ -119,7 +121,7 @@ var ref1,ref2,ref3;
 				}																					
 			}							
 	});
- 	$('#fax').children().bind('keydown',function(e){											
+ 	$('#fax').children().on('keydown',function(e){											
 		if(e.keyCode != 46 && e.keyCode!=8){														
 			var txtBox=$('#fax').children();
 			var key=$(this).index();

@@ -35,14 +35,18 @@
                      <?php endif; ?>
                  </ul>
                 </li>
+                <?php     	
+                $result=$this->db->execute("select * from n_document_detail where shw_help='1'"); 
+                  if($result){ ?>
                <li class="line_topmenu9"><a href="javascript:void(0);">Help</a>
                  <ul class="submenu9">
-                     <li><a href="javascript:void(0);">คู่มือการใช้งานโปรแกรม ร.36</a></li>
-                     <li><a href="javascript:void(0);">แบบรายงาน ร.36</a></li>
-                     <li><a href="javascript:void(0);">Download โปรแกรม Offline</a></li>
-                     <li><a href="uploads/Rabies_CPG56_QA_Low.pdf">แนวทางเวชปฏิบัติโรคพิษสุนัขบ้าและคำถามที่พบบ่อย</a></li>                  
+                 	<?php     	
+                 		  foreach($result as $item){ ?>                		                  	
+                     <li><a href="document/download/<?php echo $item['id']  ?>"><?php echo $item['title']  ?></a></li>                 
+                    <?php } ?>                  
                  </ul>
-               </li> 
+               </li>
+               <? } ?> 
                <?php endif; ?>
             </ul>
             </div>

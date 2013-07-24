@@ -101,22 +101,22 @@ ul.question span{margin-left:10px;}
 
 #research ul{list-style:none;margin-left:30px;}
 #research ul li{margin-bottom:20px;}
-#research ul li.title{font-size:16px;font-weight:700;text-align:center;}
+#research ul li.title{font-size:14px;font-weight:700;text-align:center;}
 #research ul li label{font-size:14px;font-weight:700;text-align:left;color:#E01B5D;width:250px;}
 ul#description{margin:-13px 0 70px 16px;list-style:none;}
 ul#description li{float:left;width:100px;}
-.brochure{width:657px;border-bottom: 1px dashed #6f6f6f;
+.brochure{width:657px;border-bottom: 1px dashed #D1CFD0;
 		  margin:10px;clear:both;height:100px;overflow:none}
-.brochure ul{list-style:none; display:block;width:656px;height:100%;padding:5px;}
-.brochure ul li{float:left;width:50%;line-height: 17px;}
-.brochure ul li.image{width:100px;padding:5px;border:1px solid #BBBBBB;margin-right:10px;text-align:center;}
-.brochure ul li.title{width:80%;}
+.textNews{height:60px;overflow: hidden;width:160px;}
 .pic{width: 655px;}
 .pic .span4{margin-bottom:10px;}
 .pic .span4 a{font-weight:bold;}
+.brochure{padding:5px;clear:both;}
+.brochure .intro{width:545px;height: 56px;overflow: hidden;}
 .content-img{float:left;margin-right:10px;}
 .textNews{height:60px;overflow: hidden;width:160px;}
 .dataNew{display:block;font-size:11px;}
 .pic ul{list-style: none;}
 .pic ul li .content-img{float:left;margin-right:10px;}
 .pic ul li a{font-weight:bold;}
+#navigation{background-}

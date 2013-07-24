@@ -324,8 +324,10 @@ $('select[name=prefix_name]').click(disableChkage);
 			})	//foreach	
 		}else{
 			pass=true
-		}// เช็คเลือกการฉีดวัคซีน						
-		return pass;				
+		}// เช็คเลือกการฉีดวัคซีน	
+							
+		return pass;
+						
 	})// btn_save
 
 		/***********  prevent double submit  ***********/
@@ -335,13 +337,12 @@ $('select[name=prefix_name]').click(disableChkage);
 	
 	$(".btn_save").attr( 'disabled',false); 
 	 $.validator.setDefaults({
-		   	submitHandler: function(){
-		   	  	
-		   	  	$(".btn_save").attr('disabled','disabled'); 	
-		   	  	$(":disabled").removeAttr('disabled');	
-				document.form1.submit();			
+		   	submitHandler: function(){			   					   	  		   	  																
+		   	  $(":disabled").removeAttr('disabled');
+		   	  $(".btn_save").attr('disabled','disabled');			   	  		
+			  //$.colorbox({width:"95%", height:"95%", inline:true,href:"#load",escKey:false,closeButton:false});									
+			  document.form1.submit();			
 			}		
-
 	});	
 	$.validator.addMethod("one_required", function() {
 	    return $("#form1").find(".one_required:checked").length > 0;
@@ -373,7 +374,7 @@ $('select[name=prefix_name]').click(disableChkage);
 			historyprotectdetail:{required:{depends:function(element){return $('input[name=historyprotect]:checked').val() == '2' }}},
 			putdrugdetail:{required:{depends:function(element){return $('input[name=putdrug]:checked').val() == '2' }}},
 			typeother:{required:{depends:function(element){return $('input[name=typeanimal]:checked').val() == '6' }}},
-			dataindate:	{required:{depends:function(element){return $('input[name=datain]:checked').val() == '1' }}}						
+			detaindate:	{required:{depends:function(element){return $('input[name=detain]:checked').val() == '1' }}}						
 		},
 		messages:{
 			hospital_id_other:"กรุณาระบุ",
@@ -388,7 +389,7 @@ $('select[name=prefix_name]').click(disableChkage);
 			 placetouch:"กรุณาระบุ",
 			 headanimalplace:"กรุณาระบุ",putdrugdetail:"กรุณาระบุ", historyprotectdetail:"กรุณาระบุ", washbeforedetail:'กรุณาระบุ',
 			 causedetail:'กรุณาระบุ',causetext:'กรุณาระบุ',erig_hrig:"กรุณาระบุ",
-			 typeother:"กรุณาระบุ",dataindate:"กรุณาระบุ"
+			 typeother:"กรุณาระบุ",detaindate:"กรุณาระบุ"
 	 
 		},
 		errorPlacement: function(error, element){								
@@ -402,8 +403,10 @@ $('select[name=prefix_name]').click(disableChkage);
 						if(name=='use_rig' || name =='means')	$('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);
 						if(name=="causedetail") 				$('input[name='+name+']').closest('table').closest("tr").prev().find('td').eq(4).find('span').eq(1).html(error);
 						if(name=="erig_hrig")				    $('input[name='+name+']').eq($('input[name='+name+']').length-1).closest("td").find('span').html(error);						
+						if(name=="placetouch")error.appendTo($('input[name='+name+']').closest('.noborder').find('tr:eq(0)').children('td:eq(0)'));
+						if(element.attr('name')=="detaindate") $('input[name='+name+']').closest('table').find('td:eq(1)').children('span').html(error);
 				}else if(element.attr('name')=="age"){error.insertAfter(element);
-				}else if(element.attr('name')=="typeother"){alert(error);
+				}else if(element.attr('name')=="typeother"){error.insertAfter($('select[name=typeother]'));
 				}else{ error.appendTo(element.parent());}					
 			},
 		invalidHandler: function(form, validator) {
@@ -457,7 +460,7 @@ $('select[name=prefix_name]').click(disableChkage);
 </script>
 
 
-
+<div style="display:none;"><div id="load" style="padding-top:20%;padding-left:40%"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div></div>
 <div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($rs['in_out']=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($rs['in_out']=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
 <div style="display:none"><div id="loading"></div></div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
@@ -805,7 +808,7 @@ $('select[name=prefix_name]').click(disableChkage);
 					<td valign="top">1.2</td>
 					<td><table width="100%" border="0" cellspacing="0" cellpadding="2" class="noborder">
                       <tr>
-                        <td width="15%" valign="top">สถานที่สัมผัสโรค : </td>
+                        <td width="15%" valign="top">สถานที่สัมผัสโรค <span class="alertred">*</span>:</td>
                         <td width="85%">
 						<input name="placetouch" type="radio" value="1"  <? if(@$rs['placetouch']=='1'){ echo 'checked';}?>>  &nbsp;เขต กทม. </td>
                       </tr>
@@ -1317,7 +1320,7 @@ $('select[name=prefix_name]').click(disableChkage);
                         <td colspan="5">อื่นๆ <span></span>
                         <span id="typeotherspan" <? if(@$rs['typeanimal']!='6'){echo 'style="display:none"';}?>>
 						<select name="typeother" class="styled-select" id="typeother">
-							  <option value="0" <? if(@$rs['typeother']=='0'){echo 'selected';}?> >กรุณาเลือก</option>
+							  <option value="" <? if(@$rs['typeother']=='0'){echo 'selected';}?> >กรุณาเลือก</option>
 							  <option value="1" <? if(@$rs['typeother']=='1'){echo 'selected';}?>>คน</option>
 							  <option value="2" <? if(@$rs['typeother']=='2'){echo 'selected';}?>>วัว</option>
 							  <option value="3" <? if(@$rs['typeother']=='3'){echo 'selected';}?>>กระบือ</option>
@@ -1390,15 +1393,15 @@ $('select[name=prefix_name]').click(disableChkage);
                       <tr>
                         <td width="28%" valign="top">การกักขังติดตามดูอาการของสุนัข / แมว :</td>
                         <td><div align="center">
-                          <input name="detain" id="datain" type="radio" value="1" <? if(@$rs['detain']=='1'){ print "checked";}?> onClick="show_hide_clear_detaindate(document.form1);">
+                          <input name="detain" id="detain" type="radio" value="1" <? if(@$rs['detain']=='1'){ print "checked";}?> onClick="show_hide_clear_detaindate(document.form1);">
                         </div></td>
                         <td width="15%">กักขังได้ / ติดตามได้</td>
                         <td width="54%">
-						<table width="100%" border="0" cellspacing="0" cellpadding="2" id="detaindatetable" <? if(@$rs['detain']!='1'){ print 'style = "display:none"';}?>>
+						<table width="50%" border="0" cellspacing="0" cellpadding="2" id="detaindatetable" <? if(@$rs['detain']!='1'){ print 'style = "display:none"';}?>>
                           <tr>
-                            <td width="39%"><input name="detaindate" type="radio" value="1" <? if(@$rs['detaindate']=='1'){ print "checked";}?>>
+                            <td><input name="detaindate" type="radio" value="1" <? if(@$rs['detaindate']=='1'){ print "checked";}?>>
                               ตายเองภายใน 10 วัน </td>
-                            <td width="61%"><input name="detaindate" type="radio" value="2"  <? if(@$rs['detaindate']=='2'){ print "checked";}?>>
+                            <td><input name="detaindate" type="radio" value="2"  <? if(@$rs['detaindate']=='2'){ print "checked";}?>>
                               &nbsp;ไม่ตายภายใน 10 วัน  <span></span></td>
                           </tr>
                         </table>

@@ -69,7 +69,9 @@ class Content extends Public_Controller
 		$data['category_id'] ="7";
 		$this->load->view('inc_knowledge',$data);		
 	}
-	function inc_information(){
+	function inc_information()
+	{
+		//$this->db->debug = true;
 		$data['contents']=$this->content->where("category_id='6' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
 										->sort("")->order("id desc")->limit(10)->get();
 		$data['category_id'] ="6";

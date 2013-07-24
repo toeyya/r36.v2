@@ -8,14 +8,19 @@ class Log extends Admin_Controller
 		
 	}
 	function index()
-	{ //$this->db->debug=TRUE;
+	{
 		$name="";$where="";
 		if(!empty($_GET['fullname'])){
-			list($userfirstname, $usersurname)=explode(' ',$_GET['fullname']);		
-			if($userfirstname!='' && $usersurname!=''){
-				$name=" and userfirstname LIKE '%".$userfirstname."%' OR usersurname LIKE '%".$usersurname."%'";
+			if(preg_match('/\s/',$_GET['fullname'])){
+				list($userfirstname, $usersurname)=explode(' ',$_GET['fullname']);
 			}else{
-				$name=" and userfirstname LIKE '%".$userfirstname."%' OR usersurname LIKE '%".$userfirstname."%'";
+				$userfirstname = $_GET['fullname'];
+			}								 	
+														
+			if(!empty($userfirstname) && !empty($usersurname)){
+				$name=" and userfirstname LIKE '%".$userfirstname."%' AND usersurname LIKE '%".$usersurname."%'";
+			}else{
+				$name=" and userfirstname LIKE '%".$userfirstname."%'";
 			}
 		}		
 		$action=(!empty($_GET['action']))? " and action ='".$_GET['action']."'" :"";
@@ -35,7 +40,7 @@ class Log extends Admin_Controller
 							and hospital_province_id ='".$_GET['province_id']."' and hospital_amphur_id ='".$_GET['amphur_id']."')";
 		}
 		$where .=(!empty($_GET['hospital']))? " and userhospital=".$_GET['hospital']:"";		
-		$data['result']=$this->log->select("n_logs.*,CONCAT(userfirstname,' ',usersurname) as fullname,userposition")
+		$data['result']=$this->log->select("n_logs.*,userfirstname,usersurname,userposition")
 													 ->join(' LEFT JOIN n_user on n_logs.uid=n_user.uid')
 													 ->where(" n_logs.uid<>'' $name $action $dd $where $cond")
 													 ->sort("")->order("n_logs.created DESC")->get();
@@ -44,7 +49,7 @@ class Log extends Admin_Controller
 			$sql="select max(n_logs.created)as created,max(id) as id,uid,action,detail from n_logs 
 						where uid<>'' $dd and action='เข้าใช้ระบบ' group by uid"	;
 			$data['result']=$this->log->select("max(n_logs.created)as created,max(id) as id,n_logs.uid as uid
-																		 ,action,detail,CONCAT(userfirstname,' ',usersurname) as fullname,userposition,ipaddress")
+																		 ,action,detail,userfirstname,usersurname,userposition,ipaddress")
 													 ->join(' LEFT JOIN n_user on n_logs.uid=n_user.uid')
 													 ->where("n_logs.uid<>'' $name $action $dd")
 													 ->groupby("n_logs.uid")

@@ -5,7 +5,10 @@
 <div class="clr"></div><hr class="hr1">
 <div id="contentNewsPR">
 <h5><?php echo $content['title'];?></h5>
-<div style="background-color:#F5F5F5;padding:3px;font-size:11px;color:#969696;padding-left:10px; "><i class="icon-tags"></i> <?php echo $content['tag'];?><i class="icon-time"></i> <? echo db_to_th($content['created']) ?></div>
+<div style="background-color:#F5F5F5;padding:3px;font-size:11px;color:#969696;padding-left:10px">
+	<span style="margin:0 5px;"><i class="icon-tags"></i> <?php echo $content['tag'];?></span>
+	<span style="margin:0 5px;"><i class="icon-calendar"></i> <? echo db_to_th($content['created']) ?><span>
+</div>
 	<?php if($content['image']): ?>
 		<div style="text-align: center; margin:10px auto;"><img src="uploads/content/<?php echo $content['image'] ?>"></div>	
 	<?php endif; ?>

@@ -129,7 +129,7 @@ $(document).ready(function(){
 				  <td><?php echo $i ?></td>
 				  <td><?php echo $item['action'] ?> </td>
 				  <td><?php echo $item['detail'] ?></td>
-				  <td><?php echo $item['fullname'] ?> </td>
+				  <td><?php echo $item['userfirstname'].' '.$item['usersurname'] ?> </td>
 				  <td><?php echo (!empty($item['userposition']))? $position[$item['userposition']]:"";?></td>
 				  <td><?php echo  $item['ipaddress']?></td>
 				  <td><?php echo  DB2date($item['created'],true) ?>

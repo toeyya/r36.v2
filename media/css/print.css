@@ -5,7 +5,7 @@ font-family: Tahoma, verdana, sans-serif;}
 a{content: " (" attr(href) ")";color:#000000;}
 h3{font-size:13px;margin-bottom:-26px;color:#2A2A2A;padding:0px;margin:0px;}
 
-#title,#search,.img,.excel,.btn_close,#topmenu,.userlogedin,#footer{display:none;}
+#title,#search,.img,.excel,.btn_close,#topmenu,.userlogedin,#footer,.tr-graph,.tr-graph2{display:none;}
 .svg-to-img{display:block;}
 div#report{width:842px;}
 #report{width:842px;padding:10px;margin:0 auto;}

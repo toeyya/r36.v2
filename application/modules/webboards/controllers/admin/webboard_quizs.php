@@ -16,7 +16,7 @@ Class Webboard_quizs extends Admin_Controller{
 		//$data['webboard_quizs'] = $webboard_quizs->order_by('id','desc')->get_page(20);
 		$data['webboard_quizs'] = $this->quizs->where("webboard_category_id <>'' $where ")->sort("")->order("id desc")->get();
 		$data['pagination']=$this->quizs->pagination();
-		$this->template->append_metadata(js_lightbox());
+		//$this->template->append_metadata(js_lightbox());
 		$this->template->build('admin/webboard_index',$data);
 	}
 	

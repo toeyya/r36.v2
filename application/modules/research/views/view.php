@@ -7,7 +7,7 @@
 <hr class="hr1">
 <ul id="description">
 	<li><i class="icon-calendar"></i><?php echo (!empty($rs['upated']))?db_to_th($rs['updated'],false,false):db_to_th($rs['created'],false,false) ; ?></li>
-	<li><a href="uploads/research/<?php echo $rs['file'] ?>"><i class="icon-file"></i><? echo $rs['file_title']?></a></li>
+	<li><a href="research/download/<?php echo $rs['id'] ?>"><i class="icon-file"></i><? echo $rs['file_title']?></a></li>
 </ul>
 <div id="research">
 	<ul>		

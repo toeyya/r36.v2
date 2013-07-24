@@ -57,7 +57,7 @@ $(document).ready(function(){
 	<br /><input type="file" name="file" />
 	<?php if(!empty($rs['file'])): ?>
 	 <span class="option">
-	 	<a href="research/admin/research/download/<?php echo $rs['id'] ?>">ดาวน์โหลด</a> 
+	 	<a href="research/download/<?php echo $rs['id'] ?>">ดาวน์โหลด</a> 
 	 	<a href="#" rel="del">ลบไฟล์</a>
 	 </span>
 	 <?php endif; ?>

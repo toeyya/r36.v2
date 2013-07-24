@@ -100,13 +100,13 @@ class Permissions extends Admin_Controller
 			}
 			set_notify('success', SAVE_DATA_COMPLETE);
 		}
-		redirect($_SERVER['HTTP_REFERER']);
+		redirect("permissions/admin/permissions/index");
 	}
 	
 	public function delete($id){
 		if($id){
 			$this->permission->delete("level_id",$id);
-			$this->level->delete($id);
+			$this->level->delete("lid",$id);
 			set_notify('success', DELETE_DATA_COMPLETE);
 		}
 		redirect($_SERVER['HTTP_REFERER']);

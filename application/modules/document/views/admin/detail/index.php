@@ -1,8 +1,7 @@
 <h1>เอกสารเผยแพร่</h1>
 <div class="search">
-<form action="document/admin/document_detail/index" method="get" name="form1" >
-ประเภท <?php echo form_dropdown('document_id',get_option('id','name','n_document'),@$_GET['document_id'],'','--โปรดเลือก--') ?>
-ชื่อเรื่อง<input type="text" name="name" value="<?php echo @$_GET['title'] ?>" class="input_box_patient"/>
+<form action="document/admin/document_detail/index/<?php echo $document_id ?>" method="get" name="form1" >
+ชื่อเรื่อง <input type="text" name="name" value="<?php echo @$_GET['name'] ?>" />
 <input  class="btn" type="submit" value="ค้นหา">	 
 </form>
 </div>

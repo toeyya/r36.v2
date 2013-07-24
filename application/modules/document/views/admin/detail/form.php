@@ -51,6 +51,10 @@ $(document).ready(function(){
 </tr>
 <tr>
 	<th></th>
+	<td><input type="checkbox" value="1" name="shw_help" <?php echo ($rs['shw_help']=="1")? 'checked="checked"':''; ?>> แสดงเมนู help</td>
+</tr>
+<tr>
+	<th></th>
 	<td><input class="btn" type="submit" value="ตกลง"></td>
 </tr>
 </table>

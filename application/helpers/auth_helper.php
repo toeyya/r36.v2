@@ -83,18 +83,22 @@ function logout()
 
 }
 function permission($module, $action)
-{
+{	
 	$CI =& get_instance();
 	$CI->load->model('users/user_level_model','level');
 	$CI->load->model('permissions/permission_model','permission');
 	$level_id = $CI->level->get_one('lid','level_code',$CI->session->userdata('R36_LEVEL'));
 	$perm = $CI->permission->where("level_id = ".$level_id." and module = '".$module."'")->get();
-	
-	if($perm[0][$action]){
-		return TRUE;
+	if(!empty($perm)){
+		if($perm[0][$action]){
+			return TRUE;
+		}else{
+			return FALSE;
+		}		
 	}else{
 		return FALSE;
 	}
+
 }
 
 

@@ -39,16 +39,7 @@ class Research extends Admin_Controller
 		}
 		redirect('research/admin/research/index');
 	}
-	function download($id)
-	{
-		//$content = new Content($id);
-		$file=$this->detail->get_one("file","id",$id);
-		$this->load->helper('download');
-		$data = file_get_contents("uploads/research/".basename($file));
-		$name = basename($file);
-		force_download($name, $data); 
-	}
-	
+
 	function delete_file()
 	{			
 		$this->detail->delete_file($_POST['id'],'uploads/research','file');

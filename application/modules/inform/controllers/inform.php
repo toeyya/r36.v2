@@ -77,17 +77,18 @@ class Inform extends R36_Controller
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
-	{	
+	{	//$this->db->debug=true;
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
 				$where ="";
 				if(!empty($_GET['name'])) $where.=" and firstname like'%".$_GET['name']."%'";
 				if(!empty($_GET['surname'])) $where.=" and surname like '%".$_GET['surname']."%'";
+				if(!empty($_GET['hospitalcode'])) $where.=" and hospitalcode ='".$_GET['hospitalcode']."'";
 				if(@$_GET['statusid']=="1"){
 					$_GET['idcard']=$_GET['cardW0'].$_GET['cardW1'].$_GET['cardW2'].$_GET['cardW3'].$_GET['cardW4'];
 				}
 				if(!empty($_GET['hn']) && !empty($_GET['idcard']))	{
-					$where.="AND  hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
+					$where.=" AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
 				}else{
 					if(!empty($_GET['hn'])){
 						$where.=" AND hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."'";					
@@ -127,9 +128,7 @@ class Inform extends R36_Controller
 						$where.=" and reportdate = '".cld_date2my($_GET['report_enddate'])."'";
 					}					
 				}
-
 										
-
 				$where .=(!empty($_GET['in_out']))? " and in_out='".$_GET['in_out']."'":'';
 				if(!empty($_GET['total_vaccine'])){
 					$total_vaccine=implode(',',$_GET['total_vaccine']);
@@ -324,7 +323,8 @@ class Inform extends R36_Controller
 		$_POST['after_vaccine_date']=(is_null($_POST['after_vaccine_date'])|| $_POST['after_vaccine_date']=='')? '0000-00-00':$_POST['after_vaccine_date'];
 			
 		$_POST['hospitalcode']=$_POST['hospital'];
-		$_POST['id']=$_POST['information_id'];			
+		$_POST['id']=$_POST['information_id'];	
+		$_POST['typeother']	=($_POST['typeother']=='') ? '0':$_POST['typeother'];	
 		$information_id=$this->inform->save($_POST);
 		//   ------++++------    table n_vaccine	------++++------ 	
 		$this->vaccine->primary_key('vaccine_id');

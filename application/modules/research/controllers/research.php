@@ -27,4 +27,13 @@ class Research extends Public_Controller
 		$data['research_name']=$this->res->get_one("name","id",$research_id);
 		$this->template->build('view',$data);
 	}
+	function download($id)
+	{
+		//$content = new Content($id);
+		$file=$this->detail->get_one("file","id",$id);
+		$this->load->helper('download');
+		$data = file_get_contents("uploads/research/".basename($file));
+		$name = basename($file);
+		force_download($name, $data); 
+	}
 }
