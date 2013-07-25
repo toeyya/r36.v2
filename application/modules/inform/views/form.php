@@ -329,15 +329,15 @@ $('select[name=prefix_name]').click(disableChkage);
 		return pass;
 						
 	})// btn_save
-
-		/***********  prevent double submit  ***********/
+		
 	$('#washbefore').click(function(){$('input[name=washbeforedetail]').valid();});
 	$('#causedetail_other').click(function(){$('input[name=causetext]').valid();});
 
 	
 	$(".btn_save").attr( 'disabled',false); 
 	 $.validator.setDefaults({
-		   	submitHandler: function(){			   					   	  		   	  																
+		   	submitHandler: function(){
+		   		console.log("dd");			   					   	  		   	  																
 		   	  $(":disabled").removeAttr('disabled');
 		   	  $(".btn_save").attr('disabled','disabled');			   	  		
 			  //$.colorbox({width:"95%", height:"95%", inline:true,href:"#load",escKey:false,closeButton:false});									

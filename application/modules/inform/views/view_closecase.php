@@ -18,7 +18,7 @@
 		<td><?php echo $item['firstname'].' '.$item['surname']?></td>
 		<td><?php echo $item['idcard'] ?></td>
 		<td><span class="syringe<?php echo $item['total_vaccine']?> syringe" title="<?php echo $item['total_vaccine'] ?> เข็ม"> </span></td>
-		<td><a href="inform/form/<?php echo $item['id'] ?>/<?php echo $item['information_historyid'] ?>" class="btn_edit vtip" target="_blank"></a>			
+		<td><a href="inform/form/<?php echo $item['id'] ?>/<?php echo $item['information_historyid'] ?>"  title="แก้ไข" class="btn_edit vtip" target="_blank"></a>			
 		</td>
 	</tr>
 	<?php endforeach; ?>

@@ -5,7 +5,7 @@
 	tiny('detail');
 	
 </script>
-<h1>ติดต่อเรา</h1>
+<h1><?php echo $category['name'] ?></h1>
 <form action="content/admin/content/save/<?php echo @$content['id'] ?>" method="post" enctype="multipart/form-data" >
 <table class="form">
 	<tr>

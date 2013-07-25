@@ -6,13 +6,14 @@
 <h1><img src="themes/default/media/images/title_faq.png" width="121" height="28"></h1>
 <hr class="hr1">
 <div>
-<ul class="question">
+<ul class="question" >
 	<?php foreach($result as $item): ?>
-	<li><?php echo $item['question'] ?>
-		<p><strong>คำตอบ</strong><span><?php echo strip_tags($item['answer'],'<br>'); ?></span></p>
+	<li><span class="bold"><?php echo $item['question'] ?></span>
+		<p><span class="answer">คำตอบ</span><?php echo strip_tags($item['answer'],'<br>'); ?></p>
 	</li>
-
-	<?php endforeach; ?>
+	<hr class="hr1">
+	<?php endforeach; ?>	
 </ul>
+
 <?php echo $pagination; ?>
 </div>	

@@ -35,7 +35,8 @@ class Users extends Admin_Controller
 					}
 				//**********************************
 				$data['result'] = $this->user->select("uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition
-									 									 ,province_name,hospital_name,active,confirm_province,confirm_admin")
+									 				 ,province_name,hospital_name,active,confirm_province,confirm_admin
+									 				 ,userlevel,useramphur,userdistrict,agency")
 														    ->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
 																	   LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
 																	   LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code and hospital_code <>''")
@@ -60,30 +61,39 @@ class Users extends Admin_Controller
 											LEFT  JOIN n_district		 ON  n_hospital_1.hospital_amphur_id=n_district.amphur_id  
 													and  n_user.userhospital =n_hospital_1.hospital_code
 													and n_district.province_id=n_hospital_1.hospital_province_id 
-													and n_district.district_id=n_hospital_1.hospital_district_id
-																				")
+													and n_district.district_id=n_hospital_1.hospital_district_id")
 																->get_row($id);	
-			$data['cardW0']=substr($data['rs']['idcard'],0,1);
-			$data['cardW1']=substr($data['rs']['idcard'],1,4);
-			$data['cardW2']=substr($data['rs']['idcard'],5,5);
-			$data['cardW3']=substr($data['rs']['idcard'],10,2);
-			$data['cardW4']=substr($data['rs']['idcard'],12,1);
+			
+			$data['cardW0']=(!empty($data['rs']['idcard'])) ? substr($data['rs']['idcard'],0,1) :'';
+			$data['cardW1']=(!empty($data['rs']['idcard'])) ? substr($data['rs']['idcard'],1,4) :'';
+			$data['cardW2']=(!empty($data['rs']['idcard'])) ? substr($data['rs']['idcard'],5,5) :'';
+			$data['cardW3']=(!empty($data['rs']['idcard'])) ? substr($data['rs']['idcard'],10,2):'';
+			$data['cardW4']=(!empty($data['rs']['idcard'])) ? substr($data['rs']['idcard'],12,1):'';
 			$data['title']=($profile)? "ประวัติส่วนตัว":"ข้อมูลผู้ใช้ระบบ (แก้ไข/เพิ่ม)";
 			$data['profile']=$profile;
 			$this->template->build('admin/users/form',$data);					
 	}
 	function save($profile=false)
-	{		
+	{	//$this->db->debug=true;	
 		if($_POST){
+			
+			$userposition = $_POST['userposition'];
 			if(!empty($_POST['id']))$_POST['uid']=$_POST['id'];
 			// กรณีติ๊กจาก เช็คบ็อค ถ้าไม่ใส่ if จะทำให้ข้อมูลบัตรประชาชนหาย			
 			if(!empty($_POST['cardW0']))$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];								
-			if($_POST['userposition']=="00" || $_POST['userposition']=="01" || $_POST['userpostion']=="02"){
-				$_POST['userhospital']="";$_POST['userprovince']="";
-			}else if($_POST['userpostion']!="02"){
-				$_POST['userprovince']="";
-			}			
-			$this->user->save($_POST);
+			$_POST['agency'] =(!empty($_POST['agency'])) ? "สำนักงานสาธารณสุข".$_POST['agency'] : '';		
+			$id = $this->user->save($_POST);			
+			$arr_00 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');		
+			$arr_01 = array('uid'=>$id,'userprovince'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');	
+			$arr_02 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'');	
+			$arr_03 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'','userdistrict'=>'');	
+			$arr_04 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'');
+			$arr_05 = array('uid'=>$id,'userhospital'=>'');			
+			$arr_06 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');		
+			
+			
+			$this->user->save(${'arr_'.$userposition});
+			
 			if(!empty($_POST['send_mail'])){
 				$subject="อนุมัติการใช้งาน(ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
 				$message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';

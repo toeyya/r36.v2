@@ -62,6 +62,10 @@
             <br>
         </div>
         <div id="col2">
+        
+			<div class="marquee">
+			   <?php echo modules::run('content/inc_marquee'); ?>             
+           </div>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
           <tr>
             <td width="22" height="22"><img src="themes/default/media/images/tbCol2_topLeft.png" width="22" height="22" /></td>

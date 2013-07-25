@@ -2,7 +2,12 @@
 	<li><a href="home">หน้าแรก</a><span class="divider">/</span></li> 
 	<li><a href="content/index/<?php echo $category['id'] ?>"><?php echo $category['name'] ?></a></li> 
 </ul>
-<div class="clr"></div><hr class="hr1">
+<?php if($category['id']=="6"): ?>
+<img src="themes/default/media/images/title_pr.png" width="141" height="25" />
+<?php elseif($category['id']=="7"): ?>
+<img src="themes/default/media/images/title_2.png" width="69" height="25" />
+<?php endif; ?>
+<hr class="hr1">
 <div id="contentNewsPR">
 <h5><?php echo $content['title'];?></h5>
 <div style="background-color:#F5F5F5;padding:3px;font-size:11px;color:#969696;padding-left:10px">

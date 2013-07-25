@@ -221,11 +221,10 @@ var ref1,ref2,ref3;
  
               <label class="control-label" for="inputCaptcha">รหัสลับ <span class="alertred">*</span></label>
                 <div class="controls">
-                  <img src="users/captcha" /><Br>
+                  <img src="users/captcha" /></br/>
                   <input class="input-small" type="text" name="captcha" id="inputCaptcha" placeholder="รหัสลับ">
                 </div>
-            </div>
-				
+            </div>				
              <label class="control-label" for="inputCaptcha"></label>
                 <div class="controls">
  				<?php echo form_hidden('created',date('Y-m-d H:i:s')); ?>

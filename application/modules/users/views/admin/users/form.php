@@ -1,6 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
-var ref1,ref2,ref3;
+var ref1,ref2,ref3,province_id;
 	$("#h_province").change(function(){	
 		 ref1=$("#h_province option:selected").val();
 		$.ajax({
@@ -14,31 +14,73 @@ var ref1,ref2,ref3;
 	});
 	$("#h_amphur").live('change',function(){	
 	 	ref2=$("#h_amphur option:selected").val();
-		$.ajax({url:'<?php echo base_url(); ?>district/getDistrict',data:'name=h_district&ref1='+ref1+'&ref2='+ref2,success:function(data){$("#input_district").html(data);}});	
+		$.ajax({url:'<?php echo base_url(); ?>district/getDistrict',type:'get',data:'name=h_district&ref1='+ref1+'&ref2='+ref2,success:function(data){$("#input_district").html(data);}});	
 	});			
 	$('#h_district').live('change',function(){
 		ref3=$("#h_district option:selected").val();
-		$.ajax({url:'<?php echo base_url(); ?>hospital/getHospital',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
+		$.ajax({url:'<?php echo base_url(); ?>hospital/getHospital',type:'get',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
 	});
-	$('#userprovince2').change(function(){
-		id=$('#userprovince2 option:selected').val();
-		$.ajax({url:'<?php echo base_url(); ?>district/getAmphur',data:'name=useramphur&ref1='+id,success:function(data){$('#useramphur').replaceWith(data);}})
+	$('#userprovince').change(function(){
+		province_id=$('#userprovince option:selected').val();
+		var txt = $("#userprovince option:selected").text();
+		$('.agency_name').html('จังหวัด'+txt);
+		$('input[name=agency]').val('จังหวัด'+txt);
+		$.ajax({
+			url:'<?php echo base_url(); ?>district/getAmphur',
+			type:'get',
+			data:'name=useramphur&ref1='+province_id,
+			success:function(data){
+				$('#user_amphur').html(data);
+				
+			}
+		})
 	});
+	$('#useramphur').live('change',function(){
+		var amphur_id = $("#useramphur option:selected").val();
+		var txt = $("#useramphur option:selected").text();
+		
+		$('.agency_name').html('อำเภอ'+txt);$('input[name=agency]').val('อำเภอ'+txt);
+		$.ajax({
+			url:'<?php echo base_url(); ?>district/getDistrict',
+			type:'get',
+			data:'name=userdistrict&ref1='+province_id+'&ref2='+amphur_id,
+			success:function(data){
+				$("#user_district").html(data);
+				
+			}
+		});	
+	});
+	$('#userdistrict').live('change',function(){
+		var txt = $('#userdistrict option:selected').text();
+		$('.agency_name').html('ตำบล'+txt);
+		$('input[name=agency]').val('ตำบล'+txt);
+	})
 
-	$("#hospital").hide();
-	$('#admin_province').hide();
-    function u_position(){   	
+	
+    function u_position(){  
+    	$('#admin_province,#user_amphur,#user_district,#hospital,#agency,#level').hide(); 	
 				var value=$('select[name=userposition] option:selected').val();
-				if(value=="05" || value=="03" || value=="04"){
+				if(value=="05"){
 					$("#hospital").show();
-				}else if(value=="02"){
-					$('#admin_province').show();
-					$('#hospital').hide();
-				}else{
-					$('#hospital').hide();
-					$('#admin_province').hide();
-					
-				}
+					$('#admin_province,#user_amphur,#user_district,#agency,#level').hide();
+				}else if(value=="02"){//จังหวัด
+					$('#admin_province,#agency').show();
+					$('#hospital,#user_amphur,#user_district,#level').hide();
+										
+				}else if(value =="03"){//อำเภอ
+					$('#admin_province,#user_amphur,#agency').show();
+					$('#hospital,#level,#user_district').hide();						
+													
+				}else if(value=="04"){// ตำบล
+					$('#hospital,#level').hide();
+					$('#admin_province,#user_amphur,#user_district,#agency').show();
+						
+				}else if(value=="00" || value=="01"){// กรมและเขต
+					$('#admin_province,#user_amphur,#user_district,#hospital,#agency,#level').hide();
+					if(value=="01"){
+						$('#level').show();
+					}
+				}	
 	}	
 	u_position();
 	$('select[name=userposition]').change(u_position).click(u_position);
@@ -84,7 +126,7 @@ var ref1,ref2,ref3;
 		 		,cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
 		 		,cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
 		 		,cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
-		 		,cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" ระบุไม่ถูกต้องค่ะ"}	
+		 		,cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" มีอีเมล์แล้วหรือระบุไม่ถูกต้อง"}	
 				,userfirstname:" กรุณาระบุด้วยค่ะ",usersurname:" กรุณาระบุด้วยค่ะ"
 				,userprovince:" กรุณาระบุด้วยค่ะ"
 				//,useramphur:" กรุณาระบุด้วยค่ะ",userdistrict:" กรุณาระบุด้วยค่ะ"
@@ -115,7 +157,9 @@ var ref1,ref2,ref3;
   	<td><?php echo form_dropdown('userposition',get_option("level_code",'level_name','n_level_user'),@$rs['userposition'],'',''); ?></td>
   	<?php endif; ?>
   </tr>
-
+  <tr id="level"><th>เขต</th>
+  	<td><?php echo form_dropdown('userlevel',getLevel('2','12'),@$rs['userlevel'],'','-โปรดเลือก-'); ?></td>
+  </tr>
   <tr>
     <th width="96" height="20"class="topic">ชื่อ <span class="alertred" >*</span></th>
     <td width="339" height="20"><input name="userfirstname" type="text" value="<?php echo @$rs['userfirstname'];?>" class="input_box_patient " /></td>
@@ -127,11 +171,11 @@ var ref1,ref2,ref3;
   <tr>
   	<th>เลขที่บัตรประชาชน  <span class="alertred">*</span></th>
   	<td><span  id="Show_idcard">
-  			<input type="text" name="cardW0"  id="cardW0"  value="<?php echo $cardW0; ?>"  size="1" maxlength="1" style="width:15px;">-
-  			<input type="text" name="cardW1"  id="cardW1"  value="<?php echo $cardW1; ?>"  size="4" maxlength="4" style="width:30px;">-
-  			<input type="text" name="cardW2"  id="cardW2"  value="<?php echo $cardW2?>"  size="5" maxlength="5" style="width:40px;">-
-  			<input type="text" name="cardW3"  id="cardW3"  value="<?php echo $cardW3 ?>"  size="2" maxlength="2" style="width:20px;">-
-  			<input type="text" name="cardW4"  id="cardW4"  value="<?php echo $cardW4?>"  size="1" maxlength="1" style="width:15px;"> 	
+  			<input type="text" name="cardW0"  id="cardW0"  value="<?php echo @$cardW0; ?>"  size="1" maxlength="1" style="width:15px;">-
+  			<input type="text" name="cardW1"  id="cardW1"  value="<?php echo @$cardW1; ?>"  size="4" maxlength="4" style="width:30px;">-
+  			<input type="text" name="cardW2"  id="cardW2"  value="<?php echo @$cardW2?>"  size="5" maxlength="5" style="width:40px;">-
+  			<input type="text" name="cardW3"  id="cardW3"  value="<?php echo @$cardW3 ?>"  size="2" maxlength="2" style="width:20px;">-
+  			<input type="text" name="cardW4"  id="cardW4"  value="<?php echo @$cardW4?>"  size="1" maxlength="1" style="width:15px;"> 	
   			</span>	
   						
   	</td>
@@ -157,10 +201,32 @@ var ref1,ref2,ref3;
   	<td><?php echo form_dropdown('position',get_option('id','name','n_position'),@$rs['position'],'','--กรุณาระบุ--') ?></td>
   </tr>
   <tr id="admin_province">
-	<th>จังหวัด <span class="alertred">*</span></th>
-	<td><?php echo form_dropdown('userprovince',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince'],'','-โปรดเลือก-')?></td>  	
+	<th>หน่วยงาน (จังหวัด / อำเภอ / ตำบล)  <span class="alertred">*</span></th>
+	<td><?php echo form_dropdown('userprovince',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['userprovince'],'id="userprovince"','-โปรดเลือก-')?>
+      <p id="user_amphur" style="margin:7px 0px;">
+      <?php
+          	$wh=(!empty($rs['userprovince']))? " and province_id='".$rs['userprovince']."'":'';
+			if($wh)
+			{
+				echo form_dropdown('useramphur',get_option('amphur_id','amphur_name',"n_amphur where  amphur_id<>'' $wh  order by amphur_name asc"),@$rs['useramphur'],' id="useramphur"','-โปรดเลือก-');
+			}else{				
+		?>		
+		<select name="useramphur"><option value="">-โปรดเลือก-</option></select>
+		<?php } ?></p>
+		<p id="user_district">
+		<?php
+          	$wh=(!empty($rs['useramphur']))? " and province_id='".$rs['userprovince']."' and amphur_id='".$rs['useramphur']."' order by district_name asc":'';
+			if($wh)
+			{
+				echo form_dropdown('userdistrict',get_option('district_id','district_name',"n_district where  district_id<>'' $wh "),@$rs['userdistrict'],' id="userdistrict"','-โปรดเลือก-');
+			}else{				
+		?>									
+			<select name="userdistrict"><option value="">-โปรดเลือก-</option></select>
+		<?php } ?></p>
+		<p id="agency" style="margin:7px 0px;font-weight: bold">สำนักงานสาธาณสุข<span class="agency_name"><?php echo $rs['agency']; ?></span></p>
+		<input type="hidden" name="agency" value="<? echo $rs['agency'] ?>">
+	</td> 	
   </tr>
-	
   	<tr  id="hospital">
     <th valign="top">สถานพยาบาล <span class="alertred">*</span></th>
     <td>
@@ -227,7 +293,7 @@ var ref1,ref2,ref3;
   <tr>
     <th>ยืนยันรหัสผ่าน  <span class="alertred">*</span></th>
     <td><input type="password" name="repassword" class="input_box_patient " value="<?php echo (empty($rs['userpassword']))?$gen_pass: @$rs['userpassword'];?>">      
-        <input  id="position" name="position" value="<?php echo @$rs['userposition']?>" type="hidden" />
+        
         </td>
   </tr>
 

@@ -97,8 +97,9 @@ a:hover {color:#0190fe;}
 
 
 ul.question {list-style:decimal;margin-left:30px;}
-ul.question span{margin-left:10px;}
-
+.bold{font-weight:bold;}
+.answer{text-decoration:underline;margin-right:3px;}
+ul.question li p{border-radius:0.75em;background-color:#FAE2F0;padding:5px;}
 #research ul{list-style:none;margin-left:30px;}
 #research ul li{margin-bottom:20px;}
 #research ul li.title{font-size:14px;font-weight:700;text-align:center;}
@@ -120,3 +121,7 @@ ul#description li{float:left;width:100px;}
 .pic ul li .content-img{float:left;margin-right:10px;}
 .pic ul li a{font-weight:bold;}
 #navigation{background-}
+.marquee{width:100%;background-color:#FAE2F0;margin-bottom:5px;border-radius:0.75em;height:29px;padding-bottom:5px;}
+.textMarquee{height:15px;padding-bottom:2px;}
+
+

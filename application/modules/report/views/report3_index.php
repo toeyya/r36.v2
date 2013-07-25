@@ -3,6 +3,74 @@ $(document).ready(function(){
 	$('.tr-graph').hide();
 	$('td[colspan]').addClass('hasRowSpan');
 	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
+	
+	function graph(title,render,t_graph,arr_val_all,w=900,h=302){	
+        
+        $('#'+render).highcharts({
+            // 700,560
+            chart: {                
+                type: t_graph,width:600,height:302,marginBottom: 60
+            },
+            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
+            yAxis: {
+            	title:{
+            		text: null          		          		
+            	}            	
+            },			
+            tooltip: {valueSuffix: ' %'},
+            credits: {enabled: false},
+            legend: {
+                layout: 'horizontal',
+                align: 'bottom',
+                verticalAlign: 'bottom',
+                align :'center',
+                rotation:90,
+                x: 40,
+                y: 10,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF',
+                shadow: true
+            },
+            plotOptions: {            	
+            	bar: { dataLabels: {enabled: true}},            	
+            	column: { dataLabels: {enabled: true}},
+            	pie:{ dataLabels: {enabled: true}}
+               
+            },           
+            xAxis:{ categories: ['ไตรมาส 1', 'ไตรมาส 2', 'ไตรมาส 3', 'ไตรมาส 4'],
+                title: {
+                    text: null
+                }
+             },
+			 series:arr_val_all			
+		});	
+			
+	}					
+	$('.tr-graph2').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
+	
+	$('.img').click(function(){
+		var title 	= $(this).closest('tr').find('td:eq(0)').children('strong:eq(0)').html();
+		var t_graph = $(this).attr('name');		
+		var render 	= $(this).closest('td').find('input[name=render]').val();									
+		var arr ={};
+		var arr_val=[],arr_val_all=[];	
+		var padd_left,j=0;
+		if(title=="เพศ" || title=="สถานที่สัมผัสโรค"){var w=700;var h=560;}			
+			$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){	
+								
+				if($(this).find('.pad-left').html()!=null){
+					
+					pad_left=$(this).find('.pad-left').html();
+					console.log(pad_left);
+				}															  																
+			});			
+		//console.log(arr_val_all);
+		graph(title,render,t_graph,arr_val_all,w,h)				
+		$(this).closest('tr').nextAll('.tr-graph2:eq(0)').fadeIn('slow');				
+	});
 });
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - รายไตรมาส</div>
@@ -71,10 +139,17 @@ $(document).ready(function(){
 				<td><? echo number_format(${$field.$key}); ?></td>
 			</tr>
 			<? endforeach; ?>
+			<tr class="tr-graph">
+			  	<td colspan="5">
+			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+			  			<div id="container<?php echo $i=$i+1; ?>" class="container"></div> 			
+			  		</div>
+			  	</td>
+			</tr>			
 		<? endforeach; ?>		
 
 				<tr><td colspan="5"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong>
-					<input type="hidden" name="render" value="container1">
+					<input type="hidden" name="render" value="container10">
 					<button class="bar-chart img" name="bar"></button>
 					<button class="column-chart img" name="column"></button>
 		    		<button class="pie-chart img" name="pie"></button>					

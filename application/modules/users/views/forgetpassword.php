@@ -39,7 +39,7 @@ $(function(){
 <h1>ลืมรหัสผ่าน</h1>
 <div id="register">
 	<div class="row">
-	<div class="span7">
+	<div class="span9">
 	<form action="users/sendmail" method="post" id="forget" class="form-horizontal">
             
                 <label class="control-label" for="inputEmail">อีเมล์</label>
@@ -49,11 +49,11 @@ $(function(){
 
                 <label class="control-label" for="inputCaptcha">รหัสลับ</label>
                 <div class="controls">
-                  <img src="users/captcha" /><Br>
+                  <img src="users/captcha" /><br/>
                   <input type="text" name="captcha" id="inputCaptcha" placeholder="รหัสลับ">
                 </div>
-				<label class="control-label" for="inputCaptcha"></label>
-
+				<label class="control-label" for="inputCaptcha">&nbsp;</label>
+				<label class="control-label" for="inputCaptcha">&nbsp;</label>
 	            <div class="control-group">
                 <div class="controls">
                 		<button type="submit" class="btn btn-small btn-primary" style="margin-bottom:10px;">ตกลง</button>

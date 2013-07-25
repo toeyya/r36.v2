@@ -1,5 +1,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
+	//$('.alert-error').hide();
 	$('.btn_add').removeAttr('disabled');
 	$('input[name=closecase_person]').val('');
 	$('input[name=closecase]').val('');
@@ -77,7 +78,7 @@ $(document).ready(function(){
 	var chk_c;
 	function chk_closecase(){		
 		$('.btn_add').attr('disabled',true);		
-		$.colorbox({width:"90%", height:"80%", inline:true,href:"#load",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}																																											});							
+		//$.colorbox({width:"50%", height:"50%", inline:true,href:"#load",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}																																											});							
 		
 		request=$.ajax({
 			url:'<?php echo base_url() ?>inform/closecase/true',
@@ -86,10 +87,10 @@ $(document).ready(function(){
 				$('.btn_add').removeAttr('disabled');	
 				$('input[name=closecase]').val(data.chk);
 				//chk_c = data.chk;
-				console.log("chk_c ="+data.chk);
+				//console.log("chk_c ="+data.chk);
 				if(data.chk=="yes"){
-					$('#load').html('<img src="media/images/loadingmove.gif" width="78px" height="20px">');		  	
-				  	$.colorbox({iframe:true, width:"90%", height:"80%", href:'inform/closecase'})				  				 						
+					//$('#load').html('<img src="media/images/loadingmove.gif" width="78px" height="20px">');		  	
+				  	$.colorbox({width:"50%", height:"30%", inline:true,href:"#closecase"});			  				 						
 				}else{															
 					chk_closecase_person();
 				}						
@@ -203,7 +204,9 @@ $(document).ready(function(){
 			})
 		}
 	})
-
+	$('#btn_view').click(function(){
+		
+	})
 	
 });
 </script>
@@ -398,7 +401,7 @@ $(document).ready(function(){
 				<td><?php echo cld_my2date($rec['datetouch'])?></td>
                 <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
             	<td><a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" class="btn_view vtip" target="_blank"></a> 			
-				<?php if($rec['closecase']=="1" || $rec['closecase']==""): ?>
+				<?php //if($rec['closecase']=="1" || $rec['closecase']==""): ?>
 				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
 					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>"  class="btn_edit vtip" target="_blank" ></a>
 					<input type="hidden" name="information_id" value="<?php echo $rec['id'] ?>" />
@@ -408,7 +411,7 @@ $(document).ready(function(){
 						<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>								
 				 <?   } ?>
 					<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine"  class="btn_syring vtip"  target="_blank"></a>
-				<?php endif; ?>
+				<?php //endif; ?>
 
 				</td>
               </tr>            
@@ -418,8 +421,11 @@ $(document).ready(function(){
 <?php echo (isset($pagination))? $pagination:''; ?>
 <div id="loading" style="padding-top:20%;padding-left:40%"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div>
 <div style="display:none;">
-<div id="closecase" style="height:100%;width:100%;">
-	<iframe name="ifm"  id="ifm" src="#" ALIGN="top" HSPACE="0" VSPACE="0" frameborder="0" style="height:100%;width:100%;" ></iframe>
+<div id="closecase" style="text-align: center;">
+	<div class="alert alert-warning"><span class="label label-warning">ไม่สามารถเพิ่มข้อมูลได้</span> กรุณาปิดเคสที่อายุ มากกว่า 90 วัน จึงสามารถเพิ่มรายการได้</div>
+	<a  href="inform/closecase" target="_blank" class="btn btn-primary" type="button" name="btn_view" id="btn_view">คลิกดูรายการ</a>	
+	
+	
 </div>
 </div>
 <div style="display:none;"><div id="closecase_person"></div></div>

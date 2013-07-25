@@ -19,7 +19,8 @@ class Report extends R36_Controller
 	public $reference= "แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข";
 	function index($no=FALSE)
 	{
-		//$this->db->debug=TRUE;
+		 //$this->db->debug=TRUE;
+		
 		 $data['reference'] = $this->reference;
  		 $data['textarea'] =(!empty($_GET['area'])) ? $this->area->get_one("name","id",$_GET['area']) :"ทั้งหมด";		
 		 $data['textprovince'] = (!empty($_GET['province'])) ? $this->province->get_one("province_name","province_id",$_GET['province']) : 'ทั้งหมด';	
@@ -36,8 +37,7 @@ class Report extends R36_Controller
 		 if(!empty($_GET['group'])){
 		 	if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
 		 	}else{$data['textgroup'] = $_GET['group'];}			 	
-		 }
-  			
+		 } 			
 			if($no=="6"){
 		  	 	//$col="hospitalprovince";	
 		  	 	if($no=="6") $col="n_amphur.province_id";
@@ -74,8 +74,10 @@ class Report extends R36_Controller
 							$data['province_id'] = $_GET['province'];
 							$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
 					  }else{
+				
 						  if(!empty($_GET['area']) && !empty($_GET['group'])){
 						  	$provinceid= "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];  
+						  	var_dump($provinceid);
 						  	$cond .= " 1=1 AND hospitalprovince IN (".$provinceid.")";			  	   
 						  	if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
 							}else{$data['textgroup'] = $_GET['group'];}	  	  
@@ -283,7 +285,7 @@ class Report extends R36_Controller
 			
 			## food_dangerous
 			$data['total_food'] = 0;
-			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid where food_dangerous='1'".$cond1;
+			$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid where $cond1 food_dangerous='1'";
 			$data['total_food'] = $this->db->GetOne($sql);	
 			
 			$data['totaltouch'] = $data['lick_blood'] + $data['lick_noblood'] + $data['claw_noblood'] + $data['claw_blood'] + $data['bite_noblood'] + $data['bite_blood']+$data['total_food'];	
@@ -682,7 +684,7 @@ class Report extends R36_Controller
 		
 		## food_dangerous
 		$data['total_food'] = 0;
-		$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid where food_dangerous='1'".$cond1;
+		$sql="select count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid where $cond1 food_dangerous='1'";
 		$data['total_food'] = $this->db->GetOne($sql);	
 		
 		$data['totaltouch'] = $data['lick_blood'] + $data['lick_noblood'] + $data['claw_noblood'] + $data['claw_blood'] + $data['bite_noblood'] + $data['bite_blood']+$data['total_food'];	

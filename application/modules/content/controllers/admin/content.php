@@ -22,7 +22,7 @@ class Content extends Admin_Controller
 		$data['pagination'] = $this->content->pagination();
 		$data['category_id']=$category_id;
 		$data['category']=$this->category->get_row($category_id);
-		
+	
 		if($category_id){
 			$data['content']=$this->content->get_row("category_id",$category_id);		
 		}

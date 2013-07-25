@@ -20,7 +20,7 @@
 	<li <?php echo menu_active('contents','contents')?>><a href="document/admin/document/index">เอกสารเผยแพร่</a></li>
 	<li <?php echo menu_active('download','download')?>><a href="content/admin/content/index/6">ข่าวประชาสัมพันธ์</a></li>
 	<li <?php echo menu_active('contents','contents')?>><a href="content/admin/content/index/7">สาระน่ารู้</a></li>
-	<li <?php echo menu_active('contents','contents')?>><a href="content/admin/content/index/8">ตัววิ่ง</a></li>
+	<li <?php echo menu_active('contents','contents')?>><a href="content/admin/content/index/9">ตัววิ่ง</a></li>
 	<li <?php echo menu_active('webboards','webboards')?>><a href="webboards/admin/webboard_categories">เว็บบอร์ด</a></li>
 	<li <?php echo menu_active('contact','contacts')?>><a href="question/admin/question/index">คำถามที่พบบ่อย</a></li>
 	<li <?php echo menu_active('contact','contacts')?>><a href="content/admin/content/index/8">ติดต่อเรา</a></li>

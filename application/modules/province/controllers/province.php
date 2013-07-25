@@ -7,6 +7,7 @@ class Province extends Admin_Controller
 		$this->load->model('province_model','province');
 		$this->load->model('area/area_model','area');
 		$this->load->model('amphur/amphur_model','amphur');	
+		$this->load->model('district/district_model','district');
 		$this->load->model('area/area_detail_model','detail');
 		$this->load->model('hospital/hospital_model','hospital');
 	}
@@ -55,57 +56,100 @@ class Province extends Admin_Controller
 	}
 	function save_province_new()
 	{// province_id ไม่ auto increment;
-		$this->db->debug=true;
-		if($_POST)
-		{					
-			/*$province_id_old = $_POST['province_id'];
-			$amphur_id_old   = $_POST['amphur_id'];
-			## save จังหวัด ใหม่
-			$_POST['province_id'] = $this->db->GetOne("select max(province_id)+1 as province_id from n_province");				  		
-			$this->province->save($_POST);
-			## บันทึการเลือกเขตความรับผิดชอบ
-			if(!empty($_POST['area_id'])){
-				$this->detail->delete("province_id",$_POST['province_id']);									
-				foreach($_POST['area_id'] as $item){
-					if(!empty($_POST['level'][$item])){
-						$this->detail->save(array('id'=>'','province_id'=>$_POST['province_id'],'area_id'=>$item,'level'=>$_POST['level'][$item]));
-					}					
+			
+		if(!empty($_POST['date_cutoff'])){
+			$data_cutoff =date2DB($_POST['date_cutoff']);			
+			if($_POST)
+			{					
+				$province_id_old = $_POST['province_id'];
+				$amphur_id_old   = $_POST['amphur_id'];
+				$user_id = $this->session->userdata('R36_UID');
+				$created = date('Y-m-d H:i:s');
+				## save จังหวัด ใหม่
+				$_POST['province_id'] = $this->db->GetOne("select max(province_id)+1 as province_id from n_province");				  		
+				$this->province->save($_POST);
+				## บันทึการเลือกเขตความรับผิดชอบ
+				if(!empty($_POST['area_id'])){
+					$this->detail->delete("province_id",$_POST['province_id']);									
+					foreach($_POST['area_id'] as $item){
+						if(!empty($_POST['level'][$item])){
+							$this->detail->save(array('id'=>'','province_id'=>$_POST['province_id'],'area_id'=>$item,'level'=>$_POST['level'][$item]));
+						}					
+					}
 				}
-			}
-			## บันทึก อำเภอของจังหวัดใหม่
-			if(!empty($_POST['amphur_new_id']))
-			{	$this->amphur->primary_key('amp_pro_id');						
-				foreach($_POST['amphur_new_id'] as $key =>$item){
-					$this->amphur->save(array('amp_pro_id'=>'','province_id'=>$_POST['province_id'],'amphur_id'=>$key,'amphur_name'=>$item,'timestamp'=>date('Y-m-d H:i:s')));
-				}
-			}*/
-			## ย้ายโรงพยาบาล
-			if(!empty($_POST['hospital_new_code'])){
-				foreach($_POST['hospital_new_code'] as $key => $item){
-					$hospital_code=substr($key,3);
+				## บันทึก อำเภอของจังหวัดใหม่
+				if(!empty($_POST['amphur_new_id']))
+				{	$this->amphur->primary_key('amp_pro_id');						
+					$i=0;
+					foreach($_POST['amphur_new_id'] as $key =>$item){
+						$i++;
+						$amphur_code =strval($i);
+						$amphur_code = str_pad($amphur_code,2,"0",STR_PAD_LEFT);										
+						$this->amphur->save(array('amp_pro_id'=>'','province_id'=>$_POST['province_id'],'amphur_id'=>$amphur_code,'amphur_name'=>$item,'timestamp'=>$created));					
+						$this->district->primary_key('tam_amp_id');
+						$district = $this->db->Execute("select * from n_district where province_id ='".$province_id_old."' and amphur_id ='".$key."'");
+						$j=0;
+						foreach($district as $key_d =>$dis){
+							$j++;
+							$district_code = strval($j);
+							$district_code = str_pad($district_code,2,"0",STR_PAD_LEFT);						
+							$this->district->save(array('tam_amp_id'=>'','province_id'=>$_POST['province_id']
+										,'amphur_id'=>$amphur_code,'district_id'=>$district_code
+										,'district_name'=>$dis['district_name'],'timestamp'=>$created));
 					
+						}// loop district					
+					}//loop amphur
 				}
-			}			
-			//set_notify('success',SAVE_DATA_COMPLETE);
-		}
-		//redirect('province/province_new');
+				
+				$k=0;
+				$this->hospital->primary_key('hospital_id');
+				foreach($_POST['hospital_new_code'] as $key_h => $item){
+					$k++;	
+					$hospital_code = strval($k);
+					$hospital_code = str_pad($hospital_code,4,'0',STR_PAD_LEFT);
+					$amphur_code = substr($key_h,2,2);
+					$amphur_id = $this->db->GetOne("select amphur_id from n_amphur where province_id= ? 
+									   and amphur_name=(select amphur_name from n_amphur where province_id= ? and amphur_id= ? )",array($_POST['province_id'],$province_id_old,$amphur_code));						
+					$hospital_code = $_POST['province_id'].$amphur_id.$hospital_code;															
+					$district_code = $this->db->GetOne("select hospital_district_id from n_hospital_1 where hospital_code = ? ",$key_h);
+					$data =array('hospital_id'=>'','hospital_code'=>$hospital_code,'hospital_name'=>$item,'hospital_province_id'=>$_POST['province_id']
+								,'hospital_amphur_id'=>$amphur_id,'hospital_district_id'=>$district_code,'hospital_name1'=>$item
+								,'hospital_type'=>$_POST['hospital_type'][$key_h],'user_id'=>$user_id,'created'=>$created);
+					//echo '<pre>';
+					//print_r($data);
+					//echo '</pre>';
+					$this->hospital->save($data);
+					//$result = $this->db->Execute("select * from n_information where hospitalcode = ? ",$item);
+					
+					
+				}// loop hospital	
+													
+				set_notify('success',SAVE_DATA_COMPLETE);
+			}//$_POST
+		}//date cutoff
+		redirect('province/province_new');
+	}
+	function inertDB(){
+		
 	}
 	function getAmphurNew(){
 		if($_GET){					
-			$result = $this->amphur->where('province_id = '.$_GET['province_id'])->sort("")->order("amphur_name asc")->get();			
+			$result = $this->amphur->where('province_id = '.$_GET['province_id'])->sort("")->order("amphur_name asc")->limit(200)->get();			
 			echo '<ul>';
 			foreach($result as $item){
 				echo '<li><input name="amphur_new_id['.$item['amphur_id'].']" value="'.$item['amphur_name'].'" type="checkbox"> '.$item['amphur_name']."</li>";
+				
 			}
 			echo '</ul>';			
 		}		
 	}
 	function getHospital(){
 		if($_GET){					
-			$result = $this->hospital->where('hospital_province_id = '.$_GET['province_id']." and hospital_amphur_id =".$_GET['amphur_id'])->sort("")->order("hospital_name asc")->get();			
+			$result = $this->hospital->where('hospital_province_id = '.$_GET['province_id'])->sort("")->order("hospital_name asc")->limit(200)->get();			
 			echo '<ul>';
 			foreach($result as $item){
-				echo '<li><input name="hospital_new_code['.$item['hospital_code'].']" value="'.$item['hospital_name'].'" type="checkbox"> '.$item['hospital_name']."</li>";
+				echo '<li><input name="hospital_new_code['.$item['hospital_code'].']" value="'.$item['hospital_name'].'" type="checkbox"> '.$item['hospital_name'];
+				echo '<input type="hidden" name="hospital_type['.$item['hospital_code'].']" value="'.$item['hospital_type'].'"></li>';
 			}
 			echo '</ul>';			
 		}		

@@ -88,18 +88,18 @@ var ref1,ref2,ref3;
 		<th>แสดง</th>
 		<th>ชื่อ - นามสกุล</th>
 		<th>สิทธิ์การใช้งาน</th>
-		<th>สถานบริการ</th>
+		<th>สถานบริการ/หน่วยงาน</th>
 		<th>การอนุมัติ</th>
 
 		<th width="90"><a href="users/admin/users/form" name="btn_add" class="btn">เพิ่มรายการ</a></th>
 	  </tr>	  
 		<?php foreach($result as $key => $item): ?>
 		<tr>
-				<!--<<td  align="center"><nput name="chk_del[]" type="checkbox" value="<?php echo $item['uid']?>"  class="chk_del"/></td>-->
+				
 				<td><input type="checkbox"  class="list_check" name="active" value="<?php echo $item['uid'] ?>" <?php echo ($item['active']=="1")?'checked="checked"':'' ?>  /></td>				
 				<td><?php echo $item['userfirstname'];?> <?php echo $item['usersurname'];?></td>
-				<td><?php echo $item['level_name'];?></td>
-				<td><?php echo  $item['hospital_name']?></td>
+				<td><?php echo $item['level_name']; echo (!empty($item['userlevel'])) ? "(เขตที่  ".$item['userlevel'].")" :'';?></td>
+				<td><?php echo (!empty($item['hospital_name'])) ? $item['hospital_name']: $item['agency'] ?></td>
 				<td>
 					<div class="format">
 						<?php if($this->session->userdata('R36_LEVEL')=='00' || $this->session->userdata('R36_LEVEL')=="02"): ?>

@@ -13,7 +13,7 @@ class Content extends Public_Controller
 	}
 	function index($category_id,$layout=FALSE){	
 		$data['contents']=$this->content
-							   ->where("category_id='".$category_id."' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and status = 'approve'")
+							   ->where("category_id='".$category_id."' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")
 							   ->sort("")->order("id desc")->limit(20)->get();
 		$data['pagination']=$this->content->pagination();	
 		$data['category_id']=$category_id;
@@ -70,7 +70,7 @@ class Content extends Public_Controller
 		$this->load->view('inc_knowledge',$data);		
 	}
 	function inc_information()
-	{
+	{//GETDATE()
 		//$this->db->debug = true;
 		$data['contents']=$this->content->where("category_id='6' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
 										->sort("")->order("id desc")->limit(10)->get();
@@ -78,9 +78,8 @@ class Content extends Public_Controller
 		$this->load->view('inc_information',$data);
 	}
 	function inc_marquee()
-	{	
-		$data['contents']=$this->content->select("GROUP_CONCAT(title) as title")->where("category_id=2 and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and status = 'approve'")
-																  ->sort("")->order('id desc')->limit(3)->get();
+	{  //$this->db->debug = true;
+		$data['contents']=$this->content->where("category_id=9")->limit(1)->get();
 		$this->load->view('inc_marquee',$data);
 	}
 	function download($id)

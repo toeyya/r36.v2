@@ -48,7 +48,10 @@ $("select[name=province_new_id]").change(function(){
 <h1>เพิ่มจังหวัดใหม่</h1>
 <form action="province/save_province_new" method="post" id="formm">
 <table  class="form">
-<tr><th width="20%">จังหวัดใหม่</th>
+<tr><th  width="20%">วันที่ cutoff ข้อมูล</th>
+	<td><input type="text" name="date_cutoff" value="" class="datepicker"></td>
+</tr>	
+<tr><th>จังหวัดใหม่</th>
 <td><p><?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['province_id'],'class="styled-select" id="province_id"','-โปรดเลือกจังหวัด-') ?></p>
 	<p id="input_amphur" style="margin:10px 0px;"><select name="amphur_id" class="styled-select"><option value="">-โปรดเลือกอำเภอ-</option></select></p>
 </td>
@@ -73,10 +76,6 @@ $("select[name=province_new_id]").change(function(){
 				<?php echo form_dropdown("level[".$item['id']."]",getLevel($item['id'],$item['total']),'','') ?></span></p>
 		<?php endforeach; ?>
 	</td>
-</tr>
-<tr>
-	<th>จำนวนประชากร</th>
-	<td><input type="text" class="input_box_patient" name="provincepeople" value="<?php echo @$rs['provincepeople'] ?>"></td>
 </tr>
 <tr>
 	<th></th>

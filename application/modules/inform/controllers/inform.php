@@ -52,28 +52,46 @@ class Inform extends R36_Controller
 		echo json_encode($data);
 		
 	}
+	function DateDiff()
+	{
+		$date = date_create(date('Y-m-d'));
+		date_sub($date,date_interval_create_from_date_string("90 days"));
+		$dd = date_format($date,"Y-m-d");
+		//echo $dd;
+		return $dd;
+	}
 	function closecase($chk=FALSE)
-	{	
-		$hospitalcode =	$this->session->userdata('R36_HOSPITAL');	
-		if($this->session->userdata('R36_LEVEL')=="05" ){			
-			$sql="select datetouch,firstname,surname,idcard,hn,hn_no,total_vaccine,information_historyid,id  from n_information 
-				inner join n_history on n_information.information_historyid=n_history.historyid
-				inner join n_vaccine on n_information.id=n_vaccine.information_id
-				where  hospitalcode = $hospitalcode and  datediff(now(),vaccine_date) >=90 and closecase=1
-				group by information_id";					 									 	
-			$result = $this->inform->get($sql);				
-			$data['result'] = $result;
-			$data['chk']=($result) ?"yes":"no";				
-		}else{
-			$data['chk']="no";	
-		}
-		if($chk){
+	{	// เอาที่วันปัจจุบัน ลบ ออกไปเก้าสิบวัน แล้ว  แล้วแปลงเป็นวันที่ เพื่อนหาค่าวันที่น้อยกว่าวันดังกล่าว
+		$hospitalcode =	$this->session->userdata('R36_HOSPITAL');
+		//$hospitalcode ="80090005";
+		$year = date('y')+543;	
+		$dd = $this->DateDiff();
+		$data['chk']="no";	
+		if($this->session->userdata('R36_LEVEL')=="05" ){
+			if($chk)
+			{													
+				$sql="select count(id) as cnt  from n_information 
+					inner join n_history on n_information.information_historyid=n_history.historyid
+					inner join n_vaccine on n_information.id=n_vaccine.information_id
+					where  hospitalcode = $hospitalcode and  vaccine_date <='$dd' and closecase=1
+					group by id";					 									 	
+				$result = $this->db->GetOne($sql);				
+				$data['chk']=($result) ?"yes":"no";	
 				echo json_encode($data);
-				return true;
-		}			
-			
+				return true;				
+			}else{
+				$sql = "select id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch,total_vaccine   from n_information 
+					inner join n_history on n_information.information_historyid=n_history.historyid
+					inner join n_vaccine on n_information.id=n_vaccine.information_id
+					where  hospitalcode = $hospitalcode and  vaccine_date <='$dd' and closecase=1
+					group by id";
+				$data['result'] = $this->db->Execute($sql);
+				
+			}			
+		}
+					
 		$data['pagination']=$this->inform->pagination();
-		$this->template->set_layout('blank');
+		//$this->template->set_layout('blank');
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
@@ -96,7 +114,7 @@ class Inform extends R36_Controller
 						// ให้มีปุ่มเพิ่มเฉพาะ historyid ล่าสุด
 						$data['historyid']=$this->db->GetOne($sql,array($_GET['hospitalcode'],$_GET['hn']));
 					}elseif(!empty($_GET['idcard'])){
-						$where.=" AND (idcard='".$_GET['idcard']."' AND statusid='".$_GET['statusid']."') AND idcard!='' and hospitalcode<>''";
+						$where.=" AND (idcard='".$_GET['idcard']."') AND idcard!='' and hospitalcode<>''";
 					}
 				}							
 								

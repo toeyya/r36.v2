@@ -52,7 +52,7 @@ class Users extends Public_Controller
 		redirect('home');
 	}
 	function register(){
-			
+		
 		$this->template->build('register');
 	}
 	function chkHospitalcode(){
@@ -69,14 +69,16 @@ class Users extends Public_Controller
 		$this->template->build('forgetpassword');
 	}
 	function confirm_email($id,$c)
-	{	
+	{		
 		$id=clean_url($id);
 		$data['result']=$this->db->GetRow("SELECT uid,confirm_admin,confirm_province FROM n_user WHERE uid= ? and gen_id = ? ",array($id,$c));
 		if($data['result']['uid']){
 			$this->user->save(array('uid'=>$id,'confirm_email'=>'1'));
 			$this->template->build('confirm_email',$data);
-		}		
+		}
+			
 	}
+	
 	function sendmail()
 	{
 		$rs=$this->user->get_row("usermail",$_POST['usermail']);

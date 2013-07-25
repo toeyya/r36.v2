@@ -9,7 +9,7 @@ class Identify extends Public_Controller
 	
 	}
 	function index(){
-		$data['result']=$this->identify->get();
+		$data['result']=$this->identify->where("active ='1'")->get();
 		$data['pagination']=$this->identify->pagination();
 		$this->template->build('inc_index',$data);
 	}

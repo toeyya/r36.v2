@@ -50,10 +50,10 @@ $(document).ready(function(){
             },          
             series: [{data:arr_val}]			
 		});	
-		canvg(document.getElementById('canvas'), chart.getSVG())		    
-		var canvas = document.getElementById("canvas");
-		var img = canvas.toDataURL("image/png");
-		$('#'+render).next().val('<img src="'+img+'"/>');
+		//canvg(document.getElementById('canvas'), chart.getSVG())		    
+		//var canvas = document.getElementById("canvas");
+		//var img = canvas.toDataURL("image/png");
+		//$('#'+render).next().val('<img src="'+img+'"/>');
 				
 	}					
 	$('.tr-graph').hide();

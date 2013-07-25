@@ -1,0 +1,1 @@
+<marquee class="textMarqee" scrollamount="2" ><?php echo (!empty($contents)) ? $contents[0]['detail']: '';?></marquee>

@@ -39,14 +39,19 @@ class Users extends R36_Controller
 	function save()
 	{
 		if($_POST){
-			if($_POST['userposition']=="00" || $_POST['userposition']=="01" || $_POST['userposition']=="02"){
-				$_POST['userhospital']="";
-			}else if($_POST['userposition']!="02"){				
-				$_POST['userprovince']="";
-			}
+			
 			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];					
-			$_POST['gen_id']=generate_password(20);
-			$id=$this->user->save($_POST);
+			$_POST['gen_id']=generate_password(20);		
+			$id = $this->user->save($_POST);			
+			$arr_00 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');		
+			$arr_01 = array('uid'=>$id,'userprovince'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');	
+			$arr_02 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'');	
+			$arr_03 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'','userdistrict'=>'');	
+			$arr_04 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'');
+			$arr_05 = array('uid'=>$id,'userhospital'=>'');			
+			$arr_06 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');		
+						
+			$this->user->save(${'arr_'.$userposition});			
 			set_notify('success',SAVE_DATA_COMPLETE);
 			if(empty($_POST['confirm_email'])){							   
 			   	$subject = "ยืนยันการลงทะเบียน(ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
