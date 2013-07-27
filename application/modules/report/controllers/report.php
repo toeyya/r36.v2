@@ -43,7 +43,7 @@ class Report extends R36_Controller
 		  	 	if($no=="6") $col="n_amphur.province_id";
 			  	//$cond .=" 1=1 AND ".$col." = '".$_GET['province']."'";
 				$data['province_id'] = $_GET['province'];
-				$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
+				$data['textprovince']=$this->province->get_one("province_name","province_id",@$_GET['province']);	
 				
 			}
 			

@@ -39,9 +39,9 @@
 </table>
 <br>
 <input type="hidden" name="lid" value="<?php echo $level['lid']?>">
-<div id="boxadd">
-  <input  type="submit" value="บันทึก" class="btn_save"/>
-  <input  type="button" value="ย้อนกลับ" class="btn_back"/>
+<div id="boxadd" style="text-align: center;">
+  	<input  type="submit" value="บันทึก" class="btn_save"/>
+  	<?php echo form_back('btn_back'); ?>
 </div>
 
 </form>

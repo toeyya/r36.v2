@@ -15,16 +15,18 @@
     		<li>ประเภท :<label><?php echo $this->session->userdata('R36_LEVEL_NAME'); ?></label></li>
     		<hr class="hr1">
     		<li>
-   <?php 
-   $link="users/r36/users/index/".$this->session->userdata('R36_UID'); 
-   if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"): ?>
-   <?php $link="inform/index"; ?>
-   <?php endif; ?>			
-   <a href="<? echo $link ?>" target="_blank" class="btn btn-mini btn-info">โปรแกรม ร.36</a>  
-   <a href="map/index" target="_blank" class="btn btn-mini btn-info">ระบบภูมิศาสตร์ ฯ(GIS)</a>
-   <p style="text-align: center;"><a href="users/logout" class="btn btn-mini">logout</a></p>
- 	
-   </li>
+			   <?php 
+			   $link="users/r36/users/index/".$this->session->userdata('R36_UID'); 
+			   if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"): ?>
+			   <?php $link="inform/index"; ?>
+			   <?php endif; ?>			
+			   <div style="text-align:center;"><a href="<? echo $link ?>" target="_blank" class="btn btn-mini btn-info">โปรแกรม ร.36</a>  
+			  	<?php //if($this->session->userdata('login_gis')=="1"): ?>
+			   <a href="map/index" target="_blank" class="btn btn-mini btn-info">ระบบภูมิศาสตร์ ฯ(GIS)</a>
+			   <?php //endif; ?></br>
+			   <a href="users/logout" class="btn btn-mini" style="margin-top:5px;">logout</a></div>
+			 	
+   			</li>
     	</ul> 
     	 <?php else: ?>
     	<form action="users/login" method="post">

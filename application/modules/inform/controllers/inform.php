@@ -11,45 +11,35 @@ class Inform extends R36_Controller
 		$this->load->model('vaccine_model','vaccine');
 		$this->load->model("history_model",'history');
 		$this->load->model('users/user_model','user');
+		$this->load->model('document/document_detail_model','detail');
 		$this->template->append_metadata(js_idcard());
 		$this->history->primary_key('historyid');
 						
 	}
-	function closecase_person($idcard){
-		$sql="SELECT id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch 
+	function closecase_person($idcard,$chk=FALSE){
+		if($chk){
+		$sql="SELECT count(id) as cnt 
 			  FROM n_information 
 			  LEFT JOIN n_history ON historyid=information_historyid 
 			  WHERE closecase=1 and idcard='".$idcard."' order by n_information.datetouch asc";	
-		$result=$this->inform->get($sql);
-		if($result){
-			$tb = '<div class="alert alert-warning"><span class="label label-warning">มีเคสนี้อยู่แล้วในระบบ</span> คุณต้องปิดเคสนี้ก่อนจึงสามารถเพิ่มครั้งที่สัผมัสโรคได้</div>';
-			$tb.= '<table class="tb_search_Rabies1">';
-			$tb.= '<tr>';
-			$tb.= '<th>วันที่สัมผัสโรค</th>';
-			$tb.= '<th>HN</th>';
-			$tb.= '<th>ครั้งที่สัมผัสโรค</th>';
-			$tb.= '<th>ชื่อ-นามสกุล</th>';
-			$tb.= '<th>บัตรประชาชน/passport</th>';
-			$tb.= '<th></th>';
-			$tb.= '</tr>';
-			foreach($result as $item){
-				$tb.= '<tr>';
-				$tb.= '<td>'.cld_my2date($item['datetouch']).'</td>';
-				$tb.= '<td>'.$item['hn'].'</td>';
-				$tb.= '<td>'.$item['hn_no'].'</td>';
-				$tb.= '<td>'.$item['firstname'].' '.$item['surname'].'</td>';
-				$tb.= '<td>'.$item['idcard'].'</td>';
-				$tb.= '<td><a href="inform/form/'.$item['id'].'/'.$item['information_historyid'].'" class="btn_edit vtip" target="_blank"></a>';
-				$tb.= '</td>';
-				$tb.= '</tr>';
-			}
-			$tb.= '</table>';
-			$data['tb']=$tb;
-			$data['chk']="yes";
+			$result = $this->db->GetOne($sql);	
+			$data['chk']=($result) ?"yes":"no";
+			$data['idcard'] = $idcard;	
+			echo json_encode($data);
+			return true;		
 		}else{
-			$data['chk']="no";
-		}
-		echo json_encode($data);
+			$sql="SELECT id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch 
+				  FROM n_information 
+				  LEFT JOIN n_history ON historyid=information_historyid 
+				  WHERE closecase=1 and idcard='".$idcard."' order by n_information.datetouch asc";	
+			$result=$this->inform->get($sql);	
+			$data['result'] = $this->db->Execute($sql);		
+		}	
+		$data['pagination']=$this->inform->pagination();
+		
+		//$this->template->set_layout('blank');
+		$this->template->build('view_closecase_person',$data);
+
 		
 	}
 	function DateDiff()
@@ -95,7 +85,7 @@ class Inform extends R36_Controller
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
-	{	//$this->db->debug=true;
+	{	$this->db->debug=true;
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
 				$where ="";
@@ -443,7 +433,15 @@ class Inform extends R36_Controller
 	function popuplist(){
 		$this->template->build('popup_list');
 	}
-
+	function download($id,$field="file")
+	{
+		//$content = new Content($id);
+		$file=$this->detail->get_one($field,"id",$id);
+		$this->load->helper('download');
+		$data = file_get_contents("uploads/document/".basename($file));
+		$name = basename($file);
+		force_download($name, $data); 
+	}
 
 	
 	

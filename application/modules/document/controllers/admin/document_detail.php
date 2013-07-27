@@ -25,7 +25,6 @@ class Document_detail extends Admin_Controller
 		$this->template->build('admin/detail/form',$data);
 	}
 	function delete($id){
-		$this->db->debug=true;
 		if($id){
 			$this->detail->delete($id);
 			set_notify('success', DELETE_DATA_COMPLETE);

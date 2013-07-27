@@ -28,9 +28,10 @@ class Users extends Public_Controller
             if(login($_POST['username'], $_POST['password']))
             {
                 set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบค่ะ');
-				if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"){
+				if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"){						
 					redirect($_SERVER['HTTP_REFERER']);
 				}else{
+					
 					redirect('users/r36/users/index/'.$this->session->userdata('R36_UID'));
 				}                             
             }

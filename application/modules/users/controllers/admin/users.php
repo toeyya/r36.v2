@@ -88,7 +88,7 @@ class Users extends Admin_Controller
 			$arr_02 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'');	
 			$arr_03 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'','userdistrict'=>'');	
 			$arr_04 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'');
-			$arr_05 = array('uid'=>$id,'userhospital'=>'');			
+			$arr_05 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');			
 			$arr_06 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');		
 			
 			

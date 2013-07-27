@@ -8,7 +8,7 @@ class Log extends Admin_Controller
 		
 	}
 	function index()
-	{
+	{   //$this->db->debug = true;
 		$name="";$where="";
 		if(!empty($_GET['fullname'])){
 			if(preg_match('/\s/',$_GET['fullname'])){
@@ -29,7 +29,7 @@ class Log extends Admin_Controller
 			$lastDate=date2DB($_GET['lastDate']);
 			$dd=" and date(n_logs.created) BETWEEN '".$firstDate."' and '".$lastDate."'";
 		}else{
-				$dd=(!empty($_GET['firstDate']))?" and date(n_logs.created)='".date2DB($_GET['firstDate'])."'":"";		
+			$dd=(!empty($_GET['firstDate']))?" and date(n_logs.created)='".date2DB($_GET['firstDate'])."'":"";		
 		}
 		$cond =(!empty($_GET['province_id']))? "  and userhospital <>'' and substr(userhospital,1,2) =".$_GET['province_id'] :'';
 		$cond .=(!empty($_GET['amphur_id']))? "  and userhospital <>'' and substr(userhospital,3,2) =".$_GET['amphur_id'] :'';

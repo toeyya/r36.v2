@@ -43,23 +43,24 @@ $(document).ready(function(){
 	});
 	var chk_p;
 	function chk_closecase_person(){		
-		console.log("person");
+		//console.log("person");
 		if($('select[name=statusid] option:selected').val()=="1"){
 			var idcard=$('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val();					
 		}else{
 			var idcard=$('input[name=idcard]').val();
 		}
-		$.colorbox({width:"90%", height:"80%", inline:true,href:"#load"});
+		$.colorbox({width:"50", height:"30%", inline:true,href:"#load"});
 			if(idcard.length==13){											
 				$.ajax({
-					url:'<?php echo base_url() ?>inform/closecase_person/'+idcard,
+					url:'<?php echo base_url() ?>inform/closecase_person/'+idcard+'/true',
 					dataType:'json',
 					success:function(data){
 						$('input[name=closecase_person]').val(data.chk);					
 						//console.log("chk-p = "+data.chk);
 						if(data.chk=="yes"){											  											
-						 	$('#closecase_person').html(data.tb);
-						 	$.colorbox({width:"90%", height:"80%", inline:true,href:"#closecase_person"});												  
+						 	//$('#closecase_person').html(data.tb);
+						 	$('#btn_view1').attr('href','inform/closecase_person/'+data.idcard);
+						 	$.colorbox({width:"50%", height:"30%", inline:true,href:"#closecase_person"});												  
 						}else{
 							//document.form1.submit();
 							$.colorbox.close();
@@ -77,14 +78,14 @@ $(document).ready(function(){
 	var request;
 	var chk_c;
 	function chk_closecase(){		
-		$('.btn_add').attr('disabled',true);		
+		//$('.btn_add').attr('disabled',true);		
 		//$.colorbox({width:"50%", height:"50%", inline:true,href:"#load",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}																																											});							
 		
 		request=$.ajax({
 			url:'<?php echo base_url() ?>inform/closecase/true',
 			dataType:'json',
 			success:function(data){
-				$('.btn_add').removeAttr('disabled');	
+				//$('.btn_add').removeAttr('disabled');	
 				$('input[name=closecase]').val(data.chk);
 				//chk_c = data.chk;
 				//console.log("chk_c ="+data.chk);
@@ -110,7 +111,7 @@ $(document).ready(function(){
 	});
 	// START ####  กรณีเพิ่มรายการ  ####
 	$('.btn_add').click(function(e){
-		console.log("btn_add");					
+		//console.log("btn_add");					
 		$('#form1').attr('action','inform/addNew');	
 		$('input[name=action]').val('');	
 		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้				
@@ -204,9 +205,7 @@ $(document).ready(function(){
 			})
 		}
 	})
-	$('#btn_view').click(function(){
-		
-	})
+
 	
 });
 </script>
@@ -423,12 +422,15 @@ $(document).ready(function(){
 <div style="display:none;">
 <div id="closecase" style="text-align: center;">
 	<div class="alert alert-warning"><span class="label label-warning">ไม่สามารถเพิ่มข้อมูลได้</span> กรุณาปิดเคสที่อายุ มากกว่า 90 วัน จึงสามารถเพิ่มรายการได้</div>
-	<a  href="inform/closecase" target="_blank" class="btn btn-primary" type="button" name="btn_view" id="btn_view">คลิกดูรายการ</a>	
+	<a  href="inform/closecase" target="_blank" class="btn btn-primary"  name="btn_view" id="btn_view">คลิกดูรายการ</a>	
 	
 	
 </div>
 </div>
-<div style="display:none;"><div id="closecase_person"></div></div>
+<div style="display:none;"><div id="closecase_person" style="text-align: center;">
+	<div class="alert alert-warning"><span class="label label-warning">มีเคสนี้อยู่แล้วในระบบ</span> คุณต้องปิดเคสนี้ก่อนจึงสามารถเพิ่มครั้งที่สัผมัสโรคได้</div>
+	<a  href="inform/closecase_person/false/" target="_blank" class="btn btn-primary"  name="btn_view" id="btn_view1">คลิกดูรายการ</a>	
+</div></div>
 <div style="display:none;"><div id="load" style="padding-top:20%;padding-left:40%"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div></div>
 
 

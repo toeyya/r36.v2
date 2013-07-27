@@ -1,10 +1,14 @@
+<script type="text/javascript" src="media/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript" src="media/tiny_mce/config.js"></script>
 <script type="text/javascript">
+tiny('detail');
 $(document).ready(function(){
 	$('.option a[rel=del]').live('click',function(){
+		var field = $('.option').prev().attr('name');
 		var id =$('input[name=id]').val();				
 		var url = 'document/admin/document/delete_file/';
 		if(confirm('ยืนยันการลบข้อมูล')){
-			$.post(url,{'id':id},function(data){
+			$.post(url,{'id':id,'field':field},function(data){
 				$('.option').hide();
 			})
 		}
@@ -18,12 +22,6 @@ $(document).ready(function(){
 <tr><th>ประเภท</th>
 	<td><?php echo form_dropdown('document_id',get_option('id','name','n_document'),$document_id,'','--โปรดเลือก--') ?></td>
 </tr>
-<tr><th>ชื่อเรื่อง</th>
-<td><input type="text" name="title" value="<?php echo $rs['title'] ?>"></td>
-</tr>
-<tr><th>บทนำ</th>
-	<td><textarea cols="30" rows="20" name="intro"><? echo $rs['intro'] ?></textarea></td>
-</tr>
 <?php if(is_file('uploads/document/thumbnail/'.$rs['image'])): ?>
 <tr><th></th><td><img class="img" src="<?php echo 'uploads/document/thumbnail/'.$rs['image'] ?>"  /></td></tr>
 <?php endif ?>
@@ -31,9 +29,24 @@ $(document).ready(function(){
 	<td>
 		<small>อนุญาติเฉพาะ .gif .jpg .jpeg</small></br>
 		<input type="file" name="image" />
+		<?php if($rs['image']): ?>
+		 <span class="option">
+		 	<a href="document/download/<?php echo $rs['id'] ?>/image">ดาวน์โหลด</a> 
+		 	<a href="#" rel="del">ลบไฟล์</a>
+		 </span>
+		<?php endif; ?>
 	</td>
-	</tr>
-
+</tr>
+<tr><th>ชื่อเรื่อง</th>
+<td><input type="text" name="title" value="<?php echo $rs['title'] ?>"></td>
+</tr>
+<tr><th>บทนำ</th>
+	<td><textarea cols="30" rows="20" name="intro"><? echo $rs['intro'] ?></textarea></td>
+</tr>
+<tr>
+	<th class="top">รายละเอียด</th>
+	<td><textarea name="detail" class=" tinymce"><?php echo $rs['detail'] ?></textarea></td>		
+</tr>
 <tr><th>ชื่อเอกสาร</th>
 	<td><input type="text" name="file_title" value="<?php echo $rs['file_title'] ?>"></td>
 </tr>

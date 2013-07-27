@@ -42,7 +42,7 @@
                  <ul class="submenu9">
                  	<?php     	
                  		  foreach($result as $item){ ?>                		                  	
-                     <li><a href="document/download/<?php echo $item['id']  ?>"><?php echo $item['title']  ?></a></li>                 
+                     <li><a href="inform/download/<?php echo $item['id']  ?>"><?php echo $item['title']  ?></a></li>                 
                     <?php } ?>                  
                  </ul>
                </li>

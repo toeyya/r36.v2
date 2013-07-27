@@ -27,7 +27,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 		$CI->session->set_userdata('confirm_province',$rs['confirm_province']);
 		$CI->session->set_userdata('confirm_admin',$rs['confirm_admin']);
 		$CI->session->set_userdata('confirm_admin',$rs['confirm_admin']);
-		
+		$CI->session->set_userdata('login_gis',$rs['login_gis']);
 				
 			if(!empty($rs['userhospital'])){
 				$rec_hospital=$CI->db->GetRow("SELECT hospital_name,hospital_province_id,hospital_amphur_id,hospital_district_id FROM n_hospital_1 WHERE hospital_code= ? ",$rs['userhospital']);			

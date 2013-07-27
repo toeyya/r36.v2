@@ -181,9 +181,9 @@ $(document).ready(function(){
   	</td>
 </tr>
 		<tr ><td colspan="14"><strong>กลุ่มอายุ</strong>
-			<input type="hidden" name="render" value="container2">	
+			<!--<input type="hidden" name="render" value="container2">	
 			<button class="bar-chart img"  name="bar"></button>		
-			<button class="column-chart img" name="column"></button>
+			<button class="column-chart img" name="column"></button>-->
     					
 		</td></tr>
 		<?php $age=array(1=>'ต่ำกว่า 1 ปี',2=>'1-5 ปี',3=>'6-10 ปี',4=>'11-15 ปี',5=>'16-25 ปี'
@@ -215,9 +215,9 @@ $(document).ready(function(){
 </tr>		
 						
 		<tr ><td colspan="14"><strong>สถานที่สัมผัสโรค</strong>
-			<input type="hidden" name="render" value="container3">
+			<!--<input type="hidden" name="render" value="container3">
 			<button class="bar-chart img"  name="bar"></button>
-			<button class="column-chart img" name="column"></button>
+			<button class="column-chart img" name="column"></button>-->
     						
 		</td></tr>
 		<?php $place= array(1=>'เขต กทม.',2=>'เขตเมืองพัทยา',3=>'เขตเทศบาล',4=>'เขต อบต.',5=>'ไม่ระบุ'); ?>	
@@ -239,10 +239,10 @@ $(document).ready(function(){
 </tr>			
 		<tr class="page-break"></tr>			
 		<tr><td colspan="14"><strong>ชนิดสัตว์นำโรค</strong>
-			<input type="hidden" name="render" value="container4">
+			<!--<input type="hidden" name="render" value="container4">
 			<button class="bar-chart img"  name="bar"></button>
 			<button class="column-chart img" name="column"></button>
-    		<button class="pie-chart img" name="pie"></button>			
+    		<button class="pie-chart img" name="pie"></button>-->			
 		</td></tr>
 	<?php $animal = array(1=>'สุนัข',2=>'แมว',3=>'ลิง',4=>'ชะนี',5=>'หนู',6=>'อื่นๆ',7=>'ไม่ระบุ'); ?>	
 		<?php for($i=1;$i<8;$i++): ?>
@@ -264,9 +264,9 @@ $(document).ready(function(){
 </tr>
 
 		<tr ><td colspan="14"><strong>อายุสัตว์</strong>
-			<input type="hidden" name="render" value="container5">
+			<!--<input type="hidden" name="render" value="container5">
 			<button class="bar-chart img"  name="bar"></button>
-			<button class="column-chart img" name="column"></button>
+			<button class="column-chart img" name="column"></button>-->
     				
 		</td></tr>	
 		<?php $ageanimal = array(1=>'น้อยกว่า 3 เดือน',2=>'3-6 เดือน',3=>'6-12 เดือน',4=>'มากกว่า 1 ปี',5=>'ไม่ทราบ',6=>'ไม่ระบุ');  ?>

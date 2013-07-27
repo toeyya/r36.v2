@@ -461,7 +461,7 @@ $('select[name=prefix_name]').click(disableChkage);
 
 
 <div style="display:none;"><div id="load" style="padding-top:20%;padding-left:40%"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div></div>
-<div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if($rs['in_out']=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if($rs['in_out']=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
+<div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  if(@$rs['in_out']=='2'){echo 'สิทธิรักษาสถานบริการอื่น';}else if(@$rs['in_out']=='1'){echo 'สิทธิรักษาสถานบริการนี้';} ?> )</div>
 <div style="display:none"><div id="loading"></div></div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
 	<?php error_reporting(E_ERROR); 
@@ -661,8 +661,8 @@ $('select[name=prefix_name]').click(disableChkage);
                       <tr>
                       	<td>สิทธิการรักษาพยาบาล :
                       	<span style="margin-left:12px;"> 
-							<input type="radio" name="in_out" value="1" disabled="disabled" <?php echo ($rs['in_out']=="1")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการนี้
-							<input type="radio" name="in_out" value="2" disabled="disabled" <?php echo ($rs['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการอื่น
+							<input type="radio" name="in_out" value="1" disabled="disabled" <?php echo (@$rs['in_out']=="1")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการนี้
+							<input type="radio" name="in_out" value="2" disabled="disabled" <?php echo (@$rs['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการอื่น
 						</span>
                       	<span id="shw_hospital">
 						<?php echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$rs['province_id'],'class="styled-select"','--กรุณาเลือก--'); ?>
@@ -2122,7 +2122,7 @@ $('select[name=prefix_name]').click(disableChkage);
       	<li></li>
       	<li><button class="btn_save" type="submit" name="btn_save"></button></li>
       	<?php if(!empty($rs['id'])): ?>
-      		<?php if(($rs['hospitalcode']==$this->session->userdata('R36_HOSPITAL')) || $this->session->userdata('R36_LEVEL')=="00"): ?>
+      		<?php if((($rs['hospitalcode']==$this->session->userdata('R36_HOSPITAL')) || $this->session->userdata('R36_LEVEL')=="00") && $rs['closecase']=="2"): ?>
       	<li><a href="inform/delete/<?php echo $rs['id'] ?>/<?php echo $rs['historyid'] ?>" class="btn_del"   name="btn_del" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" ></a></li>
       		<?php endif; ?>
       	<?php endif; ?>

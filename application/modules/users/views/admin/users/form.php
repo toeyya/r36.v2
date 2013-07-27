@@ -223,8 +223,8 @@ var ref1,ref2,ref3,province_id;
 		?>									
 			<select name="userdistrict"><option value="">-โปรดเลือก-</option></select>
 		<?php } ?></p>
-		<p id="agency" style="margin:7px 0px;font-weight: bold">สำนักงานสาธาณสุข<span class="agency_name"><?php echo $rs['agency']; ?></span></p>
-		<input type="hidden" name="agency" value="<? echo $rs['agency'] ?>">
+		<p id="agency" style="margin:7px 0px;font-weight: bold">สำนักงานสาธาณสุข<span class="agency_name"><?php echo @$rs['agency']; ?></span></p>
+		<input type="hidden" name="agency" value="<? echo @$rs['agency'] ?>">
 	</td> 	
   </tr>
   	<tr  id="hospital">

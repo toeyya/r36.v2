@@ -43,7 +43,7 @@ class Document extends Admin_Controller
 	
 	function delete_file()
 	{			
-		$this->detail->delete_file($_POST['id'],'uploads/document','file');
-		$this->detail->save(array('id'=>$_POST['id'],'file'=>''));
+		$this->detail->delete_file($_POST['id'],'uploads/document',$_POST['field']);
+		$this->detail->save(array('id'=>$_POST['id'],$_POST['field']=>''));
 	}
 }
