@@ -1,3 +1,60 @@
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.graph8').hide();
+  $('[name=close]').click(function(){$('.graph8').fadeOut('slow');})
+  $('.img').click(function(){
+  	$('.graph8').fadeIn('slow');		
+	$('#container1').highcharts({
+	    chart: {
+	        type: 'column',width:790,height:402,marginBottom: 60
+	    },
+	    title: {
+	       marginBottom:15, text: 'จำนวนผู้รับการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าและอิมมูโนโกลบูลิน',style: {color: '#000000',fontSize: '14px'}
+	    },           
+        yAxis: {
+        	title:{
+        		text: null, style: {color: '#000000'}         		          		
+        	}            	
+        },         			
+        tooltip: {enabled:true},
+        credits: {enabled: false},
+        legend: {
+            layout: 'horizontal',
+            align: 'bottom',
+            verticalAlign: 'bottom',
+            align :'center',
+            rotation:90,
+            x:40,
+            y:10,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: '#FFFFFF',
+            shadow: true
+        },
+        plotOptions: {            	            	          	
+        	column: { 
+        		dataLabels: {enabled: true}
+        		},            	              
+        },           
+        xAxis:{categories: ['ฉีดวัคซีนครบชุด ','ฉีดวัคซีนต่ำกว่า 4-5 เข็ม','ฉีดวัคซีนไม่ครบชุด','ฉีดวัคซีนรวม','ไม่ฉีดวัคซีน','ฉีดอิมมูโนโกลบูลิน '],            		         	
+            	labels: {	                	
+                	align:'center',
+                	x: 0,
+                	y: 10
+            	}
+              },    
+			 series:[{
+				name: 'ID',
+                data: [<?php echo $total1 ?>,<?php echo $total3 ?>,<?php echo $total5 ?>,<?php echo $total7 ?>]			 	
+			 },{
+			 	name: 'IM',
+			 	data: [<?php echo $total2 ?>,<?php echo $total4 ?>,<?php echo $total6 ?>,<?php echo $total8 ?>]
+			 }	 			 			 
+			 ]	
+	});
+  });
+});
+</script>
 <div id="title">ข้อมูลการฉีดวัคซีนและอิมมูโนโกลบุลิน </div>
 <div id="search">
 <form action="report/index/8" method="get" name="formreport" onsubmit="return Chk_AnalyzeReport(this);">
@@ -102,6 +159,9 @@
 				<td><strong>หมายถึง </strong> ระยะเวลาของข้อมูลที่ต้องการ เช่น ม.ค. 2555 - ธ.ค. 2555 หรือ ม.ค. 2555 - มี.ค. 2556</td>
 			</tr>
 		</table>							
+	</div>
+	<div style="width:100%;border:1px solid #CCCCCC" class="graph8"><button name="close" title="close" value="close" class="btn btn_close">X</button>
+		<div id="container1" class="container" style="padding-left:15%"></div>
 	</div>
 	<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
 	<div id="btn_printout"><a href="report/index/8<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>

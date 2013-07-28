@@ -1,22 +1,28 @@
 <script type="text/javascript">
 $(document).ready(function(){
-	$('.tr-graph').hide();
+	$('.tr-graph,.tr-graph2').hide();
 	$('td[colspan]').addClass('hasRowSpan');
 	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
 	
-	function graph(title,render,t_graph,arr_val_all,w=900,h=302){	
-        
-        $('#'+render).highcharts({
-            // 700,560
+	function graph(title,render,t_graph,arr,arr_val){		
+        	//var r=0,x=0,y=-6;       	
+        	var r=270;x=2;y=-18;
+        	
+        	if(t_graph=="column"){
+        		a="center"      		
+        	}else if(t_graph=="bar"){
+        		a="right";
+        	}
+        	$('#'+render).highcharts({
             chart: {                
-                type: t_graph,width:600,height:302,marginBottom: 60
+                type: t_graph,width:790,height:402,marginBottom:80
             },
-            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
+            title: { marginBottom:20,text: title,style: {color: '#000000',fontSize: '14px'}},
             yAxis: {
             	title:{
-            		text: null          		          		
+            		text: null, style: {color: '#000000'}         		          		
             	}            	
-            },			
+            },         			
             tooltip: {valueSuffix: ' %'},
             credits: {enabled: false},
             legend: {
@@ -25,52 +31,120 @@ $(document).ready(function(){
                 verticalAlign: 'bottom',
                 align :'center',
                 rotation:90,
-                x: 40,
-                y: 10,
+                x:40,
+                y:10,
                 floating: true,
                 borderWidth: 1,
                 backgroundColor: '#FFFFFF',
                 shadow: true
             },
             plotOptions: {            	
-            	bar: { dataLabels: {enabled: true}},            	
-            	column: { dataLabels: {enabled: true}},
-            	pie:{ dataLabels: {enabled: true}}
+            	bar: { dataLabels: {
+            				enabled: true,
+            				align:a,
+							x:40,
+							y:0
+            			}
+            	},            	
+            	column: { 
+            		dataLabels: {enabled: true,
+								 rotation: r,
+								 x: x,
+								 y: y            					
+            					}
+            		},
+            	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.2f} %'}}
                
             },           
-            xAxis:{ categories: ['ไตรมาส 1', 'ไตรมาส 2', 'ไตรมาส 3', 'ไตรมาส 4'],
-                title: {
-                    text: null
-                }
-             },
-			 series:arr_val_all			
+            xAxis:{categories: arr,            		         	
+	            	labels: {	                	
+	                	align:a,
+	                	x: 0,
+	                	y: 10
+	            	}
+	              },    
+			 series:arr_val	
 		});	
 			
-	}					
-	$('.tr-graph2').hide();
-	$('td[colspan]').addClass('hasRowSpan');
-	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
-	
+	}// function graph
 	$('.img').click(function(){
 		var title 	= $(this).closest('tr').find('td:eq(0)').children('strong:eq(0)').html();
 		var t_graph = $(this).attr('name');		
 		var render 	= $(this).closest('td').find('input[name=render]').val();									
 		var arr ={};
-		var arr_val=[],arr_val_all=[];	
-		var padd_left,j=0;
-		if(title=="เพศ" || title=="สถานที่สัมผัสโรค"){var w=700;var h=560;}			
-			$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){	
-								
-				if($(this).find('.pad-left').html()!=null){
+		var arr_title=[],arr_para=[],arr_val1=[],arr_val2=[],arr_val3=[],arr_val4=[],arr_val_all=[];	
+		var para;
+		var j=0;
+		var obj={};	
+				if(title=="สาเหตุที่ถูกกัด"){
+					arr_title = ['ถูกกัดโดย<br/>ไม่มีสาเหตุโน้มนำ','ทำให้สัตว์<br/>เจ็บปวด โมโห <br/>หรือตกใจ','พยายามแยก<br/>สัตว์ที่กำลัง<br/>ต่อสู้กัน','เข้าใกล้สัตว์<br/>แม่ลูกอ่อน'
+								,'รบกวนสัตว์<br/>ขณะกินอาหาร','เข้าไปในบริเวณ<br/>ที่สัตว์คิดว่า<br/>เป็นเจ้าของ','อื่นๆ','ไม่ระบุ','ไม่ระบุ'];	
 					
-					pad_left=$(this).find('.pad-left').html();
-					console.log(pad_left);
-				}															  																
-			});			
-		//console.log(arr_val_all);
-		graph(title,render,t_graph,arr_val_all,w,h)				
-		$(this).closest('tr').nextAll('.tr-graph2:eq(0)').fadeIn('slow');				
-	});
+				}else if(title=="การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข"){
+					arr_title = ['ไม่ได้ล้าง','ล้าง','กักขังไม่ได้','ไม่ระบุ'];
+					
+				}else if(title=="การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข"){
+					arr_title = ['ไม่ได้ใส่ยา','สารละลาย<br/>ไอโอดีนที่ไม่มี<br/>แอลกอฮอล์ฯ','ทิงเจอร์ไอโอดีน<br/>แอลกอฮอล์ฯ','อื่นๆ','ไม่ระบุ','ไม่ระบุ'];
+					
+				}else if(title=="ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส"){
+					arr_title = ['ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม','ภายใน 6 เดือน','เกิน 6 เดือน','ไม่ระบุ','ไม่ระบุ'];
+					
+				}else if(title=="การกักขัง / ติดตามดูอาการสัตว์"){
+					arr_title = ['ตายภาย<br/>ใน 10 วัน','ไม่ตายภาย<br/>ใน 10 วัน','กักขังไม่ได้','ถูกฆ่าตาย','หนีหาย / จำไม่ได้','ไม่ระบุ'];
+				}
+				$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){
+				if(arr_title.length>1){
+														
+					if($(this).find('td').hasClass('pad-left2')){	
+											
+						arr_val1[j] = parseFloat($(this).find('td:eq(1)').find('p').html());
+						arr_val2[j] = parseFloat($(this).find('td:eq(2)').find('p').html());
+						arr_val3[j] = parseFloat($(this).find('td:eq(3)').find('p').html());
+						arr_val4[j] = parseFloat($(this).find('td:eq(4)').find('p').html());
+						++j;																											
+					}else{
+						if($(this).children('td').length>1){																														
+							arr_val1[j] = parseFloat($(this).find('td:eq(1)').find('p').html());
+							arr_val2[j] = parseFloat($(this).find('td:eq(2)').find('p').html());
+							arr_val3[j] = parseFloat($(this).find('td:eq(3)').find('p').html());
+							arr_val4[j] = parseFloat($(this).find('td:eq(4)').find('p').html());
+							++j;
+						}																																													
+					}
+					
+				}else{
+						
+						arr_para[j] = $(this).find('.pad-left').html();
+						arr_val1[j] = parseFloat($(this).find('td:eq(1)').find('p').html());
+						arr_val2[j] = parseFloat($(this).find('td:eq(2)').find('p').html());
+						arr_val3[j] = parseFloat($(this).find('td:eq(3)').find('p').html());
+						arr_val4[j] = parseFloat($(this).find('td:eq(4)').find('p').html());
+						++j;						
+				}
+										
+				});	
+					arr['name'] = 'ไตรมาส 1';
+				 	arr['data'] = arr_val1;		 		
+					arr_val_all[0] = jQuery.parseJSON(JSON.stringify(arr));	
+				 	
+				 	arr['name']	= 'ไตรมาส 2'	
+				 	arr['data'] = arr_val2;	
+				    arr_val_all[1] = jQuery.parseJSON(JSON.stringify(arr));	
+					
+					arr['name'] = 'ไตรมาส 3';
+				 	arr['data'] = arr_val3;		 		
+					arr_val_all[2] = jQuery.parseJSON(JSON.stringify(arr));	
+				 	
+				 	arr['name']	= 'ไตรมาส 4'	
+				 	arr['data'] = arr_val4;	
+				    arr_val_all[3] = jQuery.parseJSON(JSON.stringify(arr));					    							
+			if(arr_title.length>1){arr_para=arr_title;}
+			graph(title,render,t_graph,arr_para,arr_val_all);			
+					
+		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');
+		
+		
+	});	
 });
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - รายไตรมาส</div>
@@ -103,14 +177,14 @@ $(document).ready(function(){
 		<tr><td colspan="6" style="text-align:right;">หน่วย:คน</td></tr>
 		<tr>
 			<th rowspan="2">ข้อมูล</th>
-			<th colspan="5">ไตรมาส (N=<?php echo number_format($total_n); ?>)</th>
+			<th colspan="6">ไตรมาส (N=<?php echo number_format($total_n); ?>)</th>
 		</tr>
 		<tr>
 			<th>1</th>
 			<th>2</th>
 			<th>3</th>
 			<th>4</th>
-			<th >รวม</th>
+			<th>รวม</th>
 		</tr>
 		</thead>
 		<tbody>
@@ -122,40 +196,41 @@ $(document).ready(function(){
 			<td><? echo number_format($q4) ?></td>
 			<td><? echo number_format($total_n); ?></td>
 		</tr>
-		<?  $i=0;
+		<?  $k=1;
 			foreach($module as $field =>$name): ?>
 			<tr ><td colspan="6"><strong><? echo $name; ?></strong>
-				<input type="hidden" name="render" value="container<?php echo $i=$i+1; ?>">
+				<input type="hidden" name="render" value="container<?php echo $k; ?>">
 				<button class="bar-chart img" name="bar"></button>
 				<button class="column-chart img" name="column"></button>
-		    	<button class="pie-chart img" name="pie"></button>	
+		    	
 			</td></tr>
 			<? foreach(${$field} as $key =>$i): ?>
 			<tr class="para1">
 				<td class="pad-left"><? echo $i ?></td>		
 				<? for($j=1;$j<5;$j++): ?>
-					<td><? echo number_format(${$field.$key.$j}) ?><p class="percentage">(<?php echo compute_percent(${$field.$key.$j},${'q'.$j}); ?>)</p></td>
+					<td><? echo number_format(${$field.$key.$j}) ?><p class="percentage"><?php echo compute_percent(${$field.$key.$j},${'q'.$j}); ?></p></td>
 				<? endfor; ?>
 				<td><? echo number_format(${$field.$key}); ?></td>
 			</tr>
 			<? endforeach; ?>
 			<tr class="tr-graph">
-			  	<td colspan="5">
+			  	<td colspan="6">
 			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
-			  			<div id="container<?php echo $i=$i+1; ?>" class="container"></div> 			
+			  			<div id="container<?php echo $k; ?>" class="container" style="height:405px;padding-left:10%"></div> 			
 			  		</div>
 			  	</td>
 			</tr>			
-		<? endforeach; ?>		
+		<?  ++$k; endforeach; ?>		
 
-				<tr><td colspan="5"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong>
+				<tr><td colspan="6"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong>
 					<input type="hidden" name="render" value="container10">
 					<button class="bar-chart img" name="bar"></button>
 					<button class="column-chart img" name="column"></button>
-		    		<button class="pie-chart img" name="pie"></button>					
+		    						
 				</td></tr>	
 				<tr class="para1">
-					<td class="pad-left" colspan="3">กักขังได้ / ติดตามได้</td>	
+					<td class="pad-left" colspan="3">กักขังได้ / ติดตามได้</td>
+
 				</tr>
 				<tr class="para1">
 					<td class="pad-left2">ตายภายใน 10 วัน</td>
@@ -200,17 +275,17 @@ $(document).ready(function(){
 					<td><? echo number_format($total_detain_all00); ?></td>
 				</tr>	
 			<tr class="tr-graph">
-			  	<td colspan="3">
+			  	<td colspan="6">
 			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
-			  			<div id="container10" class="container"></div> 			
+			  			<div id="container10" class="container" style="height:405px;padding-left:10%"></div> 			
 			  		</div>
 			  	</td>
 			</tr>
-				<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong>
+				<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong>
 					<input type="hidden" name="render" value="container11">
 					<button class="bar-chart img" name="bar" ></button>
 					<button class="column-chart img" name="column"></button>
-		    		<button class="pie-chart img" name="pie"></button>					
+		    						
 				</td></tr>			
 				<tr class="para1">
 					<td class="pad-left">ไม่ทราบ</td>	
@@ -250,8 +325,15 @@ $(document).ready(function(){
 					<? endfor; ?>					
 					<td><? echo number_format($total_vaccinedog_all00); ?></td>								
 				</tr>
-			<tr><td colspan="14"><strong>สาเหตุที่ถูกกัด</strong>
-					<input type="hidden" name="render" value="container8">
+			<tr class="tr-graph">
+			  	<td colspan="6">
+			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+			  			<div id="container11" class="container" style="height:405px;padding-left:10%"></div> 			
+			  		</div>
+			  	</td>
+			</tr>				
+			<tr><td colspan="6"><strong>สาเหตุที่ถูกกัด</strong>
+					<input type="hidden" name="render" value="container12">
 					<button class="bar-chart img"  name="bar"></button>
 					<button class="column-chart img" name="column"></button>
 		    		
@@ -265,7 +347,7 @@ $(document).ready(function(){
 		
 				</tr>
 				<tr class="para1">
-					<td class="pad-left" colspan="14">ถูกกัดโดยมีสาเหตุโน้มนำ</td>
+					<td class="pad-left" colspan="6">ถูกกัดโดยมีสาเหตุโน้มนำ</td>
 					<?php $reason = array(1=>'ทำให้สัตว์เจ็บปวด โมโห หรือตกใจ',2=>'พยายามแยกสัตว์ที่กำลังต่อสู้กัน',3=>'เข้าใกล้สัตว์แม่ลูกอ่อน',4=>'รบกวนสัตว์ขณะกินอาหาร',5=>'เข้าไปในบริเวณที่สัตว์คิดว่าเป็นเจ้าของ',6=>'อื่นๆ'); ?>				
 				</tr>		
 				<?php for($i=1;$i<7;$i++): ?>
@@ -291,9 +373,15 @@ $(document).ready(function(){
 					<?php endfor; ?>
 					<td><?php echo number_format($total_reason_all00); ?> </td>
 				</tr>				
-				
-				<tr><td colspan="14"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
-						<input type="hidden" name="render" value="container9">
+			<tr class="tr-graph">
+			  	<td colspan="6">
+			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+			  			<div id="container12" class="container" style="height:405px;padding-left:10%"></div> 			
+			  		</div>
+			  	</td>
+			</tr>				
+				<tr><td colspan="6"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
+						<input type="hidden" name="render" value="container13">
 						<button class="bar-chart img"  name="bar"></button>
 						<button class="column-chart img" name="column"></button>
 			    			
@@ -307,7 +395,7 @@ $(document).ready(function(){
 			
 					</tr>				
 					<tr class="para1">
-						<td class="pad-left" colspan="14">ล้าง</td>	
+						<td class="pad-left" colspan="6">ล้าง</td>	
 						<?php $wash = array(1=>'น้ำ',2=>'น้ำและสบู่ / ผงซักฟอก',3=>'อื่นๆ'); ?>							
 					</tr>
 					<?php for($i=1;$i<4;$i++): ?>
@@ -333,9 +421,16 @@ $(document).ready(function(){
 						<td><?php echo number_format(${'total_wash00'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_wash00'.$j},${'q'.$j}); ?></p></td>
 						<?php endfor; ?>
 						<td><?php echo number_format($total_wash_all00); ?> </p></td>			
-					</tr>	
-					<tr><td colspan="14"><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
-							<input type="hidden" name="render" value="container10">
+					</tr>
+			<tr class="tr-graph">
+			  	<td colspan="6">
+			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+			  			<div id="container13" class="container" style="height:405px;padding-left:10%"></div> 			
+			  		</div>
+			  	</td>
+			</tr>						
+					<tr><td colspan="6"><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
+							<input type="hidden" name="render" value="container14">
 							<button class="bar-chart img"  name="bar"></button>
 							<button class="column-chart img" name="column"></button>
 				    			
@@ -348,7 +443,7 @@ $(document).ready(function(){
 							<td><?php echo number_format($total_drug_all10); ?></td>
 				
 						</tr>	
-						<tr class="para1"><td class="pad-left" colspan="14">ใส่ยา</td>	</tr>
+						<tr class="para1"><td class="pad-left" colspan="6">ใส่ยา</td>	</tr>
 						<?php $drug = array(1=>'สารละลายไอโอดีนที่ไม่มีแอลกอฮอล์ฯ',2=>'ทิงเจอร์ไอโอดีนแอลกอฮอล์ฯ',3=>'อื่นๆ'); ?>
 						<?php for($i=1;$i<4;$i++): ?>
 						<tr class="para1">
@@ -373,12 +468,19 @@ $(document).ready(function(){
 							<td><?php echo number_format(${'total_drug00'.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_drug00'.$j},${'q'.$j}); ?></p></td>
 							<?php endfor; ?>
 							<td><?php echo number_format($total_drug_all00); ?> </td>				
-						</tr>	
-						<tr><td colspan="14"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส</strong>
-							<input type="hidden" name="render" value="container11">
+						</tr>
+			<tr class="tr-graph">
+			  	<td colspan="6">
+			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+			  			<div id="container14" class="container" style="height:405px;padding-left:10%"></div> 			
+			  		</div>
+			  	</td>
+			</tr>								
+						<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส</strong>
+							<input type="hidden" name="render" value="container15">
 							<button class="bar-chart img" name="bar" ></button>
 							<button class="column-chart img" name="column"></button>
-				    		<button class="pie-chart img" name="pie"></button>					
+				    						
 						</td></tr>			
 						<tr class="para1">
 							<td class="pad-left">ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม</td>	
@@ -389,7 +491,7 @@ $(document).ready(function(){
 				
 						</tr>
 						<tr class="para1">
-							<td class="pad-left" colspan="3">เคยฉีด 3 เข็มหรือมากกว่า</td>		
+							<td class="pad-left" colspan="6">เคยฉีด 3 เข็มหรือมากกว่า</td>	
 						</tr>
 						<tr class="para1">
 							<td class="pad-left2">ภายใน 6 เดือน</td>						
@@ -419,7 +521,14 @@ $(document).ready(function(){
 							<td><?php echo number_format(${'total_historyprotect00'.$j}); ?><p class="percentage"><?php echo compute_percent(${'total_historyprotect00'.$j},${'q'.$j}); ?></p></td>
 							<? endfor; ?>					
 							<td><? echo number_format($total_historyprotect_all00); ?></td>								
-						</tr>													
+						</tr>	
+			<tr class="tr-graph">
+			  	<td colspan="6">
+			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+			  			<div id="container15" class="container" style="height:405px;padding-left:10%"></div> 			
+			  		</div>
+			  	</td>
+			</tr>																		
 		</tbody>				
 	</table>
 			<hr class="hr1">

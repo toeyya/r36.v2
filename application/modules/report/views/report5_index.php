@@ -3,6 +3,69 @@ $(document).ready(function(){
 	$('.tr-graph').hide();
 	$('td[colspan]').addClass('hasRowSpan');
 	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})		
+	
+	function graph(title,render,t_graph,arr,arr_val)
+	{		       	       	
+        	     	
+        	if(t_graph=="column"){
+        		a="center"      		
+        	}else if(t_graph=="bar"){
+        		a="right";
+        	}	
+       		
+        	//$('#'+render).highcharts({
+            chart = new Highcharts.Chart({
+            chart: {  
+            	renderTo :render,              
+                type: t_graph,width:680,height:302
+            },
+            title: { marginBottom:15,text: title,style: {color: '#000000',fontSize: '14px'}},
+            yAxis: {
+            	title:{
+            		text: '', style: {color: '#000000'}         		          		
+            	}            	
+            },			
+            tooltip: {valueSuffix: ''},
+            credits: {enabled: false},
+            legend: {enabled: false},
+            plotOptions: {            	
+            	bar: { dataLabels: {enabled: true}},            	
+            	column: { dataLabels: {enabled: true}},
+            	pie:{ dataLabels: {enabled: true}}
+               
+            },           
+            xAxis: {categories: arr,            		         	
+	            	labels: {	                	
+	                	align:a,
+	                	x: 0,
+	                	y: 10
+	            	}             		            	         	          
+            },          
+            series: [{data:arr_val}]			
+		});	
+				
+	}// graph
+	$('.img').click(function(){
+			var title 	= $(this).closest('td').find('span').html();			
+			var t_graph = $(this).attr('name');		
+			var render 	= $(this).closest('td').find('input[name=render]').val();									
+			var arr=[],arr_val=[],arr_val_all=[],pre=[];	
+			var para,title_padd,j=0,k=0;
+			var obj={};
+			$(this).closest('tr').next().nextUntil('.tr-graph').prev().each(function(i,value){								 
+				arr[j] = $(this).find('.para1 label').html();
+				para = $(this).find('td:eq(1) span').html();				
+				arr_val[j]	= parseFloat(para);
+				arr_val_all[j] = [arr[j],arr_val[j]];
+				j++;	
+			});// tr-graph
+		if(t_graph=="pie"){
+			graph(title,render,t_graph,arr,arr_val_all);			
+		}else{
+			graph(title,render,t_graph,arr,arr_val);
+		}				
+		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');
+	});	
 })
 
 </script>
@@ -46,10 +109,10 @@ $(document).ready(function(){
 		</tr>
 		<tr>
 			<td>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่<strong>ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
-			<td><strong><?php echo $total; ?></strong></td>			
+			<td  class="aligncenter"><strong><?php echo $total; ?></strong></td>			
 		</tr>	
 		<tr>
-			<td colspan="2">2. ผู้สัมผัสโรค <strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน
+			<td colspan="2">2.<span> ผู้สัมผัสโรค <strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน </span>
 				<input type="hidden" name="render" value="container1">
 				<button class="bar-chart img"  name="bar"></button>
 				<button class="column-chart img" name="column"></button>
@@ -58,28 +121,28 @@ $(document).ready(function(){
 			
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td><?php echo number_format($v6) ?></td>
+			<td><span class="para1">- จำนวน<label>1 เข็ม</label></span></td>
+			<td class="aligncenter"><span class="none"><?php echo $v6 ?></span><?php echo number_format($v6) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td><?php echo number_format($v7) ?></td>
+			<td><span class="para1">- จำนวน <label>2 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v7 ?></span><?php echo number_format($v7) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td><?php echo number_format($v8) ?></td>
+			<td><span class="para1">- จำนวน<label>3 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v8 ?></span><?php echo number_format($v8) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td><?php echo number_format($v9) ?></td>
+			<td><span class="para1">- จำนวน<label>4 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v9 ?></span><?php echo number_format($v9) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td><?php echo number_format($v10) ?></td>
+			<td><span class="para1">- จำนวน<label> 5 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v10 ?></span><?php echo number_format($v10) ?></td>
 		</tr>
 		<tr>
-			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong><?php echo number_format($total2) ?></strong></td>
+			<td  class="aligncenter"><strong>รวม</strong></td>
+			<td  class="aligncenter"><strong><?php echo number_format($total2) ?></strong></td>
 		</tr>
 		<tr class="tr-graph">
 		  	<td colspan="2">
@@ -97,28 +160,28 @@ $(document).ready(function(){
 			</td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td><?php echo number_format($v11) ?></td>
+			<td><span class="para1">- จำนวน<label> 1 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v11; ?></span><?php echo number_format($v11) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td><?php echo number_format($v12) ?></td>
+			<td><span class="para1">- จำนวน<label> 2 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v12; ?></span><?php echo number_format($v12) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td><?php echo number_format($v13) ?></td>
+			<td><span class="para1">- จำนวน<label> 3 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v13; ?></span><?php echo number_format($v13) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td><?php echo number_format($v14) ?></td>
+			<td><span class="para1">- จำนวน<label> 4 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v14; ?></span><?php echo number_format($v14) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td><?php echo number_format($v15) ?></td>
+			<td><span class="para1">- จำนวน<label> 5 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v15; ?></span><?php echo number_format($v15) ?></td>
 		</tr>
 		<tr>
-			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong><?php echo number_format($total3) ?></strong></td>
+			<td  class="aligncenter"><strong>รวม</strong></td>
+			<td  class="aligncenter"><strong><?php echo number_format($total3) ?></strong></td>
 		</tr>
 		<tr class="tr-graph">
 		  	<td colspan="2">
@@ -137,28 +200,28 @@ $(document).ready(function(){
 			
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 1 เข็ม</span></td>
-			<td><?php echo number_format($v16) ?></td>
+			<td><span class="para1">- จำนวน<label> 1 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v16; ?></span><?php echo number_format($v16) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 2 เข็ม</span></td>
-			<td><?php echo number_format($v17) ?></td>
+			<td><span class="para1">- จำนวน<label> 2 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v17; ?></span><?php echo number_format($v17) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 3 เข็ม</span></td>
-			<td><?php echo number_format($v18) ?></td>
+			<td><span class="para1">- จำนวน <label>3 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v18; ?></span><?php echo number_format($v18) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 4 เข็ม</span></td>
-			<td><?php echo number_format($v19) ?></td>
+			<td><span class="para1">- จำนวน <label>4 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v19; ?></span><?php echo number_format($v19) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน 5 เข็ม</span></td>
-			<td><?php echo number_format($v20) ?></td>
+			<td><span class="para1">- จำนวน<label> 5 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v20; ?></span><?php echo number_format($v20) ?></td>
 		</tr>
 		<tr>
-			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong><?php echo number_format($total4) ?></strong></td>
+			<td  class="aligncenter"><strong>รวม</strong></td>
+			<td  class="aligncenter"><strong><?php echo number_format($total4) ?></strong></td>
 		</tr>
 		<tr class="tr-graph">
 		  	<td colspan="3">
@@ -177,28 +240,34 @@ $(document).ready(function(){
 				<button class="bar-chart img"  name="bar"></button>
 				<button class="column-chart img" name="column"></button>
 	    		<button class="pie-chart img" name="pie"></button>				
-			</td>
-			<td></td>
+			</td>			
 		</tr>
 			<tr>
-			<td><span class="para1">- PVRV</span></td>
-			<td><? echo number_format($v21); ?></td>
+			<td><span class="para1">- <label>PVRV</label></span></td>
+			<td  class="aligncenter"><span class="none"><? echo $v21; ?></span><? echo number_format($v21); ?></td>
 		</tr>
 				<tr>
-			<td><span class="para1">- PCEC</span></td>
-			<td><? echo number_format($v22); ?></td>
+			<td><span class="para1">- <label>PCEC</label></span></td>
+			<td  class="aligncenter"><span class="none"><? echo $v22; ?></span><? echo number_format($v22); ?></td>
 		</tr>
 				<tr>
-			<td><span class="para1">- HDCV</span></td>
-			<td><? echo number_format($v23); ?></td>
+			<td><span class="para1">- <label>HDCV</label></span></td>
+			<td class="aligncenter"><span class="none"><? echo $v23; ?></span><? echo number_format($v23); ?></td>
 		</tr>
 				<tr>
-			<td><span class="para1">- PDEV</span></td>
-			<td><? echo number_format($v24); ?></td>
+			<td><span class="para1">- <label>PDEV</label></span></td>
+			<td  class="aligncenter"><span class="none"><? echo $v24; ?></span><? echo number_format($v24); ?></td>
 		</tr>		
 		<tr>
-			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong><? echo number_format($total6); ?></strong></td>
+			<td class="aligncenter"><strong>รวม</strong></td>
+			<td class="aligncenter"><strong><? echo number_format($total6); ?></strong></td>
+		</tr>
+		<tr class="tr-graph">
+		  	<td colspan="3">
+		  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+		  			<div id="container4" class="container"></div> 			
+		  		</div>
+		  	</td>
 		</tr>
 	</table>
 	<hr class="hr1">

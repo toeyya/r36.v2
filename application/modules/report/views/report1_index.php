@@ -68,9 +68,9 @@ $(document).ready(function(){
 		var padd_left,title_padd,j=0,k=0;
 		var obj={};
 				if(title=="ลักษณะการสัมผัส"){
-					arr=['ถูกกัด<br/>มีเลือดออก','ถูกกัด<br/>ไม่มีเลือดออก','ถูกข่วน<br/>มีเลือดออก','ถูกข่วน<br/>ไม่มีเลือดออก','ถูกเลีย<br/>มีแผล','ถูกเลีย<br/>ไม่มีแผล','กินอาหารดิบ<br/>หรือดื่มน้ำ<br/>ที่สัมผัสเชื้อโรคพิษสุนัขบ้า']	
+					arr=['ถูกกัด<br/>มีเลือดออก','ถูกกัด<br/>ไม่มีเลือดออก','ถูกข่วน<br/>มีเลือดออก','ถูกข่วน<br/>ไม่มีเลือดออก','ถูกเลีย<br/>มีแผล','ถูกเลีย<br/>ไม่มีแผล','กินอาหารดิบ<br/>หรือดื่มน้ำ<br/>ที่สัมผัสเชื้อโรคพิษสุนัขบ้า'];	
 				}else if(title=="การกักขัง / ติดตามดูอาการสัตว์"){
-					arr=['ตายภาย<br/>ใน 10 วัน','ไม่ตายภาย<br/>ใน 10 วัน','กักขังไม่ได้','ถูกฆ่าตาย','หนีหาย / จำไม่ได้','ไม่ระบุ']
+					arr=['ตายภาย<br/>ใน 10 วัน','ไม่ตายภาย<br/>ใน 10 วัน','กักขังไม่ได้','ถูกฆ่าตาย','หนีหาย / จำไม่ได้','ไม่ระบุ'];
 				}else if(title=="สถานที่สัมผัสโรค"){
 					arr=['เขต กทม.','เขตเมืองพัทยา','เขตเทศบาล','เขตอบต.','ไม่ระบุ'];
 				}					
@@ -80,7 +80,6 @@ $(document).ready(function(){
 							padd_left = $(this).find('.pad-left').next().next().html()
 							arr_val[j]= parseFloat(padd_left);
 							arr_val_all[j] = [arr[j],arr_val[j]];
-							//console.log(arr[j]);
 							
 						}else{													
 							if($(this).find('td').hasClass('pad-left2')){
@@ -129,8 +128,8 @@ $(document).ready(function(){
 	$('a[name=preview]').click(function(){
 		var container1 = $('input[name=container1]').val();
 		var loc = $(this).prev().val();
-		window.location='<? echo base_url(); ?>'+loc+'&container1='+container1;
-		console.log($(this).prev().val(),container1);
+		//window.location=loc+'&container1='+container1;
+		//console.log($(this).prev().val(),container1);
 	});
 	$('[name=btn_preview]').click(function(){
 		$('input[name=preview]').val('preview');

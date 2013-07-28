@@ -13,7 +13,8 @@ class Report extends R36_Controller
 		$this->load->model('inform/inform_model','inform');
 		$this->load->model('inform/vaccine_model','vaccine');
 		$this->load->model('area/area_model','area');
-		$this->load->model('inform/historydead_model','dead');		
+		$this->load->model('inform/historydead_model','dead');
+		$this->load->model('amphur/amphur_model','amphur');		
 		$this->template->append_metadata(js_report());
 	}
 	public $reference= "แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข";
@@ -40,9 +41,9 @@ class Report extends R36_Controller
 		 } 			
 			if($no=="6"){
 		  	 	//$col="hospitalprovince";	
-		  	 	if($no=="6") $col="n_amphur.province_id";
+		  	 	//if($no=="6") $col="n_amphur.province_id";
 			  	//$cond .=" 1=1 AND ".$col." = '".$_GET['province']."'";
-				$data['province_id'] = $_GET['province'];
+				$data['province_id'] = (!empty($_GET['province'])) ? $_GET['province']:'';
 				$data['textprovince']=$this->province->get_one("province_name","province_id",@$_GET['province']);	
 				
 			}
@@ -69,7 +70,7 @@ class Report extends R36_Controller
 				  }else{			  				  		 
 					  if(!empty($_GET['province'])){
 					  	 	$col="hospitalprovince";	
-					  	 	if($no=="6") $col="n_amphur.province_id";
+					  	 	//if($no=="6") $col="n_amphur.province_id";
 						  	$cond .=" 1=1 AND ".$col." = '".$_GET['province']."'";
 							$data['province_id'] = $_GET['province'];
 							$data['textprovince']=$this->province->get_one("province_name","province_id",$_GET['province']);	
@@ -77,7 +78,7 @@ class Report extends R36_Controller
 				
 						  if(!empty($_GET['area']) && !empty($_GET['group'])){
 						  	$provinceid= "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];  
-						  	var_dump($provinceid);
+						  	//var_dump($provinceid);
 						  	$cond .= " 1=1 AND hospitalprovince IN (".$provinceid.")";			  	   
 						  	if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
 							}else{$data['textgroup'] = $_GET['group'];}	  	  
@@ -1775,9 +1776,9 @@ class Report extends R36_Controller
 		}		
 	
 	}
-	function report6($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
+	/*function report6($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{
-			
+		$this->db->debug=true;	
 		if($cond!=""){$cond1=$cond." and ";}else{$cond1=$cond;}
 		$sql="SELECT n_amphur.amphur_name as amphur_name,a.province_name,cnt1,in_out1,cnt2,in_out2,n_amphur.amphur_id as amphur_id
 		from n_amphur
@@ -1811,8 +1812,29 @@ class Report extends R36_Controller
 			$this->template->build("report6_index",$data);
 		}		
 					
-	}
+	}*/
+	function report6($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
+	{
+		if($cond!=""){$cond1=$cond." and ";}else{$cond1=$cond;}
+		$data['amphur'] = $this->amphur->select("amphur_name,amphur_id")
+							   ->where("province_id = '".$data['province_id']."'")->sort('')->order("amphur_id asc")->get();
+		
+	
 
+		$data['cond'] = (!empty($cond)) ? $cond1=$cond." and " : $cond1=$cond;
+		if($preview){
+			$this->template->set_layout('print');
+			$this->template->build('report6_index',$data);
+		}else if($excel){				
+			$filename ="report6_".date('YmdHis').".xls";			;						
+			$this->template->set_layout('print');
+			$this->load->view('report6_export',$data);	
+			downloadFile($filename);						
+		}else{
+			$this->template->build("report6_index",$data);
+		}		
+					
+	}
 	function report7($cond= FALSE,$preview=FALSE,$data,$excel=FALSE){
 			
 		$data['result']=$this->dead->select("n_historydead.*,province_name,amphur_name,district_name")

@@ -15,73 +15,93 @@ $(document).ready(function(){
 		}
 	});
 	function graph(title,render,t_graph,arr,arr_val){		
-        	var r=0,a="center";yy=10;
-        	if(render=="container7"){
-        		r=90;a="left";yy=20;
+        	r=290,x=2,y=-18;
+        	if(t_graph=="column"){
+        		a="center"      		
         	}
         	$('#'+render).highcharts({
             chart: {                
-                type: t_graph,width:680,height:302,marginLeft:15
+                type: t_graph,width:790,height:402,marginBottom: 80
             },
-            title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้าแจกแจง ตามสิทธิการรักษาของจังหวัด'+title,style: {color: '#000000',fontSize: '14px'}},
+            title: { marginBottom:15,text: title,style: {color: '#000000',fontSize: '14px'}},
             yAxis: {
             	title:{
-            		text: '', style: {color: '#000000'}         		          		
+            		text: 'จำนวนเคส'         		          		
             	}            	
-            },			
-            tooltip: {valueSuffix: ' %'},
+            },         			
+            tooltip: {enabled:true},
             credits: {enabled: false},
-            legend: {enabled: false},
-            plotOptions: {            	
-            	bar: { dataLabels: {enabled: true}},            	
-            	column: { dataLabels: {enabled: true}},
-            	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.1f} %'}}
-               
+            legend: {
+                layout: 'horizontal',
+                align: 'bottom',
+                verticalAlign: 'bottom',
+                align :'center',
+                rotation:90,
+                x:40,
+                y:10,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: '#FFFFFF',
+                shadow: true
+            },
+            plotOptions: {            	            	            	
+            	column: { 
+            		dataLabels: {enabled: true,
+								 rotation: r,
+								 x: x,
+								 y: y
+								             					
+            					}
+            		}            	              
             },           
-            xAxis: {categories:['สิทธิการรักษาสถานบริการนี้','สิทธิการรักษาสถานบริการอื่น'],             		         	
-	            	labels: {
-	                	rotation: r,
+            xAxis:{categories: arr, 
+                title: {
+                    text: 'อำเภอ'
+                },           		         	
+	            	labels: {	                	
 	                	align:a,
 	                	x: 0,
-	                	y: yy
-	            	}             		            	         	          
-            },
-            /*series: [{data:arr_val}]*/
-			series:arr_val	
+	                	y: 10
+	            	}
+	              },    
+			 series:arr_val	
 		});	
 			
-	}					
+	}// function graph			
 	$('.tr-graph').hide();
 	$('td[colspan]').addClass('hasRowSpan');
 	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
 	
 	$('.img').click(function(){
-		
 		var title 	=$('#province option:selected').text();
 		var t_graph = $(this).attr('name');		
-		var render 	= "container1"								
-		var arr={},arr_val=[],arr_val_all=[],pre=[];	
-		var padd_left,title_padd,j=0,k=0;
-		var obj={};
-									
-					$(this).closest('div').next('table').find('tr:eq(2)').nextUntil('.total').each(function(i,value){																				
-																					
-							arr_val[0]=parseFloat( $(this).find('.pad-left').next().next().html());	
-							arr_val[1]=parseFloat($(this).find('.pad-left').next().html());																																																														
-				 			arr['name'] = $(this).find('.pad-left').html();
-				 			arr['data'] = arr_val;					 		
-							arr_val_all[i] = jQuery.parseJSON(JSON.stringify(arr));
-																								
-					});									   
-		console.log(arr_val_all);
+		var render 	= "container1"									
+		var arr ={};
+		var arr_title=[],arr_val1=[],arr_val2=[],arr_val_all=[];	
+		var para;
+		var j=0;
+		var obj={};				
+				$(this).closest('div').next('table').find('tr:eq(2)').nextUntil('.total').each(function(i,value){																																
+						arr_title[j] = $(this).find('.pad-left').html();
+						arr_val1[j] = parseFloat($(this).find('td:eq(1)').find('span').html());
+						arr_val2[j] = parseFloat($(this).find('td:eq(2)').find('span').html());
+						++j;
+																		
+				});	
+					arr['name'] = 'สถานบริกานี้';
+				 	arr['data'] = arr_val1;		 		
+					arr_val_all[0] = jQuery.parseJSON(JSON.stringify(arr));	
+				 	//console.log(arr_val_all);
+				 	arr['name']	= 'สถานบริการอื่น'	
+				 	arr['data'] = arr_val2;	
+				    arr_val_all[1] = jQuery.parseJSON(JSON.stringify(arr));	
+				    //console.log(arr_val_all)								
+		
+		graph(title,render,t_graph,arr_title,arr_val_all);								
 		$(this).closest('div').next('table').find('.tr-graph').fadeIn('slow');
-		graph(title,render,t_graph,arr,arr_val_all);
+		
 		
 	});	
-	 $('#button').click(function() {
-        var chart = $('#container').highcharts();
-        chart.print();
-    });
    
 })
 </script>
@@ -112,10 +132,10 @@ $(document).ready(function(){
 <div id="title">
 	<p>รายงานจังหวัด<?php echo $textprovince ?>  เดือน  <?php echo $textmonth_start ?> ปี  <? echo $textyear_start ?></p>
 </div>
-	<div style="float:right;margin-top:-40px;clear: both;width:20%;text-align:right;"><button class="column-chart img" name="column"></button>
+<div style="float:right;margin-top:-40px;clear: both;width:20%;text-align:right;"><button class="column-chart img" name="column"></button>
 		<a href="report/index/6<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 
 <table class="tbreport">
-	<tr><td colspan="4" style="text-align: right;">หน่วย: คน</td></tr>
+	<tr><td colspan="4" style="text-align: right;">หน่วย: เคส</td></tr>
 	<tr>
 		<th rowspan="2">อำเภอ</th>		
 		<th colspan="2">สิทธิการรักษา</th>		
@@ -126,29 +146,42 @@ $(document).ready(function(){
 		<th>สถานบริการอื่น</th>
 	</tr>
 	<?php 
-	$total1=0;$total2=0;$total_all=0;
-	foreach($result as $item): ?>
+	$totalallin=0;$totalallout=0;$totalallamphur=0;$in=0;$out=0;	
+	foreach($amphur as $key =>$item):
+			$eachamphur=0;
+			$sql="SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid
+				  WHERE $cond in_out=1 and hospitalamphur<>'0' and hospitalamphur ='".$item['amphur_id']."'";
+			$in = $this->db->GetOne($sql);
+			$sql="SELECT count(historyid) as cnt FROM n_history INNER JOIN n_information ON historyid=information_historyid
+				  WHERE $cond in_out=2 and hospitalamphur<>'0' and hospitalamphur ='".$item['amphur_id']."'";	
+			$out = $this->db->GetOne($sql);
+			$eachamphur		= $in + $out;
+			$totalallin		= $totalallin + $in;
+			$totalallout 	= $totalallout + $out;
+			$totalallamphur = $totalallamphur + $eachamphur;		
+				
+	 ?>	
 	<tr class="para1">
 		<td class="pad-left"><?php echo $item['amphur_name'] ?></td>		
-		<td><?php echo $in =number_format($item['cnt1']); $total1 =$total1 + $in;?></td>
-		<td><?php echo $out=number_format($item['cnt2']); $total2 =$total2 + $out;?></td>
-		<td><?php echo $all= $in+$out; number_format($all); $total_all =$total_all + $all ?></td>
+		<td><span class="none"><?php echo $in;?></span><?php echo number_format($in);?></td>
+		<td><span class="none"><?php echo $out;?></span><?php echo number_format($out);?></td>
+		<td><?php echo number_format($eachamphur);  ?></td>
 	</tr>
 	<?php endforeach; ?>
 	<tr class="total para1">
 		<td class="pad-left">รวม</td>
-		<td><?php echo number_format($total1); ?></td>
-		<td><?php echo number_format($total2); ?></td>
-		<td><?php echo number_format($total_all); ?></td>
+		<td><?php echo number_format($totalallin); ?></td>
+		<td><?php echo number_format($totalallout); ?></td>
+		<td><?php echo number_format($totalallamphur); ?></td>
 	</tr>
-<tr class="tr-graph" height="700">
-  	<td colspan="4">  		 		
-  		<div>
-  			<button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container1" class="container" style="width:700px;height:305px;"></div>
-  		</div>  		  		
-  	</td>
-</tr>
+	<tr class="tr-graph">
+	  	<td colspan="4">  		 		
+	  		<div>
+	  			<button name="close" title="close" value="close" class="btn btn_close">X</button>
+	  			<div id="container1" class="container" style="height: 405px;"></div>
+	  		</div>  		  		
+	  	</td>
+	</tr>
 </table>
 	<hr class="hr1">
 	<div id="reference"><?php echo $reference?></div>	

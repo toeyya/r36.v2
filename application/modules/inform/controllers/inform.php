@@ -85,7 +85,7 @@ class Inform extends R36_Controller
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
-	{	$this->db->debug=true;
+	{	//$this->db->debug=true;
 		if(!empty($_GET['action']))
 		{//กดค้นหา												
 				$where ="";

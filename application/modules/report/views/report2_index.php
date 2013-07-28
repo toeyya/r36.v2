@@ -1,11 +1,10 @@
 <script type="text/javascript">
 $(document).ready(function(){
-	function graph(title,render,t_graph,arr_val_all,w=900,h=302){	
+	function graph(title,render,t_graph,arr_val_all){	
         
         $('#'+render).highcharts({
-            // 700,560
             chart: {                
-                type: t_graph,width:600,height:302,marginBottom: 60
+                type: t_graph,width:790,height:402,marginBottom:60
             },
             title: { marginBottom:15,text: 'ร้อยละของผู้สัมผัสโรคพิษสุนัขบ้า แจกแจงตาม'+title,style: {color: '#000000',fontSize: '14px'}},
             yAxis: {
@@ -30,20 +29,27 @@ $(document).ready(function(){
             },
             plotOptions: {            	
             	bar: { dataLabels: {enabled: true}},            	
-            	column: { dataLabels: {enabled: true}},
+            	column: { 
+            		dataLabels: {
+            				enabled: true,
+						 	rotation: 270,
+						 	x: 2,
+						 	y: -18 ,style: {fontSize: '9px'}              				
+            		}
+            	},
             	pie:{ dataLabels: {enabled: true}}
                
             },           
             xAxis:{ categories: ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย', 'พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],
                 title: {
-                    text: null
+                    text: 'เดือน'
                 }
              },
 			 series:arr_val_all			
 		});	
 			
 	}					
-	$('.tr-graph2').hide();
+	$('.tr-graph').hide();
 	$('td[colspan]').addClass('hasRowSpan');
 	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})
 	
@@ -54,8 +60,8 @@ $(document).ready(function(){
 		var arr ={};
 		var arr_val=[],arr_val_all=[];	
 		var padd_left,j=0;
-		if(title=="เพศ" || title=="สถานที่สัมผัสโรค"){var w=700;var h=560;}			
-			$(this).closest('tr').nextUntil('.tr-graph2').each(function(i,value){	
+		//if(title=="เพศ" || title=="สถานที่สัมผัสโรค"){var w=700;var h=560;}			
+			$(this).closest('tr').nextUntil('.tr-graph').each(function(i,value){	
 								
 				if($(this).find('.pad-left').html()!=null){
 					
@@ -69,15 +75,10 @@ $(document).ready(function(){
 					j=j+1;
 				}															  																
 			});			
-		//console.log(arr_val_all);
-		graph(title,render,t_graph,arr_val_all,w,h)				
-		$(this).closest('tr').nextAll('.tr-graph2:eq(0)').fadeIn('slow');				
+		graph(title,render,t_graph,arr_val_all)				
+		$(this).closest('tr').nextAll('.tr-graph:eq(0)').fadeIn('slow');				
 	});	
 
-	 $('#button').click(function() {
-        var chart = $('#container1').highcharts();
-        chart.print();
-    });	
 })
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - รายเดือน</div>
@@ -105,7 +106,7 @@ $(document).ready(function(){
 		<a href="report/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 	
 	<table class="tbreport">
 		<thead>
-			<tr><td colspan="14" style="text-align:right;">หน่วย:คน</td></tr>
+			<tr><td colspan="14" style="text-align:right;">หน่วย:เคส</td></tr>
 			<tr>
 				<th rowspan="2">ข้อมูล</th><th colspan="14">เดือน (N = <? echo number_format($total_n) ?>)</th>
 			</tr>		
@@ -173,10 +174,10 @@ $(document).ready(function(){
 			<td><?php echo  number_format($total_gender012) ?> <p class="percentage"><?php echo compute_percent($total_gender012,$total_m12); ?></p></td>
 			<td><?php echo  number_format($total_gender_all0) ?> <p class="percentage"><?php echo compute_percent($total_gender_all0,$total_n); ?></p></td>
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">  		
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container1" class="container1"></div> 			
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container1" class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>
   	</td>
 </tr>
@@ -205,10 +206,10 @@ $(document).ready(function(){
 			<td><?php echo number_format($total_age_all11); ?><p class="percentage"><?php echo compute_percent($total_age_all11,$total_n); ?></p></td>
 			
 		</tr>
- <tr class="tr-graph2" >
+ <tr class="tr-graph" >
   	<td colspan="14">
-    	<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close" >X</button>
-  			<div id="container2" class="container1" style="width:720px;height:575px;"></div> 			
+    	<div><button name="close" title="close" value="close" class="btn btn_close" >X</button>
+  			<div id="container2" class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>
  		
   	</td>
@@ -230,10 +231,10 @@ $(document).ready(function(){
 			<td><?php echo number_format(${'total_place_all'.$i});?><p class="percentage"><?php echo compute_percent(${'total_place_all'.$i},$total_n); ?></p></td>
 		<?php endfor; ?>
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container3" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container3"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>  		
   	</td>
 </tr>			
@@ -255,10 +256,10 @@ $(document).ready(function(){
 		<?php endfor; ?>
 		</tr>
 
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-   		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container4" class="container1"></div> 			
+   		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container4"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div> 		
   	</td>
 </tr>
@@ -279,10 +280,10 @@ $(document).ready(function(){
 			<td><?php echo number_format(${'total_ageanimal_all'.$i})?><p class="percentage"><?php echo compute_percent(${'total_ageanimal_all'.$i},$total_n); ?></p></td>
 		<?php endfor; ?>
 		</tr>		
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container5" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container5"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>  		
   	</td>
 </tr>		
@@ -347,10 +348,10 @@ $(document).ready(function(){
 			<?php endfor; ?>
 			<td><?php echo number_format($total_detain_all00); ?> <p class="percentage"><?php echo compute_percent($total_detain_all00,$total_n); ?></p></td>
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-   		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container6" class="container1"></div> 			
+   		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container6"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div> 		
   	</td>
 </tr>	
@@ -419,10 +420,10 @@ $(document).ready(function(){
 			<td><?php echo number_format($total_vaccinedog_all00); ?> <p class="percentage"><?php echo compute_percent($total_vaccinedog_all00,$total_n); ?></p></td>
 
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container7" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container7"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>  		
   	</td>
 </tr>		
@@ -468,10 +469,10 @@ $(document).ready(function(){
 			<td><?php echo number_format($total_reason_all00); ?> <p class="percentage"><?php echo compute_percent($total_reason_all00,$total_n); ?></p></td>
 		</tr>	
 
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container8" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container8"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>  		
   	</td>
 </tr>
@@ -519,10 +520,10 @@ $(document).ready(function(){
 
 		</tr>		
 
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container9" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container9"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>  		
   	</td>
 </tr>	
@@ -567,10 +568,10 @@ $(document).ready(function(){
 			<td><?php echo number_format($total_drug_all00); ?> <p class="percentage"><?php echo compute_percent($total_drug_all00,$total_n); ?></p></td>
 
 		</tr>	
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container10" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container10"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>  		
   	</td>
 </tr>			
@@ -615,17 +616,17 @@ $(document).ready(function(){
 			<?php endfor; ?>
 			<td><?php echo number_format($total_drug_all00); ?> <p class="percentage"><?php echo compute_percent($total_drug_all00,$total_n); ?></p></td>
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container11" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container11"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>   		
   	</td>
 </tr>
 		<tr><td colspan="14"><strong>สัญชาติ</strong>
-			<input type="hidden" name="render" value="container12">
+			<!--<input type="hidden" name="render" value="container12">
 			<button class="bar-chart img"  name="bar"></button>
-			<button class="column-chart img" name="column"></button>
+			<button class="column-chart img" name="column"></button>-->
     					
 		</td></tr>	
 		<?php $name = array(1=>'ไทย',2=>'จีน/ฮ่องกง/ใต้หวัน',3=>'พม่า',4=>'มาเลเซีย',5=>'กัมพูชา',6=>'ลาว',7=>'เวียดนาม'
@@ -646,10 +647,10 @@ $(document).ready(function(){
 			<?php endfor; ?>
 			<td><?php echo number_format($total_nationalityname_all12); ?> <p class="percentage"><?php echo compute_percent($total_nationalityname_all12,$total_n); ?></p></td>
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container12" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container12"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>   		
   	</td>
 </tr>					
@@ -717,7 +718,7 @@ $(document).ready(function(){
 		<tr class="para1">
 			<td class="pad-left"><? echo $statusanimal[$i] ?></td>
 			<?php  for($j=1;$j<13;$j++): ?>
-			<td><?php echo number_format(${'total_statusanimal'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_occparentsname0'.$j},${'total_m'.$j}); ?></p></td>
+			<td><?php echo number_format(${'total_statusanimal'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_statusanimal'.$i.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format(${'total_statusanimal_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_statusanimal_all'.$i},$total_n); ?></p></td>		
 		</tr>
@@ -729,10 +730,10 @@ $(document).ready(function(){
 			<?php endfor; ?>
 			<td><?php echo number_format($total_statusanimal_all0); ?> <p class="percentage"><?php echo compute_percent($total_statusanimal_all0,$total_n); ?></p></td>
 		</tr>	
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container15" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container15"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>   		
   	</td>
 </tr>		
@@ -777,10 +778,10 @@ $(document).ready(function(){
 			<?php endfor; ?>
 			<td><?php echo number_format($total_rig_all0); ?> <p class="percentage"><?php echo compute_percent($total_rig_all0,$total_n); ?></p></td>		
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container17" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container17"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>   		
   	</td>
 </tr>				
@@ -811,10 +812,10 @@ $(document).ready(function(){
 			<?php endfor; ?>
 			<td><?php echo number_format($total_afterrig_all0); ?> <p class="percentage"><?php echo compute_percent($total_afterrig_all0,$total_n); ?></p></td>		
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container18" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container18"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>   		
   	</td>
 </tr>										
@@ -834,10 +835,10 @@ $(document).ready(function(){
 			<td><?php echo number_format(${'total_means_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_means_all'.$i},$total_n); ?></p></td>		
 		</tr>
 		<?php endfor; ?>	
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container19" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container19"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>   		
   	</td>
 </tr>			
@@ -857,10 +858,10 @@ $(document).ready(function(){
 			<td><?php echo number_format(${'total_vaccine_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine_all'.$i},$total_n); ?></p></td>		
 		</tr>
 		<?php endfor; ?>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container20" class="container1"></div> 			
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container20"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>   		
   	</td>
 </tr>			
@@ -884,10 +885,10 @@ $(document).ready(function(){
 			<?php endfor; ?>
 			<td><?php echo number_format($total_aftervaccine_all2); ?> <p class="percentage"><?php echo compute_percent($total_aftervaccine_all2,$total_n); ?></p></td>		
 		</tr>
- <tr class="tr-graph2">
+ <tr class="tr-graph">
   	<td colspan="14">
-  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
-  			<div id="container21" class="container1"></div> 			
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container21"  class="container" style="height:405px;padding-left:10%"></div> 			
   		</div>   		
   	</td>
 </tr>										
