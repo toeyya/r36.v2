@@ -77,9 +77,16 @@ class Report extends R36_Controller
 					  }else{
 				
 						  if(!empty($_GET['area']) && !empty($_GET['group'])){
-						  	$provinceid= "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];  
-						  	//var_dump($provinceid);
-						  	$cond .= " 1=1 AND hospitalprovince IN (".$provinceid.")";			  	   
+						  	$sql = "select DISTINCT province_id from n_area_detail  where area_id= ".$_GET['area']." and level =".$_GET['group'];  
+						  	$provinceid = $this->province->get($sql);
+							foreach($provinceid as $key =>$item){
+								$province_id[$key] = "'".$item['province_id']."'";
+							}
+							$txt_province = implode(" OR hospitalprovince =",$province_id);
+							//var_dump($provinceid,$province_id,$txt_province);
+						  	//$cond .= " 1=1 AND hospitalprovince IN (".$provinceid.")";	
+						  	$cond .= " 1=1 AND (hospitalprovince =".$txt_province.")";
+							//echo $cond;exit;		  	   
 						  	if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
 							}else{$data['textgroup'] = $_GET['group'];}	  	  
 						  }else if(!empty($_GET['area'])){

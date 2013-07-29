@@ -58,7 +58,7 @@ $(document).ready(function(){
 				arr_val[j]	= parseFloat(para);
 				arr_val_all[j] = [arr[j],arr_val[j]];
 				j++;	
-			});// tr-graph
+			});// tr-graph			
 		if(t_graph=="pie"){
 			graph(title,render,t_graph,arr,arr_val_all);			
 		}else{

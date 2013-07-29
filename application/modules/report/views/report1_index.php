@@ -35,8 +35,8 @@ $(document).ready(function(){
             credits: {enabled: false},
             legend: {enabled: false},
             plotOptions: {            	
-            	bar: { dataLabels: {enabled: true}},            	
-            	column: { dataLabels: {enabled: true}},
+            	bar: { dataLabels: {enabled: true,format: '<b>{point.name}</b>: {point.percentage:.2f} %'}},            	
+            	column: { dataLabels: {enabled: true,format: '<b>{point.name}</b>: {point.percentage:.2f} %'}},
             	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.2f} %'}}
                
             },           

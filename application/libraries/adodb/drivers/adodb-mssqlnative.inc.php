@@ -385,12 +385,12 @@ class ADODB_mssqlnative extends ADOConnection {
 		$connectionInfo["PWD"]=$argPassword;
         if ($this->debug) error_log("<hr>connecting... hostname: $argHostname params: ".var_export($connectionInfo,true));
         //if ($this->debug) error_log("<hr>_connectionID before: ".serialize($this->_connectionID));
-        if(!($this->_connectionID = sqlsrv_connect($argHostname,$connectionInfo))) {          	 
+        if(!($this->_connectionID = sqlsrv_connect($argHostname,$connectionInfo))) { 
             if ($this->debug) error_log( "<hr><b>errors</b>: ".print_r( sqlsrv_errors(), true));
             return false;
         }
         //if ($this->debug) error_log(" _connectionID after: ".serialize($this->_connectionID));
-        //if ($this->debug) error_log("<hr>defined functions: <pre>".var_export(get_defined_functions(),true)."</pre>");	
+        //if ($this->debug) error_log("<hr>defined functions: <pre>".var_export(get_defined_functions(),true)."</pre>");
 		return true;	
 	}
 	
@@ -469,11 +469,6 @@ class ADODB_mssqlnative extends ADOConnection {
 		} else {
 			$rez = sqlsrv_query($this->_connectionID,$sql);
 		}
-<<<<<<< HEAD
-		
-=======
-				
->>>>>>> 4d1ceff61137f28f9b03b14b6753e900a4092e0e
         if ($this->debug) error_log("<hr>running query: ".var_export($sql,true)."<hr>input array: ".var_export($inputarr,true)."<hr>result: ".var_export($rez,true));
         if(!$rez) $rez = false;
 		return $rez;

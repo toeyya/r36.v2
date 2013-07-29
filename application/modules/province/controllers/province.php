@@ -83,7 +83,7 @@ class Province extends Admin_Controller
 					$i=0;
 					foreach($_POST['amphur_new_id'] as $key =>$item){
 						$i++;
-						$amphur_code =strval($i);
+						$amphur_code = strval($i);
 						$amphur_code = str_pad($amphur_code,2,"0",STR_PAD_LEFT);										
 						$this->amphur->save(array('amp_pro_id'=>'','province_id'=>$_POST['province_id'],'amphur_id'=>$amphur_code,'amphur_name'=>$item,'timestamp'=>$created));					
 						$this->district->primary_key('tam_amp_id');

@@ -249,6 +249,9 @@ class Users extends Public_Controller
 	   		$output.='</select>';
 	   		echo $output;			
 		}
+	}
+	function test(){
+		echo "dd";
 	}	
 
 }  
