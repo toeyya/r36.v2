@@ -29,6 +29,7 @@ class Report extends R36_Controller
 		 $data['textdistrict']=(!empty($_GET['district'])) ? $this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district'])):"ทั้งหมด";
 		 $data['texthospital'] = "ทั้งหมด";
 		 $data['textyear_start']="ทั้งหมด";
+		 $data['textyear_end']="ทั้งหมด";
 		 $data['textmonth_start']="ทั้งหมด";
 		 $data['textmonth_end']="ทั้งหมด";
 		 $data['texttype']="ทั้งหมด";

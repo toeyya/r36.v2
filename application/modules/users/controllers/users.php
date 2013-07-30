@@ -251,7 +251,9 @@ class Users extends Public_Controller
 		}
 	}
 	function test(){
-		echo "dd";
+		$this->db->debug=true;
+		$result = $this->user->where("username ='admin1'")->sort('')->order('uid asc')->get();
+		var_dump($result);
 	}	
 
 }  

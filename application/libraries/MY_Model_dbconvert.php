@@ -243,7 +243,7 @@ class MY_Model extends Model{
 			
 				$comma = ',';
 			}
-			$sql = 'INSERT INTO '.$this->table.'('.$this->primary_key.','.$column.') VALUES ('.'(select COALESCE(max('.$this->primary_key.'),0)+1 from '.$this->table.'),'.$value.')';
+			$sql = 'INSERT INTO '.$this->table.'('.$this->primary_key.','.$column.') VALUES ('.'(select IFNULL(max('.$this->primary_key.'),0)+1 from '.$this->table.'),'.$value.')';
 			//echo $sql;
 			
 			$this->db->Execute($sql);

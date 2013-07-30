@@ -8,7 +8,7 @@ class Document extends Public_Controller
 		$this->load->model('document_detail_model','detail');
 	
 	}
-	function index($view=FALSE){		
+	function index($view=FALSE){
 		$sql ="SELECT count(n_document_detail.id) as cnt,n_document.* FROM n_document
 			   LEFT JOIN n_document_detail on n_document.id=n_document_detail.document_id and n_document_detail.active='1'
 			   GROUP BY n_document.id HAVING active ='1' order by n_document.id desc";

@@ -23,6 +23,7 @@ class Adodb {
 			$this->obj->db->Execute('SET collation_connection='.$this->dbConf['dbcollat']);
 			$this->obj->db->Execute('SET NAMES '.$this->dbConf['char_set']);
 		}
+		$this->obj->db->SetFetchMode(ADODB_FETCH_ASSOC);
 		return true;
 
 	}

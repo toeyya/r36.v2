@@ -1,76 +1,98 @@
 <script type="text/javascript" src="media/js/report_analyze.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	function graph(title,arr_x,arr_val_all){	
-        
-        $('#container1').highcharts({
-            chart: {                
-                type: 'column',width:860,height:450,marginBottom: 60
+	$('.tr-graph').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})		
+	function graph(title,xa,ya,data){			
+	     $('#container1').highcharts({
+            chart: {
+                type: 'column',width:900,height:300,marginBottom:60
             },
-            title: { marginBottom:15,text: title,style: {color: '#000000',fontSize: '14px'}},
+            title: {
+                text: title
+            },
+            xAxis: {
+                categories: xa
+            },
             yAxis: {
-            	title:{
-            		text: null          		          		
-            	}            	
-            },			
-            tooltip: {valueSuffix: ' %'},
+                min: 0,
+                title: {
+                    text: ya
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
             credits: {enabled: false},
             legend: {
-                layout: 'horizontal',
-                align: 'bottom',
+                align: 'center',
+                y:10,
+                 
                 verticalAlign: 'bottom',
-                align :'left',
-                rotation:90,
-                x: 40,
-                y: 20,
+                
                 floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColorSolid) || 'white',
+                borderColor: '#CCC',
                 borderWidth: 1,
-                backgroundColor: '#FFFFFF',
-                shadow: true
+                shadow: false
             },
-            plotOptions: {            	           	           	
-            	column: { 
-            		dataLabels: {enabled: true,rotation:270,align:'left'
-            		}
-            	},
-            	
-               
-            },           
-            xAxis:{ categories: arr_x,
-                title: {
-                    text: null
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.x +'</b><br/>'+
+                        this.series.name +': '+ this.y +'<br/>'+
+                        'Total: '+ this.point.stackTotal;
                 }
-             },
-			 series:arr_val_all			
-		});	
-	}
-	$('.tr-graph3').hide();
-	$('td[colspan]').addClass('hasRowSpan');
-	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})	
-		var arr ={};
-		var arr_val=[],arr_val_all=[],arr_x=[];	
-		var padd_left,j=0;	
-	$('.img').click(function(){
-		var title 	= $(this).closest('div').next().html();
-			$(this).closest('div').next().next().find('tr:eq(2)').children().not('.totalx').each(function(index){
-				arr_x[index]=$(this).html();				
-			})
-			$(this).closest('div').next().next().find('.para1').each(function(){									
-					arr['name']=$(this).find('td:eq(0)').html();
-					$(this).find('td').slice(1).not('.totalx').each(function(index,vals){
-						arr_val[index]=parseFloat($(this).find('p').html());												
-					})
-					arr['data']=arr_val;
-					arr_val_all[j] = jQuery.parseJSON(JSON.stringify(arr));	
-					j=j+1;						
-																									  																
-			});	
-			
-		console.log(arr_val_all);
-		graph(title,arr_x,arr_val_all);				
-		$('.tr-graph3').fadeIn('slow');			
-	});
-	
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: data
+        });
+     }
+     $('.img').click(function(){
+     	var title = $(this).closest('div').next().html();     	
+     	var ya 	  = $('.tbreport').find('tr:eq(0) th').html();
+     	var len = $('.tbreport').find('tr:eq(2)').children().not('.totalx').length;
+     	var arr = {};
+     	var xa =[],arr_val= new Array(),val= new Array(0,1,2),data=[];
+     	var j=0,k=0;
+     	
+     	for(var x in val){
+     	  arr_val[val[x]] = new Array();
+     	}
+     	
+     	$('.tbreport').find('tr:eq(3)').nextUntil('.tr-graph').prev().each(function(){
+     		xa[j] = $(this).find('td:eq(0) strong').html();     		     		
+     		arr_val[0][j] = parseFloat($(this).find('td:eq(1) p').html());
+     		arr_val[1][j] = parseFloat($(this).find('td:eq(2) p').html());
+     		arr_val[2][j] = parseFloat($(this).find('td:eq(3) p').html());
+     		++j;
+
+     		       		 			     		          		     		
+     	});     		
+     	$('.tbreport').find('tr:eq(2)').children().not('.totalx').each(function(){    		   		
+     		arr['name'] = $(this).html();
+     		arr['data'] = arr_val[k];
+     		data[k] =  jQuery.parseJSON(JSON.stringify(arr));
+     		k++;
+     		
+     	})
+		graph(title,xa,ya,data);
+		$('.tr-graph').show();
+					     	
+
+     })
 });
 </script>
 <div id="title">ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</div>
@@ -162,7 +184,13 @@ $(document).ready(function(){
 			<? endforeach; ?>
 			<td><? echo number_format($row_sum); ?></td>				
 		</tr>
-
+		<tr class="tr-graph" height="310">
+		  	<td colspan="<?php echo count($minordetail)+2; ?>">
+		  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+		  			<div id="container1" class="container" style="height:310;padding-left:10%"></div> 			
+		  		</div>
+		  	</td>
+		</tr>
 	</table>
 			<hr class="hr1">		
 			<div id="reference"><?php echo $reference?></div>			
