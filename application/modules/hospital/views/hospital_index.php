@@ -75,7 +75,11 @@ $(document).ready(function(){
 			<th width="15%">ตำบล</th>
 			<th width="15%">อำเภอ</th>
 			<th width="18%">จังหวัด</th>
-			<th width="14%"><a href="hospital/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>
+			<th width="14%">
+				<?php if(permission('settings', 'act_create')): ?>
+				<a href="hospital/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+				<?php endif; ?>
+			</th>
 		  </tr>
 		   
 			 <?php foreach($result as $item): ?>
@@ -83,17 +87,20 @@ $(document).ready(function(){
 			 				$chk_del=$rs->RecordCount();
 							$sql="select district_name from n_district where province_id= ? and amphur_id = ? and district_id= ? ";
         					$district_name=$this->db->GetOne($sql,array($item['hospital_province_id'],$item['hospital_amphur_id'],$item['hospital_district_id']))
+							
 							//echo $chk_del;
 			  ?>
 			  	<tr>
 					<td><?php echo $item['hospital_name'];?></td>
 					<td><?php echo $item['hospital_code_healthoffice'] ?></td>
-					<td><?php echo $district_name; ?>	</td>
+					<td><?php echo ThaiToUtf8($district_name); ?>	</td>
 					<td><?php echo  $item['amphur_name']?>	</td>
 					<td><?php echo $item['province_name'] ?>	</td>			
 					<td>
-					 
+					<?php if(permission('settings', 'act_update')): ?> 
 					<a href="hospital/form/<?php echo $item['hospital_id'] ?>" class="btn" title="แก้ไข">แก้ไข</a> 
+					<?php endif; ?>
+					<?php if(permission('settings', 'act_delete')): ?>
 					<?php  if($this->session->userdata('R36_LEVEL')=='00'){?>					 
 					<?php  if($chk_del==0){?>
 							<a href="hospital/delete/<?php echo $item['hospital_id'] ?>"  title="ลบ" class="btn" onClick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a>
@@ -102,6 +109,7 @@ $(document).ready(function(){
 					<?php  }?>
 					
 					<?php  }?>
+					<?php endif; ?>
 					</td>
 				
 			  </tr>

@@ -17,7 +17,7 @@
         	<span class="textNews">      		
         		<?php echo $content['intro']; ?>
         	</span> 
-        	<span class="dataNew">(<?php echo db_to_th($content['start_date']) ?>)</span>
+        	<span class="dataNew">(<?php echo  db_to_th($content['start_date']); ?>)</span>
         </li>
         <div class="clr"></div><hr class="hr1">    
 		<?php endforeach; ?>

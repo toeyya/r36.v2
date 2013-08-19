@@ -10,11 +10,12 @@ class Research extends Admin_Controller
 	}
 	function index(){
 		$research_id=(!empty($_GET['research_id'])) ? " and n_research.id=".$_GET['research_id']: '';	
-		$data['result']=$this->res->select("count(n_research_detail.id) as cnt,n_research.*,userfirstname,usersurname")
+		
+		$data['result']=$this->res->select("count(n_research_detail.id) as cnt,n_research.id,n_research.active,n_research.name,userfirstname,usersurname")
 													->join("LEFT JOIN n_research_detail on n_research.id=n_research_detail.research_id
 																 LEFT JOIN n_user ON n_research.user_id=uid")
 													->where("1=1 $research_id")
-													->groupby("n_research.id")
+													->groupby("n_research.id,n_research.name,userfirstname,usersurname,n_research.active")
 												   ->sort("")->order("n_research.id desc")->get();
 		$data['pagination']=$this->res->pagination();
 		$this->template->build('admin/index',$data);
@@ -44,5 +45,14 @@ class Research extends Admin_Controller
 	{			
 		$this->detail->delete_file($_POST['id'],'uploads/research','file');
 		$this->detail->save(array('id'=>$_POST['id'],'file'=>''));
+	}
+	public function checkRea()
+	{
+		if(!empty($_GET['id'])){
+			$rs = $this->db->GetOne("select id from n_research where name = ?  and id <> ? ",array($_GET['name'],$_GET['id']));			
+		}else{
+			$rs = $this->res->get_one("id","name",$_GET['name']);
+		}		
+		echo (!empty($rs)) ? "false" :"true";
 	}
 }

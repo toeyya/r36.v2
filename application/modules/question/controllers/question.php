@@ -9,9 +9,10 @@ class Question extends Public_Controller
 	
 	}
 	function index($view=FALSE){
-		$data['result']=$this->quest->select("count(n_question_detail.id) as cnt,n_question.*")
-									 ->join("LEFT JOIN n_question_detail on n_question.id=n_question_detail.question_id")									
-									->groupby("n_question.id")
+		$data['result']=$this->quest->select("count(n_question_detail.id) as cnt,n_question.id,n_question.name")
+									 ->join("LEFT JOIN n_question_detail on n_question.id=n_question_detail.question_id and n_question_detail.active='1'")									
+									->where("n_question.active='1'")
+									->groupby("n_question.id,n_question.id,n_question.name")									
 									->sort("")->order("n_question.id desc")->get();
 		$data['pagination']=$this->quest->pagination();
 		$this->template->build('inc_index',$data);

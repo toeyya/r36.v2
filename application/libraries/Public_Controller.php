@@ -16,8 +16,8 @@ class Public_Controller extends Controller
 		$this->template->append_metadata(js_notify());
 		
 	}
-	function captcha()
-	{  
+	/*function captcha()
+	{ 
 		$this->load->library('session');		
 		$this->load->library('captcha');				
 		$captcha = new Captcha();
@@ -25,8 +25,6 @@ class Public_Controller extends Controller
 		$captcha->chars = '0123456789';
 		$captcha->session = "captcha";		
 		$captcha->display();
-	}
-
-	
+	}*/	
 }
 ?>

@@ -8,10 +8,11 @@ class Research extends Public_Controller
 		$this->load->model('research_detail_model','detail');
 	
 	}
-	function index($view=FALSE){
-		$data['result']=$this->res->select("count(n_research_detail.id) as cnt,n_research.*")
-									->join("LEFT JOIN n_research_detail on n_research.id=n_research_detail.research_id")
-									->groupby("n_research.id")
+	function index($view=FALSE){		
+		$data['result']=$this->res->select("count(n_research_detail.id) as cnt,n_research.name,n_research.id")
+									->join("LEFT JOIN n_research_detail on n_research.id=n_research_detail.research_id and n_research_detail.active='1'")
+									->where("n_research.active='1'")
+									->groupby("n_research.id,n_research.name")
 							   		->sort("")->order("n_research.id desc")->get();
 		$data['pagination']=$this->res->pagination();
 		$this->template->build('inc_index',$data);

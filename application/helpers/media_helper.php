@@ -70,14 +70,27 @@ function js_report(){
 function js_checkbox($module='admin')
 {
 	$CI =& get_instance();
+	$js = '$.notifyBar({
+				cls:"success",
+				html: "บันทึกข้อมูลเรียบร้อยแล้วค่ะ",
+				delay: 500,
+				animationSpeed: "normal"
+		  });
+		  ';
 	return '<link rel="stylesheet" href="media/js/checkbox/jquery.checkbox.css" />
+		<link rel="stylesheet" href="media/js/jquery.notifyBar.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="media/js/jquery.notifyBar.js"></script>
 		<script type="text/javascript" src="media/js/checkbox/jquery.checkbox.min.js"></script>
+		
 		<script>
 			$(function(){
 				$(".list_check").checkbox({empty:"media/js/checkbox/empty.png"});
 				$(".list_check").click(function(){
 					var value = this.checked ? 0 : 1;
-					$.post("'.$CI->router->fetch_module().'/'.$module.'/'.$CI->router->fetch_class().'/save",{id:this.value ,active:value}); 
+					$.post("'.$CI->router->fetch_module().'/'.$module.'/'.$CI->router->fetch_class().'/save",{id:this.value ,active:value},
+						  function(){
+						  	'.$js.'
+						  }); 
 				});
 			});
 		</script>';

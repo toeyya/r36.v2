@@ -10,6 +10,7 @@ class Province extends Admin_Controller
 		$this->load->model('district/district_model','district');
 		$this->load->model('area/area_detail_model','detail');
 		$this->load->model('hospital/hospital_model','hospital');
+		$this->province->primary_key("province_id");
 	}
 	function index($view=FALSE){
 		//$this->db->debug=TRUE;	
@@ -144,6 +145,7 @@ class Province extends Admin_Controller
 		}		
 	}
 	function getHospital(){
+		//$this->db->debug=true;	
 		if($_GET){					
 			$result = $this->hospital->where('hospital_province_id = '.$_GET['province_id'])->sort("")->order("hospital_name asc")->limit(200)->get();			
 			echo '<ul>';
@@ -153,5 +155,14 @@ class Province extends Admin_Controller
 			}
 			echo '</ul>';			
 		}		
+	}
+	function delete($id){
+    	if(check_delete_setting("province",$id)){
+    		$this->province->delete("province_id",$id);
+    		set_notify('success', DELETE_DATA_COMPLETE);
+    	}else{
+    		set_notify('success','ข้อมูลนี้ถูกใช้อยู่ ไม่สามารถลบรายการนี้ได้');
+    	}
+		 redirect('province/index');		
 	}	
 }

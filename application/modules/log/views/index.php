@@ -1,7 +1,8 @@
+
 <script type="text/javascript">
 $(document).ready(function(){
    var ref1,ref2;
-   $('select[name=province_id]').change(function(){
+   function change_prv(){
 		$('#amphur_id option[value=""]').attr("selected",true);
 		$('#district_id option[value=""]').attr("selected",true);
 		$('#hospital option[value=""]').attr("selected",true);
@@ -14,9 +15,9 @@ $(document).ready(function(){
 			{
 				$("#input_amphur").html(data);
 			}
-		});
-	});	//select name=province
-	$("select[name=amphur_id]").live('change',function(){
+		});   	
+   }
+   function change_amphur(){
 		ref2=$('select[name=amphur_id] option:selected').val();
 		$("#input_district").html('<img src="media/images/loader.gif" width="16px" height="11px">');
 		$.ajax({
@@ -26,10 +27,9 @@ $(document).ready(function(){
 			{
 				$("#input_district").html(data);
 			}
-		});
-	});
-
-	$('select[name=district_id]').live('change',function(){
+		});   	
+   }
+   function change_district(){
 		ref3=$('select[name=district_id] option:selected').val();
 			$("#input_hospital").html('<img src="media/images/loader.gif" width="16px" height="11px">');
 		$.ajax({
@@ -38,11 +38,17 @@ $(document).ready(function(){
 			success:function(data){
 				$('#input_hospital').html(data);
 			}
-		})
-	});
-	$('.input_box_patient').css('width','140px');
+		})   	
+   }
+
+	 $('.input_box_patient').css('width','140px');
+ 	 $('select[name=province_id]').change(change_prv).click(change_prv);
+ 	 $("select[name=amphur_id]").live('change',change_amphur).click(change_amphur);
+ 	 $('select[name=district_id]').live('change',change_district).click(change_district);
+ 
+ 
  });// document
-  </script>
+</script>
  
 <h1>ประวัติเข้าใช้ระบบ</h1>
 <div class="search">
@@ -101,7 +107,7 @@ $(document).ready(function(){
 							    <?php } ?>
 								</span></td>				 							 
 				</tr>
-				<tr><th>สิทธิืการใช้งาน</th>
+				<tr><th>สิทธิ์การใช้งาน</th>
 					<td>
 						<?php 
 						$position=array('00'=>'ผู้ดูแลระบบระดับกรม(สำนักโรคติดต่อทั่วไป)','01'=>'ผู้ดูแลระบบระดับเขต','02'=>'ผู้ดูแลระบบระดับจังหวัด'
@@ -124,7 +130,10 @@ $(document).ready(function(){
 			<th width="18%">วันที่</th>
 		  </tr>
 	 	<?php $i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 20)-20)+1:1;?>
-	 	<?php foreach($result as $key =>$item): ?>		 
+	 	
+	 	<?php 
+	 	
+	 	foreach($result as $key =>$item): ?>		 
 				  <tr>			 
 				  <td><?php echo $i ?></td>
 				  <td><?php echo $item['action'] ?> </td>
@@ -135,6 +144,7 @@ $(document).ready(function(){
 				  <td><?php echo  DB2date($item['created'],true) ?>
 				  <input type="hidden" name="uid"  value="<?php echo $item['uid']  ?>"/></td>
 				  </tr>
-		<?php $i++; endforeach;?>
+		<?php $i++; endforeach;
+		?>
 		 </table>
 <?php  echo $pagination;?>

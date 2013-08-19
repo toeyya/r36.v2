@@ -44,12 +44,13 @@ $(document).ready(function(){
 	var chk_p;
 	function chk_closecase_person(){		
 		//console.log("person");
+		$('#loading').show();
 		if($('select[name=statusid] option:selected').val()=="1"){
 			var idcard=$('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val();					
 		}else{
 			var idcard=$('input[name=idcard]').val();
 		}
-		$.colorbox({width:"50", height:"30%", inline:true,href:"#load"});
+		
 			if(idcard.length==13){											
 				$.ajax({
 					url:'<?php echo base_url() ?>inform/closecase_person/'+idcard+'/true',
@@ -57,12 +58,11 @@ $(document).ready(function(){
 					success:function(data){
 						$('input[name=closecase_person]').val(data.chk);					
 						//console.log("chk-p = "+data.chk);
-						if(data.chk=="yes"){											  											
-						 	//$('#closecase_person').html(data.tb);
+						if(data.chk=="yes"){											  																	 	
 						 	$('#btn_view1').attr('href','inform/closecase_person/'+data.idcard);
+						 	$('#loading').hide();
 						 	$.colorbox({width:"50%", height:"30%", inline:true,href:"#closecase_person"});												  
-						}else{
-							//document.form1.submit();
+						}else{														
 							$.colorbox.close();
 							document.form1.submit();
 						}
@@ -79,18 +79,17 @@ $(document).ready(function(){
 	var chk_c;
 	function chk_closecase(){		
 		//$('.btn_add').attr('disabled',true);		
-		//$.colorbox({width:"50%", height:"50%", inline:true,href:"#load",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}																																											});							
-		
+		//$.colorbox({width:"50%", height:"50%", inline:true,href:"#load",escKey:false,closeButton:false,onClosed:function(){if(request!=undefined){request.abort();}$('.btn_add').attr('disabled',false);}});									
+		$('#loading').show();
 		request=$.ajax({
 			url:'<?php echo base_url() ?>inform/closecase/true',
 			dataType:'json',
 			success:function(data){
-				//$('.btn_add').removeAttr('disabled');	
 				$('input[name=closecase]').val(data.chk);
 				//chk_c = data.chk;
 				//console.log("chk_c ="+data.chk);
 				if(data.chk=="yes"){
-					//$('#load').html('<img src="media/images/loadingmove.gif" width="78px" height="20px">');		  	
+					$('#loading').hid();		  	
 				  	$.colorbox({width:"50%", height:"30%", inline:true,href:"#closecase"});			  				 						
 				}else{															
 					chk_closecase_person();
@@ -100,7 +99,7 @@ $(document).ready(function(){
 	}		
 
 	$('.btn_submit').click(function(e){
-		 //$('name=[ifm]').attr('src','#');
+		 $('.alert-error').hide();
 		 $('#form1').validate({ignore: "#form1 *" });	 
 		 $('input').removeClass('error');
 		 $('label.error').remove();
@@ -111,24 +110,27 @@ $(document).ready(function(){
 	});
 	// START ####  กรณีเพิ่มรายการ  ####
 	$('.btn_add').click(function(e){
-		//console.log("btn_add");					
+		$('.alert-error').hide();					
 		$('#form1').attr('action','inform/addNew');	
 		$('input[name=action]').val('');	
-		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้				
-																		
+		if($('input[name=level]').val()=="05"){// กรณี สิทธิ์การใช้เป็น staff จะเลือกโรงพยาบาลอื่นๆไม่ได้																						
 				$("#hospitalprovince option").filter(function(){return $(this).val() == $('input[name=h_province_id]').val()}).prop('selected', 'selected');
 				$('#hospital_amphur_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_amphur_id]').val()+'">'+$('input[name=amphur_name]').val()+'</option>');
 				$('#hospital_district_id').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_district_id]').val()+'">'+$('input[name=district_name]').val()+'</option>');
 				$('#hospitalcode').find('option').remove().end().append('<option  selected="selected" value="'+$('input[name=h_code]').val()+'">'+$('input[name=h_name]').val()+'</option>');																																			
 		}	
-	})	
+	})
+	
+   		$.validator.addMethod("alphanumericspecial", function(value, element) {
+        	return this.optional(element) || value == value.match(/^[0-9/]+$/);
+        }, "ระบุได้เฉพาะตัวเลขและเครื่องหมาย / ");	
+		
 		 $.validator.setDefaults({
-		 	submitHandler:function(event){
-		 		//console.log("submitHandler");
+		 	submitHandler:function(event){		 		
 		 		if($('input[name=level]').val()=="05"){
-			 		if($('input[name=closecase]').val() =="yes" || $('input[name=closecase]').val().length == 0){
+			 		//if($('input[name=closecase]').val() =="yes" || $('input[name=closecase]').val().length == 0){
 						chk_closecase(); // แสดงรายการที่ยังไมได้ปิดเคส	
-					}
+					//}
 				}else{
 					document.form1.submit();
 				}			 	 	 				 	
@@ -140,8 +142,12 @@ $(document).ready(function(){
     				groupidcard:"cardW0 cardW1 cardW2 cardW3 cardW4"
   			},
 		 	rules:{
-		 		
-		 		hospital_province_id:"required",hospital_amphur_id:"required",hospital_district_id:"required",hospitalcode:"required",hn:"required",
+		 		hn:{
+		 			required :true,
+		 			alphanumericspecial:true
+		 			
+		 		},
+		 		hospital_province_id:"required",hospital_amphur_id:"required",hospital_district_id:"required",hospitalcode:"required",
 				idcard:  { required: {depends: function(element) {	return $('#statusid option:selected').val() == '2' }}, number:true},   
 		 		cardW0:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
 		 		cardW1:{ required: {depends: function(element) {	return $('#statusid option:selected').val() == '1' }}, number:true},
@@ -159,7 +165,9 @@ $(document).ready(function(){
 		 	},
 		 	messages:{		 		
 		 		hospital_province_id:" กรุณาระบุ",hospital_amphur_id:" กรุณาระบุ",hospital_district_id:" กรุณาระบุ",hospitalcode:" กรุณาระบุ",
-		 		hn:" กรุณาระบุ",idcard:"กรุณาระบุ",
+		 		hn:{
+		 			required:" กรุณาระบุ"		 					 			
+		 		},idcard:"กรุณาระบุ",
 		 		cardW0:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
 		 		cardW1:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
 		 		cardW2:{required:" กรุณาระบุ",number: " กรุณาระบุเป็นตัวเลข"},
@@ -183,12 +191,13 @@ $(document).ready(function(){
 	 })
 
 		 
-	$('.tb_patient1 tr:eq(5)').nextUntil('tr:eq(8)').hide();
-	$('input[name=search_adv]').click(function(){
-		$('.tb_patient1 tr:eq(5)').nextUntil('tr:eq(8)').toggle('slow');
-	});
-	if($('input[name=search_adv]').is(':checked')){
-		$('input[name=search_adv]').trigger('click');
+	$('.tb_patient1 tr:eq(5)').nextUntil('tr:eq(8)').hide();		
+	$('input[name=search_adv]').change(function(){                
+	     $('.tb_patient1 tr:eq(5)').nextUntil('tr:eq(8)').toggle(this.checked);
+	}).change(); //ensure visible state matches initially
+
+	if($('input[name=search_adv]:checked')){
+		$('input[name=search_adv]').trigger('change');
 	}
 	
 	$('.btn_delete').click(function(){
@@ -214,33 +223,31 @@ $(document).ready(function(){
 <div id="search">
 <form name="form1"  method="get" id="form1" action="inform/index">	
 <?php error_reporting(E_WARNING); 
+
 	if($this->session->userdata('R36_LEVEL')=="05"){
-	$hospitalcode=$this->session->userdata('R36_HOSPITAL');
-	$rs=$this->hospital->get_row("hospital_code",$hospitalcode);	
-	$province_name=$this->db->GetOne("select province_name from n_province where province_id = ? ",$rs['hospital_province_id']);
-	$amphur_name = $this->db->GetOne("select amphur_name from n_amphur where province_id = ?  and amphur_id = ? ",array($rs['hospital_province_id'],$rs['hospital_amphur_id']));
-	$district_name = $this->db->GetOne("select district_name from n_district where province_id = ? and amphur_id = ? and district_id = ? ",array($rs['hospital_province_id'],$rs['hospital_amphur_id'],$rs['hospital_district_id']));
-	$data =array('province_name'=>$province_name
-						,'amphur_name'=>$amphur_name
-						,'district_name' => $district_name
-						,'level' => $this->session->userdata('R36_LEVEL')
-						,'h_province_id' => $rs['hospital_province_id']
-						,'h_amphur_id' => $rs['hospital_amphur_id']
-						,'h_district_id' => $rs['hospital_district_id']
-						,'h_code' =>$hospitalcode
-						,'h_name'=>$rs['hospital_name']
-						,'closecase'=>''
-						,'closecase_person'=>''						
-						);
-	echo form_hidden($data);
+		$hospitalcode=$this->session->userdata('R36_HOSPITAL');
+		$rs=$this->hospital->get_row("hospital_code",$hospitalcode);	
+		$province_name = $this->db->GetOne("select province_name from n_province where province_id = ? ",$rs['hospital_province_id']);
+		$province_name = ThaiToUtf8($province_name);
+		$amphur_name = $this->db->GetOne("select amphur_name from n_amphur where province_id = '".$rs['hospital_province_id']."'  and amphur_id = '".$rs['hospital_amphur_id']."' ");
+		$amphur_name = ThaiToUtf8($amphur_name);
+		$district_name = $this->db->GetOne("select district_name from n_district where province_id = ? and amphur_id = ? and district_id = ? ",array($rs['hospital_province_id'],$rs['hospital_amphur_id'],$rs['hospital_district_id']));
+		$district_name = ThaiToUtf8($district_name);
+		$data =array('province_name'=>$province_name,'amphur_name'=>$amphur_name,'district_name' => $district_name
+					,'level' => $this->session->userdata('R36_LEVEL'),'h_province_id' => $rs['hospital_province_id']
+					,'h_amphur_id' => $rs['hospital_amphur_id'],'h_district_id' => $rs['hospital_district_id']
+					,'h_code' =>$hospitalcode,'h_name'=>$rs['hospital_name'],'closecase'=>'','closecase_person'=>'');
+		echo form_hidden($data);
 	}
 	echo form_hidden('action','');
+	//$this->db->debug=true;
+	//var_dump($_GET);
 ?>		
 	<table class="tb_patient1">				
 			<tr> 
 				  <th><span class="alertred">*</span>จังหวัด :</th>
 				  <td>				  	
-						<?php echo form_dropdown('hospital_province_id',get_option('province_id','province_name',"n_province where province_id <>'' order by province_name asc"),$_GET['hospital_province_id'],'class="input_box_patient" id="hospitalprovince"','-โปรดเลือก-') ?>
+						<?php echo form_dropdown('hospital_province_id',get_option('province_id','province_name',"n_province where province_id <>''  order by province_name asc"),$_GET['hospital_province_id'],'class="input_box_patient" id="hospitalprovince"','-โปรดเลือก-') ?>
 				  </td>
 				  <th height="20"  ><span class="alertred">*</span>อำเภอ :</th>
 				  <td>
@@ -253,6 +260,7 @@ $(document).ready(function(){
 							 }else{
 							 	 	$amphur_id="amphur_id ='' ";
 							 }
+						
 							 echo form_dropdown('hospital_amphur_id',get_option('amphur_id','amphur_name',"n_amphur where $amphur_id $whamphur  order by amphur_name asc"),$_GET['hospital_amphur_id'],'class="input_box_patient" id="hospital_amphur_id"','-โปรดเลือก-');
 							?>
 					</span> 				
@@ -380,7 +388,7 @@ $(document).ready(function(){
 			<?php
 			if(!empty($result)): ?>
 	          <tr> 
-	            <th>ลำดับ</th>
+	            <th>ลำดับ </th>
 	            <th>รหัสโรงพยาบาล/HN</th>
 	            <th>บัตรประชาชน/เลขที่ passport</th>
 	            <th>ชื่อ-นามสกุล</th>
@@ -392,7 +400,7 @@ $(document).ready(function(){
 			<? $i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 20)-20)+1:1;
 			 foreach($result as $key =>$rec): ?>
               <tr> 
-                <td align="center"><?php echo $i++?></td>
+                <td align="center"><?php echo $i++;?></td>
                 <td><?php echo $rec['hospitalcode'].'/'.$rec['hn'].'-'.$rec['hn_no'];?></td>
                 <td><?php echo $rec['idcard'] ?></td>
 				<td><?php echo $rec['firstname'].' '.$rec['surname'];?></td>
@@ -400,17 +408,17 @@ $(document).ready(function(){
 				<td><?php echo cld_my2date($rec['datetouch'])?></td>
                 <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
             	<td><a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" class="btn_view vtip" target="_blank"></a> 			
-				<?php //if($rec['closecase']=="1" || $rec['closecase']==""): ?>
+
 				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
 					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>"  class="btn_edit vtip" target="_blank" ></a>
-					<input type="hidden" name="information_id" value="<?php echo $rec['id'] ?>" />
-					<input type="hidden" name="historyid" value="<?php echo $rec['historyid'] ?>"/>
+					<input type="hidden" name="information_id" value="<?php echo $rec['id'] ?>" /><input type="hidden" name="historyid" value="<?php echo $rec['historyid'] ?>"/>
 					<a title="ลบ"   href="javascript:void(0)" class="btn_delete vtip"></a>	
-				 <?   }else if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03')){ ?>											
-						<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>								
-				 <?   } ?>
+				 <?  }else if($rec['closecase']=="1" || $rec['closecase']=="" || $rec['closecase']=="0"){  
+				 		if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03')){ ?>											
+							<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>								
+				 <?  } ?>
 					<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine"  class="btn_syring vtip"  target="_blank"></a>
-				<?php //endif; ?>
+				 <?php } ?>
 
 				</td>
               </tr>            
@@ -418,13 +426,12 @@ $(document).ready(function(){
 			 <?php endif; ?>			    
 </table>	
 <?php echo (isset($pagination))? $pagination:''; ?>
-<div id="loading" style="padding-top:20%;padding-left:40%"><img src="media/images/loadingmove.gif" width="78px" height="20px"></div>
+<div id="loading" style="text-align:center;width:100%;height:20px;"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+
 <div style="display:none;">
 <div id="closecase" style="text-align: center;">
 	<div class="alert alert-warning"><span class="label label-warning">ไม่สามารถเพิ่มข้อมูลได้</span> กรุณาปิดเคสที่อายุ มากกว่า 90 วัน จึงสามารถเพิ่มรายการได้</div>
-	<a  href="inform/closecase" target="_blank" class="btn btn-primary"  name="btn_view" id="btn_view">คลิกดูรายการ</a>	
-	
-	
+	<a  href="inform/closecase" target="_blank" class="btn btn-primary"  name="btn_view" id="btn_view">คลิกดูรายการ</a>			
 </div>
 </div>
 <div style="display:none;"><div id="closecase_person" style="text-align: center;">

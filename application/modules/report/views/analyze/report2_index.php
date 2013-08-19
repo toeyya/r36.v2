@@ -1,4 +1,101 @@
 <script type="text/javascript" src="media/js/report_analyze.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.tr-graph').hide();
+	$('td[colspan]').addClass('hasRowSpan');
+	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})		
+	function graph(title,xa,ya,data){			
+	     $('#container1').highcharts({
+            chart: {
+                type: 'column',width:900,height:300,marginBottom:60
+            },
+            title: {
+                text: title
+            },
+            xAxis: {
+                categories: xa
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: ya
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                    }
+                }
+            },
+            credits: {enabled: false},
+            legend: {
+                align: 'center',
+                y:10,
+                 
+                verticalAlign: 'bottom',
+                
+                floating: true,
+                backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColorSolid) || 'white',
+                borderColor: '#CCC',
+                borderWidth: 1,
+                shadow: false
+            },
+            tooltip: {
+                formatter: function() {
+                    return '<b>'+ this.x +'</b><br/>'+
+                        this.series.name +': '+ this.y +'<br/>'+
+                        'Total: '+ this.point.stackTotal;
+                }
+            },
+            plotOptions: {
+                column: {
+                    stacking: 'normal',
+                    dataLabels: {
+                        enabled: true,
+                        color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                    }
+                }
+            },
+            series: data
+        });
+     }
+     $('.img').click(function(){
+     	var title = $(this).closest('div').next().html();     	
+     	var ya 	  = $('.tbreport').find('tr:eq(0) th').html();
+     	var len   = $('.tbreport').find('tr:eq(2)').children().not('.totalx').length;
+     	var arr = {};
+     	var xa =[],arr_val= [],val= new Array(),data=[];
+     	var j=0,k=0,i;
+     	
+     	/*for(var x in val){arr_val[val[x]] = new Array();}*/
+     	for(i=0;i<len;i++){
+     		val.push(i);
+     		arr_val[val[i]] = new Array();
+     	}		     	
+     	$('.tbreport').find('tr:eq(3)').nextUntil('.tr-graph').prev().each(function(){
+     		xa[j] = $(this).find('td:eq(0) strong').html();     		     		
+     		arr_val[0][j] = parseFloat($(this).find('td:eq(1) p').html());
+     		arr_val[1][j] = parseFloat($(this).find('td:eq(2) p').html());
+     		arr_val[2][j] = parseFloat($(this).find('td:eq(3) p').html());
+     		++j;
+
+     		       		 			     		          		     		
+     	});     		
+     	$('.tbreport').find('tr:eq(2)').children().not('.totalx').each(function(){    		   		
+     		arr['name'] = $(this).html();
+     		arr['data'] = arr_val[k];
+     		data[k] =  jQuery.parseJSON(JSON.stringify(arr));
+     		k++;
+     		
+     	})
+		graph(title,xa,ya,data);
+		$('.tr-graph').show();
+					     	
+
+     })
+});
+</script>
 <div id="title">ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</div>
 <div id="search">
 <form action="report/analyze/" method="get" name="formreport"  id="formreport" onsubmit="return Chk_AnalyzeReport(this);">
@@ -30,7 +127,8 @@
   <div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul></div>	
  </form>
 </div>
-<?php if($cond): ?>
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+<?php if(!empty($cond)): ?>
  <div id="report">
 	<div id="title">				  
 		<p>ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</p>

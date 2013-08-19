@@ -12,32 +12,27 @@ class Inform extends R36_Controller
 		$this->load->model("history_model",'history');
 		$this->load->model('users/user_model','user');
 		$this->load->model('document/document_detail_model','detail');
-		$this->template->append_metadata(js_idcard());
-		$this->history->primary_key('historyid');
-						
+		$this->template->append_metadata(js_idcard());							
 	}
 	function closecase_person($idcard,$chk=FALSE){
 		if($chk){
-		$sql="SELECT count(id) as cnt 
-			  FROM n_information 
+			
+		$sql="SELECT count(id) as cnt FROM n_information 
 			  LEFT JOIN n_history ON historyid=information_historyid 
-			  WHERE closecase=1 and idcard='".$idcard."' order by n_information.datetouch asc";	
+			  WHERE closecase=1 and idcard='".$idcard."'";	
 			$result = $this->db->GetOne($sql);	
 			$data['chk']=($result) ?"yes":"no";
 			$data['idcard'] = $idcard;	
 			echo json_encode($data);
 			return true;		
 		}else{
-			$sql="SELECT id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch 
-				  FROM n_information 
+			$sql="SELECT id,hn,idcard,hn_no,firstname,surname,information_historyid,CONVERT(VARCHAR(10), datetouch, 120) AS [datetouch] FROM n_information 
 				  LEFT JOIN n_history ON historyid=information_historyid 
 				  WHERE closecase=1 and idcard='".$idcard."' order by n_information.datetouch asc";	
-			$result=$this->inform->get($sql);	
-			$data['result'] = $this->db->Execute($sql);		
+			$data['result'] =$this->inform->get($sql);				 				
 		}	
 		$data['pagination']=$this->inform->pagination();
-		
-		//$this->template->set_layout('blank');
+
 		$this->template->build('view_closecase_person',$data);
 
 		
@@ -47,11 +42,10 @@ class Inform extends R36_Controller
 		$date = date_create(date('Y-m-d'));
 		date_sub($date,date_interval_create_from_date_string("90 days"));
 		$dd = date_format($date,"Y-m-d");
-		//echo $dd;
 		return $dd;
 	}
 	function closecase($chk=FALSE)
-	{	// เอาที่วันปัจจุบัน ลบ ออกไปเก้าสิบวัน แล้ว  แล้วแปลงเป็นวันที่ เพื่อนหาค่าวันที่น้อยกว่าวันดังกล่าว
+	{	//เอาที่วันปัจจุบัน ลบ ออกไปเก้าสิบวัน แล้ว  แล้วแปลงเป็นวันที่ เพื่อนหาค่าวันที่น้อยกว่าวันดังกล่าว
 		$hospitalcode =	$this->session->userdata('R36_HOSPITAL');
 		//$hospitalcode ="80090005";
 		$year = date('y')+543;	
@@ -70,12 +64,14 @@ class Inform extends R36_Controller
 				echo json_encode($data);
 				return true;				
 			}else{
-				$sql = "select id,hn,idcard,hn_no,firstname,surname,information_historyid,datetouch,total_vaccine   from n_information 
+				$sql = "select id,hn,idcard,hn_no,firstname,surname,information_historyid,CONVERT(VARCHAR(10), datetouch, 120) AS [datetouch],total_vaccine   from n_information 
 					inner join n_history on n_information.information_historyid=n_history.historyid
 					inner join n_vaccine on n_information.id=n_vaccine.information_id
 					where  hospitalcode = $hospitalcode and  vaccine_date <='$dd' and closecase=1
 					group by id";
-				$data['result'] = $this->db->Execute($sql);
+				$result= $this->db->Execute($sql);
+				$data['result'] =dbConvert($result);
+				
 				
 			}			
 		}
@@ -146,13 +142,12 @@ class Inform extends R36_Controller
 		}// $_GET['action]
 		
 		if(!empty($where))
-		{
+		{ 
 			$sql="SELECT  historyid,firstname,surname ,hn_no,hn,hospitalcode,id,hospitalprovince,total_vaccine,idcard,n_hospital_1.hospital_district_id
-				 ,hospital_name,in_out,closecase,datetouch									
-				FROM n_history
-				INNER JOIN n_information ON n_history.historyid=n_information.information_historyid
-				INNER JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where";
-
+				 ,hospital_name,in_out,closecase, CONVERT(VARCHAR(10), datetouch, 120) AS [datetouch]								
+				 FROM n_history
+				 INNER JOIN n_information ON n_history.historyid=n_information.information_historyid
+				 INNER JOIN n_hospital_1 	on n_hospital_1.hospital_code=n_information.hospitalcode WHERE 1=1 $where order by datetouch desc";
 			$data['result']=$this->inform->limit(20)->get($sql);
 			$data['pagination']=$this->inform->pagination();			
 
@@ -187,7 +182,13 @@ class Inform extends R36_Controller
 			$data['cardW4']=substr($idcard,12,13);	
 			$data['h_name'] =$this->session->userdata('R36_HOSPITAL_NAME');
 			## กดเลือก 	view หรือ เรคอร์ดที่ถูกบันทึกในฐานข้อมูลแล้ว กรณีผู้ที่มีสิทธิ์สามารถดูได้ทั้งหมด
-			$data['rs']=$this->inform->select("n_information.*,n_history.*,n_hospital_1.*")										
+			$data['rs']=$this->inform->select("n_information.*
+											  ,CONVERT(VARCHAR(10), datetouch, 120) AS [datetouch]
+											  ,CONVERT(VARCHAR(10), reportdate, 120) AS [reportdate]
+											  ,CONVERT(VARCHAR(10), daterig, 120) AS [daterig]
+											  ,CONVERT(VARCHAR(10), datelongfeel, 120) AS [datelongfeel]
+											  ,CONVERT(VARCHAR(10), after_vaccine_date, 120) AS [after_vaccine_date]
+											  ,n_history.*,n_hospital_1.*")										
 									->join("INNER JOIN n_history ON n_history.historyid=information_historyid
 											INNER JOIN n_hospital_1 ON n_hospital_1.hospital_code=n_information.hospitalcode")
 									->get_row($id);	
@@ -198,7 +199,8 @@ class Inform extends R36_Controller
 				$data['rs']['hospital_district_id']=$this->session->userdata('R36_HOSPITAL_DISTRICT');	
 			}
 			
-			$data['now']=strtotime(date("Y-m-d H:i:s"));														
+			//$data['now']=strtotime(date("Y-m-d H:i:s"));
+			$data['now']=strtotime(date("Y-m-d H:i:sP"));														
 			$this->template->build('form',$data);
 				
 	}		
@@ -208,7 +210,8 @@ class Inform extends R36_Controller
 		$historyid=$this->db->GetOne("select historyid from n_history where idcard= ? ",$idcard);		
 		if(!empty($historyid)){
 			$data['rs'] = $this->history->get_row("historyid",$historyid);		
-			$data['rs']['hn_no']=$this->db->GetOne('SELECT hn_no+1 as cnt from n_information where information_historyid= ? order by id desc',$historyid);																   	
+			$hn_no =$this->db->GetOne('SELECT hn_no as cnt from n_information where information_historyid= ? order by id desc',$historyid);																   	
+			$data['rs']['hn_no']=$hn_no+1;
 		}else{
 			$data['rs']['hn_no']=1;
 		}			
@@ -218,7 +221,8 @@ class Inform extends R36_Controller
 		$data['rs']['hospitalprovince']=$_GET['hospital_province_id'];
 		$data['rs']['hospitalamphur']=$_GET['hospital_amphur_id'];
 		$data['rs']['hospitaldistrict'] = $_GET['hospital_district_id'];
-		$data['rs']['hospitalcode'] = $_GET['hospitalcode'];		
+		$data['rs']['hospitalcode'] = $_GET['hospitalcode'];
+					
 		$data['cardW0']=$_GET['cardW0'];
 		$data['cardW1']=$_GET['cardW1'];
 		$data['cardW2']=$_GET['cardW2'];
@@ -232,8 +236,8 @@ class Inform extends R36_Controller
 	}
 
 
-	function save(){
-	
+	function save()
+	{	 
 		/*  ป้องกันการบันทึกข้อมูลผู้สัมผัสโรคซ้ำ : ตรวจสอบรหัสบัตรประชาชนก่อนบันทึกลง n_history ถ้ามีแล้วให้ update ถ้าไม่มี insert  	
 		 *   ที่ยอมให้บันทึกได้หลายเรคอร์ด - ไมได้ตรวจสอบก่อนบันทึก, ผู้สัมผัสโรคอาจย้ายที่อยู่ และสถานที่สัมผัสโรคคนละที่-					*/	
 		//$this->db->debug=TRUE;			
@@ -242,7 +246,7 @@ class Inform extends R36_Controller
 		}else if($_POST['statusid']=='2'){
 					$_POST['idcard']=$_POST['idpassport'];
 		}
-		$historyid=$this->db->GetOne("select historyid from n_history where idcard= ?  and statusid= ? and idcard<>0",array($_POST['idcard'],$_POST['statusid']));
+		$historyid=$this->db->GetOne("select historyid from n_history where (idcard='".$_POST['idcard']."')  and statusid= '".$_POST['statusid']."'");
 		//table n_history
 						if(isset($_POST['chkage'])=='Y'){$_POST['age']=0;$_POST['age_group']=1;
 						}else if($_POST['age'] < 1){$_POST['age']=0;$_POST['age_group']=1;
@@ -265,40 +269,43 @@ class Inform extends R36_Controller
 			$_POST['occupationname']=$_POST['occupationname_b'];
 		}
 	
-		$_POST['updatetime']=(is_null(@$_POST['updatedtime']))? '0000-00-00 00:00:00':@$_POST['updatetime'];
 		//  n_history
-		
+		//$_POST['updatetime'] = (empty($_POST['updatetime']) || $_POST['updatetime']=='0000-00-00 00:00:00') ? "CONVERT(datetime, GETDATE(), 120)":"CONVERT(VARCHAR(19), '".$_POST['updatetime']."', 120)";			
+	   // $_POST['created'] 	 = (empty($_POST['created']) 	|| $_POST['created']=='0000-00-00 00:00:00') ? "CONVERT(datetime, GETDATE(), 120)":"CONVERT(VARCHAR(19), '".$_POST['created']."', 120)";			
+	    $this->history->primary_key('historyid');
 		$_POST['information_historyid']=$this->history->save($_POST);
-		
-		$head_lick_noblood=@$_POST['head_lick_noblood'];
-		$face_lick_noblood=@$_POST['face_lick_noblood'];
-		$neck_lick_noblood=@$_POST['neck_lick_noblood'];
-		$hand_lick_noblood=@$_POST['hand_lick_noblood'];
-		$body_lick_noblood=@$_POST['body_lick_noblood'];
-		$feet_lick_noblood=@$_POST['feet_lick_noblood'];
+		//var_dump($_POST);
+		//exit;
+		$head_lick_noblood = (!empty($_POST['head_lick_noblood'])) ? $_POST['head_lick_noblood'] :'';
+		$face_lick_noblood = (!empty($_POST['face_lick_noblood'])) ? $_POST['face_lick_noblood'] :'';
+		$neck_lick_noblood = (!empty($_POST['neck_lick_noblood'])) ? $_POST['neck_lick_noblood'] :'';
+		$hand_lick_noblood = (!empty($_POST['hand_lick_noblood'])) ? $_POST['hand_lick_noblood'] :'';
+		$body_lick_noblood = (!empty($_POST['body_lick_noblood'])) ? $_POST['body_lick_noblood'] :'';
+		$feet_lick_noblood = (!empty($_POST['feet_lick_noblood'])) ? $_POST['feet_lick_noblood'] :'';
 		//********************    table n_information          **********************
-		if(@$_POST['head_bite_blood']=='1' || @$_POST['head_bite_noblood']=='1' || @$_POST['head_claw_blood']=='1'|| @$_POST['head_claw_noblood']=='1'|| @$_POST['face_lick_blood']=='1'|| $head_lick_noblood=='1' ){
+		if(!empty($_POST['head_bite_blood']) || !empty($_POST['head_bite_noblood']) || !empty($_POST['head_claw_blood']) || !empty($_POST['head_claw_noblood'])|| !empty($_POST['face_lick_blood']) || !empty($head_lick_noblood)){
 			@$_POST['head']='1';
 		}
-		if(@$_POST['face_bite_blood']=='1' || @$_POST['face_bite_noblood']=='1' || @$_POST['face_claw_blood']=='1'|| @$_POST['face_claw_noblood']=='1'|| @$_POST['face_lick_blood']=='1'||  $face_lick_noblood=='1' ){
+		if(!empty($_POST['face_bite_blood']) || !empty($_POST['face_bite_noblood']) || !empty($_POST['face_claw_blood'])|| !empty($_POST['face_claw_noblood'])|| !empty($_POST['face_lick_blood'])||  !empty($face_lick_noblood)){
 			@$_POST['face']='1';
 		}
-		if(@$_POST['neck_bite_blood']=='1' || @$_POST['neck_bite_noblood']=='1' || @$_POST['neck_claw_blood']=='1'|| @$_POST['neck_claw_noblood']=='1'|| @$_POST['neck_lick_blood']=='1'|| $neck_lick_noblood=='1' ){
+		if(!empty($_POST['neck_bite_blood']) || !empty($_POST['neck_bite_noblood']) || !empty($_POST['neck_claw_blood']) || !empty($_POST['neck_claw_noblood'])|| !empty($_POST['neck_lick_blood'])|| !empty($neck_lick_noblood)){
 			@$_POST['neck']='1';
 		}
-		if(@$_POST['hand_bite_blood']=='1' || @$_POST['hand_bite_noblood']=='1' || @$_POST['hand_claw_blood']=='1'|| @$_POST['hand_claw_noblood']=='1'|| @$_POST['hand_lick_blood']=='1'|| $hand_lick_noblood=='1' ){
+		if(!empty($_POST['hand_bite_blood']) || !empty($_POST['hand_bite_noblood']) || !empty($_POST['hand_claw_blood'])|| !empty($_POST['hand_claw_noblood']) || !empty($_POST['hand_lick_blood'])|| !empty($hand_lick_noblood)){
 			@$_POST['hand']='1';
 		}
-		if(@$_POST['arm_bite_blood']=='1' || @$_POST['arm_bite_noblood']=='1' || @$_POST['arm_claw_blood']=='1'|| @$_POST['arm_claw_noblood']=='1'|| @$_POST['arm_lick_blood']=='1'|| @$_POST['arm_lick_noblood']=='1' ){
+		if(!empty($_POST['arm_bite_blood']) || !empty($_POST['arm_bite_noblood']) || !empty($_POST['arm_claw_blood'])|| !empty($_POST['arm_claw_noblood']) || !empty($_POST['arm_lick_blood']) || !empty($_POST['arm_lick_noblood'])){
+			
 			@$_POST['arm']='1';
 		}
-		if(@$_POST['body_bite_blood']=='1' || @$_POST['body_bite_noblood']=='1' || @$_POST['body_claw_blood']=='1'|| @$_POST['body_claw_noblood']=='1'|| @$_POST['body_lick_blood']=='1'|| $body_lick_noblood=='1' ){
+		if(!empty($_POST['body_bite_blood']) || !empty($_POST['body_bite_noblood']) || !empty($_POST['body_claw_blood']) || !empty($_POST['body_claw_noblood']) || !empty($_POST['body_lick_blood']) || !empty($body_lick_noblood)){
 			@$_POST['body']='1';
 		}
-		if(@$_POST['leg_bite_blood']=='1' || @$_POST['leg_bite_noblood']=='1' || @$_POST['leg_claw_blood']=='1'|| @$_POST['leg_claw_noblood']=='1'|| @$_POST['leg_lick_blood']=='1'|| @$_POST['leg_lick_noblood']=='1' ){
+		if(!empty($_POST['leg_bite_blood']) || !empty($_POST['leg_bite_noblood']) || !empty($_POST['leg_claw_blood']) || !empty($_POST['leg_claw_noblood'])|| !empty($_POST['leg_lick_blood']) || !empty($_POST['leg_lick_noblood'])){
 			@$_POST['leg']='1';
 		}
-		if(@$_POST['feet_bite_blood']=='1' || @$_POST['feet_bite_noblood']=='1' || @$_POST['feet_claw_blood']=='1'|| @$_POST['feet_claw_noblood']=='1'|| @$_POST['feet_lick_blood']=='1'|| $feet_lick_noblood=='1' ){
+		if(!empty($_POST['feet_bite_blood']) || !empty($_POST['feet_bite_noblood']) || !empty($_POST['feet_claw_blood'])|| !empty($_POST['feet_claw_noblood']) || !empty($_POST['feet_lick_blood'])|| !empty($feet_lick_noblood)){
 			@$_POST['feet']='1';
 		}				
 		//--------------------------chk_total_vaccine-----------------------------
@@ -320,15 +327,15 @@ class Inform extends R36_Controller
 				}
 			}
 		//-----------------------end chk_total_vaccine--------------------------
-		$_POST['datetouch']=cld_date2my($_POST['datetouch']);
-		$_POST['reportdate']=cld_date2my($_POST['reportdate']);
-		$_POST['daterig']=cld_date2my($_POST['daterig']);
-		$_POST['datelongfeel']=cld_date2my($_POST['datelongfeel']);
-		$_POST['after_vaccine_date']=cld_date2my($_POST['after_vaccine_date']);		
 		
-		$_POST['daterig']=(is_null($_POST['daterig'])|| $_POST['daterig']=='')? '0000-00-00':$_POST['daterig'];
-		$_POST['datelongfeel']=(is_null($_POST['datelongfeel'])|| $_POST['datelongfeel']=='')? '0000-00-00':$_POST['datelongfeel'];
-		$_POST['after_vaccine_date']=(is_null($_POST['after_vaccine_date'])|| $_POST['after_vaccine_date']=='')? '0000-00-00':$_POST['after_vaccine_date'];
+		//$_POST['created']		= (empty($_POST['created']) ||$_POST['created']=='0000-00-00 00:00:00') ? "CONVERT(datetime, GETDATE(), 120)":"CONVERT(VARCHAR(19), '".$_POST['created']."', 120)";
+		$_POST['datetouch']		= cld_date2my($_POST['datetouch']);
+		$_POST['reportdate']	= cld_date2my($_POST['reportdate']);
+
+		
+		$_POST['daterig']			=(is_null($_POST['daterig'])			|| $_POST['daterig']=='')? '':cld_date2my($_POST['daterig']);
+		$_POST['datelongfeel']		=(is_null($_POST['datelongfeel'])		|| $_POST['datelongfeel']=='')? '':cld_date2my($_POST['datelongfeel']);
+		$_POST['after_vaccine_date']=(is_null($_POST['after_vaccine_date'])	|| $_POST['after_vaccine_date']=='')? '':cld_date2my($_POST['after_vaccine_date']);
 			
 		$_POST['hospitalcode']=$_POST['hospital'];
 		$_POST['id']=$_POST['information_id'];	
@@ -341,11 +348,11 @@ class Inform extends R36_Controller
 		if($_POST['means']!='3' && $_POST['means']!=''){
 			$j=($_POST['means']=="2")?4:5;			
 					for($i=0;$i<$j;$i++){
-								if($_POST['vaccine_name'][$i]!="0"){
-										
-									$hospital=$this->hospital->get_one("hospital_id","hospital_name",$_POST['byplace'][$i]);
-									$user_id=(!empty($_POST['user_id'][$i]))? $_POST['user_id'][$i]:$this->session->userdata('R36_UID');
-									
+								if($_POST['vaccine_name'][$i]!="0"){					
+									$hospital_name = $this->hospital->get_one("hospital_name",'hospital_code',$_POST['hospitalcode']);	
+									$_POST['byplace'][$i] = (empty($_POST['byplace'][$i])) ? $hospital_name:$_POST['byplace'][$i];
+									$hospital = $this->db->GetOne("select hospital_id from n_hospital_1 where hospital_name ='".$_POST['byplace'][$i]."'");																																												
+									$user_id=(!empty($_POST['user_id'][$i]))? $_POST['user_id'][$i]:$this->session->userdata('R36_UID');									
 									$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>date2DB($_POST['vaccine_date'][$i])
 											   ,'vaccine_name'=>$_POST['vaccine_name'][$i],'vaccine_no'=> $_POST['vaccine_no'][$i]
 											   ,'vaccine_cc'=>$_POST['vaccine_cc'][$i] ,'vaccine_point'=>$_POST['vaccine_point'][$i]
@@ -355,11 +362,14 @@ class Inform extends R36_Controller
 										
 								}	
 								if($_POST['vaccine_date'][$i] &&  $_POST['vaccine_name'][$i]=="0"){									
-									$data=$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>date2DB($_POST['vaccine_date'][$i]));
+									$data=array('vaccine_id'=>'','information_id'=>$information_id,'vaccine_date' =>date2DB($_POST['vaccine_date'][$i]));
 									$this->vaccine->save($data);
 								}
 					}//exit;
 		}
+		$title = "ข้อมูลการสัมผัสโรค ".$_POST['patient_type'];
+		
+		save_log($process,$title_log,$label,$label_val);	
 		//  ------++++------    End n_vaccine  ------++++------ 
 		set_notify('success', SAVE_DATA_COMPLETE);		
 		redirect('inform/index');

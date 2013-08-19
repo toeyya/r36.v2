@@ -10,11 +10,11 @@ class Document extends Admin_Controller
 	}
 	function index(){
 		$document_id=(!empty($_GET['document_id'])) ? " and n_document.id=".$_GET['document_id']: '';	
-		$data['result']=$this->doc->select("count(n_document_detail.id) as cnt,n_document.*,userfirstname,usersurname")
+		$data['result']=$this->doc->select("count(n_document_detail.id) as cnt,n_document.id,n_document.name,n_document.active,userfirstname,usersurname")
 													->join("LEFT JOIN n_document_detail on n_document.id=n_document_detail.document_id
 															LEFT JOIN n_user ON n_document.user_id=uid")
 													->where("1=1 $document_id")
-													->groupby("n_document.id")
+													->groupby("n_document.id,n_document.name,n_document.active,userfirstname,usersurname")
 												   ->sort("")->order("n_document.id desc")->get();
 		$data['pagination']=$this->doc->pagination();
 		$this->template->build('admin/index',$data);
@@ -24,6 +24,7 @@ class Document extends Admin_Controller
 		$this->template->build('admin/form',$data);
 	}
 	function delete($id){
+			
 		if($id){
 			$this->detail->delete("document_id",$id);
 			$this->doc->delete($id);
@@ -32,6 +33,7 @@ class Document extends Admin_Controller
 		redirect('document/admin/document/index');
 	}
 	function save(){
+
 		if(!empty($_POST)){
 			$_POST['user_id']=(!empty($_POST['user_id']))? $_POST['user_id']:$this->session->userdata('R36_UID');
 			$this->doc->save($_POST);

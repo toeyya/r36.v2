@@ -1,3 +1,5 @@
+
+
 <?php 
 
 if(!function_exists('get_year_option'))
@@ -334,116 +336,7 @@ function convert_month($month,$language){
 		}
 	}
 }
-/*function convert_month($month,$language){
-	if($language=='longthai'){
-		if($month=='01'){
-			$month = "มกราคม";
-		}elseif($month=='02'){
-			$month = "กุมภาพันธ์";
-		}elseif($month=='03'){
-			$month = "มีนาคม";
-		}elseif($month=='04'){
-			$month = "เมษายน";
-		}elseif($month=='05'){
-			$month = "พฤษภาคม";
-		}elseif($month=='06'){
-			$month = "มิถุนายน";
-		}elseif($month=='07'){
-			$month = "กรกฎาคม";
-		}elseif($month=='08'){
-			$month = "สิงหาคม";
-		}elseif($month=='09'){
-			$month = "กันยายน";
-		}elseif($month=='10'){
-			$month = "ตุลาคม";
-		}elseif($month=='11'){
-			$month = "พฤศจิกายน";
-		}elseif($month=='12'){
-			$month = "ธันวาคม";
-		}
-		return $month;
-	}elseif($language=='shortthai'){
-		if($month=='01'){
-			$month = "ม.ค.";
-		}elseif($month=='02'){
-			$month = "ก.พ.";
-		}elseif($month=='03'){
-			$month = "มี.ค.";
-		}elseif($month=='04'){
-			$month = "เม.ย.";
-		}elseif($month=='05'){
-			$month = "พ.ค.";
-		}elseif($month=='06'){
-			$month = "มิ.ย.";
-		}elseif($month=='07'){
-			$month = "ก.ค.";
-		}elseif($month=='08'){
-			$month = "ส.ค.";
-		}elseif($month=='09'){
-			$month = "ก.ย.";
-		}elseif($month=='10'){
-			$month = "ต.ค.";
-		}elseif($month=='11'){
-			$month = "พ.ย.";
-		}elseif($month=='12'){
-			$month = "ธ.ค.";
-		}
-		return $month;
-	}elseif($language=='shorteng'){
-		if($month=='01'){
-			$month = "Jan";
-		}elseif($month=='02'){
-			$month = "Feb";
-		}elseif($month=='03'){
-			$month = "Mar";
-		}elseif($month=='04'){
-			$month = "Apr";
-		}elseif($month=='05'){
-			$month = "May";
-		}elseif($data[1]=='06'){
-			$month = "Jun";
-		}elseif($month=='07'){
-			$month = "Jul";
-		}elseif($month=='08'){
-			$month = "Aug";
-		}elseif($month=='09'){
-			$month = "Sep";
-		}elseif($month=='10'){
-			$month = "October";
-		}elseif($month=='11'){
-			$month = "Nov";
-		}elseif($month=='12'){
-			$month = "Dec";
-		}
-		return $month;
-	}elseif($language=='longeng'){
-		if($month=='01'){
-			$month = "January";
-		}elseif($month=='02'){
-			$month = "February";
-		}elseif($month=='03'){
-			$month = "March";
-		}elseif($month=='04'){
-			$month = "April";
-		}elseif($month=='05'){
-			$month = "May";
-		}elseif($month=='06'){
-			$month = "June";
-		}elseif($month=='07'){
-			$month = "July";
-		}elseif($month=='08'){
-			$month = "August";
-		}elseif($month=='09'){
-			$month = "September";
-		}elseif($month=='10'){
-			$month = "October";
-		}elseif($month=='11'){
-			$month = "November";
-		}elseif($month=='12'){
-			$month = "December";
-		}
-	}
-}*/
+
 
 
 function cld_date2my($date_input){//format dd/mm/year_th -> year_th-mm-dd
@@ -471,10 +364,8 @@ function DB2date($date_input,$show_time=FALSE){
 			$arr_date = explode ("-",$date); 	
 		}else{
 			$arr_date = explode ("-",$date_input);
-		}
-			
-		//$arr_date = explode ("-",$date); 				
-		$d=$arr_date[2];
+		}				
+		$d=(strlen($arr_date[2])>2) ? substr($arr_date[2],0,2):$arr_date[2];
 		$m=$arr_date[1];
 		$year_th=$arr_date[0]+543;
 		if($show_time==FALSE){$time='';}
@@ -482,7 +373,7 @@ function DB2date($date_input,$show_time=FALSE){
 }
 function cld_my2date($date_input){//format year_th-mm-dd -> dd/mm/year_th
 	if(!$date_input){return false;}			
-		$arr_date = explode ("-",$date_input); 
+		$arr_date = explode ("-",$date_input); 		
 		$d=$arr_date[2];
 		$m=$arr_date[1];
 		$year_th=$arr_date[0];

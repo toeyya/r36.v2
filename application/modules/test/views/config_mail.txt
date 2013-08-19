@@ -1,0 +1,13 @@
+จาก " http://www.php.net/m...en/ref.mail.php "  ซี่งผมแนะนำไว้ในเบื้องต้น กล่าวว่า "For further details and definition of the PHP_INI_* constants see ini_set(). " ซี่งเมื่อกดที่ link " ini_set(). "  เราก็จะเจอ  " http://www.php.net/m...ion.ini-set.php " ซึ่งก็จะมีคำอธิบายไว้ใน " Table 2. Definition of PHP_INI_* constants " ครับ
+
+ในกรณีของคุณ mailcrub หมายความว่า SMTP กับ smtp_port นั้น " PHP_INI_ALL - -  Entry can be set anywhere  "
+หากคุณเลือกที่จะ set ที่ php.ini ค่าก็ควรจะคล้าย ๆ ดังนี้
+SMTP ="ชื่อ หรือ IP Address ของ SMTP server"
+smtp_port= "หมายเลข post ที่ SMTP server นั้นใช้งาน "
+
+ซึ่งผมคิดว่า ทั้ง 2 ค่าก็ควรจะเป็นค่าที่คุณเคย set ไว้กับ Jmail  ครับ 
+
+
+extension=php_openssl.dll 
+
+

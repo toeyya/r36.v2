@@ -14,15 +14,17 @@ class Content extends Admin_Controller
 	}
 	
 	function index($category_id=FALSE,$id=FALSE)
-	{
+	{//$this->db->debug=true;	
+		$title =(!empty($_GET['title'])) ? " and contents.title like '%".$_GET['title']."%'":'';	
 		$data['result'] = $this->content->select('contents.*,userfirstname,usersurname') 
 										->join("INNER JOIN n_user on contents.user_id=uid")
-										->where("category_id='".$category_id."'")
+										//->where("1=1 $title")
+										->where(" category_id='".$category_id."' $title")
 										->sort("")->order("contents.created DESC,contents.id DESC")->get();		
 		$data['pagination'] = $this->content->pagination();
 		$data['category_id']=$category_id;
 		$data['category']=$this->category->get_row($category_id);
-	
+		
 		if($category_id){
 			$data['content']=$this->content->get_row("category_id",$category_id);		
 		}
@@ -38,8 +40,8 @@ class Content extends Admin_Controller
 	}
 	
 	function form($category_id = FALSE,$id=FALSE)
-	{
-		$data['rs'] = $this->content->get_row($id);
+	{   
+		$data['rs'] = $this->content->select("contents.*,CONVERT(VARCHAR(10), start_date, 120) AS [start_date]")->get_row($id);
 		$data['category_id']=$category_id;
 		$data['category_name']=$this->category->get_one("name","id",$category_id);		
 		$this->template->build('admin/content_form',$data);
@@ -48,10 +50,10 @@ class Content extends Admin_Controller
 	function save()
 	{
 		if($_POST)
-		{
-			//var_dump($_POST);exit;	
+		{			
+			
 			if(!empty($_POST['start_date']))$_POST['start_date'] = Date2DB($_POST['start_date']);	 else $_POST['start_date'] = date('Y-m-d');
-			if(!empty($_POST['end_date']))$_POST['end_date'] = Date2DB($_POST['end_date']);	else $_POST['end_date'] = "0000-00-00";
+			if(!empty($_POST['end_date']))$_POST['end_date'] = Date2DB($_POST['end_date']);	else $_POST['end_date'] = null;
 			if($_POST['user_id']=="")$_POST['user_id'] = $this->session->userdata('R36_UID');
 			$id = $this->content->save($_POST);
 			if(@$_FILES['image']['name'])

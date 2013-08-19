@@ -122,6 +122,38 @@
 			<td><?php echo number_format($total_longfeel0);?></td>
 			<td><?php echo compute_percent($total_longfeel0,$total_longfeel); ?></td>		
 		</tr>
+		<tr><td colspan="3"><strong>วิธีการฉีดวัคซีน</strong><strong>(n= <?php echo number_format($total_means); ?>)</strong></td></tr>			
+		<?php $vaccine = array(1=>'เข้ากล้ามเนื้อ',2=>'เข้าผิวหนัง',3=>'ไม่ฉีด');?>	
+		<?php for($i=1;$i<4;$i++): ?>	
+		<tr class="para1">
+			<td style="padding-left:10px;"><?php echo $vaccine[$i]; ?></td>				
+			<td><?php echo number_format(${'total_means'.$i}); ?> </td>			
+			<td><?php echo compute_percent(${'total_means'.$i},$total_means); ?></td>		
+		</tr>
+		<?php endfor; ?>
+		
+		<tr><td colspan="3"><strong>ชนิดวัคซีน</strong><strong>(n= <?php echo number_format($total_vaccine); ?>)</strong></td></tr>			
+		<?php $vaccine = array(1=>'PVRV',2=>'PCEC',3=>'HDCV',4=>'PDEV');?>	
+		<?php for($i=1;$i<5;$i++): ?>	
+		<tr class="para1">
+			<td style="padding-left:10px;"><?php echo $vaccine[$i]; ?></td>				
+			<td><?php echo number_format(${'total_vaccine'.$i}); ?> </td>			
+			<td><?php echo compute_percent(${'total_vaccine'.$i},$total_vaccine); ?></td>		
+		</tr>
+		<?php endfor; ?>
+	
+		<tr><td colspan="3"><strong>การแพ้วัคซีน</strong><strong>(n= <?php echo number_format($total_aftervaccine_all1+$total_aftervaccine_all2); ?>)</strong></td></tr>
+		<tr class="para1">
+			<td style="padding-left:10px;">ไม่มี</td>				
+			<td><?php echo number_format($total_aftervaccine1); ?> </td>			
+			<td><?php echo compute_percent($total_aftervaccine_all1,$total_n); ?></td>		
+		</tr>
+		<tr class="para1">
+			<td style="padding-left:10px;">มี</td>				
+			<td><?php echo number_format($total_aftervaccine2); ?> </td>			
+			<td><?php echo compute_percent($total_aftervaccine_all2,$total_n); ?></td>		
+		</tr>
+ 
 	</table>	
 	<hr class="hr1">		
 	<div id="reference"><?php echo $reference?></div>			

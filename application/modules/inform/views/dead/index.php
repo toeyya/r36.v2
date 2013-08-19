@@ -148,7 +148,7 @@ $(document).ready(function(){
 								$whhospital="";
 								 if(@$_GET['amphur_id']){
 										$whhospital="AND hospital_amphur_id ='".@$_GET['amphur_id']."' AND hospital_district_id ='".@$_GET['district_id']."' ";
-										echo form_dropdown('hospital',get_option('hospital_code','hospital_name',"n_hospital where hospital_id<>'' $whhospital ORDER BY hospital_name ASC"),@$_GET['hospital'],'class="styled-select "','-โปรดเลือก-');
+										echo form_dropdown('hospital',get_option('hospital_code','hospital_name',"n_hospital_1 where hospital_id<>'' $whhospital ORDER BY hospital_name ASC"),@$_GET['hospital'],'class="styled-select "','-โปรดเลือก-');
 								 }else{								 										 
 							 ?>
 					 		 <select name="hospital" id="hospital" class="styled-select ">
@@ -161,15 +161,15 @@ $(document).ready(function(){
 
 			</tr>
 			<tr>
-				  <th>ชื่อ/สกุล/เลขที่บัตรประชาชน/เลขที่ Passport :</th>
-				  <td colspan="4"><input name="name" type="text" id="name" size="30" maxlength="300"  class="input_box_patient " value="<?php echo @$_GET['idcard']?>"></td>
+				  <th>ชื่อ/สกุล/บัตรประชาชน/passport :</th>
+				  <td colspan="4"><input name="name" type="text" id="name" size="30" maxlength="300"  class="input_box_patient " value="<?php echo @$_GET['name']?>"></td>
 			</tr>
 
 			<tr> 
-				  <th height="20">วันเริ่มต้น :</th>
-				  <td><input type="text" name="startdate" size="10" class="input_box_patient  datepicker" readonly="" value="<?php echo @$_GET['startdate'] ?>" /></td>
-				  <th height="20" >วันสิ้นสุด : </th>
-				  <td><input type="text" name="enddate" size="10" class="input_box_patient  datepicker" readonly="" value="<?php echo @$_GET['enddate']; ?>" /> </td>				  
+				  <th height="20">วันที่เสียชีวิต:</th>
+				  <td colspan="4"> <input type="text" name="startdate" size="10" class="input_box_patient  datepicker" readonly="" value="<?php echo @$_GET['startdate'] ?>" /> -
+				  	<input type="text" name="enddate" size="10" class="input_box_patient  datepicker" readonly="" value="<?php echo @$_GET['enddate']; ?>" /></td>	  
+				 		  
 			</tr>					
 	  </table>
 <div class="btn_inline">
@@ -177,13 +177,18 @@ $(document).ready(function(){
       	<li><button class="btn_cancel" type="reset" value="reset">&nbsp;&nbsp;&nbsp;</button></li></ul>
 </div>	  
 </form>
+
 </div>
+
 <div id="boxAdd"><a href="inform/dead/form" class="btn_add1" title="เพิ่มข้อมูล"></a></div>
-<?php if(!empty($result)): ?>
+
 			<table width="70%" class="tb_search_Rabies1">
+				<?php
+			if(!empty($result)): ?>
 			  <tr>
 			  <tr>
 					<th width="5%" >ลำดับ</th>
+					<th width="7%">วันที่เสียชีวิต</th>
 					<th width="15%" >เลขประจำตัวประชาชน</th>
 					<th width="18%" >ชื่อ - นามสกุล</th>
 					<th width="14%" >สถานพยาบาล</th>
@@ -196,18 +201,22 @@ $(document).ready(function(){
 			 <?php foreach($result as $item): ?>
 			 <tr>
 			 	<td><?php echo $i;?></td>
+			 	<td><?php echo cld_date2my($item['endate']);?></td>
 			 	<td><?php echo $item['idcard']; ?></td>
 			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
-			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
-			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
-			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
-			 	<td><?php echo $item['firstname'] ?> <?php echo $item['surname'] ?></td>
+			 	<td><? echo $item['hospital_name']?> </td>
+			 	<td><? echo $item['district_name'] ?></td>
+			 	<td><?echo $item['amphur_name'] ?></td>
+			 	<td><? echo $item['province_name'] ?> </td>
+			 	
 			 	<td>
-			 		<a href="inform/form_dead/<?php echo $item['id'] ?>" target="_blank" class="btn_view" name="btn_view" title="ดู"></a>
-			 		<a href="inform/form_dead/<?php echo $item['id']?>" target="_blank" class="btn_edit" title="แก้ไข" name="btn_edit"></a>
+			 		<a href="inform/dead/form_dead/<?php echo $item['id'] ?>" target="_blank" class="btn_view" name="btn_view" title="ดู"></a>
+			 		<a href="inform/dead/form_edit_dead/<?php echo $item['id']?>" target="_blank" class="btn_edit" title="แก้ไข" name="btn_edit"></a>
 			 	</td>
 			 </tr>
 			 <?php ++$i;endforeach; ?>
+			  <?php endif; ?>	
 			 </table>
 			 <?php echo $pagination; ?>			 
-<?php endif; ?>
+
+

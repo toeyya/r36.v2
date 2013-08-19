@@ -12,15 +12,32 @@ class Users extends Admin_Controller
 	}
 	public $level;
 	function index($show="search",$id=FALSE)
-	{	//$this->db->debug=true;
+	{
 				$this->level=$this->session->userdata('R36_LEVEL');				
 				$wh="uid <> '' ";
 				if(!empty($_GET['name']))$wh.=" AND (userfirstname LIKE '%".$_GET['name']."%' OR usersurname LIKE '%".$_GET['name']."%' OR hospital_name LIKE '%".$_GET['name']."%' OR username LIKE '%".$_GET['name']."%')";		
-				if(!empty($_GET['userposition']))	$wh.=" AND userposition = '".$_GET['userposition']."'";		
-						
+				if(!empty($_GET['userposition']))	$wh.=" AND userposition = '".$_GET['userposition']."'";	
+				if(!empty($_GET['userhospital'])){
+					$wh.= " AND userhospital = '".$_GET['userhospital']."'";
+				}else{
+					if(!empty($_GET['useramphur']) && !empty($_GET['userprovince']) && !empty($_GET['userdistrict'])){
+						$wh.=" AND (userdistrict ='".$_GET['userdistrict']."'  
+							   OR userhospital in(select hospital_code from n_hospital_1 
+							   					   where hospital_province_id ='".$_GET['userprovince']."' and hospital_amphur_id ='".$_GET['useramphur']."' and hospital_district_id ='".$_GET['userdistrict']."'))";												
+					}elseif(!empty($_GET['useramphur']) && !empty($_GET['userprovince'])){
+						$wh.=" AND (useramphur ='".$_GET['useramphur']."'  
+							   OR userhospital in(select hospital_code from n_hospital_1 
+							   					   where hospital_province_id ='".$_GET['userprovince']."' and hospital_amphur_id ='".$_GET['useramphur']."'))";												
+					}elseif(!empty($_GET['userprovince'])){
+						$wh.=" AND (userprovince = '".$_GET['userprovince']."' 
+							   OR userhospital in(select hospital_code from n_hospital_1 
+							   					   where hospital_province_id ='".$_GET['userprovince']."'))";						
+					}
+									
+				}
+	 						
 				//****************************show data depend on permission
-					if($this->level=="02" || $this->level=="03" || $this->level=="04"){
-						
+					if($this->level=="02" || $this->level=="03" || $this->level=="04"){						
 						if($this->level=="02"){
 							$col=" hospital_province_id =".$this->session->userdata('R36_PROVINCE');
 						}elseif($this->level=="03" || $this->level=="04"){						
@@ -37,14 +54,14 @@ class Users extends Admin_Controller
 				$data['result'] = $this->user->select("uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition
 									 				 ,province_name,hospital_name,active,confirm_province,confirm_admin
 									 				 ,userlevel,useramphur,userdistrict,agency")
-														    ->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
-																	   LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
-																	   LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code and hospital_code <>''")
-													      ->where($wh)->sort("")->order("uid desc")->get();
-
-					$data['pagination']=$this->user->pagination();				
-					$this->template->append_metadata(js_checkbox());
-					$this->template->build('admin/users/index',$data);					
+												->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
+														LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
+														LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code and hospital_code <>''")
+												->where($wh)->sort("")->order("uid desc")->get();
+				
+				$data['pagination']=$this->user->pagination();				
+				$this->template->append_metadata(js_checkbox());
+				$this->template->build('admin/users/index',$data);					
 	}
 	function form($id=FALSE,$profile=FALSE)
 	{		
@@ -75,13 +92,13 @@ class Users extends Admin_Controller
 	}
 	function save($profile=false)
 	{	//$this->db->debug=true;	
-		if($_POST){
-			
+		if($_POST)
+		{			
 			$userposition = $_POST['userposition'];
 			if(!empty($_POST['id']))$_POST['uid']=$_POST['id'];
 			// กรณีติ๊กจาก เช็คบ็อค ถ้าไม่ใส่ if จะทำให้ข้อมูลบัตรประชาชนหาย			
 			if(!empty($_POST['cardW0']))$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];								
-			$_POST['agency'] =(!empty($_POST['agency'])) ? "สำนักงานสาธารณสุข".$_POST['agency'] : '';		
+			$_POST['agency'] =(!empty($_POST['agency'])) ? $_POST['agency'] : '';		
 			$id = $this->user->save($_POST);			
 			$arr_00 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');		
 			$arr_01 = array('uid'=>$id,'userprovince'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');	

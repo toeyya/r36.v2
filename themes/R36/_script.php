@@ -50,8 +50,13 @@ $(function(){
       $('.datepicker').datepick({format: 'Y-m-d', showOn: 'both', buttonImageOnly: true, buttonImage: 'media/js/jquery.datepick/calendar.gif'
       },$.datepick.regional['th']);  		
 
-//$.colorbox({width:"70%", height:"80%", inline:true,href:"report/schedule"});
+	$('.btn_submit').click(function(){
+		$('#loading').show();
+	})
 });
+$(window).load(function() {
+	$('#loading').hide();
+});	
 </script>
 
 

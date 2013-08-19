@@ -15,10 +15,10 @@
   <tr>	
 	<th>จังหวัด</th>
 	<td>			
-	<?php echo form_dropdown('province',get_option('province_id','province_name','n_province'),$_GET['province'],'class="styled-select" id="prvince"','ทั้งหมด','all');?>
+	<?php echo form_dropdown('province',get_option('province_id','province_name','n_province order by province_name asc'),$_GET['province'],'class="styled-select" id="prvince"','ทั้งหมด','all');?>
 				
 	</td> 
-	<th>ปีที่สัมผัสโรค</th>	
+	<th>ปีที่เสียชีวิต</th>	
 	<td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>			
 	  </tr>  
 	</table>
@@ -26,6 +26,7 @@
 </div>
 </form>
 </div><!--search -->
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
 <? if($cond): ?>
 <div id="report">
 <div id="title">

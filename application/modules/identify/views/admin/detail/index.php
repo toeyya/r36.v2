@@ -13,7 +13,11 @@
 		<th>ประเภท</th>
 		<th>ชื่อเรื่อง</th>
 		<th>โดย</th>
-		<th width="90"><a href="identify/admin/identify_detail/form/<?php echo $identify_id ?>" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>
+		<th width="90">
+			<?php if(permission('identify_places', 'act_create')): ?>
+			<a href="identify/admin/identify_detail/form/<?php echo $identify_id ?>" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+			<?php endif; ?>
+		</th>
 	</tr>
 	<?php foreach($result as $key=>$item): ?>
 	<tr>		
@@ -21,8 +25,13 @@
 		<td><?php echo $item['identify_name'] ?></td>
 		<td><?php echo $item['name'] ?></td>
 		<td><?php echo $item['userfirstname'] ?> <?php echo $item['usersurname'] ?></td>
-		<td><a href="identify/admin/identify_detail/form/<?php echo $identify_id ?>/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
-				 <a href="identify/admin/identify_detail/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ">ลบ</a></td>
+		<td><?php if(permission('identify_places', 'act_update')): ?>
+			<a href="identify/admin/identify_detail/form/<?php echo $identify_id ?>/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
+			<?php endif; ?>
+			<?php if(permission('identify_places', 'act_delete')): ?>
+			<a href="identify/admin/identify_detail/delete/<?php echo $item['id'] ?>" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')" class="btn" title="ลบ">ลบ</a>
+			<?php endif; ?>
+		</td>
 	</tr>
 	<?php endforeach; ?>
 </table>

@@ -63,15 +63,16 @@ $(document).ready(function(){
      $('.img').click(function(){
      	var title = $(this).closest('div').next().html();     	
      	var ya 	  = $('.tbreport').find('tr:eq(0) th').html();
-     	var len = $('.tbreport').find('tr:eq(2)').children().not('.totalx').length;
+     	var len   = $('.tbreport').find('tr:eq(2)').children().not('.totalx').length;
      	var arr = {};
-     	var xa =[],arr_val= new Array(),val= new Array(0,1,2),data=[];
-     	var j=0,k=0;
+     	var xa =[],arr_val= [],val= new Array(),data=[];
+     	var j=0,k=0,i;
      	
-     	for(var x in val){
-     	  arr_val[val[x]] = new Array();
-     	}
-     	
+     	/*for(var x in val){arr_val[val[x]] = new Array();}*/
+     	for(i=0;i<len;i++){
+     		val.push(i);
+     		arr_val[val[i]] = new Array();
+     	}		     	
      	$('.tbreport').find('tr:eq(3)').nextUntil('.tr-graph').prev().each(function(){
      		xa[j] = $(this).find('td:eq(0) strong').html();     		     		
      		arr_val[0][j] = parseFloat($(this).find('td:eq(1) p').html());
@@ -128,7 +129,8 @@ $(document).ready(function(){
   <div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul></div>	
  </form>
 </div>
-<?php if($cond): ?>
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+<?php if(!empty($cond)): ?>
  <div id="report">	
 	<div id="title">				  
 		<p>ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</p>
@@ -187,7 +189,7 @@ $(document).ready(function(){
 		<tr class="tr-graph" height="310">
 		  	<td colspan="<?php echo count($minordetail)+2; ?>">
 		  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
-		  			<div id="container1" class="container" style="height:310;padding-left:10%"></div> 			
+		  			<div id="container1" class="container" style="height:310;"></div> 			
 		  		</div>
 		  	</td>
 		</tr>

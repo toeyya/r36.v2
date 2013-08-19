@@ -89,7 +89,7 @@
 		</tr>
 	<tr>
 		<th width="100">เริ่มวันที่</th>
-		<td><input type="text" name="start_date" value="<?php echo ($rs['start_date']!="0000-00-00") ? DB2Date($rs['start_date'],false) : ''?>" class="datepicker" style="width:100px;" /></td>
+		<td><input type="text" name="start_date" value="<?php echo (!empty($rs['start_date'])) ? DB2Date($rs['start_date'],false) : null?>" class="datepicker" style="width:100px;" /></td>
 	</tr>
 	<tr>
 		<th width="100">สิ้นสุดวันที่</th>

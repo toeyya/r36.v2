@@ -27,12 +27,12 @@ class Log extends Admin_Controller
 		if(!empty($_GET['firstDate']) && !empty($_GET['lastDate'])){
 			$firstDate=date2DB($_GET['firstDate']);		
 			$lastDate=date2DB($_GET['lastDate']);
-			$dd=" and date(n_logs.created) BETWEEN '".$firstDate."' and '".$lastDate."'";
+			$dd=" and CONVERT(VARCHAR(10), n_logs.created, 120) BETWEEN '".$firstDate."' and '".$lastDate."'";
 		}else{
-			$dd=(!empty($_GET['firstDate']))?" and date(n_logs.created)='".date2DB($_GET['firstDate'])."'":"";		
+			$dd=(!empty($_GET['firstDate']))?" and CONVERT(VARCHAR(10), n_logs.created, 120)='".date2DB($_GET['firstDate'])."'":"";		
 		}
-		$cond =(!empty($_GET['province_id']))? "  and userhospital <>'' and substr(userhospital,1,2) =".$_GET['province_id'] :'';
-		$cond .=(!empty($_GET['amphur_id']))? "  and userhospital <>'' and substr(userhospital,3,2) =".$_GET['amphur_id'] :'';
+		$cond =(!empty($_GET['province_id']))? "  and userhospital <>'' and substring(userhospital,1,2) =".$_GET['province_id'] :'';
+		$cond .=(!empty($_GET['amphur_id']))? "  and userhospital <>'' and substring(userhospital,3,2) =".$_GET['amphur_id'] :'';
 		$cond .=(!empty($_GET['userposition'])) ? " and userposition='".$_GET['userposition']."'" :'';
 		if(!empty($_GET['district_id'])){
 			$cond .=" and userhospital in(
@@ -40,11 +40,13 @@ class Log extends Admin_Controller
 							and hospital_province_id ='".$_GET['province_id']."' and hospital_amphur_id ='".$_GET['amphur_id']."')";
 		}
 		$where .=(!empty($_GET['hospital']))? " and userhospital=".$_GET['hospital']:"";		
-		$data['result']=$this->log->select("n_logs.*,userfirstname,usersurname,userposition")
-													 ->join(' LEFT JOIN n_user on n_logs.uid=n_user.uid')
-													 ->where(" n_logs.uid<>'' $name $action $dd $where $cond")
-													 ->sort("")->order("n_logs.created DESC")->get();
-													 
+		$data['result']=$this->log->select("n_logs.id,n_logs.action,n_logs.detail,n_logs.ipaddress,n_logs.uid,userfirstname,usersurname,userposition
+										   ,CONVERT(VARCHAR(19), n_logs.created, 120) AS [created]")
+									->join(' LEFT JOIN n_user on n_logs.uid=n_user.uid')
+									->where(" n_logs.uid<>'' $name $action $dd $where $cond")		
+									->sort("")->order("n_logs.created DESC")->get();
+		
+																 
 		if(@$_GET['action']=="เข้าสู่ระบบ"){
 			$sql="select max(n_logs.created)as created,max(id) as id,uid,action,detail from n_logs 
 						where uid<>'' $dd and action='เข้าใช้ระบบ' group by uid"	;
@@ -54,6 +56,7 @@ class Log extends Admin_Controller
 													 ->where("n_logs.uid<>'' $name $action $dd")
 													 ->groupby("n_logs.uid")
 													 ->sort("")->order("n_logs.created DESC")->get();
+
 		}
 		$data['pagination']=$this->log->pagination();
 		$this->template->build('index',$data);

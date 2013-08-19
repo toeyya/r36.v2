@@ -111,7 +111,7 @@ $(document).ready(function(){
 </form>
 
 </div>
-
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
 <?php if(!empty($cond)): ?>
 <div id="report">
 	<div id="title">				  
@@ -202,8 +202,8 @@ $(document).ready(function(){
 		
   <tr>
     <td align="center"><strong>รวม</strong></td>
-    <td align="center"><strong><?php echo number_format($total3); ?></strong></td>
-    <td align="center"><strong><?php echo number_format($total4); ?></strong></td>
+    <td align="center"><strong><?php echo number_format($total1); ?></strong></td>
+    <td align="center"><strong><?php echo number_format($total2); ?></strong></td>
   </tr>
   <tr class="tr-graph">
   	<td colspan="3">
@@ -285,7 +285,7 @@ $(document).ready(function(){
 </table>
 <hr class="hr1">
 <div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>			
-<div id="btn_printout"><a href="report/index/4<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+<div id="btn_printout"><a href="report/index/4<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>" class="preview"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 <div id="area_btn_print">
 	<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 	<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

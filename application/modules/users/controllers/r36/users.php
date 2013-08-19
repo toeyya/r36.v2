@@ -43,6 +43,7 @@ class Users extends R36_Controller
 			$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];					
 			$_POST['gen_id']=generate_password(20);		
 			$id = $this->user->save($_POST);
+	 				
 			$userposition = $_POST['userposition'];			
 			$arr_00 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');		
 			$arr_01 = array('uid'=>$id,'userprovince'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');	

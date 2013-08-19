@@ -1,5 +1,4 @@
 <?php
-
 class Captcha{
 	
 	public $size;
@@ -12,7 +11,8 @@ class Captcha{
 			$pos = rand(0, strlen($this->chars)-1);
 			$string .= $this->chars{$pos};
 		}
-
+		$CI =& get_instance();
+		$CI->session->set_userdata($this->session,$string);
 		return $string;
 	}
 
@@ -30,10 +30,7 @@ class Captcha{
 		 imagestring($im, $font , $this->size, 5, $string, $black);
 		 imagecopymerge($im, $imBG, 0, 0, 0, 0, 256, 256, 55);
 		 imagepng($im); 
-		 imagedestroy($im);
-		 $CI =& get_instance();		
-		 $CI->session->set_userdata($this->session,$string); 
-		//$_SESSION['captcha'] = $string;
+		 imagedestroy($im); 
 	}
 }
 ?>

@@ -12,7 +12,10 @@
 		<th>ประเภท</th>
 		<th>จำนวนเรื่อง</th>
 		<th>โดย</th>
-		<th width="90"><a href="document/admin/document/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>
+		<th width="90">
+		<?php if(permission('documents', 'act_create')): ?>	
+		<a href="document/admin/document/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+		<?php endif; ?></th>
 	</tr>
 	<?php foreach($result as $key=>$item): ?>
 	<tr>		
@@ -20,8 +23,13 @@
 		<td><a href="document/admin/document_detail/index/<?php echo $item['id']; ?>"><?php echo $item['name'] ?></a></td>
 		<td><?php echo $item['cnt'] ?></td>		
 		<td><?php echo $item['userfirstname'] ?> <?php echo $item['usersurname'] ?></td>
-		<td><a href="document/admin/document/form/<?php echo $item['id'] ?>"   class="btn" title="แก้ไข">แก้ไข</a>
-			<a href="document/admin/document/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a></td>
-	</tr>
+		<td><?php if(permission('documents', 'act_update')): ?>	
+				<a href="document/admin/document/form/<?php echo $item['id'] ?>"   class="btn" title="แก้ไข">แก้ไข</a>
+			<?php endif; ?>
+			<?php if(permission('documents', 'act_delete')): ?>
+				<a href="document/admin/document/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a>
+			<?php endif; ?>
+	 </td>
+	</tr>	
 	<?php endforeach; ?>
 </table>

@@ -71,7 +71,7 @@ padding:1px 0 2px;
 						
 						<tr><th>ชื่อ</th><td><?php echo (is_login()) ? login_data("userfirstname").' '.login_data('usersurname'):''  ?> 					  			   
 						</td></tr>
-						<tr><th></th><td><?php echo img('content/captcha'); ?></td></tr>
+						<tr><th></th><td><img src="img.php" /></td></tr>
 						<tr><th>รหัสลับ</th><td><?php echo form_input('captcha', NULL, 'size="14" class="input-small"'); ?></td></tr>
 						<tr><th></th><td><button type="submit"  class="btn btn-primary">บันทึก</button></td></tr>
 					</table>

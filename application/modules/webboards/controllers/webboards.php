@@ -35,10 +35,12 @@ class Webboards extends Public_Controller
 													->where("webboard_quizs.webboard_category_id = $id and stick = 0")
 													->sort("")->order('webboard_quizs.id desc')->get();*/
 													
-		$data['webboard_quizs'] = $this->quiz->select("webboard_quizs.*,userfirstname,usersurname")->join("INNER JOIN n_user ON user_id=uid")
+		$data['webboard_quizs'] = $this->quiz->select("webboard_quizs.*,CONVERT(VARCHAR(19), webboard_quizs.created, 120) as created,userfirstname,usersurname")->join("INNER JOIN n_user ON user_id=uid")
 										->where("webboard_quizs.webboard_category_id = $id and stick = 0")->sort("")->order('webboard_quizs.id desc')->get();													
-		$data['webboard_quizs_stick'] = $this->quiz->where("webboard_category_id = $id and stick = 1")
-											 ->sort("")->order('id desc')->get();
+		$data['webboard_quizs_stick'] = $this->quiz->select("webboard_quizs.*,CONVERT(VARCHAR(19), webboard_quizs.created, 120) as created,userfirstname,usersurname")
+												   ->join("INNER JOIN n_user ON user_id=uid")
+												   ->where("webboard_category_id = $id and stick = 1")
+											       ->sort("")->order('webboard_quizs.id desc')->get();
 		$data['pagination'] = $this->quiz->pagination();
 		$this->template->build('webboard_topic_list',$data);
 	}
@@ -46,7 +48,7 @@ class Webboards extends Public_Controller
 	function view_topic($id)
 	{
 		//$this->db->debug=TRUE;
-		$data['webboard_quizs'] = $this->quiz->get_row($id);
+		$data['webboard_quizs'] = $this->quiz->select("webboard_quizs.*,CONVERT(VARCHAR(19), webboard_quizs.created, 120) as created")->get_row($id);
 		$data['webboard_category']= $this->category->get_row($data['webboard_quizs']['webboard_category_id']);
 		if($data['webboard_quizs']['user_id']){
 			$data['users'] = $this->user->get_row("uid",$data['webboard_quizs']['user_id']);
@@ -55,7 +57,7 @@ class Webboards extends Public_Controller
 		}
 	
 		$data['counter'] = $this->quiz->counter($id);
-		$data['webboard_answers'] =$this->answer->select("webboard_answers.*,userfirstname,usersurname")
+		$data['webboard_answers'] =$this->answer->select("webboard_answers.*,CONVERT(VARCHAR(19), webboard_answers.created, 120) as created,userfirstname,usersurname")
 											   ->join("LEFT JOIN n_user ON webboard_answers.user_id=n_user.uid")
 											   ->where("webboard_quiz_id = '$id'")
 											   ->sort("")->order("id asc")->get();
@@ -89,13 +91,6 @@ class Webboards extends Public_Controller
 	{
 		
 		if($_POST){
-			if($_POST['captcha']<>$this->session->userdata('captcha'))
-			{
-				set_notify('error','กรอกรหัสไม่ถูกต้อง');
-				redirect($_SERVER['HTTP_REFERER']);
-			}
-			else
-			{
 
 				$_POST['group_id']=(@isset($_POST['group_id']))? $_POST['group_id']:'0';
 				$_POST['ip']=$this->input->ip_address();
@@ -105,7 +100,7 @@ class Webboards extends Public_Controller
 
 				$this->quiz->save($_POST);							
 				set_notify('success',SAVE_DATA_COMPLETE);
-			}
+			
 		}
 		$site_redirect = "webboards/category/".$cat_id;
 		redirect($site_redirect);
@@ -144,13 +139,7 @@ class Webboards extends Public_Controller
 	{
 	
 		if($_POST){
-			if($_POST['captcha']<>$this->session->userdata('captcha'))
-			{
-				set_notify('error','กรอกรหัสไม่ถูกต้อง');
-				redirect($_SERVER['HTTP_REFERER']);
-			}
-			else
-			{
+			
 				/*if($type == "edit"){
 					$webboard_answer = new Webboard_answer($id);
 				}else{
@@ -162,7 +151,7 @@ class Webboards extends Public_Controller
 				$_POST['ip'] =$this->input->ip_address();
 				$this->answer->save($_POST);
 				set_notify('success', 'Save Data Complete');
-			}
+			
 		}
 		$site_redirect = "webboards/view_topic/".$topic_id;
 		redirect($site_redirect);
@@ -294,6 +283,17 @@ order by id asc")->get_page();
 			';
 		}
 	}
+	function check_captcha()
+    {
+        if($_SESSION['captcha']==$_GET['captcha'])
+        {
+            echo "true";
+        }
+        else
+        {
+            echo "false";
+        }
+    }
 	
 }
 

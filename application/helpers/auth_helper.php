@@ -8,9 +8,10 @@ function login($username=FALSE,$password=FALSE,$admin='')
 	}
 	$sql="SELECT * FROM n_user 
 				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
-				WHERE n_user.usermail= ?  AND n_user.userpassword= ? and active='1' ".$admin;
-	
+				WHERE n_user.usermail= ?  AND n_user.userpassword= ? and active='1' ".$admin;	
 	$rs = $CI->db->GetRow($sql,array($username,$password));	
+	array_walk($rs,'dbConvert');
+		
 	
 	if($rs)
 	{
@@ -31,6 +32,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 				
 			if(!empty($rs['userhospital'])){
 				$rec_hospital=$CI->db->GetRow("SELECT hospital_name,hospital_province_id,hospital_amphur_id,hospital_district_id FROM n_hospital_1 WHERE hospital_code= ? ",$rs['userhospital']);			
+				array_walk($rec_hospital,'dbConvert');
 				$CI->session->set_userdata('R36_HOSPITAL_NAME', $rec_hospital['hospital_name']);			
 				$CI->session->set_userdata('R36_HOSPITAL_PROVINCE',$rec_hospital['hospital_province_id']);
 				$CI->session->set_userdata('R36_HOSPITAL_AMPHUR',$rec_hospital['hospital_amphur_id']);
@@ -54,7 +56,7 @@ function is_login()
 		  INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
 		  WHERE uid= ? ";
 	
-	$id = $CI->db->GetOne($sql,$CI->session->userdata('R36_UID'));
+	$id = $CI->db->GetOne($sql,$CI->session->userdata('R36_UID'));	
 	return ($id) ? true : false;
 }
 function is_owner($id)
@@ -73,7 +75,9 @@ function login_data($field)
 {
 	$CI =& get_instance();
 	$sql = 'select '.$field.' from n_user  where uid  = ?';
-	return $CI->db->GetOne($sql,$CI->session->userdata('R36_UID'));
+	
+	$name = $CI->db->GetOne($sql,$CI->session->userdata('R36_UID'));
+	return ThaiToUtf8($name);
 }
 
 function logout()

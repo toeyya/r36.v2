@@ -22,6 +22,7 @@
 		<? } ?></span>					
 	</td>
   </tr>
+  
   <tr>
 	<th>อำเภอ</th>
 	<td><span id="amphurlist">

@@ -14,14 +14,23 @@
 		<th width="27%" >จังหวัด</th>
 		<th>รูปแบบเขตความรับผิดชอบ</th>
 		<th width="20%" >เขตความรับผิดชอบ</th>
-		<th width="10%" ><a href="province/province_new" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>
+		<th width="10%" >
+			<?php if(permission('settings', 'act_create')): ?>
+			<a href="province/province_new" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+			<?php endif; ?>
+		</th>
 	  </tr>
 	  <?php foreach($result as $key=>$item): ?>
 	  <tr>
 	  	<td><?php echo $item['province_name'] ?></td>
 	  	<td><?php echo $item['area_name'] ?></td>
 	  	<td><?php echo $item['level'] ?></td>
-	  	<td><a title="แก้ไข" href="province/form/<?php echo $item['province_id'] ?>/<?php echo $item['area_id'] ?>" class="btn">แก้ไข</a>	  			
+	  	<td><?php if(permission('settings', 'act_update')): ?>
+	  		<a title="แก้ไข" href="province/form/<?php echo $item['province_id'] ?>/<?php echo $item['area_id'] ?>" class="btn">แก้ไข</a>	  			
+	  		<?php endif; ?>
+	  		<?php if(permission('settings', 'act_delete')): ?>
+	  		<a title="ลบ" href="province/delete/<?php echo $item['province_id'] ?>" class="btn" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a>
+	  		<?php endif; ?>
 	  	</td>	  	
 	  </tr>
 	  <?php endforeach; ?>

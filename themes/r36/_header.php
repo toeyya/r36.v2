@@ -36,13 +36,14 @@
                  </ul>
                 </li>
                 <?php     	
-                $result=$this->db->execute("select * from n_document_detail where shw_help='1'"); 
-                  if($result){ ?>
+                $result = $this->db->execute("select * from n_document_detail where shw_help='1'");	
+							
+                if($result){ ?>
                <li class="line_topmenu9"><a href="javascript:void(0);">Help</a>
                  <ul class="submenu9">
                  	<?php     	
                  		  foreach($result as $item){ ?>                		                  	
-                     <li><a href="inform/download/<?php echo $item['id']  ?>"><?php echo $item['title']  ?></a></li>                 
+                     <li><a href="document/download/<?php echo $item['id']  ?>"><?php echo ThaiToUtf8($item['title']);  ?></a></li>                 
                     <?php } ?>                  
                  </ul>
                </li>

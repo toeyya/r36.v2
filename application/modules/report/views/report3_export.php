@@ -7,7 +7,7 @@
 	</div>
 	<table class="tbreport"  border="1" width="864"> 
 		<thead>
-		<tr><td colspan="6" style="text-align:right;">หน่วย:คน</td></tr>
+		<tr><td colspan="6" style="text-align:right;">หน่วย:ราย</td></tr>
 		<tr>
 			<th rowspan="2">ข้อมูล</th>
 			<th colspan="5">ไตรมาส (N=<?php echo number_format($total_n); ?>)</th>
@@ -41,19 +41,14 @@
 			<tr class="para1">
 				<td class="pad-left"><? echo $i ?></td>		
 				<? for($j=1;$j<5;$j++): ?>
-					<td><? echo number_format(${$field.$key.$j}) ?><p class="percentage">(<?php echo compute_percent(${$field.$key.$j},${'q'.$j}); ?>)</p></td>
+					<td><? echo number_format(${$field.$key.$j}) ?><p class="percentage"><?php echo compute_percent(${$field.$key.$j},${'q'.$j}); ?></p></td>
 				<? endfor; ?>
 				<td><? echo number_format(${$field.$key}); ?></td>
 			</tr>
 			<? endforeach; ?>
 		<? endforeach; ?>		
 
-				<tr><td colspan="5"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong>
-					<input type="hidden" name="render" value="container1">
-					<button class="bar-chart img" name="bar"></button>
-					<button class="column-chart img" name="column"></button>
-		    		<button class="pie-chart img" name="pie"></button>					
-				</td></tr>	
+				<tr><td colspan="5"><strong>การกักขัง / ติดตามดูอาการสัตว์</strong></td></tr>	
 				<tr class="para1">
 					<td class="pad-left" colspan="3">กักขังได้ / ติดตามได้</td>	
 				</tr>
@@ -106,12 +101,7 @@
 			  		</div>
 			  	</td>
 			</tr>
-				<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong>
-					<input type="hidden" name="render" value="container11">
-					<button class="bar-chart img" name="bar" ></button>
-					<button class="column-chart img" name="column"></button>
-		    		<button class="pie-chart img" name="pie"></button>					
-				</td></tr>			
+				<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้า</strong></td></tr>			
 				<tr class="para1">
 					<td class="pad-left">ไม่ทราบ</td>	
 					<? for($j=1;$j<5;$j++): ?>					
@@ -150,12 +140,7 @@
 					<? endfor; ?>					
 					<td><? echo number_format($total_vaccinedog_all00); ?></td>								
 				</tr>
-			<tr><td colspan="6"><strong>สาเหตุที่ถูกกัด</strong>
-					<input type="hidden" name="render" value="container8">
-					<button class="bar-chart img"  name="bar"></button>
-					<button class="column-chart img" name="column"></button>
-		    		
-			</td></tr>	
+			<tr><td colspan="6"><strong>สาเหตุที่ถูกกัด</strong></td></tr>	
 				<tr class="para1">
 					<td class="pad-left">ถูกกัดโดยไม่มีสาเหตุโน้มนำ</td>	
 					<?php  for($j=1;$j<5;$j++): ?>
@@ -192,12 +177,7 @@
 					<td><?php echo number_format($total_reason_all00); ?> </td>
 				</tr>				
 				
-				<tr><td colspan="6"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
-						<input type="hidden" name="render" value="container9">
-						<button class="bar-chart img"  name="bar"></button>
-						<button class="column-chart img" name="column"></button>
-			    			
-				</td></tr>	
+				<tr><td colspan="6"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong></td></tr>	
 					<tr class="para1">
 						<td class="pad-left">ไม่ได้ล้าง</td>	
 						<?php  for($j=1;$j<5;$j++): ?>
@@ -234,12 +214,7 @@
 						<?php endfor; ?>
 						<td><?php echo number_format($total_wash_all00); ?> </p></td>			
 					</tr>	
-					<tr><td colspan=""><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
-							<input type="hidden" name="render" value="container10">
-							<button class="bar-chart img"  name="bar"></button>
-							<button class="column-chart img" name="column"></button>
-				    			
-					</td></tr>	
+					<tr><td colspan=""><strong>การใส่ยาฆ่าเชื้อก่อนพบเจ้าหน้าที่สาธารณสุข</strong></td></tr>	
 						<tr class="para1">
 							<td class="pad-left">ไม่ได้ใส่ยา</td>	
 							<?php  for($j=1;$j<5;$j++): ?>
@@ -274,16 +249,11 @@
 							<?php endfor; ?>
 							<td><?php echo number_format($total_drug_all00); ?> </td>				
 						</tr>	
-						<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส</strong>
-							<input type="hidden" name="render" value="container11">
-							<button class="bar-chart img" name="bar" ></button>
-							<button class="column-chart img" name="column"></button>
-				    		<button class="pie-chart img" name="pie"></button>					
-						</td></tr>			
+						<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส</strong></td></tr>			
 						<tr class="para1">
 							<td class="pad-left">ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม</td>	
 							<? for($j=1;$j<5;$j++): ?>					
-							<td><?php echo number_format(${'total_historyprotect10'.$j}); ?><p class="percentage"><?php echo compute_percent(${'total_historyprotect10'.$j},${'q'.$j}); ?></p></td>
+							<td><?php echo number_format(${'total_historyprotect10'.$j}); ?><p><?php echo compute_percent(${'total_historyprotect10'.$j},${'q'.$j}); ?></p></td>
 							<? endfor; ?>					
 							<td><? echo number_format($total_historyprotect_all10); ?></td>
 				
@@ -319,7 +289,45 @@
 							<td><?php echo number_format(${'total_historyprotect00'.$j}); ?><p class="percentage"><?php echo compute_percent(${'total_historyprotect00'.$j},${'q'.$j}); ?></p></td>
 							<? endfor; ?>					
 							<td><? echo number_format($total_historyprotect_all00); ?></td>								
-						</tr>													
+						</tr>	
+					<tr><td colspan="6"><strong>วิธีการฉีดวัคซีน</strong>
+						<input type="hidden" name="render" value="container16">
+						<button class="bar-chart img" name="bar" ></button>
+						<button class="column-chart img" name="column"></button></td>
+					</tr>
+				<?php $vaccine = array(1=>'เข้ากล้ามเนื้อ',2=>'เข้าผิวหนัง',3=>'ไม่ฉีด');?>	
+				<?php for($i=1;$i<4;$i++): ?>	
+				<tr class="para1">
+					<td class="pad-left"><?php echo $vaccine[$i]; ?></td>	
+					<?php  for($j=1;$j<5;$j++): ?>
+					<td><?php echo number_format(${'total_means'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_means'.$i.$j},${'q'.$j}); ?></p></td>
+					<?php endfor; ?>
+					<td><?php echo number_format(${'total_means_all'.$i}); ?> </td>		
+				</tr>
+				<?php endfor; ?>							
+		<tr><td colspan="6"><strong>ชนิดวัคซีน</strong></td></tr>
+		<?php $vaccine = array(1=>'PVRV',2=>'PCEC',3=>'HDCV',4=>'PDEV');?>	
+		<?php for($i=1;$i<5;$i++): ?>	
+		<tr class="para1">
+			<td class="pad-left"><?php echo $vaccine[$i]; ?></td>	
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_vaccine'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine'.$i.$j},${'q'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format(${'total_vaccine_all'.$i}); ?> </td>		
+		</tr>
+		<?php endfor; ?>	
+
+		<tr><td colspan="6"><strong>การแพ้วัคซีน</strong></td></tr>
+		<?php $vaccine = array('1'=>'ไม่มี','2'=>'มี');
+			for($i=1;$i<3;$i++): ?>
+		<tr class="para1">			
+			<td class="pad-left"><?php echo $vaccine[$i] ?></td>	
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_aftervaccine'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_aftervaccine'.$i.$j},${'q'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format(${'total_aftervaccine_all'.$i}); ?></td>		
+		</tr>
+		<?php endfor; ?>												
 		</tbody>				
 	</table>
 			<hr class="hr1">

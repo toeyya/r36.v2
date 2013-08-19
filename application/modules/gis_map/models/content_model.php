@@ -1,0 +1,12 @@
+<?php
+class Content_model extends MY_Model {
+	
+	public $table = 'contents';
+	
+    function __construct()
+    {
+        parent::__construct();
+    }
+	
+}
+?>

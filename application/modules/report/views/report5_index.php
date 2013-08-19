@@ -5,15 +5,10 @@ $(document).ready(function(){
 	$('[name=close]').click(function(){$(this).closest('tr').fadeOut('slow');})		
 	
 	function graph(title,render,t_graph,arr,arr_val)
-	{		       	       	
-        	     	
-        	if(t_graph=="column"){
-        		a="center"      		
-        	}else if(t_graph=="bar"){
-        		a="right";
-        	}	
-       		
-        	//$('#'+render).highcharts({
+	{		       	       	       	     	
+        	if(t_graph=="column"){a="center"      		
+        	}else if(t_graph=="bar"){a="right";}	
+
             chart = new Highcharts.Chart({
             chart: {  
             	renderTo :render,              
@@ -24,7 +19,8 @@ $(document).ready(function(){
             	title:{
             		text: '', style: {color: '#000000'}         		          		
             	}            	
-            },			
+            },	
+           		
             tooltip: {valueSuffix: ''},
             credits: {enabled: false},
             legend: {enabled: false},
@@ -95,6 +91,7 @@ $(document).ready(function(){
 </form>
 
 </div>
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
 <? if(!empty($cond)): ?>
 <div id="report">
 	<div id="title"><p>รายงานการฉีดวัคซีน</p>
@@ -103,16 +100,17 @@ $(document).ready(function(){
  </div>
 	<table class="tbreport" style="width:70%;margin-left:15%;margin-right:15%;">
 		<tr><td colspan="2" style="text-align:right;"><a href="report/index/5<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></td></tr>
-		<tr><td colspan="2" style="text-align:right;">หน่วย:คน</td></tr>
+		<tr><td colspan="2" style="text-align:right;">หน่วย: ราย</td></tr>
 		<tr>
 			<th style="text-align:center">เงื่อนไข</th><th style="text-align:left">จำนวน (N=<?php echo number_format($total_n); ?>)</th>
 		</tr>
 		<tr>
-			<td>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่<strong>ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
-			<td  class="aligncenter"><strong><?php echo $total; ?></strong></td>			
+			<td>1.ผู้สัมผัสโรคพิษสุนัขบ้าที่<strong>ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong><span style="display:none;">ผู้สัมผัสโรคพิษสุนัขบ้าที่ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</span></td>
+			<td  class="aligncenter"><strong><?php echo number_format($total1); ?></strong></td>			
 		</tr>	
 		<tr>
-			<td colspan="2">2.<span> ผู้สัมผัสโรค <strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน </span>
+			<td colspan="2">2.ผู้สัมผัสโรค <strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน 
+				<span style="display:none;">ผู้สัมผัสโรค มีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าภายใน 6 เดือนได้รับการฉีดวัคซีน </span>
 				<input type="hidden" name="render" value="container1">
 				<button class="bar-chart img"  name="bar"></button>
 				<button class="column-chart img" name="column"></button>
@@ -121,19 +119,19 @@ $(document).ready(function(){
 			
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน<label>1 เข็ม</label></span></td>
+			<td><span class="para1">- จำนวน<label> 1 เข็ม</label></span></td>
 			<td class="aligncenter"><span class="none"><?php echo $v6 ?></span><?php echo number_format($v6) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน <label>2 เข็ม</label></span></td>
+			<td><span class="para1">- จำนวน<label> 2 เข็ม</label></span></td>
 			<td  class="aligncenter"><span class="none"><?php echo $v7 ?></span><?php echo number_format($v7) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน<label>3 เข็ม</label></span></td>
+			<td><span class="para1">- จำนวน<label> 3 เข็ม</label></span></td>
 			<td  class="aligncenter"><span class="none"><?php echo $v8 ?></span><?php echo number_format($v8) ?></td>
 		</tr>
 		<tr>
-			<td><span class="para1">- จำนวน<label>4 เข็ม</label></span></td>
+			<td><span class="para1">- จำนวน<label> 4 เข็ม</label></span></td>
 			<td  class="aligncenter"><span class="none"><?php echo $v9 ?></span><?php echo number_format($v9) ?></td>
 		</tr>
 		<tr>
@@ -152,7 +150,8 @@ $(document).ready(function(){
 		  	</td>
 		</tr>		
 		<tr>
-			<td colspan="2"><strong>3.ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>เกิน 6 เดือน</strong> ได้รับการฉีดวัคซีน</strong>
+			<td colspan="2">3.ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>เกิน 6 เดือน</strong> ได้รับการฉีดวัคซีน
+				<span style="display:none;">ผู้สัมผัสโรคมีประวัติเคยฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าเกิน 6 เดือนได้รับการฉีดวัคซีน</span>
 				<input type="hidden" name="render" value="container2">
 				<button class="bar-chart img"  name="bar"></button>
 				<button class="column-chart img" name="column"></button>
@@ -191,7 +190,8 @@ $(document).ready(function(){
 		  	</td>
 		</tr>		
 		<tr>
-			<td colspan="2"><strong>4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์<strong>ไม่ตายภายใน 10 วัน</strong> โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</strong>
+			<td colspan="2">4. ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์<strong>ไม่ตายภายใน 10 วัน</strong> โดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้
+				<span style="display:none;">ผู้สัมผัสที่ถูกสุนัขหรือแมวกัดแล้วสัตว์ไม่ตายภายใน 10 วันโดยผู้สงสัยว่าสัมผัสโรค ได้รับการฉีดวัคซีนครั้งนี้</span>
 				<input type="hidden" name="render" value="container3">
 				<button class="bar-chart img"  name="bar"></button>
 				<button class="column-chart img" name="column"></button>
@@ -231,11 +231,13 @@ $(document).ready(function(){
 		  	</td>
 		</tr>		
 		<tr>
-			<td>5. ผู้สัมผัสโรคพิษสุนัขบ้า<strong>ฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong></td>
-			<td><strong><?php echo number_format($total5) ?></strong></td>
+			<td>5. ผู้สัมผัสโรคพิษสุนัขบ้า<strong>ฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</strong>
+				<span style="display:none">ผู้สัมผัสโรคพิษสุนัขบ้าฉีดวัคซีนไม่ครบเนื่องจากไม่สามารถติดตามได้หรือไม่ประสงค์จะฉีดต่อ</span></td>
+			<td class="aligncenter"><strong><?php echo number_format($total5) ?></strong></td>
 		</tr>
 		<tr>
-			<td colspan="2"><strong>6. ชนิดของวัคซีน (โด๊ส)</strong>
+			<td colspan="2">6. ชนิดของวัคซีน (โด๊ส)
+				<span style="display:none">ชนิดของวัคซีน (โด๊ส)</span>
 				<input type="hidden" name="render" value="container4">
 				<button class="bar-chart img"  name="bar"></button>
 				<button class="column-chart img" name="column"></button>
@@ -266,6 +268,45 @@ $(document).ready(function(){
 		  	<td colspan="3">
 		  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
 		  			<div id="container4" class="container"></div> 			
+		  		</div>
+		  	</td>
+		</tr>
+		<tr>
+			<td colspan="2">7. จำนวนการรับวัคซีนของเคสที่ปิดแล้ว
+				<span style="display:none">จำนวนการรับวัคซีนของเคสที่ปิดแล้ว</span>
+				<input type="hidden" name="render" value="container5">
+				<button class="bar-chart img"  name="bar"></button>
+				<button class="column-chart img" name="column"></button>
+	    		<button class="pie-chart img" name="pie"></button>				
+			</td>			
+		<tr>
+			<td><span class="para1">- จำนวน<label> 1 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v26; ?></span><?php echo number_format($v26) ?></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน<label> 2 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v27; ?></span><?php echo number_format($v27) ?></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน <label>3 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v28; ?></span><?php echo number_format($v28) ?></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน <label>4 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v29; ?></span><?php echo number_format($v29) ?></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน<label> 5 เข็ม</label></span></td>
+			<td  class="aligncenter"><span class="none"><?php echo $v30; ?></span><?php echo number_format($v30) ?></td>
+		</tr>
+		<tr>
+			<td  class="aligncenter"><strong>รวม</strong></td>
+			<td  class="aligncenter"><strong><?php echo number_format($total7) ?></strong></td>
+		</tr>
+		<tr class="tr-graph">
+		  	<td colspan="3">
+		  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+		  			<div id="container5" class="container"></div> 			
 		  		</div>
 		  	</td>
 		</tr>

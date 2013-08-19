@@ -33,6 +33,8 @@
 	<?php endforeach; ?>
 </table>
 <br>
+<?php if(permission('webboards', 'act_update')):?>
 <input type="submit" value="บันทึก">
+<?php endif;?>
 </form>
 <?php //echo $pagination()?>

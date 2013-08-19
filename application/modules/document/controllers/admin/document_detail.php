@@ -32,11 +32,13 @@ class Document_detail extends Admin_Controller
 		redirect('document/admin/document_detail/index/'.$_GET['document_id']);
 	}
 	function save()
-	{
-		//$this->db->debug=true;		
-		if($_POST){
-			$_POST['user_id']=(!empty($_POST['user_id']))? $_POST['user_id']:$this->session->userdata('R36_UID');
-			$id=$this->detail->save($_POST);
+	{				
+		if($_POST)
+		{	
+			$_POST['shw_help'] =(empty($_POST['shw_help'])) ? '0':'1';
+			$_POST['user_id']  =(!empty($_POST['user_id']))? $_POST['user_id']:$this->session->userdata('R36_UID');			
+			
+			$id=$this->detail->save($_POST);			
 			if(!empty($_FILES['image']['name']))
 			{					
 				if(image_extension(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION))){	
@@ -53,8 +55,7 @@ class Document_detail extends Admin_Controller
 					$this->detail->delete_file($id,'uploads/document','file');
 					$this->detail->save(array('id'=>$id,'file'=>$this->detail->upload($_FILES['file'],'uploads/document')));					
 				}
-			}
-					
+			}					
 			set_notify('success',SAVE_DATA_COMPLETE);
 		}
 		redirect('document/admin/document_detail/index/'.$_POST['document_id']);

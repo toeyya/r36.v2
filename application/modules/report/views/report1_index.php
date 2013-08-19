@@ -35,8 +35,8 @@ $(document).ready(function(){
             credits: {enabled: false},
             legend: {enabled: false},
             plotOptions: {            	
-            	bar: { dataLabels: {enabled: true,format: '<b>{point.name}</b>: {point.percentage:.2f} %'}},            	
-            	column: { dataLabels: {enabled: true,format: '<b>{point.name}</b>: {point.percentage:.2f} %'}},
+            	bar: { dataLabels: {enabled: true}},            	
+            	column: { dataLabels: {enabled: true}},
             	pie:{ dataLabels: {enabled: true, format: '<b>{point.name}</b>: {point.percentage:.2f} %'}}
                
             },           
@@ -136,7 +136,9 @@ $(document).ready(function(){
 		$('#frm_report').submit();
 	})
 	
+
 });	
+
 </script>
 <div id="title">ข้อมูลการสัมผัสโรค - ภาพรวม</div>
 <div id="search">
@@ -153,8 +155,8 @@ $(document).ready(function(){
   <div class="btn_inline"><ul><li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li></ul></div>	
 </form>
 </div>
-
-<?php if($cond): ?>
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+<?php if(!empty($cond)): ?>
 <div id="report">
 <div id="title">				  
 	<p>รายงานผู้สัมผัสโรคในภาพรวม</p>
@@ -162,11 +164,6 @@ $(document).ready(function(){
 	<p>จังหวัด <?php echo $textprovince;?>  อำเภอ <?php echo $textamphur;?>  ตำบล <?php echo $textdistrict ?></p>
 	<p>สถานบริการ <?php echo $texthospital;?>  ปี  <?php echo $textyear_start;?>  เดือน  <?php echo $textmonth_start;?></p>				
 </div>
-
-
-<canvas id="canvas" width="1000px" height="600px" style="display:none;"></canvas> 
-
-
 <div id="multiAccordion" style="width:80%;margin-left:10%;margin-right:10%">
     <h3><a href="javascript:void(0);">ส่วนที่ 1 : ข้อมูลทั่วไป </a></h3>
     <div id="section1">
@@ -246,17 +243,17 @@ $(document).ready(function(){
 </tr>		
 		
 		<tr><td colspan="3"><strong>อาชีพขณะสัมผัสโรค</strong>		
-			<input type="hidden" name="render" value="container3">
+			<!--<input type="hidden" name="render" value="container3">
 			<button class="bar-chart img"  name="bar"></button>
 			<button class="column-chart img" name="column"></button>
-    		<button class="pie-chart img" name="pie"></button>				
+    		<button class="pie-chart img" name="pie"></button>-->				
 		</td></tr>
 <?php $occupationname = array(1=>'นักเรียน นักศึกษา',2=>'ในปกครอง',3=>'เกษตรกรทำนา ทำสวน ',4=>'ข้าราชการ',5=>'กรรมกร'
 							 ,6=>'รับจ้าง( เช่น พนักงานบริษัท,ดารานักแสดง )',7=>'ค้าขาย',8=>'งานบ้าน',9=>'ทหาร ตำรวจ',10=>'ประมง'
 							 ,11=>'ครู',12=>'เลี้ยงสัตว์ / จับสุนัข ',13=>'นักบวช / ภิกษุสามเณร ',14=>'ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ '
 							 ,15=>'สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์ หรือผู้ช่วย ผู้ที่ทำงานในห้องปฎิบัติการโรคพิษสุนัขบ้า',16=>'อาสาสมัครฉีดวัคซีนสุนัข'
 							 ,17=>'เจ้าหน้าที่สวนสัตว์',18=>'ไปรษณีย์',19=>'ป่าไม้',20=>'พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า ',21=>'อื่นๆ'); ?>
-		<?php  for($i=1;$i<11;$i++):?>			
+		<?php  for($i=1;$i<22;$i++):?>			
 		<tr class="para1">
 			<td class="pad-left"><? echo $occupationname[$i];?></td>
 			<td><?php echo number_format(${'total_occupationname'.$i}); ?></td>
@@ -270,6 +267,18 @@ $(document).ready(function(){
   		</div>
   	</td>
 </tr>
+		<tr><td colspan="3"><strong>อาชีพผู้ปกครอง</strong></td></tr>		
+		<?php $name=array(1=>"เกษตร ทำนา ทำสวน",2=>"ข้าราชการ",3=>"กรรมกร",4=>"รับจ้าง (เช่น พนักงานบริษัท/ดารา/นักแสดง ฯลฯ)"
+		,5=>"ค้าขาย",6=>"งานบ้าน",7=>"ทหาร ตำรวจ",8=>"ประมง",9=>"ครู",10=>"เลี้ยงสัตว์ / จับสุนัข",11=>"นักบวช / ภิกษุสามเณร"
+		,12=>"ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ",13=>"สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า"
+		,14=>"อาสาสมัครฉีดวัคซีนสุนัข",15=>"เจ้าหน้าที่สวนสัตว์",16=>"ไปรษณีย์",17=>"ป่าไม้",18=>"พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า",19=>"อื่นๆ",20=>"ไม่ระบุ"); ?>	
+		<?php  for($i=1;$i<21;$i++):?>
+		<tr class="para1">
+			<td class="pad-left"><? echo $name[$i];?></td>
+			<td><?php echo number_format(${'total_occparentsname'.$i}); ?></td>
+			<td><?php echo compute_percent(${'total_occparentsname'.$i},$total_n); ?></td>
+		</tr>		
+		<?php endfor; ?>
 		</table>		
 		<hr class="hr1">		
 		<div id="btn_printout">							
@@ -387,26 +396,26 @@ $(document).ready(function(){
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">มีเลือดออก</td>
-					<td><?php echo number_format($lick_blood); ?></td>
-					<td><?php echo compute_percent($lick_blood,$totaltouch); ?></td>	
+					<td><?php echo number_format($claw_blood); ?></td>
+					<td><?php echo compute_percent($claw_blood,$totaltouch); ?></td>	
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">ไม่มีเลือดออก</td>
-					<td><?php echo number_format($lick_noblood); ?></td>
-					<td><?php echo compute_percent($lick_noblood,$totaltouch); ?></td>	
+					<td><?php echo number_format($claw_noblood); ?></td>
+					<td><?php echo compute_percent($claw_noblood,$totaltouch); ?></td>	
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left" colspan="3">ถูกเลีย / ถูกข่วน</td>
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">ที่มีแผล</td>
-					<td><?php echo number_format($claw_blood); ?></td>
-					<td><?php echo compute_percent($claw_blood,$totaltouch); ?></td>	
+					<td><?php echo number_format($lick_blood); ?></td>
+					<td><?php echo compute_percent($lick_blood,$totaltouch); ?></td>	
 			    </tr>
 				<tr class="para1">
 					<td class="pad-left2">ที่ไม่มีแผล</td>
-					<td><?php echo number_format($claw_noblood); ?></td>
-					<td><?php echo compute_percent($claw_noblood,$totaltouch); ?></td>	
+					<td><?php echo number_format($lick_noblood); ?></td>
+					<td><?php echo compute_percent($lick_noblood,$totaltouch); ?></td>	
 			    </tr>			    
 				<tr class="para1">
 					<td class="pad-left">กินอาหารดิบหรือดื่มน้ำที่สัมผัสเชื้อโรคพิษสุนัขบ้า</td>
@@ -673,7 +682,7 @@ $(document).ready(function(){
 			<table class="tbreport">
 				<tr>
 					<th>การดูแลบาดแผลและประวัติการได้รับวัคซีน</th>
-					<th>จำนวน (N=<?php echo $total_n; ?>)</th>
+					<th>จำนวน (N=<?php echo number_format($total_n); ?>)</th>
 					<th>ร้อยละ</th>
 				</tr>
 				<tr ><td colspan="3"><strong>การล้างแผลก่อนพบเจ้าหน้าที่สาธารณสุข</strong>
@@ -812,8 +821,8 @@ $(document).ready(function(){
 				</tr>
 				<tr class="para1">
 					<td class="pad-left">เคยฉีด 3 เข็มหรือมากกว่า</td>
-					<td><?php echo number_format($total_protect20); ?></td>
-					<td><?php echo compute_percent($total_protect20,$total_n); ?></td>		
+					<td><?php echo number_format($total_protect20+$total_protect21+$total_protect22); ?></td>
+					<td><?php echo compute_percent($total_protect20+$total_protect21+$total_protect22,$total_n); ?></td>		
 				</tr>
 				<tr class="para1">
 					<td class="pad-left">ไม่ระบุ</td>
@@ -869,7 +878,7 @@ $(document).ready(function(){
 			<table class="tbreport">
 				<tr>
 					<th>การฉีดอิมมูโนโกลบุลินและวัคซีน</th>
-					<th>จำนวน (N=<?php echo $total_n;  ?>)</th>
+					<th>จำนวน (N=<?php echo number_format($total_n);  ?>)</th>
 					<th>ร้อยละ</th>
 				</tr>
 				<tr ><td colspan="5"><strong>อิมมูโนโกลบุลิน (RIG)</strong>
@@ -900,7 +909,7 @@ $(document).ready(function(){
   		</div>  		
   	</td>
 </tr>					
-				<tr ><td colspan="3"><strong>ชนิดของอิมมูโนโกลบูลิน (RIG) </strong><strong> (n=<? echo $total_rig_all; ?>)</strong>
+				<tr ><td colspan="3"><strong>ชนิดของอิมมูโนโกลบูลิน (RIG) </strong><strong> (n=<? echo number_format($total_rig_all); ?>)</strong>
 						<input type="hidden" name="render" value="container19">
 						<button class="bar-chart img" name="bar"></button>
 						<button class="column-chart img" name="column"></button>
@@ -1040,12 +1049,75 @@ $(document).ready(function(){
   		</div>
   	</td>
 </tr>
+		<tr><td colspan="3"><strong>วิธีการฉีดวัคซีน</strong><strong>(n= <?php echo number_format($total_means); ?>)</strong>
+			<input type="hidden" name="render" value="container23">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+			<button class="pie-chart img" name="pie" ></button>				
+		</td></tr>			
+		<?php $vaccine = array(1=>'เข้ากล้ามเนื้อ',2=>'เข้าผิวหนัง',3=>'ไม่ฉีด');?>	
+		<?php for($i=1;$i<4;$i++): ?>	
+		<tr class="para1">
+			<td class="pad-left"><?php echo $vaccine[$i]; ?></td>				
+			<td><?php echo number_format(${'total_means'.$i}); ?> </td>			
+			<td><?php echo compute_percent(${'total_means'.$i},$total_means); ?></td>		
+		</tr>
+		<?php endfor; ?>
+ <tr class="tr-graph">
+  	<td colspan="3">
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container23"  class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>		
+		<tr><td colspan="3"><strong>ชนิดวัคซีน</strong><strong>(n= <?php echo number_format($total_vaccine); ?>)</strong>
+			<input type="hidden" name="render" value="container24">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+			<button class="pie-chart img" name="pie" ></button>				
+		</td></tr>			
+		<?php $vaccine = array(1=>'PVRV',2=>'PCEC',3=>'HDCV',4=>'PDEV');?>	
+		<?php for($i=1;$i<5;$i++): ?>	
+		<tr class="para1">
+			<td class="pad-left"><?php echo $vaccine[$i]; ?></td>				
+			<td><?php echo number_format(${'total_vaccine'.$i}); ?> </td>			
+			<td><?php echo compute_percent(${'total_vaccine'.$i},$total_vaccine); ?></td>		
+		</tr>
+		<?php endfor; ?>
+ <tr class="tr-graph">
+  	<td colspan="3">
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container24"  class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>		
+		<tr><td colspan="3"><strong>การแพ้วัคซีน</strong><strong>(n= <?php echo number_format($total_aftervaccine_all1+$total_aftervaccine_all2); ?>)</strong>
+			<input type="hidden" name="render" value="container25">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+			<button class="pie-chart img" name="pie" ></button>		
+		</td></tr>
+		<tr class="para1">
+			<td class="pad-left">ไม่มี</td>				
+			<td><?php echo number_format($total_aftervaccine1); ?> </td>			
+			<td><?php echo compute_percent($total_aftervaccine_all1,$total_n); ?></td>		
+		</tr>
+		<tr class="para1">
+			<td class="pad-left">มี</td>				
+			<td><?php echo number_format($total_aftervaccine2); ?> </td>			
+			<td><?php echo compute_percent($total_aftervaccine_all2,$total_n); ?></td>		
+		</tr>
+ <tr class="tr-graph">
+  	<td colspan="3">
+  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container25"  class="container"></div> 			
+  		</div>   		
+  	</td>
+</tr>
 			</table>	
 			<hr class="hr1">		
 			<div id="reference"><?php echo $reference?></div>			
-			<div id="btn_printout">
-				
-			<a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
+			<div id="btn_printout"><a href="report/index/1<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 			<div id="area_btn_print">
 				<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 				<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">

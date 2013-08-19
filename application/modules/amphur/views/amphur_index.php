@@ -11,7 +11,11 @@
 		<th>จังหวัด</th>
 		<th>โค้ดอำเภอ</th>
 		<th>อำเภอ</th>		
-		<th width="10%"></th>
+		<th width="10%">			
+			<?php if(permission('setting', 'act_create')):?>
+				<a href="amphur/form" name="btn_add" class="btn">เพิ่มรายการ</a>
+			<?php endif; ?>
+		</th>
 	  </tr>
 	  
 	  <?php foreach($result as $key=>$item): ?>
@@ -20,8 +24,12 @@
 	  	<td><?php echo $item['amphur_id'] ?></td>
 	  	<td><?php echo $item['amphur_name'] ?></td>
 	  	<td>
+	  		<?php if(permission('settings', 'act_update')):?>
 	  		<a title="แก้ไข" href="amphur/form/<?php echo $item['amp_pro_id']?>" class="btn">แก้ไข</a>
-	  		
+	  		<?php endif; ?>
+	  		<?php if(permission('settings', 'act_delete')):?>
+	  		<a title="ลบ" href="amphur/delete/<?php echo $item['amp_pro_id']?>/<?php echo $item['amphur_id'] ?>/<?php echo $item['province_id'] ?>" class="btn" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a>
+	  		<?php endif; ?>
 	  	</td>	  	
 	  </tr>
 	  <?php endforeach; ?>

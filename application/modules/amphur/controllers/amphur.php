@@ -12,8 +12,8 @@ class Amphur extends Admin_Controller
 		$where.=(!empty($_GET['province_id']))? " and n_amphur.province_id=".$_GET['province_id']:'';
 		$where.=(!empty($_GET['amphur_name'])) ? " and amphur_name LIKE '%".$_GET['amphur_name']."%'":'';
 		$data['result']=$this->amphur->select("amphur_name,province_name,amphur_id,n_province.province_id,amp_pro_id")
-															 ->join("left join n_province on n_province.province_id=n_amphur.province_id")
-															 ->where($where)->sort("")->order("amp_pro_id asc")->get();		
+									 ->join("left join n_province on n_province.province_id=n_amphur.province_id")
+									 ->where($where)->sort("")->order("amp_pro_id asc")->get();		
 		$data['pagination']=$this->amphur->pagination();
 		$this->template->build('amphur_index',$data);
 	}
@@ -29,7 +29,15 @@ class Amphur extends Admin_Controller
 		redirect('amphur/index');
 		
 	}
-	function delete(){
+	function delete($id,$amphur_id,$province_id){
+	    if($id){
+	    	if(check_delete_setting("amphur",$province_id,$amphur_id)){
+	    		$this->amphur->delete($id);
+	    		set_notify('success', DELETE_DATA_COMPLETE);
+	    	}else{
+	    		set_notify('success','ข้อมูลนี้ถูกใช้อยู่ ไม่สามารถลบรายการนี้ได้');
+	    	}		
+	    }	
 	    redirect('amphur/index');
 	}
 	

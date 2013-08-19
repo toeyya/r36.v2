@@ -11,8 +11,13 @@
 		<th>แสดง</th>
 		<th>ประเภทเอกสารเผยแพร่</th>
 		<th>ชื่อเรื่อง</th>
-		<th>โดย</th>
-		<th width="90"><a href="document/admin/document_detail/form/<?php echo $document_id ?>" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>
+		<th>โดย</th>		
+		<th width="90">
+			<?php if(permission('documents', 'act_create')): ?>	
+			<a href="document/admin/document_detail/form/<?php echo $document_id ?>" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+			<?php endif; ?>
+		</th>
+	
 	</tr>
 	<?php foreach($result as $key=>$item): ?>
 	<tr>		
@@ -20,8 +25,13 @@
 		<td><?php echo $item['name'] ?></td>
 		<td><?php echo $item['title'] ?></td>
 		<td><?php echo $item['userfirstname'] ?> <?php echo $item['usersurname'] ?></td>
-		<td><a href="document/admin/document_detail/form/<?php echo $document_id ?>/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
-		    <a href="document/admin/document_detail/delete/<?php echo $item['id'] ?>?document_id=<? echo $document_id ?>" class="btn" title="ลบ" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a></td>
+		<td><?php if(permission('documents', 'act_update')): ?>
+			<a href="document/admin/document_detail/form/<?php echo $document_id ?>/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
+			<?php endif; ?>
+			<?php if(permission('documents', 'act_delete')): ?>		    
+		    <a href="document/admin/document_detail/delete/<?php echo $item['id'] ?>?document_id=<? echo $document_id ?>" class="btn" title="ลบ" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a>
+			<?php endif; ?>	
+		</td>
 	</tr>
 	<?php endforeach; ?>
 </table>

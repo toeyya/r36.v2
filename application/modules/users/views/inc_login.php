@@ -18,7 +18,7 @@
 			   <?php 
 			   $link="users/r36/users/index/".$this->session->userdata('R36_UID'); 
 			   if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"): ?>
-			   <?php $link="inform/index"; ?>
+			   	<?php $link="inform/index"; ?>
 			   <?php endif; ?>			
 			   <div style="text-align:center;"><a href="<? echo $link ?>" target="_blank" class="btn btn-mini btn-info">โปรแกรม ร.36</a>  
 			  	<?php //if($this->session->userdata('login_gis')=="1"): ?>

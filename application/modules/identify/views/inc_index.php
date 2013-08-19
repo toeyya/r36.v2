@@ -14,7 +14,15 @@
 			$rs = $this->detail->where("identify_id=".$item['id'])->get();
 				foreach($rs as $detail){
 			?>
-			<li><?php echo $detail['name'] ?></li>
+			<li><span style="font-weight: bold"><?php echo $detail['name'] ?></span><br/>
+				ที่อยู่ :<?php echo $detail['address'] ?><br/>
+				เบอร์โทรศัพท์:<?php echo $detail['telephone'] ?><br/>
+				
+			</li>
+			
+				
+				
+		
 			<?php } ?>
 		</ul>
 	</li>

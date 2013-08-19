@@ -39,10 +39,12 @@ $active_record = TRUE;
 
 
 
-$db['default']['hostname'] = "192.168.1.51";
+//$db['default']['hostname'] = "192.168.1.51\R36";
+//$db['default']['hostname'] = "192.168.1.38\R36";
+$db['default']['hostname'] = "(local)\R36";
 $db['default']['username'] = "sa";
 $db['default']['password'] = "1234";
-$db['default']['database'] = "R36";
+$db['default']['database'] = "c1r36";
 $db['default']['dbdriver'] = "mssqlnative";
 
 
@@ -56,14 +58,14 @@ $db['default']['dbdriver'] = "mysql";*/
 
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = TRUE;
+$db['default']['db_debug'] = FALSE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_unicode_ci";
 
-/*$db['default']['char_set'] = "Thai_CI_AS";
-$db['default']['dbcollat'] = "Thai_CI_AS";*/
+//$db['default']['char_set'] = "Thai_CI_AS";
+//$db['default']['dbcollat'] = "Thai_CI_AS";
 
 
 

@@ -45,9 +45,16 @@ $(document).ready(function(){
 	  ?>
 	  	<tr>
 	  		<td><?php echo $recprovince_name; ?></td>
-	  		<td><?php echo $recamphur_name; ?></td>			
+	  		<td><?php echo ThaiToUtf8($recamphur_name); ?></td>			
 			<td><?php echo $item['district_name']?></td>
-			<td><a href="district/form/<?php echo $item['tam_amp_id']?>" class="btn" title="แก้ไข">แก้ไข</a> </td>
+			<td>
+				<?php if(permission('settings', 'act_update')):?>
+				<a href="district/form/<?php echo $item['tam_amp_id']?>" class="btn" title="แก้ไข">แก้ไข</a> 
+	  			<?php endif; ?>
+	  			<?php if(permission('settings', 'act_delete')):?>
+	  			<a href="district/delete/<?php echo $item['tam_amp_id']?>/<?php echo $item['province_id'] ?>/<?php echo $item['amphur_id'] ?>/<?php echo $item['district_id'] ?>" class="btn" title="ลบ">ลบ</a>
+	  			<?php endif; ?>
+	  		</td>
 	  </tr>
 	  <? 
 	  }	 

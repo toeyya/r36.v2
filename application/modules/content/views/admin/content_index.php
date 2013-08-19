@@ -11,7 +11,10 @@
 		<th width="60">แสดง</th>
 		<th>หัวข้อ</th>
 		<th width="120">โดย</th>
-		<th width="90"><a class="btn" href="content/admin/content/form/<?php echo $category_id ?>">เพิ่มรายการ</a></th>
+		<th width="90">
+			
+			<a class="btn" href="content/admin/content/form/<?php echo $category_id ?>">เพิ่มรายการ</a>
+		</th>
 	</tr>
 	<?php foreach($result as $content): ?>
 	<tr <?php echo cycle()?>>

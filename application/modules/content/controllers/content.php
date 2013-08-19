@@ -11,14 +11,15 @@ class Content extends Public_Controller
 
 		
 	}
-	function index($category_id,$layout=FALSE){	
-		$data['contents']=$this->content
-							   ->where("category_id='".$category_id."' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")
+	function index($category_id,$layout=FALSE){
+		
+		$data['contents']=$this->content->select("contents.*,CONVERT(VARCHAR(10), start_date, 120) AS [start_date]")
+							   ->where("category_id='".$category_id."' and start_date <= CONVERT(date, getdate()) and (end_date >= CONVERT(date, getdate()) or end_date is null) and active = '1'")
 							   ->sort("")->order("id desc")->limit(20)->get();
 		$data['pagination']=$this->content->pagination();	
 		$data['category_id']=$category_id;
 		$data['category']=$this->cat->get_row($category_id);
-		if($category_id=="8"){
+		if($category_id=="8"){// ติดต่อเรา
 			$data['contents']=$this->content->get_row("category_id",$category_id);
 			$this->template->build('content_contact',$data);
 		}else if($data['category']['structure']=="page"){
@@ -33,7 +34,7 @@ class Content extends Public_Controller
 	}
 	
 	function view($category_id,$id){
-		$data['content']=$this->content->get_row($id);
+		$data['content']=$this->content->select("contents.*,CONVERT(VARCHAR(10), start_date, 120) AS [start_date]")->get_row($id);
 		$data['category_id']=$category_id;
 		$data['category'] = $this->cat->get_row($category_id);
 		$this->template->build('view',$data);
@@ -55,8 +56,8 @@ class Content extends Public_Controller
 	
 
 	function view_all($id)
-	{
-		$data['contents']=$this->content->where("category_id=$id and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
+	{//sysdate()
+		$data['contents']=$this->content->select("contents.*,CONVERT(VARCHAR(10), start_date, 120) AS [start_date]")->where("category_id=$id and start_date <= CONVERT(date, getdate()) and (end_date >= CONVERT(date, getdate()) or end_date is null)  and active = '1'")->sort("")
 						->sort("")->order("id desc")->limit(20)->get();						
 		$data['category']  = $this->cat->get_row($id);
 		$data['pagination'] = $this->content->pagination();
@@ -64,15 +65,14 @@ class Content extends Public_Controller
 	}	
 	function inc_knowledge(){
 		//$this->db->debug=TRUE;	
-		$data['contents']=$this->content->where("category_id='7' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
+		$data['contents']=$this->content->where("category_id='7' and start_date <= CONVERT(date, getdate()) and (end_date >= CONVERT(date, getdate()) or end_date is null) and active = '1'")->sort("")
 								        ->sort("")->order("id desc")->limit(4)->get();
 		$data['category_id'] ="7";
 		$this->load->view('inc_knowledge',$data);		
 	}
 	function inc_information()
 	{//GETDATE()
-		//$this->db->debug = true;
-		$data['contents']=$this->content->where("category_id='6' and start_date <= date(sysdate()) and (end_date >= date(sysdate()) or end_date = date('0000-00-00')) and active = '1'")->sort("")
+		$data['contents']=$this->content->where("category_id='6' and start_date <= CONVERT(date, getdate()) and (end_date >= CONVERT(date, getdate()) or end_date is null) and active = '1'")->sort("")
 										->sort("")->order("id desc")->limit(10)->get();
 		$data['category_id'] ="6";
 		$this->load->view('inc_information',$data);

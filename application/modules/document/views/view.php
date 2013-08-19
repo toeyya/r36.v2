@@ -13,7 +13,7 @@
 	<span style="margin:0 5px;"><i class="icon-calendar"></i> <? echo db_to_th($rs['created']) ?><span>
 </div>
 	<?php echo $rs['detail'];?>
-	<?php if($rs['file']):  ?>
+	<?php if(!empty($rs['file'])):  ?>
 		<div class="attach">
 		<h2>เอกสารแนบ</h2>
 		<a href="document/download/<?php echo $rs['id']; ?>" target="_blank"><span class="btn btn-mini"><i class="icon-file"></i> <?php echo $rs['file_title'] ?></span></a>

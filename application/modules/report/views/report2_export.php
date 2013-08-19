@@ -6,7 +6,7 @@
 	</div>	
 	<table class="tbreport" border="1" width="864">
 		<thead>
-			<tr><td  colspan="13" style="text-align:right;">หน่วย:คน</td></tr>
+			<tr><td  colspan="13" style="text-align:right;">หน่วย:ราย</td></tr>
 			<tr>
 				<th rowspan="2">ข้อมูล</th><th  colspan="13">เดือน (N = <? echo number_format($total_n) ?>)</th>
 			</tr>		

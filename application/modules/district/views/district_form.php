@@ -33,7 +33,7 @@
 <tr> 
   <th>ตำบล</th>
   <td>
-  	<input name="district_name" type="text" id="district_name" size="30" maxlength="300"   value="<?php echo $rs['district_name']?>"> 
+  	<input name="district_name" type="text" id="district_name" size="30" maxlength="300"   value="<?php echo ThaiToUtf8($rs['district_name'])?>"> 
   	<input type="hidden" name="tam_amp_id"  value="<?php echo $rs['tam_amp_id'] ?>"/>
   <input type="hidden" name="district_id"      value="<?php echo $rs['district_id']?>" />
   <?php echo ($rs['tam_amp_id']) ? form_hidden('updated',time()) : form_hidden('created',time())?>	

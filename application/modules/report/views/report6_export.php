@@ -2,7 +2,7 @@
 		<span>รายงานจังหวัด<?php echo $textprovince ?>  เดือน  <?php echo $textmonth_start ?> ปี  <? echo $textyear_start ?></span><br/>					
 	</div>		
 <table class="tbreport" border="1" width="864">
-	<tr><td colspan="4" style="text-align: right;">หน่วย: คน</td></tr>
+	<tr><td colspan="4" style="text-align: right;">หน่วย: ราย</td></tr>
 	<tr>
 		<th rowspan="2">อำเภอ</th>		
 		<th colspan="2">สิทธิการรักษา</th>		

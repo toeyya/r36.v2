@@ -13,7 +13,11 @@
 		<th>ประเภทงานวิจัย</th>
 		<th>ชื่อเรื่อง</th>
 		<th>โดย</th>
-		<th width="90"><a href="research/admin/research_detail/form/<?php echo $research_id ?>" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>
+		<th width="90">
+			<?php if(permission('researchs', 'act_create')): ?>	
+			<a href="research/admin/research_detail/form/<?php echo $research_id ?>" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+			<?php endif; ?>
+		</th>
 	</tr>
 	<?php foreach($result as $key=>$item): ?>
 	<tr>		
@@ -21,8 +25,12 @@
 		<td><?php echo $item['name'] ?></td>
 		<td><?php echo $item['title'] ?></td>
 		<td><?php echo $item['userfirstname'] ?> <?php echo $item['usersurname'] ?></td>
-		<td><a href="research/admin/research_detail/form/<?php echo $research_id ?>/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
-				 <a href="research/admin/research_detail/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ">ลบ</a></td>
+		<td><?php if(permission('researchs', 'act_update')): ?>
+			<a href="research/admin/research_detail/form/<?php echo $research_id ?>/<?php echo $item['id'] ?>" class="btn" title="แก้ไข">แก้ไข</a>
+			<?php endif; ?>
+			<?php if(permission('researchs', 'act_delete')): ?>
+			<a href="research/admin/research_detail/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ">ลบ</a></td>
+			<?php endif; ?>
 	</tr>
 	<?php endforeach; ?>
 </table>

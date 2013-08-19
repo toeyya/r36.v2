@@ -40,8 +40,13 @@
 					</td>
 					<td>
 						<a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>" class="topicpost"><?php echo $webboard_quiz['title']?></a><br>
-โดย <a href="users/r36/users/index/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['author'] ?></a><i class="icon-time"></i>
-		<span class="f10"><?php echo db_to_th($webboard_quiz['created'],'S',TRUE) ?></span>
+						โดย 
+							<?php if($this->session->userdata('R36_LEVEL')=="00" && !empty($webboard_quiz['user_id'])): ?>						
+							 	<a href="users/r36/users/index/<?php echo $webboard_quiz['user_id']?>" ><?php $u=$this->user->get_row("uid",$webboard_quiz['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?></a>
+							<?php else: ?>						
+								<?php $u=$this->user->get_row("uid",$webboard_quiz['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?>
+							<?php endif; ?>						
+						<i class="icon-time"></i><span class="f10"><?php echo db_to_th($webboard_quiz['created'],'S',TRUE) ?></span>
 
 						<?php if (login_data('userposition')=='00'):?>
 						<div class="admin_action">
@@ -64,15 +69,15 @@
 						 if($result_count['cnt']):?>
 						<span class="f10">
 							<?php //echo mysql_to_th($webboard_quiz->webboard_answer->order_by("id", "desc")->limit(1)->get()->created,'S',TRUE)
-								$rs=$this->db->GetRow("SELECT *,max(created) as max_created FROM webboard_answers WHERE webboard_quiz_id=".$webboard_quiz['id']);
+								$rs=$this->db->GetRow("SELECT *,max(CONVERT(VARCHAR(19), webboard_answers.created, 120)) as max_created FROM webboard_answers WHERE webboard_quiz_id=".$webboard_quiz['id']);
 									echo db_to_th($rs['max_created'],"S",TRUE);
 							?>	
 							</span>
 							โดย 
-							<?php if($rs['user_id']): ?>						
+							<?php if($this->session->userdata('R36_LEVEL')=="00"): ?>						
 							 	<a href="users/r36/users/index/<?php echo $rs['user_id']?>" ><?php $u=$this->user->get_row("uid",$rs['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?></a>
 							<?php else: ?>						
-								<?php echo $rs['author'] ?>
+								<?php $u=$this->user->get_row("uid",$rs['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?>
 							<?php endif; ?>
 						<?php else: ?>
 						ไม่มีความคิดเห็น :(
@@ -105,12 +110,13 @@
 
 					</td>
 					<td>
-						<a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>" class="topicpost"><?php echo $webboard_quiz['title']?></a><br />
-						<?php if($webboard_quiz['user_id']): ?>
-						โดย <a href="users/r36/users/index/<?php echo $webboard_quiz['user_id']?>" ><?php echo $webboard_quiz['userfirstname'].' '.$webboard_quiz['usersurname'] ?></a>
-						<?php else: ?>
-						โดย <a href="javascript:;" ><?php echo $webboard_quiz['author'] ?></a>    
-						<?php endif; ?>
+						<a href="webboards/view_topic/<?php echo $webboard_quiz['id']?>" class="topicpost"><?php echo $webboard_quiz['title']?></a><br />						
+						โดย 						
+							<?php if($this->session->userdata('R36_LEVEL')=="00" && !empty($webboard_quiz['user_id'])): ?>						
+							 	<a href="users/r36/users/index/<?php echo $webboard_quiz['user_id']?>" ><?php $u=$this->user->get_row("uid",$webboard_quiz['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?></a>
+							<?php else: ?>						
+								<?php $u=$this->user->get_row("uid",$webboard_quiz['user_id']);echo $u['userfirstname'].' '.$u['usersurname'] ?>
+							<?php endif; ?>						
 						<i class="icon-time"></i>
 						<span class="f10"><?php echo db_to_th($webboard_quiz['created'],'S',TRUE) ?> 
 														<?php if($webboard_quiz['group_id'] != 0):?>
@@ -139,16 +145,17 @@
 						 if($result_count['cnt']):?>
 						<span class="f10">
 							<?php //echo mysql_to_th($webboard_quiz->webboard_answer->order_by("id", "desc")->limit(1)->get()->created,'S',TRUE)
-									$rs=$this->db->GetRow("SELECT *,max(created) as max_created FROM webboard_answers WHERE webboard_quiz_id=".$webboard_quiz['id']);
+									$rs=$this->db->GetRow("SELECT *,max(max(CONVERT(VARCHAR(19), webboard_answers.created, 120)) as max_created FROM webboard_answers WHERE webboard_quiz_id=".$webboard_quiz['id']);
 									echo db_to_th($rs['max_created'],"S",TRUE);
 							?>	
 							</span>
 							โดย 
-							<?php if($rs['user_id']): ?>						
-							 	<a href="users/r36/users/index/<?php echo $rs['user_id']?>" ><?php echo $this->user->get_one("concat(firstname,'',surname)","id",$rs['user_id']); ?></a>
+							<?php if($this->session->userdata('R36_LEVEL')=="00" && !empty($rs['user_id'])): ?>						
+							 	<a href="users/r36/users/index/<?php echo $rs['user_id']?>" ><?php echo $this->user->get_one("userfirstname+' '+usersurname)","id",$rs['user_id']); ?></a>
 							<?php else: ?>						
-								<?php echo $rs['author'] ?>
-							<?php endif; ?>
+								<?php echo $this->user->get_one("userfirstname+' '+usersurname)","id",$rs['user_id']); ?>
+							<?php endif; ?>	
+							
 						<?php else: ?>
 						ไม่มีความคิดเห็น :(
 						<?php endif; ?>

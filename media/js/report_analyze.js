@@ -2,6 +2,7 @@ $(document).ready(function(){
 	$("#detail_main").change(function(){
 	 var ref1=$("#detail_main option:selected").val();
 	 var base ='<?php echo base_url(); ?>';
+	 $("#show_minor").html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	
 		 $.ajax({
 		 	type:'get',
 			url:'media/js/getlist.php',

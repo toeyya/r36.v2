@@ -11,7 +11,11 @@
 		<th>ลำดับ</th>
 		<th>เขตความรับผิดชอบ</th>
 		<th>จำนวนเขต</th>
-		<th width="90"><a href="area/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a></th>
+		<th width="90">
+			<?php if(permission('settings', 'act_create')): ?>	
+			<a href="area/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+			<?php endif; ?>
+		</th>
 	</tr>
 	<?php foreach($result as $key=>$item): ?>
 	<tr>
@@ -19,8 +23,12 @@
 		<td><?php echo ++$key ?></td>
 		<td><?php echo $item['name'] ?></td>
 		<td><?php echo  $item['total']?></td>
-		<td><a href="area/form/<?php echo $item['id'] ?>" 	class="btn" title="แก้ไข">แก้ไข</a>
+		<td><?php if(permission('settings', 'act_update')): ?>
+			<a href="area/form/<?php echo $item['id'] ?>" 	class="btn" title="แก้ไข">แก้ไข</a>
+			<?php endif; ?>
+			<?php if(permission('settings', 'act_delete')): ?>
 			<a href="area/delete/<?php echo $item['id'] ?>" class="btn" title="ลบ" onclick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a></td>
+			<?php endif; ?>
 	</tr>
 	<?php endforeach; ?>
 </table>

@@ -18,19 +18,19 @@ class District extends Admin_Controller
 		if($view){$wh.="hospital_id='$view'";}
 		$data['wh']=$wh;
 		$data['result']=$this->district->select("district_name,province_id,amphur_id,tam_amp_id,district_id")															
-									    ->where(" district_id<>'' and province_id<>'' $wh")->sort("")->order("province_id,amphur_id,district_name ASC")
-										->get();					
+									    ->where(" district_id<>'' and province_id<>'' $wh")
+									    ->sort("")->order("province_id,amphur_id,district_name ASC")->get();						
 		$data['pagination']=$this->district->pagination();
 		$this->template->build('district_index',$data);								
 	}
 	function form($tam_amp_id=FALSE)
 	{
 		$data['rs']=$this->db->GetRow("select district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id 
-																from n_district 
-																INNER JOIN n_province on n_province.province_id=n_district.province_id 
-																INNER JOIN n_amphur on n_amphur.amphur_id=n_district.amphur_id 
-																where tam_amp_id =$tam_amp_id 
-																GROUP BY district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id");
+										from n_district 
+										INNER JOIN n_province on n_province.province_id=n_district.province_id 
+										INNER JOIN n_amphur on n_amphur.amphur_id=n_district.amphur_id 
+										where tam_amp_id =$tam_amp_id 
+										GROUP BY district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id");
 		
 		$this->template->build('district_form',$data);
 	}
@@ -108,13 +108,17 @@ class District extends Admin_Controller
 		
 		redirect('district/index');	
 	}
-	function delete($id,$province_id,$amphur_id){
+	function delete($id,$province_id,$amphur_id,$district_id){
 		if($id){
-			$this->district->delete("tam_amp_id",$id);	
-			set_notify('success', DELETE_DATA_COMPLETE);	
-		}		
+			if(check_delete_setting("district",$province_id,$amphur_id,$district_id)){
+				$this->district->delete("tam_amp_id",$id);	
+				set_notify('success', DELETE_DATA_COMPLETE);	
+			}else{
+				set_notify('success','ข้อมูลนี้ถูกใช้อยู่ ไม่สามารถลบรายการนี้ได้');
+			}		
 		redirect('district/index');	
-	}
+		}
+	}	
 
 	function GetGroupByArea()
 	{
@@ -136,12 +140,9 @@ class District extends Admin_Controller
 		 $group=$_GET['group'];
 		 $area=$_GET['area'];
 		  if($group!='' && $area!='' && $group!=''){
-				if($area=='1'){
-					$field = "province_level_old";
-				}else{
-					$field = "province_level_new";																	
-				}
-			   $sql = "select province_id, province_name from n_province where ".$field."='".$group."' order by province_name asc";
+			   	
+			   $sql = "select DISTINCT n_area_detail.province_id,province_name from n_area_detail inner join n_province on n_area_detail.province_id=n_province.province_id  where area_id= ".$_GET['area']." and level =".$_GET['group']; 
+			   //$sql = "select province_id, province_name from n_province where ".$field."='".$group."' order by province_name asc";
 			   $result=$this->province->get($sql);
 			   $output = '<select name="province" class="styled-select" id="province">';
 			   $output.= '<option value="">ทั้งหมด</option>';

@@ -13,14 +13,28 @@ $(document).ready(function(){
 			})
 		}
 		return false;
-	})
+	});
+	
+		$( "#formm" ).validate({
+  			rules: {
+    		title:"required",
+    		intro:"required",
+    		//detail:"required"
+    	},
+    		messages:{
+			title:"กรุณาระบุชื่อเรื่อง",
+			intro:"กรุณาระบุบทนำ",
+			//detail:"กรุณาระบุรายละเอียด",
+					}
+  		});
 })
 </script>
 <h1>เอกสารเผยแพร่</h1>
 <form action="document/admin/document_detail/save" method="post" id="formm"  enctype="multipart/form-data">
+<input name="uid" id="id" type="hidden" value="<?php echo @$rs['id']?>" />	
 <table  class="form">
 <tr><th>ประเภท</th>
-	<td><?php echo form_dropdown('document_id',get_option('id','name','n_document'),$document_id,'','--โปรดเลือก--') ?></td>
+	<td><?php echo form_dropdown('document_id',get_option('id','name',"n_document where active ='1' "),$document_id,'','--โปรดเลือก--') ?></td>
 </tr>
 <?php if(is_file('uploads/document/thumbnail/'.$rs['image'])): ?>
 <tr><th></th><td><img class="img" src="<?php echo 'uploads/document/thumbnail/'.$rs['image'] ?>"  /></td></tr>
@@ -64,15 +78,17 @@ $(document).ready(function(){
 </tr>
 <tr>
 	<th></th>
-	<td><input type="checkbox" value="1" name="shw_help" <?php echo ($rs['shw_help']=="1")? 'checked="checked"':''; ?>> แสดงเมนู help</td>
+	<td>		
+		<input type="checkbox" value="1" name="shw_help" <?php echo ($rs['shw_help']=="1")? 'checked="checked"':''; ?>> แสดงเมนู help</td>
 </tr>
 <tr>
 	<th></th>
-	<td><input class="btn" type="submit" value="ตกลง"></td>
+	<td><input class="btn" type="submit" value="ตกลง">
+		<?php echo form_back('btn_back'); ?></td>
 </tr>
 </table>
 
-<?php echo ($rs['id']) ? form_hidden('updated',time()) : form_hidden('created',time());
+<?php echo ($rs['id']) ? form_hidden('updated',date('Y-m-d H:i:s')) : form_hidden('created',date('Y-m-d H:i:s'));
 			echo form_hidden('user_id',@$rs['user_id']);
 			echo form_hidden('id',$rs['id']);
 ?>

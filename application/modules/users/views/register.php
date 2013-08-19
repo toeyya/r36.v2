@@ -33,6 +33,7 @@ var ref1,ref2,ref3;
 	 });
 
 	$('#form1').validate({
+		onkeyup:false,
 		groups:{
 			groupname:'userfirstname usersurname',
 			groupidcard:'cardW0 cardW1 cardW2 cardW3 cardW4',
@@ -63,7 +64,7 @@ var ref1,ref2,ref3;
 			},
 			userpassword:"required",
 			repassword:{equalTo: "#userpassword"},
-	        captcha:{required: true,remote: "users/check_captcha"}			
+	        captcha:{required: true,remote: "users/check_captcha"}		
 		},
 		messages:{
 			userhospital:"กรุณาระบุ",
@@ -221,15 +222,17 @@ var ref1,ref2,ref3;
  
               <label class="control-label" for="inputCaptcha">รหัสลับ <span class="alertred">*</span></label>
                 <div class="controls">
-                  <img src="users/captcha" /></br/>
+                  <img src="img.php" /></br/>
                   <input class="input-small" type="text" name="captcha" id="inputCaptcha" placeholder="รหัสลับ">
                 </div>
-            </div>				
+            </div>	
+            <div class="control-group">			
              <label class="control-label" for="inputCaptcha"></label>
                 <div class="controls">
  				<?php echo form_hidden('created',date('Y-m-d H:i:s')); ?>
 				<button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
 			</div>	
+			</div>
 			<hr class="hr1">
 			<small><label class="alertred">*</label>รายการที่ต้องกรอก</small>
 		</form>

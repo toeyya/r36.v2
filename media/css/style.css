@@ -296,7 +296,6 @@ ul.sublist label.error,label.error{color:red;width:50%;}
 
 #report #title p{margin-bottom:-22px;font-size:13px;}
 #report #area_btn_print{display:none;}
-#report #description{display:none;}
 #report .right{margin-top:-17px;}
 
 .tbreport
@@ -396,6 +395,9 @@ ul.sublist label.error,label.error{color:red;width:50%;}
     text-align:center;
 }
 .tbreport1 th.B{font-weight:900;font-size:14px;}
+.tbdesc th,.tbdesc td{padding-bottom:17px;vertical-align:top;}
+.tbdesc th{width:120px;}
+
 #btn_printout{float:right;margin-top:10px;}
 #report #multiAccordion{ width:70%;margin-left:15%;margin-right:15%;}
 #report #multiAccordion  #reference{font-size:11px;}
@@ -472,6 +474,6 @@ vertical-align:top
 
 .tr-graph  .container3{width:1311px;height:560px;border:1px solid #CCCCCC}
 .btn_close{float:right;}
-
+#loading{text-align:center;width:100%;height:20px;}
 
 

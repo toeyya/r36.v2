@@ -109,7 +109,30 @@ $(document).ready(function(){
 <div id="search">
 <form action="report/index/6" method="get" name="formreport">
 <table  class="tb_patient1">
-<?php require 'include/conditionreport.php'; ?>
+  <tr>
+	<th>เขตความรับผิดชอบ</th>
+	<td><?php echo form_dropdown('area',get_option('id','name','n_area'),@$_GET['area'],'class="styled-select widthselect"  id="area"','ทั้งหมด','all');?>	</td>
+	<th>เขต</th>
+	<td>
+	<span id="grouplist">
+	<?php if(!empty($_GET['area']) && $_GET['area']!="all"){ ?>
+	<?
+		$total = $this->area->get_one("total","id",$_GET['area']);			
+		echo form_dropdown('group',getLevel($_GET['area'],$total),$_GET['group'],'class="styled-select" id="group"','ทั้งหมด'); 	
+	}else{ ?>
+	<select name="group" class="styled-select widthselect" id="group"><option value="">ทั้งหมด</option></select>
+	<?php }; ?>
+	</span>
+	</td>
+	<th>จังหวัด</th>
+	<td><span id="provincelist">			
+		<?php if(!empty($_GET['province'])){
+		echo form_dropdown('province',get_option('province_id','province_name','n_province'),$_GET['province'],'class="styled-select" id="province"','ทั้งหมด');
+		}else{ ?>
+		<select name="province" class="styled-select widthselect"><option value="">ทั้งหมด</option></select>
+		<? } ?></span>					
+	</td>
+  </tr>
 	<tr>
 	   <th>ปีสัมผัสโรค</th>
 	   <td><?php echo form_dropdown('year_start',get_year_option(),@$_GET['year_start'],'class="styled-select"','ทั้งหมด') ?></td>
@@ -127,6 +150,7 @@ $(document).ready(function(){
 </form>
 
 </div>
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
 <?php if(!empty($cond)): ?>
 <div id="report">	
 <div id="title">
@@ -135,7 +159,7 @@ $(document).ready(function(){
 <div style="float:right;margin-top:-40px;clear: both;width:20%;text-align:right;"><button class="column-chart img" name="column"></button>
 		<a href="report/index/6<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 
 <table class="tbreport">
-	<tr><td colspan="4" style="text-align: right;">หน่วย: เคส</td></tr>
+	<tr><td colspan="4" style="text-align: right;">หน่วย: ราย</td></tr>
 	<tr>
 		<th rowspan="2">อำเภอ</th>		
 		<th colspan="2">สิทธิการรักษา</th>		

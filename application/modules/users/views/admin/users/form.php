@@ -19,12 +19,13 @@ var ref1,ref2,ref3,province_id;
 	$('#h_district').live('change',function(){
 		ref3=$("#h_district option:selected").val();
 		$.ajax({url:'<?php echo base_url(); ?>hospital/getHospital',type:'get',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
-	});
+	});	
 	$('#userprovince').change(function(){
 		province_id=$('#userprovince option:selected').val();
 		var txt = $("#userprovince option:selected").text();
-		$('.agency_name').html('จังหวัด'+txt);
-		$('input[name=agency]').val('จังหวัด'+txt);
+		$('.agency_name').html('');$('input[name=agency]').val('');		
+		$('.agency_name').html('สำนักงานสาธารณสุขจังหวัด'+txt);
+		$('input[name=agency]').val('สำนักงานสาธารณสุขจังหวัด'+txt);
 		$.ajax({
 			url:'<?php echo base_url(); ?>district/getAmphur',
 			type:'get',
@@ -38,8 +39,8 @@ var ref1,ref2,ref3,province_id;
 	$('#useramphur').live('change',function(){
 		var amphur_id = $("#useramphur option:selected").val();
 		var txt = $("#useramphur option:selected").text();
-		
-		$('.agency_name').html('อำเภอ'+txt);$('input[name=agency]').val('อำเภอ'+txt);
+		$('.agency_name').html('');$('input[name=agency]').val('');
+		$('.agency_name').html('สำนักงานสาธารณสุขอำเภอ'+txt);$('input[name=agency]').val('สำนักงานสาธารณสุขอำเภอ'+txt);
 		$.ajax({
 			url:'<?php echo base_url(); ?>district/getDistrict',
 			type:'get',
@@ -52,8 +53,9 @@ var ref1,ref2,ref3,province_id;
 	});
 	$('#userdistrict').live('change',function(){
 		var txt = $('#userdistrict option:selected').text();
-		$('.agency_name').html('ตำบล'+txt);
-		$('input[name=agency]').val('ตำบล'+txt);
+		$('.agency_name').html('');$('input[name=agency]').val('');
+		$('.agency_name').html('สำนักงานสาธารณสุขตำบล'+txt);
+		$('input[name=agency]').val('สำนักงานสาธารณสุขตำบล'+txt);
 	})
 
 	
@@ -105,8 +107,9 @@ var ref1,ref2,ref3,province_id;
 		 		}			 					
 				,userfirstname:"required",usersurname:"required"
 				,userprovince:{ required: {depends: function(element) {return $('select[name=userposition] option:selected').val() =='02' }}}
-				//,userprovince2:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="03"}}}
-				//,useramphur:{required:{depends:function(element){return $('input[name=userposition]:checked').val()=="03"}}}
+				,userlevel:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="01"}}}
+				,useramphur:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="03"}}}
+				,userdistrict:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="04"}}}
 				,h_province:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="05";}}}
 				,h_amphur:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="05";}}}
 				,h_district:{required:{depends:function(element){return $('select[name=userposition] option:selected').val()=="05";}}}
@@ -126,11 +129,9 @@ var ref1,ref2,ref3,province_id;
 		 		,cardW1:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
 		 		,cardW2:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
 		 		,cardW3:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ"}
-		 		,cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" มีอีเมล์แล้วหรือระบุไม่ถูกต้อง"}	
+		 		,cardW4:{required:" กรุณาระบุค่ะ",number: " กรุณาระบุเป็นตัวเลขค่ะ",remote :" มีในระบบแล้วหรือระบุไม่ถูกต้อง"}	
 				,userfirstname:" กรุณาระบุด้วยค่ะ",usersurname:" กรุณาระบุด้วยค่ะ"
-				,userprovince:" กรุณาระบุด้วยค่ะ"
-				//,useramphur:" กรุณาระบุด้วยค่ะ",userdistrict:" กรุณาระบุด้วยค่ะ"
-				//,userprovince2:" กรุณาระบุด้วยค่ะ"
+				,userlevel:" กรุณาระบุด้วยค่ะ",userprovince:" กรุณาระบุด้วยค่ะ",useramphur:" กรุณาระบุด้วยค่ะ",userdistrict:" กรุณาระบุด้วยค่ะ"
 				,usermail:{required:" กรุณาระบุด้วยค่ะ",email:" ระบุไม่ถูกต้องค่ะ",remote:"มีอีเมล์นี้แล้วในระบบ"}
 				,h_province:" กรุณาระบุด้วยค่ะ",h_amphur:" กรุณาระบุด้วยค่ะ",h_district:"กรุณาระบุด้วยค่ะ",userhospital:" กรุณาระบุด้วยค่ะ"
 				,userpassword:" กรุณาระบุด้วยค่ะ"
@@ -147,17 +148,20 @@ var ref1,ref2,ref3,province_id;
 </script>
 <h1>ผู้ใช้ระบบ</h1>
 <form name="form1" id="form1" action="users/admin/users/save/<?php echo $profile ?>" enctype="multipart/form-data" method="post" >
-<input name="uid" id="uid" type="hidden" value="<?php echo @$rs['uid']?>" />			
+<input name="uid" id="uid" type="hidden" value="<?php echo @$rs['uid']?>" />	
+		
 <table  class="form">
   <tr>
   	<th>สิทธิ์การใช้งาน</th>
   	<?php if($profile): ?>
-  	<td><?php echo $rs['level_name']; ?></td>
+  	<td><?php echo $rs['level_name']; ?>
+  		<input type="hidden" name="userposition" value="<?php echo @$rs['userposition'] ?>">
+  	</td>
   	<?php else: ?>
   	<td><?php echo form_dropdown('userposition',get_option("level_code",'level_name','n_level_user'),@$rs['userposition'],'',''); ?></td>
   	<?php endif; ?>
   </tr>
-  <tr id="level"><th>เขต</th>
+  <tr id="level"><th>เขต <span class="alertred" >*</span></th>
   	<td><?php echo form_dropdown('userlevel',getLevel('2','12'),@$rs['userlevel'],'','-โปรดเลือก-'); ?></td>
   </tr>
   <tr>
@@ -223,7 +227,9 @@ var ref1,ref2,ref3,province_id;
 		?>									
 			<select name="userdistrict"><option value="">-โปรดเลือก-</option></select>
 		<?php } ?></p>
-		<p id="agency" style="margin:7px 0px;font-weight: bold">สำนักงานสาธาณสุข<span class="agency_name"><?php echo @$rs['agency']; ?></span></p>
+		<p id="agency" style="margin:7px 0px;font-weight: bold">
+			<span class="agency_name"><?php echo @$rs['agency']; ?></span>
+		</p>
 		<input type="hidden" name="agency" value="<? echo @$rs['agency'] ?>">
 	</td> 	
   </tr>
@@ -317,7 +323,9 @@ var ref1,ref2,ref3,province_id;
 <? endif; //profile ?>
   <tr>
   	<th></th>
-  	<td><input type="submit" class="btn"  name="btn_sumbit" value="ตกลง"></td>
+  	<td><input type="submit" class="btn"  name="btn_sumbit" value="ตกลง">
+  		<?php echo form_back('btn_back'); ?>
+  	</td>
   </tr>
 </table> 	
 </form>

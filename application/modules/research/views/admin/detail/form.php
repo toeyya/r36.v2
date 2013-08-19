@@ -9,7 +9,30 @@ $(document).ready(function(){
 			})
 		}
 		return false;
-	})
+	});
+	$( "#formm" ).validate({
+  			rules: {
+    		research_id:"required",
+    		title:"required",
+    		researcher:"required",
+    		agency:"required",
+    		objective:"required",
+			method:"required",
+			result:"required",
+			conclusion:"required",
+    	},
+    		messages:{
+			research_id:"กรุณาระบุประเภท",
+			title:"กรุณาระบุชื่อเรื่อง",
+    		researcher:"กรุณาระบุผู้วิจัย",
+    		agency:"กรุณาระบุหน่วยงาน",
+    		bjective:"กรุณาระบุวัตถุประสงค์",
+			method:"กรุณาระบุวัสดุเเละวิธีการ",
+			result:"กรุณาระบุผลการศึกษา",
+			conclusion:"กรุณาระบุสรุป",
+					}
+  		});
+	
 })
 </script>
 <h1>งานศึกษาวิจัย</h1>
@@ -57,7 +80,7 @@ $(document).ready(function(){
 	<br /><input type="file" name="file" />
 	<?php if(!empty($rs['file'])): ?>
 	 <span class="option">
-	 	<a href="research/download/<?php echo $rs['id'] ?>">ดาวน์โหลด</a> 
+	 	<a href="research/admin/research/download/<?php echo $rs['id'] ?>">ดาวน์โหลด</a> 
 	 	<a href="#" rel="del">ลบไฟล์</a>
 	 </span>
 	 <?php endif; ?>
@@ -69,7 +92,7 @@ $(document).ready(function(){
 </tr>
 </table>
 
-<?php echo ($rs['id']) ? form_hidden('updated',time()) : form_hidden('created',time());
+<?php echo ($rs['id']) ? form_hidden('updated',date('Y-m-d H:i:s')) : form_hidden('created',date('Y-m-d H:i:s'));
 			echo form_hidden('user_id',@$rs['user_id']);
 			echo form_hidden('id',$rs['id']);
 ?>

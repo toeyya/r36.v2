@@ -7,29 +7,34 @@
 				อำเภอ <?php echo $hospital['amphur_name'] ?> 
 				ตำบล <?php echo $hospital['district_name'] ?></p>
 	</div>
-	<table class="tb_search_Rabies1">
+	<table class="tb_search_Rabies1" width="90%">
 	<tr>
+	  <th width="5%">ลำดับ</th>
 	  <th width="10%">HN - ครั้งที่</th>
 	  <th width="10%">วันที่สัมผัสโรค</th>
-	  <th width="10%">วันที่ฉีดวัคซีนครั้งต่อไป</th>	   
+	  <th width="15%">วันที่ฉีดวัคซีนครั้งต่อไป</th>	   
 	  <th width="17%">ชื่อ-นามสกุล</th>
-	  <th width="20%">เลขที่บัตรประชาชน / passport</th>
-	  <th width="20%">สิทธิ์การรักษา</th>
-	  <th width="5%">ฉีดโดยวิธี</th>
-	  <th width="5%">จำนวนเข็ม</th>	  
+	  <th width="17%">เลขที่บัตรประชาชน /passport</th>
+	  <th width="10%">สิทธิ์การรักษา</th>
+	  <th width="7%">ฉีดโดยวิธี</th>
+	  <th width="10%">จำนวนเข็ม</th>	  
 	</tr>
+
 <? 	$means_name=array('1'=>'ID','2'=>'IM');		
-		$inout=array('1'=>'สถานบริการนี้','2'=>'สถานบริการอื่น');		?>	
-<?php		foreach($result as $item): ?>
+	$inout=array('1'=>'สถานบริการนี้','2'=>'สถานบริการอื่น');	
+	$i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 20)-20)+1:1;
+?>	
+<?php foreach($result as $item): ?>
 		<tr>
+		  <td><?php echo $i++;  ?></td>
 		  <td><a href="inform/form/<?php echo $item['id']?>/<?php echo $item['historyid']?>/<?php  echo $item['in_out'] ?>/vaccine" target="_blank"><?php echo $item['hn'].'-'.$item['hn_no'];?></a></td>
 		  <td><?php echo cld_my2date($item['datetouch']) ?></td>
-		  <td><?php echo cld_my2date($item['vaccine_date']) ?></td>
+		  <td><?php echo DB2date($item['vaccine_date']) ?></td>
 		  <td><?php echo $item['firstname']?> <?php echo $item['surname']?></td>
 		  <td><?php echo $item['idcard'] ?></td>
 		  <td><?php echo $inout[$item['in_out']]?></td>
-		  <td><?php echo $means_name[$item['means']]?></td>
-		  <td><?php echo $item['total_vaccine']?></td>
+		  <td style="text-align: center"><?php echo $means_name[$item['means']]?></td>
+		  <td style="text-align: center"><?php echo $item['total_vaccine']?></td>
 		  		  		
 		</tr>
 <?php  endforeach;?>	     

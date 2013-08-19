@@ -160,9 +160,10 @@ $(document).ready(function(){
 </div>	
 </form>
 </div>
-
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+<?php if(!empty($cond)): ?>
 <div id="report">
-	<?php if($cond): ?>
+	
 		<div id="title">				  
 		<p>รายงานผู้สัมผัสโรครายไตรมาส</p>
 	    <p>เขตความรับผิดชอบ  <?php echo $textarea;?> :เขต <?php echo $textgroup;?></p>
@@ -174,7 +175,7 @@ $(document).ready(function(){
 
 	<table class="tbreport">
 		<thead>
-		<tr><td colspan="6" style="text-align:right;">หน่วย:คน</td></tr>
+		<tr><td colspan="6" style="text-align:right;">หน่วย : ราย</td></tr>
 		<tr>
 			<th rowspan="2">ข้อมูล</th>
 			<th colspan="6">ไตรมาส (N=<?php echo number_format($total_n); ?>)</th>
@@ -190,11 +191,11 @@ $(document).ready(function(){
 		<tbody>
 		<tr class="para1">
 			<td align="left"><strong>ผู้สัมผัสโรคพิษสุนัขบ้า</strong></td>
-			<td><? echo number_format($q1) ?></td>
-			<td><? echo number_format($q2) ?></td>
-			<td><? echo number_format($q3) ?></td>
-			<td><? echo number_format($q4) ?></td>
-			<td><? echo number_format($total_n); ?></td>
+			<td><? echo number_format($q1) ?><p class="percentage">100.0</p></td>
+			<td><? echo number_format($q2) ?><p class="percentage">100.0</p></td>
+			<td><? echo number_format($q3) ?><p class="percentage">100.0</p></td>
+			<td><? echo number_format($q4) ?><p class="percentage">100.0</p></td>
+			<td><? echo number_format($total_n); ?><p class="percentage">100.0</p></td>
 		</tr>
 		<?  $k=1;
 			foreach($module as $field =>$name): ?>
@@ -479,8 +480,7 @@ $(document).ready(function(){
 						<tr><td colspan="6"><strong>ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าของผู้สัมผัส</strong>
 							<input type="hidden" name="render" value="container15">
 							<button class="bar-chart img" name="bar" ></button>
-							<button class="column-chart img" name="column"></button>
-				    						
+							<button class="column-chart img" name="column"></button>				    						
 						</td></tr>			
 						<tr class="para1">
 							<td class="pad-left">ไม่เคยฉีดหรือเคยฉีดน้อยกว่า 3 เข็ม</td>	
@@ -528,7 +528,76 @@ $(document).ready(function(){
 			  			<div id="container15" class="container" style="height:405px;padding-left:10%"></div> 			
 			  		</div>
 			  	</td>
-			</tr>																		
+			</tr>
+					<tr><td colspan="6"><strong>วิธีการฉีดวัคซีน</strong>
+						<input type="hidden" name="render" value="container16">
+						<button class="bar-chart img" name="bar" ></button>
+						<button class="column-chart img" name="column"></button></td>
+					</tr>
+				<?php $vaccine = array(1=>'เข้ากล้ามเนื้อ',2=>'เข้าผิวหนัง',3=>'ไม่ฉีด');?>	
+				<?php for($i=1;$i<4;$i++): ?>	
+				<tr class="para1">
+					<td class="pad-left"><?php echo $vaccine[$i]; ?></td>	
+					<?php  for($j=1;$j<5;$j++): ?>
+					<td><?php echo number_format(${'total_means'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_means'.$i.$j},${'q'.$j}); ?></p></td>
+					<?php endfor; ?>
+					<td><?php echo number_format(${'total_means_all'.$i}); ?> </td>		
+				</tr>
+				<?php endfor; ?>	
+			<tr class="tr-graph">
+			  	<td colspan="6">
+			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+			  			<div id="container16" class="container" style="height:405px;padding-left:10%"></div> 			
+			  		</div>
+			  	</td>
+			</tr>				
+		<tr><td colspan="6"><strong>ชนิดวัคซีน</strong>
+			<input type="hidden" name="render" value="container17">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+				
+		</td></tr>
+		<?php $vaccine = array(1=>'PVRV',2=>'PCEC',3=>'HDCV',4=>'PDEV');?>	
+		<?php for($i=1;$i<5;$i++): ?>	
+		<tr class="para1">
+			<td class="pad-left"><?php echo $vaccine[$i]; ?></td>	
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_vaccine'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine'.$i.$j},${'q'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format(${'total_vaccine_all'.$i}); ?> </td>		
+		</tr>
+		<?php endfor; ?>	
+			<tr class="tr-graph">
+			  	<td colspan="6">
+			  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+			  			<div id="container17" class="container" style="height:405px;padding-left:10%"></div> 			
+			  		</div>
+			  	</td>
+			</tr>
+		<tr><td colspan="6"><strong>การแพ้วัคซีน</strong>
+			<input type="hidden" name="render" value="container18">
+			<button class="bar-chart img"  name="bar"></button>
+			<button class="column-chart img" name="column"></button>
+					
+		</td></tr>
+		<?php $vaccine = array('1'=>'ไม่มี','2'=>'มี');
+			for($i=1;$i<3;$i++): ?>
+		<tr class="para1">			
+			<td class="pad-left"><?php echo $vaccine[$i] ?></td>	
+			<?php  for($j=1;$j<5;$j++): ?>
+			<td><?php echo number_format(${'total_aftervaccine'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_aftervaccine'.$i.$j},${'q'.$j}); ?></p></td>
+			<?php endfor; ?>
+			<td><?php echo number_format(${'total_aftervaccine_all'.$i}); ?></td>		
+		</tr>
+		<?php endfor; ?>
+		
+ <tr class="tr-graph">
+  	<td colspan="6">
+  		<div><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  			<div id="container18"  class="container" style="height:405px;padding-left:10%"></div> 			
+  		</div>   		
+  	</td>
+</tr>																												
 		</tbody>				
 	</table>
 			<hr class="hr1">
@@ -538,5 +607,6 @@ $(document).ready(function(){
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">
 			<input type="button" name="closereport" value="ปิดหน้าต่างนี้" onClick="window.close();" class="Submit">
 		</div>
-	<?php endif; ?>
+	
 </div>
+<?php endif; ?>

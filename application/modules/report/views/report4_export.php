@@ -74,8 +74,8 @@
   </tr>
   <tr>
     <td><span class="para1">ไม่ระบุ</span></td>
-    <td align="center" ><?php echo number_format($in_out13); ?></td>
-    <td align="center" ><?php echo number_format($in_out24); ?></td>
+    <td align="center" ><?php echo number_format($in_out1); ?></td>
+    <td align="center" ><?php echo number_format($in_out2); ?></td>
   </tr>
 
   <tr>

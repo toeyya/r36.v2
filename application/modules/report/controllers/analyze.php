@@ -20,18 +20,33 @@ class Analyze extends R36_Controller
 		 $data['reference'] = $this->reference;
 		 $data['textarea'] =(!empty($_GET['area'])) ? $this->area->get_one("name","id",$_GET['area']) :"ทั้งหมด";		
 		 $data['textprovince'] = (!empty($_GET['province'])) ? $this->province->get_one("province_name","province_id",$_GET['province']) : 'ทั้งหมด';	
-		 $data['textamphur'] = (!empty($_GET['amphur'])) ? $this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id= ? ",array($_GET['province'],$_GET['amphur'])):"ทั้งหมด";
-		 $data['textdistrict']=(!empty($_GET['district'])) ? $this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district'])):"ทั้งหมด";
+		 if(!empty($_GET['amphur'])){
+		 	 $textamphur = $this->db->GetOne("select amphur_name from n_amphur where province_id= ? and amphur_id= ? ",array($_GET['province'],$_GET['amphur']));
+			  $data['textamphur'] = ThaiToUtf8($textamphur);
+		 }else{
+		 	$data['textamphur'] = "ทั้งหมด";
+		 }		
+		 
+		 if(!empty($_GET['district'])){
+		 	 $textdistrict =  $this->db->GetOne("select district_name from n_district where province_id= ? and amphur_id= ? and district_id= ? ",array($_GET['province'],$_GET['amphur'],$_GET['district']));
+			 $data['textdistrict'] = ThaiToUtf8($textdistrict);	
+		 }else{
+		 	$data['textdistrict']  = "ทั้งหมด";
+		 }			 
 		 $data['texthospital'] = "ทั้งหมด";
 		 $data['textyear_start']="ทั้งหมด";
 		 $data['textmonth_start']="ทั้งหมด";
 		  $data['textmonth_end']="ทั้งหมด";
 		 $data['texttype']="ทั้งหมด";
-		 $data['textgroup'] = "ทั้งหมด";
-		 if(!empty($_GET['group'])){
-		 	if($_GET['group']=='0'){$data['textgroup'] = "กทม.";
-		 	}else{$data['textgroup'] = $_GET['group'];}			 	
-		 }	 
+		 if(!empty($_GET['group'])){		 	
+		 	$data['textgroup'] = $_GET['group'];			 	
+		 }else{
+		 	if(@$_GET['group']=="0"){
+		 		$data['textgroup'] = "กทม.";
+		 	}else{
+		 		$data['textgroup'] = "ทั้งหมด";
+		 	}		 	
+		 } 		 
 		 $type=array(1=>'จำแนกตามคนไข้ปัจจุบัน',2=>'จำแนกตามคนไข้ขาจร');	
 		 $cond ="";
 		if(!empty($_GET['hospital'])){
@@ -105,7 +120,7 @@ class Analyze extends R36_Controller
 
 	function report1($cond= FALSE,$preview=FALSE,$data,$excel=FALSE)
 	{
-			
+		//$this->db->debug=true;	
 		$data['head'] = "อายุผู้สัมผัส";
 		$data['detail_minor_name'] = array('','เพศ','อาชีพ','อาชีพผู้ปกครอง','สถานที่สัมผัส','ชนิดสัตว์นำโรค','อายุสัตว์','สถานภาพสัตว์','สาเหตุที่ถูกกัด','การล้างแผล','การใส่ยาฆ่าเชื้อ');
 		$data['detail_minor_type'] = array('',"age_group","gender","occupationname","occparentsname","placetouch","typeanimal","ageanimal","statusanimal","causedetail","washbefore","putdrug");
@@ -182,6 +197,7 @@ class Analyze extends R36_Controller
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			
 			$result = $this->db->Execute($sql);	
+			
 			$rs=array();				
 			if($result){						
 				if($minorvalue_sub[0]!=""){					
@@ -298,6 +314,7 @@ class Analyze extends R36_Controller
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			//echo $sql;
 			$result = $this->db->Execute($sql);	
+			
 			$rs=array();				
 			$mainvalue_sub[0]   =substr($mainvalue_sub[0],1);
 			if($result){						
@@ -411,6 +428,7 @@ class Analyze extends R36_Controller
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			//echo $sql;
 			$result = $this->db->Execute($sql);	
+			
 			$rs=array();				
 			$mainvalue_sub[0] =substr($mainvalue_sub[0],1);
 			if($result){						
@@ -482,7 +500,7 @@ class Analyze extends R36_Controller
 		$data['head'] = "อายุสัตว์";	
 		$data['detail_minor_name']=array("","ชนิดสัตว์นำโรค","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์");
 		$data['detail_minor_type']=array('',"ageanimal","typeanimal","statusanimal","historyvacine");
-		$data['detail_main_name']=array("น้อยกว่า 3 เดือน ","3 - 6 เดือน ","6 - 12 เดือน ","มากกว่า 1 ปี ","ไม่ทราบ","ไม่ระบุ");
+		$data['detail_main_name']=array('',"น้อยกว่า 3 เดือน ","3 - 6 เดือน ","6 - 12 เดือน ","มากกว่า 1 ปี ","ไม่ทราบ","ไม่ระบุ");
 		$data['detail_main_type']=array("1","2","3","4","5","0");
 		
 		$field_minor = $data['detail_minor']+1;
@@ -500,7 +518,7 @@ class Analyze extends R36_Controller
 			$data['minorvalue']=array("1","2","3","0");
 		}
 		if($data['detail_minor']==3){
-			$data['minordetail_head']=array("ไม่ทราบ","ไม่เคยฉีด","เคยฉีด 1 ครั้ง","เคยฉีดเกิน 1 ครั้ง","ไม่ระบุ");
+			$data['minordetail_head']=array("ไม่ทราบ","ไม่เคยฉีด","เคยฉีด 1 ครั้ง",'เคยฉีดเกิน 1 ครั้ง','ไม่ระบุ');
 			$data['minorvalue_head']=array("1","1","1","3","1");		
 			$data['minordetail']=array("","",""," ภายใน 1 ปี ","เกิน 1 ปี","ไม่ระบุ","");
 			$data['minorvalue']=array("10","20","30","41","42","40","00");
@@ -514,9 +532,9 @@ class Analyze extends R36_Controller
 					FROM n_history inner join n_information on historyid=information_historyid
 					WHERE  ".$cond." 
 					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
-					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
-			//echo $sql;
-			$result = $this->db->Execute($sql);	
+					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";			
+			$result = $this->db->Execute($sql);
+				
 			$rs=array();				
 			
 			if($result){						
@@ -624,6 +642,7 @@ class Analyze extends R36_Controller
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			//echo $sql;
 			$result = $this->db->Execute($sql);	
+			
 			$rs=array();				
 			$mainvalue_sub[0] =substr($mainvalue_sub[0],1);
 			if($result){														
@@ -694,6 +713,7 @@ class Analyze extends R36_Controller
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]." ASC";
 			//echo $sql;
 			$result = $this->db->Execute($sql);	
+			
 			$rs=array();				
 			$mainvalue_sub[0] =substr($mainvalue_sub[0],1);
 			if($result){														
@@ -782,7 +802,8 @@ class Analyze extends R36_Controller
 					group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]."  
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].$mainvalue_sub[0].",".$data['detail_minor_type'][$field_minor]." ASC";
 			//echo $sql;
-			$result = $this->db->Execute($sql);	
+			$result = $this->db->Execute($sql);
+				
 			$rs=array();				
 			$mainvalue_sub[0]=substr($mainvalue_sub[0],1);
 			if($result){																		
@@ -826,7 +847,7 @@ class Analyze extends R36_Controller
 		$data['detail_main'] = $data['detail_main']-7; // ตอนแรกใช้เพื่อ เลือกฟังก็ชั่่ น การคำนวน  ,เอามาลบเพราะ ต้องใช้เลือกฟิลด์มาคิวรี	
 		$data['head'] = "การฉีดอิมมูโนโกลบุลิน";	
 		$data['detail_minor_name'] = array("","ตำแหน่งที่สัมผัสโรค และลักษณะการสัมผัส","สถานภาพสัตว์","ประวัติการฉีดวัคซีนป้องกันโรคพิษสุนัขบ้าในสัตว์","วิธีฉีดวัคซีนในคน");
-		$data['detail_minor_type'] = array('',"use_rig","statusanimal","statusanimal","historyvacine","means");
+		$data['detail_minor_type'] = array('',"use_rig","statusanimal","detain","historyvacine","means");
 		$data['detail_main_name']  = array("ไม่ฉีด","ฉีด","ไม่ระบุ");
 		$data['detail_main_type']  = array("1","2","0");
 		$field_minor = $data['detail_minor']+1;
@@ -881,7 +902,8 @@ class Analyze extends R36_Controller
 						group by ".$data['date_type'].$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]."  
 						ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 				//echo $sql;
-				$result = $this->db->Execute($sql);	
+				$result = $this->db->Execute($sql);
+					
 				$rs=array();							
 				if($result){
 					if($minorvalue_sub[0]!=""){
@@ -898,14 +920,14 @@ class Analyze extends R36_Controller
 				$main  = count($data['detail_minor_name']);	
 				$minor = count($data['minordetail'])+1;					
 				if($data['detail_minor']==4){$minor = count($data['minordetail'])+1;}
-				$minor_sub = count($data['m_value']);
+				$minor_sub = (!empty($data['m_value'] )) ? count($data['m_value']):'';
 				
 				if($minorvalue_sub[0]!=""){
 					for($i=0;$i<$main;$i++){
 						$data['total_main'.$i]=0;																																	
 						for($j=0;$j<$minor;$j++){
 							for($k=0;$k<$minor_sub;$k++){
-								$data['main'.$i.$j.$k] = (empty($rs['main'][$i][$j][$k])) ? 0 : $rs['main'][$i][$j][$k];
+								$data['main'.$i.$j.$k] = (empty($rs['main'][$i][$j][$k])) ? 0 : $rs['main'][$i][$j][$k];								
 								$data['total_main'.$i] = $data['total_main'.$i] + $data['main'.$i.$j.$k];							
 							}																		
 	
@@ -949,7 +971,7 @@ class Analyze extends R36_Controller
 		
 		$num_main=count($data['detail_main_name']);
 		$field_minor = $data['detail_minor']+1;
-	
+		$minorvalue_sub[0]="";
 		
 		if($data['detail_minor']==1){
 			$data['minordetail']=array("ตายเองภายใน 10 วัน","ไม่ตายภายใน 10 วัน", "ไม่ระบุ");
@@ -982,6 +1004,7 @@ class Analyze extends R36_Controller
 					ORDER BY ".$data['detail_minor_type'][$data['detail_main']].",".$data['detail_minor_type'][$field_minor].$minorvalue_sub[0]." ASC";
 			//echo $sql;
 			$result = $this->db->Execute($sql);
+			
 			$rs=array();				
 			
 			if($minorvalue_sub[0]!=""){					

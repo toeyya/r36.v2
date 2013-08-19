@@ -15,21 +15,30 @@ class Dead extends R36_Controller
 		$this->history->primary_key('historyid');		
 	}
 	function index()
-	{ 		//$this->db->debug=TRUE;	  	  	
+	{ 								 	  	
 			$wh='';
-			if(!empty($_GET['startdate']))				$wh.=" AND n_historydead.datetouch >='".cld_date2my($_GET['startdate'])."'";			
-			if(!empty($_GET['enddate']))				$wh.=" AND n_historydead.datetouch <='".cld_date2my($_GET['endate'])."'";			
-			if(!empty($_GET['hospitalprovince']))	$wh.=" AND n_historydead.hospitalprovince='".$_GET['hospitalprovince']."'";		
+			if(!empty($_GET['startdate']))				$wh.=" AND endate  >='".cld_date2my($_GET['startdate'])."'";			
+			if(!empty($_GET['enddate']))				$wh.=" AND endate <='".cld_date2my($_GET['endate'])."'";			
+			if(!empty($_GET['provinceidplace']))		$wh.=" AND provinceidplace='".$_GET['provinceidplace']."'";		
+		  	if(!empty($_GET['amphuridplace']))			$wh.=" AND amphuridplace='".$_GET['amphuridplace']."'";
+		  	if(!empty($_GET['districtidplace']))		$wh.=" AND districtidplace='".$_GET['districtidplace']."'";
 		  	if(!empty($_GET['hospitaldistrct']))		$wh.=" AND n_historydead.hospitalamphur='".$hospitalamphur."'";		
-		  	if(!empty($_GET['hospital']))				$wh.=" AND n_information.hospitalcode='".$_GET['hospital']."'";			
-			if(!empty($_GET['name']))$wh.=" AND (firstname LIKE '%".$_GET['name']."%' OR surname LIKE '%".$_GET['name']."%' OR idcard LIKE '%".$_GET['name']."%')";			
-			if(!empty($_GET['provinceidplace']))	$wh.=" AND provinceidplace='".$_GET['provinceidplace']."'";
-			if(!empty($_GET['amphuridplace']))	$wh.=" AND amphuridplace='".$_GET['amphuridplace']."'";
-			if(!empty($_GET['districtidplace']))		$wh.=" AND districtidplace ='".$_GET['districtidplace']."'";
+		  	if(!empty($_GET['hospital']))				$wh.=" AND hospitalid='".$_GET['hospital']."'";			
+			if(!empty($_GET['name']))$wh.=" AND (firstname LIKE '%".$_GET['name']."%' OR surname LIKE '%".$_GET['name']."%' OR idcard LIKE '%".$_GET['name']."% ')";			
 			
-			if(empty($_GET['btn_save'])){
-				$data['result']=$this->dead->where(" id<>'' $wh")->sort("")->order("id desc")->limit(20)->get();			
-			}
+										   
+			$data['result']=$this->dead->select("n_historydead.*,CONVERT(VARCHAR(10),endate, 111) as endate,province_name,amphur_name,district_name,hospital_name")
+									->join("LEFT JOIN n_province ON n_province.province_id =provinceidplace
+										   LEFT JOIN n_amphur ON  n_province.province_id = n_amphur.province_id and amphur_id=amphuridplace
+										   LEFT JOIN n_district ON n_district.district_id =districtidplace
+										   and n_district.province_id = n_province.province_id
+										   and n_district.amphur_id = n_amphur.amphur_id
+										   LEFT JOIN n_hospital_1 ON n_hospital_1.hospital_code =hospitalid 
+										   WHERE 1=1 $wh")->get();		
+		 				
+				
+		 
+			
 		$data['pagination']=$this->dead->pagination();			
 		$this->template->build('dead/index',$data);
 	}
@@ -50,8 +59,13 @@ class Dead extends R36_Controller
 
 	function save()
 	{
-		//$this->db->debug=true;
+		$this->db->debug=true;
 		//var_dump($_POST);	
+		$_POST['provinceid']=@$_POST['province_id'];
+		$_POST['hospitalid']=@$_POST['hospital'];
+		$_POST['amphurid']=@$_POST['amphur_id'];
+		$_POST['districtid']=@$_POST['district_id'];
+		$_POST['hospital_local']=@$_POST['hospital'];	
 		$_POST['headbiteblood']=@$_POST['head_bite_blood']." ".@$_POST['head_bite_noblood'].@$_POST['head_claw_blood']." ".@$_POST['head_claw_noblood'].@$_POST['head_bite_blood']." ".@$_POST['head_bite_noblood'];
 		$_POST['facebiteblood']=@$_POST['face_bite_blood']." ".@$_POST['face_bite_noblood'].@$_POST['face_claw_blood']." ".@$_POST['face_claw_noblood'].@$_POST['face_bite_blood']." ".@$_POST['face_bite_noblood'];
 		$_POST['neckbiteblood']=@$_POST['neck_bite_blood']." ".@$_POST['neck_bite_noblood'].@$_POST['neck_claw_blood']." ".@$_POST['neck_claw_noblood'].@$_POST['neck_bite_blood']." ".@$_POST['neck_bite_noblood'];
@@ -68,8 +82,8 @@ class Dead extends R36_Controller
 		$_POST['csfdate']=cld_date2my($_POST['csfdate']);
 		$_POST['pissdate']=cld_date2my($_POST['pissdate']);
 		$_POST['rootdate']=cld_date2my($_POST['rootdate']);
-		$_POST['occipital_skindate']=(empty($_POST['occipital_skindate'])) ? "":cld_date2my($_POST['occipital_skindate']);
-		$_POST['corneal_cellsdate']=(empty($_POST['corneal_cellsdate'])) ? "":cld_date2my($_POST['corneal_cellsdate']);
+		$_POST['occipital_skindate']=cld_date2my($_POST['occipital_skindate']);
+		$_POST['corneal_cellsdate']=cld_date2my($_POST['corneal_cellsdate']);
 		$_POST['datetouch']=(empty($_POST['datetouch'])) ? "":cld_date2my($_POST['datetouch']);
 		$_POST['hr_date']=(empty($_POST['hr_date'])) ? "":cld_date2my($_POST['hr_date']);
 		$_POST['treatdate']=(empty($_POST['treatdate'])) ? "":cld_date2my($_POST['treatdate']);
@@ -81,5 +95,49 @@ class Dead extends R36_Controller
 		redirect('inform/dead/index');
 	
 	}
+
+function form_dead($id=FALSE)
+	{
+		$idcard = $this->dead->get_one("idcard","id",$id);
+			$data['cardW0']=substr($idcard,0,1);
+			$data['cardW1']=substr($idcard,1,4);
+			$data['cardW2']=substr($idcard,5,5);
+			$data['cardW3']=substr($idcard,10,2);
+			$data['cardW4']=substr($idcard,12,13);	
+			$data['h_name'] =$this->session->userdata('R36_HOSPITAL_NAME');			
+		$data['now']=strtotime(date("Y-m-d H:i:s"));				
+		$data['rs']=$this->dead->get_row($id);		
+		$this->template->build('dead/form_dead',$data);
+	}		
 	
-}
+	
+	function form_edit_dead($id=FALSE)
+	{ 
+		$idcard = $this->dead->get_one("idcard","id",$id);
+			$data['cardW0']=substr($idcard,0,1);
+			$data['cardW1']=substr($idcard,1,4);
+			$data['cardW2']=substr($idcard,5,5);
+			$data['cardW3']=substr($idcard,10,2);
+			$data['cardW4']=substr($idcard,12,13);	
+			$data['h_name'] =$this->session->userdata('R36_HOSPITAL_NAME');			
+		$data['now']=strtotime(date("Y-m-d H:i:s"));				
+		$data['rs']=$this->dead->select("*,REPLACE(CONVERT(VARCHAR(10),startdate, 111), '/', '-') as startdate
+										,REPLACE(CONVERT(VARCHAR(10),treatdate, 111), '/', '-') as treatdate
+										,REPLACE(CONVERT(VARCHAR(10),endate, 111), '/', '-') as endate
+										,REPLACE(CONVERT(VARCHAR(10),datetouch, 111), '/', '-') as datetouch
+									    ,REPLACE(CONVERT(VARCHAR(10),reportdate, 111), '/', '-') as reportdate
+									    ,REPLACE(CONVERT(VARCHAR(10),brain_tumordate, 111), '/', '-') as brain_tumordate
+									    ,REPLACE(CONVERT(VARCHAR(10),saliva_headachedate, 111), '/', '-') as saliva_headachedate
+									    ,REPLACE(CONVERT(VARCHAR(10),csfdate, 111), '/', '-') as csfdate
+									    ,REPLACE(CONVERT(VARCHAR(10),pissdate, 111), '/', '-') as pissdate
+									    ,REPLACE(CONVERT(VARCHAR(10),occipital_skindate, 111), '/', '-') as occipital_skindate
+									    ,REPLACE(CONVERT(VARCHAR(10),corneal_cellsdate, 111), '/', '-') as corneal_cellsdate	    
+									    ,REPLACE(CONVERT(VARCHAR(10),rootdate, 111), '/', '-') as rootdate")->get_row($id);		
+		$this->template->build('dead/form_edit_dead',$data);
+	}
+	
+	function test()
+	{
+		$this->template->build('inform/dead/test');
+	}
+	}

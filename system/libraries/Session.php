@@ -44,6 +44,7 @@ class CI_Session {
 	var $userdata					= array();
 	var $CI;
 	var $now;
+	var $sess_expire_on_close = FALSE;  // by toey http://webtecblog.blogspot.com/2012/06/quick-fix-for-session-expiry-on-browser.html
 
 	/**
 	 * Session Constructor
@@ -60,11 +61,19 @@ class CI_Session {
 
 		// Set all the session preferences, which can either be set
 		// manually via the $params array above or via the config file
-		foreach (array('sess_encrypt_cookie', 'sess_use_database', 'sess_table_name', 'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
+		/*foreach (array('sess_encrypt_cookie', 'sess_use_database', 'sess_table_name', 'sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name', 'cookie_path', 'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key') as $key)
 		{
 			$this->$key = (isset($params[$key])) ? $params[$key] : $this->CI->config->item($key);
-		}
-
+		}*/ // comment by toey
+		
+		
+		 foreach(array('sess_encrypt_cookie', 'sess_use_database', 'sess_table_name','sess_expiration', 'sess_match_ip', 'sess_match_useragent', 'sess_cookie_name','cookie_path', 'cookie_domain', 'sess_time_to_update', 'time_reference', 'cookie_prefix', 'encryption_key' , 'sess_expire_on_close' ) as $key)
+		 {
+		  $this->$key=(isset($params[$key]))?$params[$key]:$this->CI->config->item($key);
+		 }  
+		
+		
+		
 		// Load the string helper so we can use the strip_slashes() function
 		$this->CI->load->helper('string');
 
@@ -652,14 +661,21 @@ class CI_Session {
 		}
 
 		// Set the cookie
-		setcookie(
+		/*setcookie(
 					$this->sess_cookie_name,
 					$cookie_data,
 					$this->sess_expiration + time(),
 					$this->cookie_path,
 					$this->cookie_domain,
 					0
-				);
+				);*/ // by toey
+	    $expire =($this->sess_expire_on_close===TRUE)?0:$this->sess_expiration+time();
+  		setcookie(
+	      $this->sess_cookie_name,
+	      $cookie_data,
+	      $expire,
+	      $this->cookie_path,
+	      $this->cookie_domain);
 	}
 
 	// --------------------------------------------------------------------

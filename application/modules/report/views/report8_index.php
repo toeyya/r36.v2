@@ -87,6 +87,7 @@ $(document).ready(function(){
 </form>
 
 </div>
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
 <?php if(!empty($cond)): ?>
 <div id="report">
 	<div id="title">				  
@@ -163,6 +164,8 @@ $(document).ready(function(){
 	<div style="width:100%;border:1px solid #CCCCCC" class="graph8"><button name="close" title="close" value="close" class="btn btn_close">X</button>
 		<div id="container1" class="container" style="padding-left:15%"></div>
 	</div>
+	<br/>
+	<hr class="hr1">
 	<div id="reference">แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข</div>	
 	<div id="btn_printout"><a href="report/index/8<?php echo '?'.$_SERVER['QUERY_STRING'].'&p=preview' ?>"><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 	<div id="area_btn_print">

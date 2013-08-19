@@ -49,7 +49,7 @@ $(function(){
 
                 <label class="control-label" for="inputCaptcha">รหัสลับ</label>
                 <div class="controls">
-                  <img src="users/captcha" /><br/>
+                  <img src="img.php" /><br/>
                   <input type="text" name="captcha" id="inputCaptcha" placeholder="รหัสลับ">
                 </div>
 				<label class="control-label" for="inputCaptcha">&nbsp;</label>

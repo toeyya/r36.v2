@@ -30,7 +30,8 @@
   <div class="btn_inline"><ul><li><button class="btn_submit" type="submit"></button></li></ul></div>	
  </form>
 </div>
-<?php if($cond): ?>
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+<?php if(!empty($cond)): ?>
  <div id="report" style="width:100%;margin-left:0;">
 	<div id="title">				  
 		<p>ปัจจัยที่เกี่ยวข้องกับการรายงานผลการฉีดวัคซีนผู้สัมผัสโรคพิษสุนัขบ้า</p>

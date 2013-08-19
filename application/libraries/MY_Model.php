@@ -8,12 +8,13 @@
 class MY_Model extends Model{
 	
 	public $table = '';
-	public $primary_key = 'id';
+	public $primary_key = 'ID';
 	public $mode = '';
 	public $select = '*';
 	public $where = '';
 	public $join = '';
 	public $sort = '';
+	public $having = '';
 	public $order = 'asc';
 	public $target = '';
 	public $limit = 20;
@@ -22,13 +23,12 @@ class MY_Model extends Model{
 	public $record_count = '';
 	public $handle;
 	public $groupby;
-	
 	function __construct()
 	{
 		parent::__construct();
 		$this->sort($this->primary_key);
 		$this->target();
-		$this->current_page = number_format(@$_GET['page']);	
+		$this->current_page = @$_GET['page'];	
 	}
 	
 	function free_result()
@@ -39,7 +39,6 @@ class MY_Model extends Model{
 		$this->sort = 'order by ' . $this->primary_key;
 		$this->order = 'asc';
 		$this->target = '';
-		$this->join = '';
 		$this->limit = 20;
 		$this->current_page = '';
 		$this->__construct();
@@ -47,7 +46,7 @@ class MY_Model extends Model{
 	
 	function primary_key($field)
 	{
-		$this->primary_key = $field;
+		$this->primary_key = strtoupper($field);
 		return $this;
 	}
 	
@@ -88,8 +87,7 @@ class MY_Model extends Model{
 	{
 		$this->groupby= $field;
 		return $this;
-	}
-	
+	}	
 	function where($condition)
 	{
 		if($condition)
@@ -110,6 +108,14 @@ class MY_Model extends Model{
 		$this->sort = 'order by ' . $sort;
 		return $this;
 	}
+	function having($condition)
+	{
+		if($condition)
+		{
+			$this->having = ' having ' . $condition;
+		}
+		return $this;
+	}
 	
 	function order($order)
 	{
@@ -123,79 +129,87 @@ class MY_Model extends Model{
 		return $this;
 	}
 	
-	function get($sql = FALSE,$limit=FALSE)
+	function order_by($sort,$order)
 	{
-			//	$sql = $sql ? $sql : 'select '.$this->select.' from '.$this->table.' '.$this->join.' '.$this->where.' '.$this->sort.' '.$this->order;
-			if($sql){
-				$sql=$sql;			
+		$this->sort($sort);
+		$this->order($order);
+		return $this;
+	}
+	
+	function get($sql = FALSE,$noSplitPage = FALSE)
+	{		
+		if($sql){
+			$sql=$sql;			
+		}else{
+			if($this->groupby){
+				$sql='select '.$this->select.' from '.$this->table.' '.$this->join.' '.$this->where.' group by '.$this->groupby.' '.$this->sort.' '.$this->order;
 			}else{
-				if($this->groupby){
-					$sql='select '.$this->select.' from '.$this->table.' '.$this->join.' '.$this->where.' group by '.$this->groupby.' '.$this->sort.' '.$this->order;
-				}else{
-					$sql='select '.$this->select.' from '.$this->table.' '.$this->join.' '.$this->where.' '.$this->sort.' '.$this->order;
-				}
+				$sql='select '.$this->select.' from '.$this->table.' '.$this->join.' '.$this->where.' '.$this->sort.' '.$this->order;
 			}
+		}
+		$sql = iconv('UTF-8','TIS-620',$sql);
+		if($noSplitPage==FALSE)
+		{
 			$this->load->library('pagination');
 			$page = new pagination();
 			$page->target($this->target);
-			if($limit)
-			{
-				$rs = $this->db->PageExecute($sql,$page->limit,$page->page);
-			}else
-			{
-				$rs = $this->db->Execute($sql);	
-			}
 			$page->limit($this->limit);
-			@$page->currentPage($this->current_page);
+			$page->currentPage($this->current_page);
 			$rs = $this->db->PageExecute($sql,$page->limit,$page->page);
-			$page->Items($rs->_maxRecordCount);
-			$page->showCounter(true);
-			$this->pagination = $page->show();
-			$this->free_result();	
-			//echo "recoudcount".$rs->_maxRecordCount;
-			return $rs->GetArray();
+			$page->Items($rs->_maxRecordCount);			
+			$this->pagination = $page->show();						
+		}
+		else
+		{
+			$rs = $this->db->Execute($sql);
+		}
+		$this->free_result();
+		$data = $rs->GetArray();
+		array_walk($data,'dbConvert');
 		
-
+		return $data;
 	}
 	
-	function get_one($field,$id,$value = FALSE,$group=FALSE)
+	
+	function get_one($field=FALSE,$id=FALSE,$value = FALSE)
 	{
 		if($value)
 		{
-			if($group){
-				$result = $this->db->getone('select '.$field.' from '.$this->table.' '.$this->join.' group by '.$this->groupby.' having '.$id.' = ?',$value);
-			}else{
-				$result = $this->db->getone('select '.$field.' from '.$this->table.' where '.$id.' = ?',$value);
-			}	
-			
+			$result = $this->db->getone('select '.$field.' from '.$this->table.' where '.$this->table.'.'.$id.' = ?',$value);	
 		}
-		else
+		else if($id!=FALSE)
 		{
-			$result = $this->db->getone('select '.$field.' from '.$this->table.' where '.$this->primary_key.' = ?',$id);
+			$result = $this->db->getone('select '.$field.' from '.$this->table.' where '.$this->table.'.'.$this->primary_key.' = ?',$id);
+		}
+		else{
+			$result = $this->db->getone('select '.$this->select.' from '.$this->table.' '.$this->where);
 		}
 		$this->free_result();
+		dbConvert($result);
 		return $result;
 	}
 	
-	function get_row($id,$value = FALSE,$group=FALSE)
+	function get_row($id = FALSE,$value = FALSE,$sql = FALSE)
 	{
-		if($value)
-		{
-			if($group){
-				$result = $this->db->getrow('select '.$this->select.' from '.$this->table.' '.$this->join.' group by '.$this->groupby.' having '.$id.' = ?',$value);	
-			}else{
-				$result = $this->db->getrow('select '.$this->select.' from '.$this->table.' '.$this->join.' where '.$id.' = ?',$value);	
-			}							
+		if($sql){
+			$result = $this->db->getrow($sql.' where '.$id.' = ?',$value);			
+		}else{					
+			if($value)
+			{
+				$result = $this->db->getrow('select '.$this->select.' from '.$this->table.' '.$this->join.' where '.$this->table.'.'.$id.' = ?',$value);	
+			}
+			else if($id)
+			{
+				$result = $this->db->getrow('select '.$this->select.' from '.$this->table.' '.$this->join.' where '.$this->table.'.'.$this->primary_key.' = ?',$id);
+			}
+			else if($this->where != "")
+			{
+				$result = $this->db->getrow('select '.$this->select.' from '.$this->table.' '.$this->join.' '.$this->where);
+			}
 		}
-		else
-		{	
-				$result = $this->db->getrow('select '.$this->select.' from '.$this->table.' '.$this->join.' where '.$this->primary_key.' = ?',$id);
-									
-			
-			
-		}	
 		$this->free_result();
-		return $result;
+		@array_walk($result,'dbConvert');
+		return @array_change_key_case($result);
 	}
 	
 	function pagination()
@@ -203,37 +217,117 @@ class MY_Model extends Model{
 		return $this->pagination;
 	}
 	
-	function save($data)
+	function save($data, $fix_import = FALSE)
 	{	
+		$columns = $this->db->MetaColumnNames($this->table);		
+		$meta = $this->db->MetaColumns($this->table);		
+		if($fix_import == FALSE)array_walk($data,'dbConvert','TIS-620');
+		$data = array_change_key_case($data,CASE_UPPER);		
+		$data = array_intersect_key($data,$columns);
 		@$mode = ($data[$this->primary_key]) ? 'UPDATE' : 'INSERT';
 		@$where = ($data[$this->primary_key]) ? $this->primary_key.' = '.$data[$this->primary_key] : FALSE;
-		$this->db->AutoExecute($this->table,$data,$mode,$where);
-		return ($mode == 'UPDATE') ? $data[$this->primary_key] : $this->db->insert_id();
-	}
-	
-	function delete($id,$value = FALSE)
-	{
-		if($value)
+		@$pk = $data[$this->primary_key];
+		unset($data[$this->primary_key]);
+		if($mode=='INSERT')
 		{
-			$this->db->Execute('delete from '.$this->table.' where '.$id.' = ?',$value);
+			$column = '';
+			$value = '';
+			$comma = '';
+			foreach($data as $key => $item)
+			{
+				$column .= $comma.'"'.$key.'"';				
+				if($meta[$key]->type=='datetime2' ||  $meta[$key]->type=="datetimeoffset")
+				{				
+						//$value .= empty($item) ? $comma."null" : $comma.$item;
+						$value .= (empty($item) || $item=='0000-00-00 00:00:00') ?  $comma."CONVERT(datetime, '".$item."', 120)": $comma."CONVERT(VARCHAR(19), '".$item."', 120)";
+				}else if($meta[$key]->type=='date'){
+					
+					    $value .= empty($item) ? $comma."null" : $comma."REPLACE(CONVERT(VARCHAR(10),'".$item."', 111), '/', '-')";
+				}
+				else if($meta[$key]->type=='int')
+				{      
+						$value .= empty($item) || $item =='NULL' || $item==''  ? $comma.'0' : $comma.$item;
+				}
+				else
+				{
+						$value .=  $comma.'\''.$item.'\'';
+				}
+				
+				$comma = ',';
+			}
+			$sql = 'INSERT INTO '.$this->table.'('.$column.') VALUES ('.$value.')';
+			//echo $sql;			
+			$this->db->Execute($sql);
 		}
 		else
 		{
-			$this->db->Execute('delete from '.$this->table.' where id = ?',$id);
-		}
-		
+			$column = '';
+			$comma = '';
+			foreach($data as $key => $item)
+			{				
+				if($meta[$key]->type=="datetime2" || $meta[$key]->type=="datetimeoffset"){
+					$item = (empty($item) || $item=='0000-00-00 00:00:00') ? "CONVERT(datetime, '".$item."', 120)":"CONVERT(VARCHAR(19), '".$item."', 120)";
+					$column .= $comma.$key.' = '.$item;
+				
+				}else if($meta[$key]->type=="date"){						
+					$item = empty($item) ? "null" : "REPLACE(CONVERT(VARCHAR(10),'".$item."', 111), '/', '-')";
+					$column .= $comma.$key.' = '.$item;
+				}
+				else if($meta[$key]->type=='int'){
+					
+					$item =(empty($item) || $item =='NULL' || $item=='') ? 0:$item;
+					$column .= $comma.$key.' = '.$item;
+				}
+				else
+				{					
+					$column .= $comma.$key.' = \''.$item.'\'';
+				}
+				$comma = ',';
+			}
+			$this->db->Execute('UPDATE '.$this->table.' SET '.$column.' WHERE '.$where);
+		}		
+		return ($mode == 'UPDATE') ? $pk : $this->db->getOne('select MAX('.$this->primary_key.') from '.$this->table);
 	}
 	
-	function get_option($value,$text,$table = FALSE)
+	function delete($id=FALSE,$value = FALSE,$all = FALSE)
 	{
-		$table = $table ? $table : $this->table;
-		return $this->db->getassoc('select '.$value.','.$text.' from '.$table);
+		if($all)
+		{				
+			$this->db->Execute('delete from '.$this->table);
+		}
+		else
+		{
+			if($id)
+			{
+				if($value)
+				{
+					$this->db->Execute('delete from '.$this->table.' where '.$id.' = ?',$value);
+				}
+				else
+				{
+					$this->db->Execute('delete from '.$this->table.' where '.$this->table.'.ID = ?',$id);
+				}
+			}
+			else
+			{
+				$this->db->Execute('delete from '.$this->table.' '.$this->where);				
+			}
+		}
 	}
 
-	function is_available($field,$data,$table = FALSE)
+	/*function get_option($value,$text,$table = FALSE,$condition=FALSE)
 	{
 		$table = $table ? $table : $this->table;
-		$result = $this->db->getone('select '.$field.' from '.$table.' where '.$field.' = ?',$data);
+		$condition = $condition != FALSE || $condition != '' ? " WHERE ".$condition : "";		
+		$result = $this->db->getassoc('select '.$value.','.$text.' from '.$table.$condition);
+		array_walk($result,'dbConvert');
+		return $result;
+	}*/
+
+	function is_available($field,$data,$table = FALSE,$option)
+	{
+		$table = $table ? $table : $this->table;
+		$result = $this->db->getone('select '.$field.' from '.$table.' where '.$option.$field.' = ?',$data);
 		return $result ? FALSE : TRUE;	
 	}
 	
@@ -242,11 +336,7 @@ class MY_Model extends Model{
 		$table = $table ? $table : $this->table;
 		$this->db->execute('update '.$table.' set '.$field.' = '.$field.' + 1 where id = ?',$id);
 	}
-	function decounter($id,$field = 'counter',$table = FALSE)
-	{
-		$table = $table ? $table : $this->table;
-		$this->db->execute('update '.$table.' set '.$field.' = '.$field.' - 1 where id = ?',$id);
-	}
+	
 	function upload(&$file,$path = 'uploads/',$width = FALSE,$height = FALSE,$ratio = FALSE)
 	{
 		if($file['name'])
@@ -266,13 +356,13 @@ class MY_Model extends Model{
 			} 
 			else
 			{
+					
 				$this->handle->file_new_name_body = $this->filename; 	
 				$this->handle->process($path);				
 				if($this->handle->processed) 
 				{
 					return $this->handle->file_dst_name;
-				}
-				
+				}				
 			}	
 		}	
 	}
@@ -282,6 +372,7 @@ class MY_Model extends Model{
 		if($this->handle)
 		{
 			$this->handle->image_resize = TRUE;
+			$this->handle->image_ratio_crop = TRUE;
 			if($ratio)
 			{
 				if($ratio == 'x')
@@ -298,8 +389,9 @@ class MY_Model extends Model{
 			else
 			{
 				$this->handle->image_x = $width;	
-				$this->handle->image_y = $height;
+				$this->handle->image_y = $width;
 			}
+			$this->handle->file_new_name_body = $this->filename; 				
 			$this->handle->process($path);
 			if($this->handle->processed) 
 			{
@@ -313,6 +405,5 @@ class MY_Model extends Model{
 		$file = $this->get_one($field, $id);
 		@unlink($path.$file);
 	}
-
 }
 ?>

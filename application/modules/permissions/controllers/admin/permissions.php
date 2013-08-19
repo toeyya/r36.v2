@@ -7,19 +7,19 @@ class Permissions extends Admin_Controller
 		'users' => array('label' => 'ผู้ใช้งาน', 'permission' => array('act_read','act_create','act_update','act_delete')),
 		'settings' => array('label' => 'ตั้งค่าระบบโปรแกรมร.36', 'permission' => array('act_read','act_create','act_update','act_delete')),		
 		'abouts' => array('label' => 'เกี่ยวกับโรคพิษสุนัขบ้า', 'permission' => array('act_read','act_create','act_update','act_delete')),			
-		'identify_places' => array('label' => 'สถานที่ชันสูตรตรวจโรคพิษสุนัขบ้า', 'permission' => array('act_read','act_create','act_update','act_delete')),
-		'advise_places' => array('label' => 'สถานที่ให้คำปรึกษาเกี่ยวกับพิษสุนัขบ้า', 'permission' => array('act_read','act_create','act_update','act_delete')),	
+		'identify_places' => array('label' => 'สถานที่ชันสูตรตรวจโรคพิษสุนัขบ้า', 'permission' => array('act_read','act_create','act_update','act_delete')),	
 		'researchs' => array('label' => 'งานศึกษาวิจัย', 'permission' => array('act_read','act_create','act_update','act_delete')),
-		'downloads' => array('label' => 'เอกสารเผยแพร่', 'permission' => array('act_read','act_create','act_update','act_delete')),
+		'documents' => array('label' => 'เอกสารเผยแพร่', 'permission' => array('act_read','act_create','act_update','act_delete')),
 		'informations' => array('label' => 'ข่าวประชาสัมพันธ์', 'permission' =>array('act_read','act_create','act_update','act_delete')),	
 		'knowledge' => array('label' => 'สาระน่ารู้', 'permission' => array('act_read','act_create','act_update','act_delete')),
 		'marquee' => array('label' => 'ตัววิ่ง', 'permission' => array('act_read','act_create','act_update','act_delete')),
 		'webboards' => array('label' => 'เว็บบอร์ด', 'permission' => array('act_read','act_create','act_update','act_delete')),				
-		'q-reply' => array('label' => 'ถาม-ตอบ', 'permission' => array('act_read','act_create','act_update','act_delete')),
+		'questions' => array('label' => 'คำถามที่พบบ่อย', 'permission' => array('act_read','act_create','act_update','act_delete')),
 		'contact' => array('label' => 'ติดต่อเรา', 'permission' => array('act_read','act_create','act_update','act_delete')),		
 		'dashboards' => array('label' => 'จำนวนคนเข้าเว็บไซต์', 'permission' => array('act_read')),
 		'logs'=>array('label' => 'ประวัติเข้าใช้ระบบ', 'permission' => array('act_read')),
-		'program'=>array('label' => 'โปรแกรม ร.36', 'permission' => array('act_read','act_create','act_update','act_delete'))
+		'program'=>array('label' => 'โปรแกรม ร.36', 'permission' => array('act_read','act_create','act_update','act_delete')),
+		'email' =>array('label' => 'อีเมล์แจ้งข่าวสาร', 'permission' => array('act_read','act_create'))
 	);
 	
 	public $crud = array(
@@ -52,6 +52,7 @@ class Permissions extends Admin_Controller
 		$this->template->build('admin/permission_index',$data);
 	}
 	
+	
 	public function form($id=FALSE){
 	
 		
@@ -83,9 +84,13 @@ class Permissions extends Admin_Controller
 		else return NULL;
 	}
 	
-	public function save($id=FALSE){
+	public function save($id=FALSE)
+	{
+	  //$this->db->debug=true;
 		if($_POST){
 			$this->level->primary_key('lid');
+			$max_id=$this->db->getOne("select max(lid) from n_level_user");
+			$_POST['level_code']=(empty($_POST['level_code'])) ? "0".$max_id :$_POST['level_code'];
 			$id=$this->level->save($_POST);
 			$this->permission->delete("level_id",$id);				
 			if(isset($_POST['checkbox'])){
@@ -111,5 +116,19 @@ class Permissions extends Admin_Controller
 		}
 		redirect($_SERVER['HTTP_REFERER']);
 	}
+
+
+	public function chkPermission(){
+		//$this->db->debug=true;
+		if(!empty($_GET['lid'])){
+			$rs = $this->db->GetOne("select lid from n_level_user where level_name = ?  and lid <> ? ",array($_GET['level_name'],$_GET['lid']));			
+		}else{
+			$rs = $this->level->get_one("lid","level_name",$_GET['level_name']);
+			
+		}		
+		echo (!empty($rs)) ? "false" :"true";
+		
+	}
+
 }
 ?>

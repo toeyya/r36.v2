@@ -94,7 +94,8 @@ $(document).ready(function(){
 <div class="btn_inline"><ul><li><button class="btn_submit" type="submit">&nbsp;&nbsp;&nbsp;</button></li></ul></div>	
 </form>
 </div>
-<?php if($cond): ?>
+<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+<?php if(!empty($cond)): ?>
 <div id="report">
 		<div id="title">				  
 		<p>รายงานผู้สัมผัสโรครายเดือน</p>
@@ -106,7 +107,7 @@ $(document).ready(function(){
 		<a href="report/index/2<?php echo '?'.$_SERVER['QUERY_STRING'].'&excel=excel' ?>" class="excel" name="btn_excel"></a></div> 	
 	<table class="tbreport">
 		<thead>
-			<tr><td colspan="14" style="text-align:right;">หน่วย:เคส</td></tr>
+			<tr><td colspan="14" style="text-align:right;">หน่วย:ราย</td></tr>
 			<tr>
 				<th rowspan="2">ข้อมูล</th><th colspan="14">เดือน (N = <? echo number_format($total_n) ?>)</th>
 			</tr>		
@@ -116,9 +117,9 @@ $(document).ready(function(){
 		<tr class="para1">
 			<td align="left"><strong>ผู้สัมผัสโรคพิษสุนัขบ้า</strong></td>
 			<?php for($i=1;$i<13;$i++): ?>
-				<td><? echo number_format(${'total_m'.$i}) ?></td>
+				<td><? echo number_format(${'total_m'.$i}) ?><p class="percentage">100.0</p></td>
 			<?php endfor; ?>
-			<td><? echo number_format($total_n); ?></td>	
+			<td><? echo number_format($total_n); ?><p class="percentage">100.0</p></td>	
 		</tr>
 		<tr><td colspan="14"><strong>เพศ</strong>
 			<input type="hidden" name="render" value="container1">
@@ -686,10 +687,7 @@ $(document).ready(function(){
 ,5=>"ค้าขาย",6=>"งานบ้าน",7=>"ทหาร ตำรวจ",8=>"ประมง",9=>"ครู",10=>"เลี้ยงสัตว์ / จับสุนัข",11=>"นักบวช / ภิกษุสามเณร"
 ,12=>"ผู้ขับขี่จักรยาน / จักรยานยนต์ส่งของ",13=>"สัตว์แพทย์ผู้ประกอบการบำบัดโรคสัตว์หรือผู้ช่วยผู้ที่ทำงานในห้องปฏิบัติการโรคพิษสุนัขบ้า"
 ,14=>"อาสาสมัครฉีดวัคซีนสุนัข",15=>"เจ้าหน้าที่สวนสัตว์",16=>"ไปรษณีย์",17=>"ป่าไม้",18=>"พ่อค้าซื้อขายแลกเปลี่ยนสุนัข แมว สัตว์ป่า",19=>"อื่นๆ",20=>"ไม่ระบุ"); ?>	
-		<tr><td colspan="14"><strong>อาชีพผู้ปกครอง</strong>
-
-    					
-		</td></tr>		
+		<tr><td colspan="14"><strong>อาชีพผู้ปกครอง</strong></td></tr>		
 		<?php for($i=1;$i<21;$i++){ ?>
 		<tr class="para1">
 			<td class="pad-left"><?php echo  $name[$i] ?></td>
@@ -737,8 +735,7 @@ $(document).ready(function(){
   		</div>   		
   	</td>
 </tr>		
-		<tr><td><strong>การส่งหัวสัตว์ตรวจ</strong>			    						
-		</td>			
+		<tr><td><strong>การส่งหัวสัตว์ตรวจ</strong></td>			
 			<?php  for($i=1;$i<13;$i++): ?>
 			<td><?php echo number_format(${'total_head'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_head'.$i},${'total_m'.$i}); ?></p></td>
 			<?php endfor; ?>

@@ -6,13 +6,13 @@
 	<span>สถานบริการ <?php echo $texthospital ?> <span>ปี <?php echo $textyear_start ?></span> เดือน  <?php echo $textmonth_start ?> ถึง <?php echo $textmonth_end ?></span>
  </div>
 	<table class="tbreport" border="1" width="864">
-		<tr><td colspan="2" style="text-align:right;">หน่วย:คน</td></tr>
+		<tr><td colspan="2" style="text-align:right;">หน่วย: ราย</td></tr>
 		<tr>
 			<th style="text-align:center">เงื่อนไข</th><th style="text-align:left">จำนวน (N=<?php echo number_format($total_n); ?>)</th>
 		</tr>
 		<tr>
 			<td>1. ผู้สัมผัสโรคพิษสุนัขบ้าที่<strong>ไม่เคยฉีดวัคซีน หรือเคยฉีดน้อยกว่า 3 เข็ม</strong></td>
-			<td><strong><?php echo $total; ?></strong></td>			
+			<td><strong><?php echo  number_format($total1); ?></strong></td>			
 		</tr>	
 		<tr>
 			<td colspan="2">2. ผู้สัมผัสโรค <strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>ภายใน 6 เดือน</strong>ได้รับการฉีดวัคซีน</td>			
@@ -39,7 +39,7 @@
 		</tr>
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
-			<td ><strong><?php echo number_format($total2) ?></strong></td>
+			<td><strong><?php echo number_format($total2) ?></strong></td>
 		</tr>		
 		<tr>
 			<td colspan="2"><strong>3.ผู้สัมผัสโรค<strong>มีประวัติเคยฉีดวัคซีน</strong>ป้องกันโรคพิษสุนัขบ้า<strong>เกิน 6 เดือน</strong> ได้รับการฉีดวัคซีน</strong>
@@ -113,7 +113,7 @@
 			<td><span class="para1">- PCEC</span></td>
 			<td><? echo number_format($v22); ?></td>
 		</tr>
-				<tr>
+		<tr>
 			<td><span class="para1">- HDCV</span></td>
 			<td><? echo number_format($v23); ?></td>
 		</tr>
@@ -124,6 +124,38 @@
 		<tr>
 			<td style="text-align:center"><strong>รวม</strong></td>
 			<td ><strong><? echo number_format($total6); ?></strong></td>
+		</tr>
+		<tr>
+		<td colspan="2">7. จำนวนการรับวัคซีนของเคสที่ปิดแล้ว
+				<span style="display:none">จำนวนการรับวัคซีนของเคสที่ปิดแล้ว</span>
+				<input type="hidden" name="render" value="container5">
+				<button class="bar-chart img"  name="bar"></button>
+				<button class="column-chart img" name="column"></button>
+	    		<button class="pie-chart img" name="pie"></button>				
+		</td>			
+		<tr>
+			<td><span class="para1">- จำนวน  1 เข็ม</span></td>
+			<td><?php echo number_format($v26) ?></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 2 เข็ม </span></td>
+			<td><?php echo number_format($v27) ?></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน  3 เข็ม </span></td>
+			<td><?php echo number_format($v28) ?></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน  4 เข็ม </span></td>
+			<td><?php echo number_format($v29) ?></td>
+		</tr>
+		<tr>
+			<td><span class="para1">- จำนวน 5 เข็ม </span></td>
+			<td><?php echo number_format($v30) ?></td>
+		</tr>
+		<tr>
+			<td  class="aligncenter"><strong>รวม</strong></td>
+			<td  class="aligncenter"><strong><?php echo number_format($total7) ?></strong></td>
 		</tr>
 	</table>
 	<hr class="hr1">

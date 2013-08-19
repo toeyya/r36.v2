@@ -85,7 +85,7 @@ padding:1px 0 2px;
 												 echo form_hidden('updated',date('Y-m-d H:i:s'));
 												?></td>
 						</tr>
-						<tr><th></th><td><img src="content/captcha" /> </td></tr>
+						<tr><th></th><td><img src="img.php" /> </td></tr>
 						<tr><th>Captcha :</th><td><input type="text" name="captcha" class="textbox"> </td></tr>
 						<tr><th></th><td><button type="submit" name="btn_submit" class="btn btn-primary">บันทึก</button></td></tr>
 					</table>
