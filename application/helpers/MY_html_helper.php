@@ -161,130 +161,147 @@ function currency_rate($price)
 			function get_ip(){
 				
 			}
-			function save_log($action,$title=FALSE,$new=FALSE,$old=FALSE){			
+			function AmphurName($province_id,$amphur_id,$field ="amphur_name"){
+				$CI =& get_instance();
+				$name = $CI->db->GetOne("select $field from n_amphur where province_id ='".$province_id."' and amphur_id ='".$amphur_id."'");
+				return ThaiToUtf8($name);
+				
+			}
+			function DistrictName($province_id,$amphur_id,$district_id,$field ="district_name"){
+				$CI =& get_instance();
+				$name = $CI->db->GetOne("select $field from n_district where province_id ='".$province_id."' and amphur_id ='".$amphur_id."' and district_id ='".$district_id."'");
+				return ThaiToUtf8($name);				
+			}
+			function save_log($action,$title=FALSE,$hospitalcode=FALSE)
+			{
+				$CI =& get_instance();				
 				$CI->load->model('district/district_model','district');
+				$CI->load->model('province/province_model','province');
 				$CI->load->model('amphur/amphur_model','amphur');
-				$CI->load->model('logs/log_model','log');
+				$CI->load->model('log/log_model','logs');
+				$CI->load->model('hospital/hospital_model','hospital');
+											
+				$arr_action=array('insert'=>'เพิ่ม','update'=>'แก้ไข','delete'=>'ลบ','view'=>'ดู','login'=>'เข้าใช้ระบบ','logout'=>'ออกจากระบบ','vaccine'=>'เพิ่มการฉีดวัคซีน');
 				
-				$hospital_name = $CI->session->userdata('R36_HOSPITAL_NAME');
-				$amphur_id = $CI->session->userdata('R36_HOSPITAL_AMPHUR');
-				$province_id = $CI->session->userdata('R36_HOSPITAL_PROVINCE');
-				$data['uid'] = $CI->session->userdata('R36_UID');
-				
-				$arr_action=array('save'=>'เพิ่ม','insert'=>'เพิ่ม','update'=>'แก้ไข','delete'=>'ลบ','view'=>'ดู','login'=>'เข้าใช้ระบบ','logout'=>'ออกจากระบบ');
-				
-				if($action=="edit"){
-					 $data['detail']=$arr_action[$action].$title." จาก ".$old." เป็น ".$new;
-				 }else if($action=="login" || $action=="logout"){
+				if($action=="login" || $action=="logout"){
 				 	$data['detail']=$arr_action[$action];
-				}else if($action=="insert"){
-					if($this->session->userdata('R36_HOSPITAL')!=''){
-						$rs=$this->amphur->select("amphur_name,province_name")->join("LEFT JOIN n_province on n_amphur.province_id=n_province.province_id")
-										  ->where("n_amphur.province_id='".$province_id."' and amphur_id='".$amphur_id."'")->get();
-					
-						$data['detail']=$arr_action[$action].$title.$new.$old."<br/>" .$hospital_name." อ.".$rs['amphur_name']." จ.".$rs['province_name'];
+				}else{
+					if($CI->session->userdata('R36_HOSPITAL')!=''){
+						$hospital_name = $CI->session->userdata('R36_HOSPITAL_NAME');
+						$province_id   = $CI->session->userdata('R36_HOSPITAL_PROVINCE');
+						$amphur_id 	   = $CI->session->userdata('R36_HOSPITAL_AMPHUR');
+						$district_id   = $CI->session->userdata('R36_HOSPITAL_DISTRICT');
+						
+					}else{
+						$rs = $CI->hospital->get_row("hospital_code",$hospitalcode);
+						$hospital_name 	= $rs['hospital_name'];
+						$province_id 	= $rs['hospital_province_id'];
+						$amphur_id 		= $rs['hospital_amphur_id'];
+						$district_id 	= $rs['hospital_district_id'];												
 					}
-				 }else{
-				 	$data['detail']=$arr_action[$action].$title." ชื่อ ".$new;
-				 }		
-				$data['action'] = $arr_action[$action];
+					$rs['province_name'] 	= $CI->province->get_one("province_name","province_id",$province_id);
+					$rs['amphur_name'] 		= AmphurName($province_id,$amphur_id);
+					$rs['district_name'] 	= DistrictName($province_id, $amphur_id, $district_id);					
+					$data['detail']=$arr_action[$action].$title."<br/>" .$hospital_name." จังหวัด ".$rs['province_name']." อ. ".$rs['amphur_name']." ต.".$rs['district_name'];
+				 }
+				$data['uid']   = $CI->session->userdata('R36_UID');
+				$data['action'] = $arr_action[$action];				
 				$data['created'] = date('Y-m-d H:i:s');
-				$CI->log->save($data);						
-				//$sql=" INSERT INTO n_logs(action,detail,uid,created) VALUES('".$arr_action[$action]."','".$detail."','".$_SESSION['R36_UID']."','".$created."')";				 				
-				//$CI->db->Execute($sql);
+				$data['ipaddress'] = getIP();
+				$CI->logs->save($data);						
 				
 				return false;
 			}
 
-function generate_password($length=5) {
-      $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      $password = '';
-      for ( $i = 0; $i < $length; $i++ )
-         $password .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
-		 
-      return $password;
-} 
-
-function file_extension($val){
-	$ext=array('xlsx','pdf', 'xls', 'doc', 'docx', 'ppt', 'pptx', 'rar','zip' );
-	return in_array($val, $ext);	
-}
-function image_extension($val){
-	$ext=array('gif','jpg', 'jpeg');
-	return in_array($val, $ext);	
-}
-
-function compute_percent($val, $fullval,$n=2){
-	if($fullval==0){
-		return number_format(0,$n);
-	}else{
-		$percent = ($val*100)/$fullval;
-		return number_format($percent,$n);
-	}
-}
-function getLevel($area,$total)
-{	
-		$i=($area=="1") ? 0:1;	
-		for($i;$i<=$total;$i++){
-			
-			$data[$i] = ($i==0) ? 'กทม.':'เขตที่ '.$i;
-		}
-		return $data;		
-	
-}
-function sum_vertical($sum,$val){
-	
-	return $sum + $val;
-}
-
-function downloadFile($file){
-    $file_name = $file;
-    $mime = 'application/force-download';
-    header('Pragma: public');  // required
-    header('Expires: 0');  // no cache
-    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-    header('Cache-Control: private',false);
-    header('Content-Type: '.$mime);
-	header("Content-Type: application/excel");
-    header('Content-Disposition: attachment; filename="'.basename($file_name).'"');
-    header('Content-Transfer-Encoding: binary');
-    header('Connection: close');
-    //readfile($file_name);  // push it out
-    
-}
-function check_delete_setting($module,$province_id=FALSE,$amphur_id=FALSE,$district_id=FALSE){
-	$CI =& get_instance();
-	if($module =="amhur"){
-		$where = array(" hospital_amphur_id = ? and hospital_province_id = ? "
-					  ," hospitalamphur = ? and hospitalprovince = ? "
-					  ," (amphurid = ? and provinceid = ?)  or (amphuridplace = ?  and provinceidplace = ?) "
-					  ,"useramphur = ?  and userprovince = ? ");	
-	    $val = array(array($amphur_id,$province_id),array($amphur_id,$province_id,$amphur_id,$province_id));
-	}else if($module =="province"){
-	    	$where = array(" hospital_province_id = ? "
-	    				  ," hospitalprovince = ? "
-	    				  ," provinceid = ? or  provinceidplace =  "
-	    				  ," userprovince = ? ");	
-	    	$val = array($province_id,array($province_id,$province_id));		
-	}else if($module =="district"){
-		$where = array(" hospital_amphur_id = ? and hospital_province_id = ? and hospital_district_id = ? "
-					  ," hospitalamphur = ? and hospitalprovince = ?  and substring(hospitalcode,5,2) = ? "
-					  ," (amphurid = ? and provinceid = ? and districtid = ? )  or (amphuridplace = ?  and provinceidplace = ? and districtidplace = ? ) "
-					  ," useramphur = ? and userprovince = ? and userdistrict = ? ");	
-	    $val = array(array($amphur_id,$province_id,$district_id),array($amphur_id,$province_id,$district_id,$amphur_id,$province_id,$district_id));
+		function generate_password($length=5) {
+		      $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+		      $password = '';
+		      for ( $i = 0; $i < $length; $i++ )
+		         $password .= substr($chars, mt_rand(0, strlen($chars) - 1), 1);
+				 
+		      return $password;
+		} 
 		
-	}
-	$hospital_id = $CI->db->GetOne("select hospital_id from n_hospital_1 where ".$where[0],$val[0]);
-	$inform_id = $CI->db->GetOne("select id from n_information where ".$where[1],$val[0]);
-	$history_id = $CI->db->GetOne("select historyid from n_history where  ".$where[1],$val[0]);
-	$dead_id = $CI->db->GetOne("select id  id from n_historydead where ".$where[2],$val[1]);
-	$user_id = $CI->db->GetOne("select uid from n_user where  ".$where[3],$val[0]);
-	if($hospital_id || $inform_id ||  $history_id || $dead_id || $user_id){	    
-		return false;
-	}else{
-		return true;	   
-	}
-}
+		function file_extension($val){
+			$ext=array('xlsx','pdf', 'xls', 'doc', 'docx', 'ppt', 'pptx', 'rar','zip' );
+			return in_array($val, $ext);	
+		}
+		function image_extension($val){
+			$ext=array('gif','jpg', 'jpeg');
+			return in_array($val, $ext);	
+		}
+		
+		function compute_percent($val, $fullval,$n=2){
+			if($fullval==0){
+				return number_format(0,$n);
+			}else{
+				$percent = ($val*100)/$fullval;
+				return number_format($percent,$n);
+			}
+		}
+		function getLevel($area,$total)
+		{	
+				$i=($area=="1") ? 0:1;	
+				for($i;$i<=$total;$i++){
+					
+					$data[$i] = ($i==0) ? 'กทม.':'เขตที่ '.$i;
+				}
+				return $data;		
+			
+		}
+		function sum_vertical($sum,$val){
+			
+			return $sum + $val;
+		}
+		
+		function downloadFile($file){
+		    $file_name = $file;
+		    $mime = 'application/force-download';
+		    header('Pragma: public');  // required
+		    header('Expires: 0');  // no cache
+		    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+		    header('Cache-Control: private',false);
+		    header('Content-Type: '.$mime);
+			header("Content-Type: application/excel");
+		    header('Content-Disposition: attachment; filename="'.basename($file_name).'"');
+		    header('Content-Transfer-Encoding: binary');
+		    header('Connection: close');
+		    //readfile($file_name);  // push it out
+		    
+		}
+		function check_delete_setting($module,$province_id=FALSE,$amphur_id=FALSE,$district_id=FALSE){
+			$CI =& get_instance();
+			if($module =="amhur"){
+				$where = array(" hospital_amphur_id = ? and hospital_province_id = ? "
+							  ," hospitalamphur = ? and hospitalprovince = ? "
+							  ," (amphurid = ? and provinceid = ?)  or (amphuridplace = ?  and provinceidplace = ?) "
+							  ,"useramphur = ?  and userprovince = ? ");	
+			    $val = array(array($amphur_id,$province_id),array($amphur_id,$province_id,$amphur_id,$province_id));
+			}else if($module =="province"){
+			    	$where = array(" hospital_province_id = ? "
+			    				  ," hospitalprovince = ? "
+			    				  ," provinceid = ? or  provinceidplace =  "
+			    				  ," userprovince = ? ");	
+			    	$val = array($province_id,array($province_id,$province_id));		
+			}else if($module =="district"){
+				$where = array(" hospital_amphur_id = ? and hospital_province_id = ? and hospital_district_id = ? "
+							  ," hospitalamphur = ? and hospitalprovince = ?  and substring(hospitalcode,5,2) = ? "
+							  ," (amphurid = ? and provinceid = ? and districtid = ? )  or (amphuridplace = ?  and provinceidplace = ? and districtidplace = ? ) "
+							  ," useramphur = ? and userprovince = ? and userdistrict = ? ");	
+			    $val = array(array($amphur_id,$province_id,$district_id),array($amphur_id,$province_id,$district_id,$amphur_id,$province_id,$district_id));
+				
+			}
+			$hospital_id = $CI->db->GetOne("select hospital_id from n_hospital_1 where ".$where[0],$val[0]);
+			$inform_id = $CI->db->GetOne("select id from n_information where ".$where[1],$val[0]);
+			$history_id = $CI->db->GetOne("select historyid from n_history where  ".$where[1],$val[0]);
+			$dead_id = $CI->db->GetOne("select id  id from n_historydead where ".$where[2],$val[1]);
+			$user_id = $CI->db->GetOne("select uid from n_user where  ".$where[3],$val[0]);
+			if($hospital_id || $inform_id ||  $history_id || $dead_id || $user_id){	    
+				return false;
+			}else{
+				return true;	   
+			}
+		}
 
 
 

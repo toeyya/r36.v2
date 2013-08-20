@@ -5,7 +5,8 @@ class Admin_Controller extends Controller
 	function __construct()
 	{
 		parent::__construct();				
-		if(!is_login()){
+		if(!is_login('admin')){
+			logout();
 			set_notify('error','กรุณาเข้าสู่ระบบ');
 			redirect('users/admin/auth');
 		}

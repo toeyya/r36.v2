@@ -186,6 +186,7 @@ var ref1,ref2,ref3,ref4,ref5,ref6;
 		<th>สถานบริการ/หน่วยงาน</th>
 		<th>จังหวัด</th>
 		<th>การอนุมัติ</th>
+		<th>เข้าใช้ระบบล่าสุด</th>
 		<th width="90">
 			<?php if(permission('users', 'act_create')):?>
 			<a href="users/admin/users/form" name="btn_add" class="btn">เพิ่มรายการ</a>
@@ -217,6 +218,7 @@ var ref1,ref2,ref3,ref4,ref5,ref6;
 						<? endif; ?>
 					</div>
 				</td>
+				<td></td>
 				<td><?php if(permission('users', 'act_update')):?>
 					<a href="users/admin/users/form/<?php echo  $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn">แก้ไข</a>
 				    <?php endif; ?>

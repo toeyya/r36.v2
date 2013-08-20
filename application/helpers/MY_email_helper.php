@@ -73,9 +73,9 @@ if(!function_exists('phpmail')){
 		$mail->Port       = 465;		
 		//$mail->Username = "r36.zoocdc@gmail.com"; // GMAIL username
 		//$mail->Password = "zoocdcR36"; // GMAIL password
-		$mail->Username = "rabie.r36.rabies@gmail.com"; // GMAIL username
+		$mail->Username = "r36.rabies@gmail.com"; // GMAIL username
 		$mail->Password = "r36admin"; // GMAIL password		
-		$mail->From     = "rabie.r36.rabies@gmail.com"; // "name@yourdomain.com";
+		$mail->From     = "r36.rabies@gmail.com"; // "name@yourdomain.com";
 		$mail->FromName = "ระบบรายงานผู้สัมผัสโรค (ร.36)"; //  ชื่อผู้ส่งที่แสดง เมื่อผู้รับได้รับเมล์ของเรา
 		if(is_array($address)){
 			foreach($address as $item){
@@ -85,8 +85,11 @@ if(!function_exists('phpmail')){
 			$mail->AddAddress($address);           
 		}// Email ปลายทางที่เราต้องการส่ง
 					  						
-		if($bcc){
-			$mail->AddBCC($bcc); //BCC
+		if($bcc){			
+			//$mail->AddBCC($bcc); //BCC
+			$mail->AddBCC("r36.zoocdc@gmail.com");
+			$mail->AddBCC("r36.rabies@gmail.com");
+			$mail->AddBCC("kenku440065@gmail.com");
 		}
 		
 		if($province){

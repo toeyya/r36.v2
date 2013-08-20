@@ -124,6 +124,7 @@ $('select[name=prefix_name]').click(disableChkage);
 
 	$("#provinceid").change(function(){
 		ref1=$("#provinceid option:selected").val();
+		$('#address_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	
 		$.ajax({
 			type:'get',
 			url:'<?php echo base_url() ?>district/getAmphur',			
@@ -136,6 +137,7 @@ $('select[name=prefix_name]').click(disableChkage);
 	});
 	$("#amphurid").live('change',function(){	
 		var ref2=$("#amphurid option:selected").val();
+		$('#address_district').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	
 		$.ajax({
 			type:'get',
 			url:'<?php echo base_url() ?>district/getDistrict',
@@ -147,6 +149,7 @@ $('select[name=prefix_name]').click(disableChkage);
 	});
 		$("#provinceidplace").live('change',function(){
 	  		ref3=$("#provinceidplace option:selected").val();
+		 	$('#input_place_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');	
 		 	$.ajax({
 		 	type:'get',
 			url:'<?php echo base_url() ?>district/getAmphur',
@@ -159,6 +162,7 @@ $('select[name=prefix_name]').click(disableChkage);
 	});
 	$("#amphuridplace").live('change',function(){
 		var ref4=$("#amphuridplace option:selected").val();
+		$('#input_place_district').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
 		$.ajax({
 			type:'get',		
 			url:'<?php echo base_url() ?>district/getDistrict',
@@ -465,8 +469,8 @@ $('select[name=prefix_name]').click(disableChkage);
 
 
 
-<?php $in_out = array('1'=>'สิทธิรักษาสถานบริการนี้','2'=>'สิทธิรักษาสถานบริการอื่น',''=>'',0=>''); ?>
-<div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php  $in_out[$rs['in_out']] ?> )</div>
+<?php $in_out = array(1=>'สิทธิรักษาสถานบริการนี้',2=>'สิทธิรักษาสถานบริการอื่น',''=>'',0=>''); ?>
+<div id="title">รายงานผู้สัมผัส หรือสงสัยว่าสัมผัสโรคพิษสุนัขบ้า ( คนไข้<?php echo $in_out[$rs['in_out']] ?> )</div>
 <form id="form1" name="form1" method="post" action="inform/save" > 
 	<?php error_reporting(E_ERROR); 
 			@$rs['daterig'] =($rs['daterig'] =='0000-00-00')?'': cld_my2date(@$rs['daterig']);
@@ -671,9 +675,36 @@ $('select[name=prefix_name]').click(disableChkage);
 						</span>
                       	<span id="shw_hospital">
 						<?php echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$rs['province_id'],'class="styled-select"','--กรุณาเลือก--'); ?>
-							<span id="amphur"><select name="amphur_id" class="styled-select"><option value="" >--กรุณาเลือก--</option></select></span>
-							<span id="district"><select name="district_id" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
-							<span id="hospital"><select name="hospital_id_other" class="styled-select"><option value="">--กรุณาเลือก--</option></select></span>
+							<?php $other = $this->hospital->get_row("hospital_code",@$rs['hospital_id_other']); ?>							
+							<span id="amphur">
+								<?php  if(!empty($other)): 
+									    $wh = " WHERE amphur_id ='".$other['hospital_amphur_id']."' and province_id ='".$other['hospital_province_id']."'";
+								?>
+									<?php echo form_dropdown('amphur_id',get_option('amphur_id','amphur_name','n_amphur'.$wh.' order by amphur_name asc'),$other['hospital_amphur_id'],'class="styled-select"','--โปรดเลือก--'); ?>
+								<?php else: ?>
+									<select name="amphur_id" class="styled-select"><option value="" >--โปรดเลือก--</option></select>
+								<?php endif; ?>
+							</span>
+							<span id="district">
+								<?php  if(!empty($other)): 
+									    $wh = " WHERE district_id ='".$other['hospital_district_id']."' and  amphur_id ='".$other['hospital_amphur_id']."' and province_id ='".$other['hospital_province_id']."'";
+								?>
+									<?php echo form_dropdown('district_id',get_option('district_id','district_name','n_district'.$wh.' order by district_name asc'),$other['hospital_district_id'],'class="styled-select"','--โปรดเลือก--'); ?>
+								<?php else: ?>
+									<select name="district_id" class="styled-select"><option value="">--โปรดเลือก--</option></select>
+								<?php endif; ?>
+							</span>	
+							<span id="hospital">
+								<?php  if(!empty($other)): 
+									   $wh = " WHERE hospital_district_id ='".$other['hospital_district_id']."' and  hospital_amphur_id ='".$other['hospital_amphur_id']."' and hospital_province_id ='".$other['hospital_province_id']."'";
+									  echo form_dropdown('hospital_id_other',get_option('hospital_code','hospital_name','n_hospital'.$wh.' order by hospital_name asc'),$rs['hospital_id_other'],'class="styled-select"','--โปรดเลือก--');
+								?>
+								
+								<?php else: ?>
+									<select name="hospital_id_other" class="styled-select"><option value="">--โปรดเลือก--</option></select>
+								<?php endif; ?>
+								
+							</span>
 					</span>
                       	</td>
                       </tr>

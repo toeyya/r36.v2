@@ -134,42 +134,6 @@ class Users extends Admin_Controller
 		}
 		redirect('users/admin/users');	
 	}
-	function popup(){
-			$this->template->set_layout('blank');		
-			$this->template->build('popup_list');		
-	}
-	function popup_list()
-	{//$this->db->debug=TRUE;
-		## # แสดงตารางนัดหมายคนไข้ได้อัตโนมัติ เมื่อถึงกำหนดในการับวัคซีนต่อไปโดยระบบจะต้องทำการแจ้งผ่านหน้าจอผู้ใช้งานได้ตลอดเวลา ###
-			$this->session->unset_userdata('schedule');
-			$yy=date('Y')+543;
-			//$current_date=$yy.'-'.date('m').'-'.date('d');
-			$current_date='2554-06-05';
-			if($this->session->userdata('R36_PROVINCE')!='' && $this->session->userdata('R36_LEVEL')=='02'){
-					$wh="AND provinceid = '".$this->session->userdata('R36_PROVINCE')."'  AND hospitalprovince <>  '".$this->session->userdata('R36_PROVINCE')."' ";
-			}
-			if($this->session->userdata('R36_HOSPITAL')){									
-					$hospital=$this->hospital->get_row("hospital_code",$this->session->userdata('R36_HOSPITAL'));
-					$wh="AND hospitalcode ='".$this->session->userdata('R36_HOSPITAL')."' 
-								AND hospitalprovince='".$hospital['hospital_province_id']."'  
-								AND hospitalamphur ='".$hospital['hospital_amphur_id']."' ";
-			}
-			if($this->session->userdata('R36_LEVEL')=='00'){
-					$wh="AND ((provinceid = '10'  AND hospitalprovince <>  '10') OR (typeforeign='3' AND nationalityname!='1')) ";
-			}
-			$data['result']=$this->inform->select("hospitalcode,hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid")
-																->join("INNER Join n_history ON n_information.information_historyid = n_history.historyid
-												 							  INNER Join n_vaccine ON n_information.information_historyid = n_vaccine.information_id ")	
-																->where("information_historyid <>'' AND closecase <>'2' AND (means  IN (1,2)) AND hospitalcode <>''  
-												 								AND n_vaccine.vaccine_date <>'' and vaccine_date >='".$current_date."' $wh AND n_information.total_vaccine<>'5' ")	
-																->groupby("information_id")->sort("")->order("n_information.id asc")->limit(100)->get();	
-			$data['current_date']=$current_date;												
-			$this->template->set_layout('blank');		
-			$this->template->build('popup_list',$data);
-	}
-
-
-	
 }
 
 ?>

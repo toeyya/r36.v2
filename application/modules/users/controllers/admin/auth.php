@@ -10,9 +10,9 @@ class Auth extends Public_Controller
 	
 	public function index()
 	{
-		/*if(is_login('admin')){			
+		if(is_login('admin')){			
 			redirect('users/admin/users');
-		}*/			
+		}			
 		$this->template->set_theme('admin');
 		$this->template->set_layout('blank');
 		$this->template->build('admin/auth/login');
@@ -23,12 +23,14 @@ class Auth extends Public_Controller
 		if($_POST)
 		{		
 			if(login($_POST['username'], $_POST['password'],'admin'))
-			{
-				//Addlog("login","เข้าสู่ระบบ");	
-				set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบ');
+			{	
+				set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบ');								
+				if(permission('users','act_read')){
+					redirect('users/admin/users');
+				}else{
+					redirect('users/admin/users/form/'.$this->session->userdata('R36_UID').'/profile');
+				}
 				
-				//redirect('users/admin/users/form/'.$this->session->userdata('R36_UID').'/profile');
-				redirect('users/admin/users');
 			}
 			else
 			{
@@ -44,7 +46,6 @@ class Auth extends Public_Controller
 	
 	public function logout()
 	{
-		//Addlog("logout",'ออกจากระบบ');	
 		logout();
 		redirect('home');
 	}

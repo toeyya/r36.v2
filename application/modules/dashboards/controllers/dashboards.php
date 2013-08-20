@@ -11,7 +11,7 @@ class Dashboards extends Public_Controller
 	function index()
 	{
 		$ga = new ga();
-		$ga->authen('favouritedesign@gmail.com','F@vourite','ga:70787162');
+		$ga->authen('favouritedesign@gmail.com','F@vourite','ga:75710162');
 		$now=date("Y-m-d");
 		$lastmonth=date('Y-m-d', strtotime('-10 days'));
 
@@ -48,7 +48,7 @@ class Dashboards extends Public_Controller
 	function inc_home()
 	{
 		$ga = new ga();
-		$ga->authen('favouritedesign@gmail.com','F@vourite','ga:70787162');
+		$ga->authen('favouritedesign@gmail.com','F@vourite','ga:75710162');
 		$now=date("Y-m-d");
 		$start_month=date('Y-m-01');
 		$end_month= date("Y-m-t", strtotime($start_month));

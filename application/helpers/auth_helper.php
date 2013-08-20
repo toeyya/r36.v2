@@ -39,7 +39,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 				$CI->session->set_userdata('R36_HOSPITAL_DISTRICT',$rec_hospital['hospital_district_id']);
 				$CI->session->set_userdata('schedule','yes');
 			}
-			
+		save_log("login");	
 		return true;
 	}
 	else
@@ -49,14 +49,18 @@ function login($username=FALSE,$password=FALSE,$admin='')
 
 }
 
-function is_login()
+function is_login($admin=FALSE)
 {
 	$CI =& get_instance();
+	if($admin){
+		$admin =" and userposition IN('00','01','02')";
+	}	
 	$sql="SELECT uid FROM n_user 
 		  INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
-		  WHERE uid= ? ";
+		  WHERE  active='1' and uid= ? $admin";
 	
 	$id = $CI->db->GetOne($sql,$CI->session->userdata('R36_UID'));	
+	
 	return ($id) ? true : false;
 }
 function is_owner($id)
@@ -83,6 +87,7 @@ function login_data($field)
 function logout()
 {
 	$CI =& get_instance();
+	save_log("logout");	
 	$CI->session->sess_destroy();
 
 }

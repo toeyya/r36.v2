@@ -200,7 +200,7 @@ class Inform extends R36_Controller
 			}
 			
 			//$data['now']=strtotime(date("Y-m-d H:i:s"));
-			$data['now']=strtotime(date("Y-m-d H:i:sP"));														
+			$data['now']=strtotime(date("Y-m-d H:i:s"));														
 			$this->template->build('form',$data);
 				
 	}		
@@ -273,7 +273,7 @@ class Inform extends R36_Controller
 		//$_POST['updatetime'] = (empty($_POST['updatetime']) || $_POST['updatetime']=='0000-00-00 00:00:00') ? "CONVERT(datetime, GETDATE(), 120)":"CONVERT(VARCHAR(19), '".$_POST['updatetime']."', 120)";			
 	   // $_POST['created'] 	 = (empty($_POST['created']) 	|| $_POST['created']=='0000-00-00 00:00:00') ? "CONVERT(datetime, GETDATE(), 120)":"CONVERT(VARCHAR(19), '".$_POST['created']."', 120)";			
 	    $this->history->primary_key('historyid');
-		$_POST['information_historyid']=$this->history->save($_POST);
+		$_POST['information_historyid'] = $this->history->save($_POST);
 		//var_dump($_POST);
 		//exit;
 		$head_lick_noblood = (!empty($_POST['head_lick_noblood'])) ? $_POST['head_lick_noblood'] :'';
@@ -340,6 +340,9 @@ class Inform extends R36_Controller
 		$_POST['hospitalcode']=$_POST['hospital'];
 		$_POST['id']=$_POST['information_id'];	
 		$_POST['typeother']	=($_POST['typeother']=='') ? '0':$_POST['typeother'];	
+		
+		$process = (!empty($_POST['id'])) ? "update":"insert";
+		
 		$information_id=$this->inform->save($_POST);
 		//   ------++++------    table n_vaccine	------++++------ 	
 		$this->vaccine->primary_key('vaccine_id');
@@ -367,9 +370,8 @@ class Inform extends R36_Controller
 								}
 					}//exit;
 		}
-		$title = "ข้อมูลการสัมผัสโรค ".$_POST['patient_type'];
-		
-		save_log($process,$title_log,$label,$label_val);	
+		$title = "ข้อมูลการสัมผัสโรค ".$_POST['patient_type']."hn ".$_POST['hn']." - ".$_POST['hn_no'].", บัตรประชาชน/พาสปอร์ต ".$_POST['idcard'];		
+		save_log($process,$title,$_POST['hospitalcode']);	
 		//  ------++++------    End n_vaccine  ------++++------ 
 		set_notify('success', SAVE_DATA_COMPLETE);		
 		redirect('inform/index');
@@ -420,7 +422,13 @@ class Inform extends R36_Controller
 			$id = $_GET['id'];
 			$historyid = $_GET['historyid'];
 		}
-		if($id && $historyid){					
+		if($id && $historyid){
+				
+			$rs = $this->inform->get_row($id);
+			$idcard = $this->history->get_one("idcard","historyid",$rs['information_historyid']);
+			$title = "ข้อมูลการสัมผัสโรค  hn = ".$rs['hn']." - ".$rs['hn_no'].", บัตรประชาชน/พาสปอร์ต ".$idcard;		
+			save_log("delete",$title,$rs['hospitalcode']);										
+			
 			$this->inform->delete($id);
 			$idcard=$this->history->get_one("historyid",$historyid);
 			if($idcard){
@@ -429,7 +437,7 @@ class Inform extends R36_Controller
 					$this->history->delete("historyid",$historyid);
 				}		
 			}						
-			$this->vaccine->delete("information_id",$id);
+			$this->vaccine->delete("information_id",$id);			
 			set_notify('success', DELETE_DATA_COMPLETE);				
 		}
 		if(empty($_GET)){redirect('inform/index');}				

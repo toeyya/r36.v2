@@ -286,21 +286,19 @@ var ref1,ref2,ref3,province_id;
      </td>
   </tr>
 
-	<?php $gen_pass=generate_password();	?> 
-  <tr>
+	<?php //$gen_pass=generate_password();	?> 
+  <!--<tr>
     <th >รหัสผ่าน </th>
     <td><span><?php echo (empty($rs['userpassword']))? $gen_pass:$rs['userpassword']?></span></td>
-  </tr>
+  </tr>-->
   <tr>
-    <th >สร้าง / เปลี่ยน รหัสผ่าน <span class="alertred">*</span></th>
+    <th >รหัสผ่าน <span class="alertred">*</span></th>
     <td><input type="password" id="userpassword" name="userpassword" class="input_box_patient " value="<?php echo (empty($rs['userpassword']))?$gen_pass: @$rs['userpassword'];?>">
         </td>
   </tr> 
   <tr>
     <th>ยืนยันรหัสผ่าน  <span class="alertred">*</span></th>
-    <td><input type="password" name="repassword" class="input_box_patient " value="<?php echo (empty($rs['userpassword']))?$gen_pass: @$rs['userpassword'];?>">      
-        
-        </td>
+    <td><input type="password" name="repassword" class="input_box_patient " value="<?php echo (empty($rs['userpassword']))?$gen_pass: @$rs['userpassword'];?>"></td>
   </tr>
 
   <?php if(!$profile): ?>

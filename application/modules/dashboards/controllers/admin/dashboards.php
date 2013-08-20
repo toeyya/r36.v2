@@ -11,8 +11,8 @@ class Dashboards extends Admin_Controller
 	
 	function index()
 	{
-		Addlog("read",'ดูรายการจำนวนคนเข้าเว็บไซต์');	
-		$this->ga->authen('favouritedesign@gmail.com','F@vourite','ga:70787162');
+		//Addlog("read",'ดูรายการจำนวนคนเข้าเว็บไซต์');	
+		$this->ga->authen('favouritedesign@gmail.com','F@vourite','ga:75710162');
 		if($_GET)
 		{
 			$now=Date2DB($_GET['date']);
@@ -23,6 +23,7 @@ class Dashboards extends Admin_Controller
 		}
 	
 		$lastmonth=date('Y-m-d', strtotime('-29 days',mysql_to_unix($now)));
+
 
 		//Summery: visitors, unique visit, pageview, time on site, new visits, bounce rates
 		$data['summery']=$this->ga->getSummery($lastmonth,$now);
