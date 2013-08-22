@@ -222,7 +222,7 @@ $(document).ready(function(){
 
 <div id="search">
 <form name="form1"  method="get" id="form1" action="inform/index">	
-<?php error_reporting(E_WARNING); 
+<?php error_reporting(E_ERROR); 
 
 	if($this->session->userdata('R36_LEVEL')=="05"){
 		$hospitalcode=$this->session->userdata('R36_HOSPITAL');
@@ -243,14 +243,16 @@ $(document).ready(function(){
 	//$this->db->debug=true;
 	//var_dump($_GET);
 ?>		
+	<div class="alert"><span class="label label-warning">กรณีเพิ่มครั้งที่สัมผัมโรค</span> สถานบริการจะขึ้นให้อัตโนมัติตามสังกัดของคุณ</div>
 	<table class="tb_patient1">				
-			<tr> 
-				  <th><span class="alertred">*</span>จังหวัด :</th>
-				  <td>				  	
+			<tr><th rowspan="2"><span class="alertred">*</span> ที่อยู่สถานบริการ  </th></tr>
+			<tr> 								  
+				  <td colspan="4">	
+				  	<p style="padding:3px;">จังหวัด				  	
 						<?php echo form_dropdown('hospital_province_id',get_option('province_id','province_name',"n_province where province_id <>''  order by province_name asc"),$_GET['hospital_province_id'],'class="input_box_patient" id="hospitalprovince"','-โปรดเลือก-') ?>
-				  </td>
-				  <th height="20"  ><span class="alertred">*</span>อำเภอ :</th>
-				  <td>
+				  
+				  
+				  อำเภอ
 						<span id="input_amphur">
 							<?php 
 							$whamphur="";
@@ -264,12 +266,8 @@ $(document).ready(function(){
 							 echo form_dropdown('hospital_amphur_id',get_option('amphur_id','amphur_name',"n_amphur where $amphur_id $whamphur  order by amphur_name asc"),$_GET['hospital_amphur_id'],'class="input_box_patient" id="hospital_amphur_id"','-โปรดเลือก-');
 							?>
 					</span> 				
-				  </td>
-			</tr>
-
-			<tr> 
-				  <th><span class="alertred">*</span>ตำบล :</th>
-				  <td >
+				 
+				  ตำบล
 						<span id="input_district">
 							<?php
 							$wh="";
@@ -282,9 +280,8 @@ $(document).ready(function(){
 							 echo form_dropdown('hospital_district_id',get_option('district_id','district_name',"n_district where $whdistrict $wh  order by district_name asc"),@$_GET['hospital_district_id'],'class="input_box_patient" id="hospital_district_id"','-โปรดเลือก-');
 							?>
 					</span> 				
-				  </td>
-				   <th ><span class="alertred">*</span>สถานบริการ :</th>
-				  <td> 
+				 
+				  สถานบริการ 
 						<span id="input_hospital">											
 								<?php				
 								$whhospital="";
@@ -296,12 +293,17 @@ $(document).ready(function(){
 										echo form_dropdown('hospitalcode',get_option('hospital_code','hospital_name',"n_hospital_1 where $whhospital ORDER BY hospital_name ASC"),@$_GET['hospitalcode'],'class="input_box_patient" id="hospitalcode"','-โปรดเลือก-');
 					  			 ?>
 						</span> 
-				  </td>
+				   	
+				   </p>
+				   		   
+				 </td>			
 			</tr>
+			
+		
 			<tr> 
-				  <th ><span class="alertred">*</span> รหัส HN :</th>
+				  <th ><span class="alertred">*</span> รหัส HN </th>
 				  <td><input name="hn" type="text" id="hn" size="30" maxlength="300"  class="input_box_patient" value="<?php echo @$_GET['hn'] ?>"></td>				  		
-				<th ><span class="alertred">*</span> ประเภทบัตร : </th>
+				<th ><span class="alertred">*</span> ประเภทบัตร  </th>
 				<td><select name="statusid"  id="statusid"  class="input_box_patient">			
 						<option value="1" <?php if(@$_GET['statusid']=='1'){ echo "selected='selected'";}?> selected="selected">เลขประจำตัวประชาชน</option>
 						<option value="2" <?php if(@$_GET['statusid']=='2'){ echo "selected='selected'";}?>>เลขที่ passport</option>
@@ -343,7 +345,7 @@ $(document).ready(function(){
 			</tr>
 			
 			<tr> 
-				  <th >ชื่อ-นามสกุล :</th>
+				  <th >ชื่อ-นามสกุล </th>
 				  <td colspan="4"><input name="name" type="text" id="name" size="30" maxlength="300"  class="input_box_patient" value="<?php echo @$_GET['name'] ?>"> -
 				  <input name="surname" type="text" id="surname" size="30" maxlength="300"  class="input_box_patient" value="<?php echo @$_GET['surname'] ?>">
 				  </td>

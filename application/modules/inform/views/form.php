@@ -674,8 +674,8 @@ $('select[name=prefix_name]').click(disableChkage);
 							<input type="radio" name="in_out" value="2" disabled="disabled" <?php echo (@$rs['in_out']=="2")?'checked="checked"':''; ?>> สิทธิการรักษาสถานบริการอื่น
 						</span>
                       	<span id="shw_hospital">
-						<?php echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$rs['province_id'],'class="styled-select"','--กรุณาเลือก--'); ?>
-							<?php $other = $this->hospital->get_row("hospital_code",@$rs['hospital_id_other']); ?>							
+						<?php $other = $this->hospital->get_row("hospital_id",@$rs['hospital_id_other']); 						
+						 echo  form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),$other['hospital_province_id'],'class="styled-select"','--กรุณาเลือก--'); ?>									
 							<span id="amphur">
 								<?php  if(!empty($other)): 
 									    $wh = " WHERE amphur_id ='".$other['hospital_amphur_id']."' and province_id ='".$other['hospital_province_id']."'";
@@ -697,7 +697,7 @@ $('select[name=prefix_name]').click(disableChkage);
 							<span id="hospital">
 								<?php  if(!empty($other)): 
 									   $wh = " WHERE hospital_district_id ='".$other['hospital_district_id']."' and  hospital_amphur_id ='".$other['hospital_amphur_id']."' and hospital_province_id ='".$other['hospital_province_id']."'";
-									  echo form_dropdown('hospital_id_other',get_option('hospital_code','hospital_name','n_hospital'.$wh.' order by hospital_name asc'),$rs['hospital_id_other'],'class="styled-select"','--โปรดเลือก--');
+									  echo form_dropdown('hospital_id_other',get_option('hospital_id','hospital_name','n_hospital_1'.$wh.' order by hospital_name asc'),$rs['hospital_id_other'],'class="styled-select"','--โปรดเลือก--');
 								?>
 								
 								<?php else: ?>
@@ -2157,6 +2157,7 @@ $('select[name=prefix_name]').click(disableChkage);
 			  </table>
     </div>    
 </div>
+
  <?php if($process!="view"): ?>
  <div class="btn_inline">
       <ul>
@@ -2171,7 +2172,9 @@ $('select[name=prefix_name]').click(disableChkage);
       </ul>
 </div> 
 <?php endif; ?>
-<div id="loading"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+<div style="display:none">
+<div id="load" width="padding-left:300px;"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+</div>
 </form>
 
 <? if(!empty($rs['head_bite_blood'])){ echo "<script language='javascript'>show_mark(document.getElementById('head_bite_blood').checked,document.getElementById('head_bite_noblood').checked,document.getElementById('head_claw_blood').checked,document.getElementById('head_claw_noblood').checked,document.getElementById('head_lick_blood').checked,document.getElementById('head_lick_noblood').checked,document.getElementById('markhead'));</script>";}?>

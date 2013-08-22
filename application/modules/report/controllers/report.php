@@ -16,6 +16,7 @@ class Report extends R36_Controller
 		$this->load->model('inform/historydead_model','dead');
 		$this->load->model('amphur/amphur_model','amphur');		
 		$this->template->append_metadata(js_report());
+		
 	}
 	public $reference= "แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข";
 	function index($no=FALSE)
@@ -2193,7 +2194,7 @@ class Report extends R36_Controller
 		$data['hospital'] = array_walk($data['hospital'],'dbConvert');
 		
 		
-		$sql="SELECT hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid
+		$sql="SELECT hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,telephone
 					,REPLACE(CONVERT(VARCHAR(10),vaccine_date, 111), '/', '-') as vaccine_date
 					,REPLACE(CONVERT(VARCHAR(10),datetouch, 111), '/', '-') as datetouch ,idcard
 			FROM n_information

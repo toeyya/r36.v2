@@ -9,15 +9,16 @@
 	</div>
 	<table class="tb_search_Rabies1" width="90%">
 	<tr>
-	  <th width="5%">ลำดับ</th>
+	  <th width="3%">ลำดับ</th>
 	  <th width="10%">HN - ครั้งที่</th>
 	  <th width="10%">วันที่สัมผัสโรค</th>
-	  <th width="15%">วันที่ฉีดวัคซีนครั้งต่อไป</th>	   
-	  <th width="17%">ชื่อ-นามสกุล</th>
-	  <th width="17%">เลขที่บัตรประชาชน /passport</th>
+	  <th width="10%">วันที่ฉีดวัคซีนครั้งต่อไป</th>	   
+	  <th width="15%">ชื่อ-นามสกุล</th>
+	  <th width="15%">เลขที่บัตรประชาชน /passport</th>
+	  <th width="10%">โทรศัพท์</th>
 	  <th width="10%">สิทธิ์การรักษา</th>
 	  <th width="7%">ฉีดโดยวิธี</th>
-	  <th width="10%">จำนวนเข็ม</th>	  
+	  <th width="7%">จำนวนเข็ม</th>	  
 	</tr>
 
 <? 	$means_name=array('1'=>'ID','2'=>'IM');		
@@ -32,10 +33,10 @@
 		  <td><?php echo DB2date($item['vaccine_date']) ?></td>
 		  <td><?php echo $item['firstname']?> <?php echo $item['surname']?></td>
 		  <td><?php echo $item['idcard'] ?></td>
+		  <td><?php echo $item['telephone']?></td>
 		  <td><?php echo $inout[$item['in_out']]?></td>
 		  <td style="text-align: center"><?php echo $means_name[$item['means']]?></td>
-		  <td style="text-align: center"><?php echo $item['total_vaccine']?></td>
-		  		  		
+		  <td><?php echo $item['total_vaccine']?></td>		  		  		
 		</tr>
 <?php  endforeach;?>	     
   </table>

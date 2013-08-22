@@ -2,17 +2,16 @@
 
 function login($username=FALSE,$password=FALSE,$admin='') 
 {
-	$CI =& get_instance();	
+	$CI =& get_instance();
+	//$CI->db->debug=true;		
 	if($admin){
 		$admin =" and userposition IN('00','01','02')";
 	}
 	$sql="SELECT * FROM n_user 
-				INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
-				WHERE n_user.usermail= ?  AND n_user.userpassword= ? and active='1' ".$admin;	
+		  INNER JOIN n_level_user ON n_user.userposition=n_level_user.level_code 
+		  WHERE n_user.usermail= ?  AND n_user.userpassword= ? and active='1' ".$admin;	
 	$rs = $CI->db->GetRow($sql,array($username,$password));	
-	array_walk($rs,'dbConvert');
-		
-	
+	array_walk($rs,'dbConvert');	
 	if($rs)
 	{
 		$CI->session->set_userdata('R36_UID',$rs['uid']);
@@ -52,6 +51,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 function is_login($admin=FALSE)
 {
 	$CI =& get_instance();
+	$admin ="";
 	if($admin){
 		$admin =" and userposition IN('00','01','02')";
 	}	

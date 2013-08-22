@@ -135,12 +135,18 @@ var ref1,ref2,ref3,ref4,ref5,ref6;
 	<tr>
 	<th style="width:10%">ชื่อ/นามสกุล</th>
 	<td ><input type="text" name="name" value="<?php echo @$_GET['name'] ?>"></td>
+	<?php if($this->session->userdata('R36_LEVEL')=="00"){  ?>
 	<th style="width:10%">สิทธิ์การใช้งาน</th>
 	<td><?php echo form_dropdown('userposition',get_option('level_code','level_name','n_level_user'),@$_GET['userposition'],'','เลือกสิทธิ์การใช้งาน') ?></td>
+	<?php } ?>
 	</tr>
 	<tr>
 		<th>จังหวัด</th>
-		<td><?php echo form_dropdown('userprovince',get_option('province_id','province_name','n_province order by province_name asc'),@$_GET['userprovince'],'class="styled-select"','-ทั้งหมด-')?>	</td>
+		<td><?php 
+		if($this->session->userdata('R36_LEVEL')!="00"){
+			$_GET['userprovince']= $this->session->userdata('R36_PROVINCE');
+		}
+		echo form_dropdown('userprovince',get_option('province_id','province_name','n_province order by province_name asc'),@$_GET['userprovince'],'class="styled-select"','-ทั้งหมด-')?>	</td>
 		<th>อำเภอ</th>
 		<td id="td_amphur">
 			<?php if(!empty($_GET['useramphur']) && !empty($_GET['userprovince'])){ 
@@ -185,8 +191,8 @@ var ref1,ref2,ref3,ref4,ref5,ref6;
 		<th>สิทธิ์การใช้งาน</th>
 		<th>สถานบริการ/หน่วยงาน</th>
 		<th>จังหวัด</th>
-		<th>การอนุมัติ</th>
-		<th>เข้าใช้ระบบล่าสุด</th>
+		<th style="width:20%;text-align:center;">การอนุมัติ</th>
+		
 		<th width="90">
 			<?php if(permission('users', 'act_create')):?>
 			<a href="users/admin/users/form" name="btn_add" class="btn">เพิ่มรายการ</a>
@@ -218,7 +224,7 @@ var ref1,ref2,ref3,ref4,ref5,ref6;
 						<? endif; ?>
 					</div>
 				</td>
-				<td></td>
+				
 				<td><?php if(permission('users', 'act_update')):?>
 					<a href="users/admin/users/form/<?php echo  $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn">แก้ไข</a>
 				    <?php endif; ?>

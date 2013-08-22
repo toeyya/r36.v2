@@ -12,7 +12,8 @@ class Inform extends R36_Controller
 		$this->load->model("history_model",'history');
 		$this->load->model('users/user_model','user');
 		$this->load->model('document/document_detail_model','detail');
-		$this->template->append_metadata(js_idcard());							
+		$this->template->append_metadata(js_idcard());
+									
 	}
 	function closecase_person($idcard,$chk=FALSE){
 		if($chk){
@@ -241,6 +242,7 @@ class Inform extends R36_Controller
 		/*  ป้องกันการบันทึกข้อมูลผู้สัมผัสโรคซ้ำ : ตรวจสอบรหัสบัตรประชาชนก่อนบันทึกลง n_history ถ้ามีแล้วให้ update ถ้าไม่มี insert  	
 		 *   ที่ยอมให้บันทึกได้หลายเรคอร์ด - ไมได้ตรวจสอบก่อนบันทึก, ผู้สัมผัสโรคอาจย้ายที่อยู่ และสถานที่สัมผัสโรคคนละที่-					*/	
 		//$this->db->debug=TRUE;			
+		
 		if($_POST['statusid']=='1'){ 
 					$_POST['idcard']=$_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];						
 		}else if($_POST['statusid']=='2'){

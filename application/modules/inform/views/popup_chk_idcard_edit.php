@@ -70,7 +70,7 @@ $(document).ready(function(){
 	<table width="100%" cellpadding="0" cellspacing="0">
 	<tr>
 		<td height="50">&nbsp;เลขประจำตัวประชาชน/passport : 
-			<select name="statusid"  class="input_box_patient auto" onChange="return selectType_id(this.value);" id="statusid">
+			<select name="statusid"  class="auto" onChange="return selectType_id(this.value);" id="statusid">
 				<option value="1" selected="selected">เลขประจำตัวประชาชน</option>
 				<option value="2">เลขที่ passport</option>
 			</select>

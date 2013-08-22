@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" 	href="media/js/jquery.datepick/redmond.datepick.css"  media="screen"/>
 <link rel="stylesheet" type="text/css" 	href="media/css/print.css" media="print" />
 <link rel="stylesheet" type="text/css" 	href="media/css/vtip.css" media="screen" />
+<link rel="stylesheet" type="text/css" 	href="media/js/jquery-loadmask/jquery.loadmask.css" media="screen" />
 
 <script type="text/javascript" src="media/js/jquery-1.6.4.min.js"></script>
 <script type="text/javascript" src="media/js/jquery.livequery.js" ></script>
@@ -22,6 +23,8 @@
 
 <script type="text/javascript" src="media/js/jquery-multi-open-accordion/jquery-ui-1.8.13.custom.min.js"></script>
 <script type="text/javascript" src="media/js/jquery-multi-open-accordion/jquery.multi-accordion-1.5.3.js"></script>
+<script type="text/javascript" src="media/js/jquery-loadmask/jquery.loadmask.min.js"></script>
+
 <script type="text/javascript" src="media/js/vtip.js"></script>
 <script>
 $(function(){  
@@ -48,12 +51,15 @@ $(function(){
 		showMonthAfterYear: false, yearSuffix: ''};		
 		$.datepick.setDefaults($.datepick.regional['th']);			
       $('.datepicker').datepick({format: 'Y-m-d', showOn: 'both', buttonImageOnly: true, buttonImage: 'media/js/jquery.datepick/calendar.gif'
-      },$.datepick.regional['th']);  		
-
+      },$.datepick.regional['th']);  			
+	$('#loading').hide();
+	
 	$('.btn_submit').click(function(){
 		$('#loading').show();
+		
 	})
 });
+
 $(window).load(function() {
 	$('#loading').hide();
 });	

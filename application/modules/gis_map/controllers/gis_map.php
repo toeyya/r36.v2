@@ -14,6 +14,8 @@ class Gis_map extends Map_Controller
 	function index()
 	{	
 
+		
+			
 			
 		$dateStart = date("Y")."-01-01";
 		$dateEnd = date("Y")."-12-31";	

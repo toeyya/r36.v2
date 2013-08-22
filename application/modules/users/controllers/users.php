@@ -31,7 +31,7 @@ class Users extends Public_Controller
 				if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"){						
 					redirect($_SERVER['HTTP_REFERER']);
 				}else{					
-					redirect('users/r36/users/index/'.$this->session->userdata('R36_UID'));										
+					redirect('users/r36/users');										
 				}                             
             }
             else

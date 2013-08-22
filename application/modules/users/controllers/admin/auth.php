@@ -47,7 +47,7 @@ class Auth extends Public_Controller
 	public function logout()
 	{
 		logout();
-		redirect('home');
+		redirect('users/admin/auth');
 	}
 	
 }

@@ -19,7 +19,8 @@ class Permissions extends Admin_Controller
 		'dashboards' => array('label' => 'จำนวนคนเข้าเว็บไซต์', 'permission' => array('act_read')),
 		'logs'=>array('label' => 'ประวัติเข้าใช้ระบบ', 'permission' => array('act_read')),
 		'program'=>array('label' => 'โปรแกรม ร.36', 'permission' => array('act_read','act_create','act_update','act_delete')),
-		'email' =>array('label' => 'อีเมล์แจ้งข่าวสาร', 'permission' => array('act_read','act_create'))
+		'email' =>array('label' => 'อีเมล์แจ้งข่าวสาร', 'permission' => array('act_read','act_create')),
+		'gis' =>array('label'=>'ระบบสารสนเทศภูมิศาสตร์','permission'=>array('act_read'))
 	);
 	
 	public $crud = array(

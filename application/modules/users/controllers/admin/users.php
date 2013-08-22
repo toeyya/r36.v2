@@ -66,6 +66,10 @@ class Users extends Admin_Controller
 	function form($id=FALSE,$profile=FALSE)
 	{		
 			$this->template->append_metadata(js_idcard());	
+			$data['disabled'] ='';
+			if($this->session->userdata('R36_LEVEL')!="00"){
+				$data['disabled'] ='disabled="disabled"';
+			}
 			$this->user->primary_key("uid");	
 			if(!$id){$id="?";}				
 			$data['rs']=$this->user->select("n_user.*,level_name, a.province_name as province_name1
@@ -134,6 +138,7 @@ class Users extends Admin_Controller
 		}
 		redirect('users/admin/users');	
 	}
+
 }
 
 ?>

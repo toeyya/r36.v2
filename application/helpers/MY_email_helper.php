@@ -68,15 +68,24 @@ if(!function_exists('phpmail')){
 		$mail->IsSMTP();
 		$mail->SMTPDebug = 0;
 		$mail->SMTPAuth = true;		
-		$mail->SMTPSecure = "ssl"; // sets the prefix to the servier
-		$mail->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server		
-		$mail->Port       = 465;		
+		//$mail->SMTPSecure = "ssl"; // sets the prefix to the servier
+		//$mail->Host = "smtp.gmail.com"; // sets GMAIL as the SMTP server		
+		//$mail->Port       = 465;		
 		//$mail->Username = "r36.zoocdc@gmail.com"; // GMAIL username
 		//$mail->Password = "zoocdcR36"; // GMAIL password
-		$mail->Username = "r36.rabies@gmail.com"; // GMAIL username
-		$mail->Password = "r36admin"; // GMAIL password		
-		$mail->From     = "r36.rabies@gmail.com"; // "name@yourdomain.com";
-		$mail->FromName = "ระบบรายงานผู้สัมผัสโรค (ร.36)"; //  ชื่อผู้ส่งที่แสดง เมื่อผู้รับได้รับเมล์ของเรา
+		//$mail->Username = "r36.rabies@gmail.com"; // GMAIL username
+		//$mail->Password = "r36admin"; // GMAIL password		
+		//$mail->From     = "r36.rabies@gmail.com"; // "name@yourdomain.com";
+		//$mail->FromName = "ระบบรายงานผู้สัมผัสโรค (ร.36)"; //  ชื่อผู้ส่งที่แสดง เมื่อผู้รับได้รับเมล์ของเรา
+		
+		$mail->Host       = "mail1.favouritehosting.com";
+		$mail->Port       = 25;
+		$mail->Username   = "r36@favouritedesign.com";
+		$mail->Password   = "r36@fd";                     		
+		$mail->From       = "r36@favouritedesign.com";  //  account e-mail ของเราที่ใช้ในการส่งอีเมล
+		$mail->FromName   = "ระบบรายงานผู้สัมผัสโรค (ร.36)"; //  ชื่อผู้ส่งที่แสดง เมื่อผู้รับได้รับเมล์ของเรา		
+		
+		
 		if(is_array($address)){
 			foreach($address as $item){
 				$mail->AddAddress($item['usermail']);            

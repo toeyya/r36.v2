@@ -14,6 +14,7 @@ class Users extends R36_Controller
 	}
 	function index($id=FALSE)
 	{ //$this->db->debug=TRUE;
+		$id =(empty($id)) ? $this->session->userdata('R36_UID'):$id;
 		if(!$id){$id="?";}				
 			$data['rs']=$this->user->select("n_user.*,level_name, a.province_name as province_name1,a.province_id as province_id1
 											,b.province_name as province_name2,hospital_province_id,hospital_amphur_id,hospital_district_id,status

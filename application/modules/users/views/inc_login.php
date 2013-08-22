@@ -21,9 +21,9 @@
 			   	<?php $link="inform/index"; ?>
 			   <?php endif; ?>			
 			   <div style="text-align:center;"><a href="<? echo $link ?>" target="_blank" class="btn btn-mini btn-info">โปรแกรม ร.36</a>  
-			  	<?php //if($this->session->userdata('login_gis')=="1"): ?>
-			   <a href="map/index" target="_blank" class="btn btn-mini btn-info">ระบบภูมิศาสตร์ ฯ(GIS)</a>
-			   <?php //endif; ?></br>
+			  	<?php if($this->session->userdata('login_gis')=="1" ||permission('gis','act_read')): ?>
+			   <a href="gis_map" target="_blank" class="btn btn-mini btn-info">ระบบภูมิศาสตร์ ฯ(GIS)</a>
+			   <?php endif; ?></br>
 			   <a href="users/logout" class="btn btn-mini" style="margin-top:5px;">logout</a></div>
 			 	
    			</li>

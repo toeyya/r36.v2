@@ -158,7 +158,7 @@ var ref1,ref2,ref3,province_id;
   		<input type="hidden" name="userposition" value="<?php echo @$rs['userposition'] ?>">
   	</td>
   	<?php else: ?>
-  	<td><?php echo form_dropdown('userposition',get_option("level_code",'level_name','n_level_user'),@$rs['userposition'],'',''); ?></td>
+  	<td><?php echo form_dropdown('userposition',get_option("level_code",'level_name','n_level_user'),@$rs['userposition'],$disabled,''); ?></td>
   	<?php endif; ?>
   </tr>
   <tr id="level"><th>เขต <span class="alertred" >*</span></th>
@@ -294,6 +294,7 @@ var ref1,ref2,ref3,province_id;
   <tr>
     <th >รหัสผ่าน <span class="alertred">*</span></th>
     <td><input type="password" id="userpassword" name="userpassword" class="input_box_patient " value="<?php echo (empty($rs['userpassword']))?$gen_pass: @$rs['userpassword'];?>">
+        <input type="hidden" name="pp" value="<?php echo @$rs['userpassword']; ?>"> 
         </td>
   </tr> 
   <tr>
@@ -307,12 +308,14 @@ var ref1,ref2,ref3,province_id;
   	<td><input type="checkbox" name="confirm_province" value="1"  <?php echo(!empty($rs['confirm_province']))?'checked="checked"':''; ?>></td>  	
   </tr>
    <?php if($this->session->userdata('R36_LEVEL')=="00"): ?> 
+  
   <tr><th>การอนุมัติของผู้ดูแลระดับกรม</th>
   	<td><input type="checkbox" name="confirm_admin"  value="1"  <?php echo(!empty($rs['confirm_admin']))?'checked="checked"':''; ?>></td>
   </tr>
   <tr><th>การเข้าใช้ระบบสารสนเทศ ฯ(GIS)</th>
   	<td><input type="checkbox" name="login_gis" value="1"></td>
   </tr>
+  <tr><th>การยืนยันอีเมล์</th><td><?php echo (!empty($rs['confirm_email']))? img(array('src'=>'media/images/checkmark.png','width'=>'16px','height'=>'')):img(array('src'=>'media/images/crossmark.png','width'=>'16px','height'=>'')); ?></td></tr>
   <tr><th>ส่งอีเมล์แจ้งอนุมัติ</th>
   	<td><input type="checkbox" name="send_mail" value="1"></td>
   </tr>
