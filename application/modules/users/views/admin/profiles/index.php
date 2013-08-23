@@ -37,7 +37,7 @@
 	</tr>
 </table>
 <input type="hidden" name="uid" value="<?php echo $rs['uid']?>" />
-<?php echo ($rs['uid']) ? form_hidden('modified',date('Y-m-d H:i:s')) : form_hidden('created',date('Y-m-d H:i:s'))?>
+<?php echo ($rs['uid']) ? form_hidden('modified',time()) : form_hidden('created',time())?>
 </form>
 
 

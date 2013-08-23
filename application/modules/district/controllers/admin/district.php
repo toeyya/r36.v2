@@ -1,5 +1,5 @@
 <?php
-class District extends Public_Controller
+class District extends Admin_Controller
 {
 	function __construct()
 	{
@@ -9,7 +9,38 @@ class District extends Public_Controller
 		$this->load->model("amphur/amphur_model",'amphur');
 		$this->load->model('area/area_model','area');		
 	}
-
+	function index($view=FALSE)
+	{
+		$wh='';
+		$wh .=(!empty($_GET['amphur_id'])) ? " AND  amphur_id = '".$_GET['amphur_id']."'": '';
+		$wh .=(!empty($_GET['province_id'])) ? " AND province_id ='".$_GET['province_id']."'":'';
+		$wh .=(!empty($_GET['district_name'])) ? " AND district_name LIKE'%".$_GET['district_name']."%'" : '';
+		if($view){$wh.="hospital_id='$view'";}
+		$data['wh']=$wh;
+		$data['result']=$this->district->select("district_name,province_id,amphur_id,tam_amp_id,district_id")															
+									    ->where(" district_id<>'' and province_id<>'' $wh")
+									    ->sort("")->order("province_id,amphur_id,district_name ASC")->get();						
+		$data['pagination']=$this->district->pagination();
+		$this->template->build('district_index',$data);								
+	}
+	function form($tam_amp_id=FALSE)
+	{
+		$data['rs']=$this->db->GetRow("select district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id 
+										from n_district 
+										INNER JOIN n_province on n_province.province_id=n_district.province_id 
+										INNER JOIN n_amphur on n_amphur.amphur_id=n_district.amphur_id 
+										where tam_amp_id =$tam_amp_id 
+										GROUP BY district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id");
+		
+		$this->template->build('district_form',$data);
+	}
+	function view($district_name=FALSE,$amphur_name=FALSE,$province_name=FALSE)
+	{
+		$data['district_name']=$district_name;
+		$data['amphur_name']=$amphur_name;
+		$data['province_name']=$province_name;	
+		$this->template->build("district_view",$data);
+	}
 	function getProvince(){
 		$name=(isset($_GET['name']))?$_GET['name']:'province_id';
 		if($_GET['ref1']){
@@ -60,6 +91,34 @@ class District extends Public_Controller
 		$id=$this->db->getOne($sql);	
 		echo ($id)? "false":"true";
 	}
+	function save()
+	{
+		
+			$max_id=$this->db->getOne("SELECT max(district_id)  AS chk_district_id FROM n_district WHERE province_id ='".$_POST['province_id']."' AND amphur_id='".$_POST['amphur_id']."'");
+			$district_id=$max_id+101;
+			$district_id=substr($district_id,1,2);
+			$_POST['district_id']=($_POST['district_id']!="") ? $_POST['district_id']:$district_id;
+
+		if($_POST)
+		{
+			$this->district->primary_key("tam_amp_id");	
+			$this->district->save($_POST);	
+			set_notify('success', SAVE_DATA_COMPLETE);
+		}
+		
+		redirect('district/admin/district/index');	
+	}
+	function delete($id,$province_id,$amphur_id,$district_id){
+		if($id){
+			if(check_delete_setting("district",$province_id,$amphur_id,$district_id)){
+				$this->district->delete("tam_amp_id",$id);	
+				set_notify('success', DELETE_DATA_COMPLETE);	
+			}else{
+				set_notify('success','ข้อมูลนี้ถูกใช้อยู่ ไม่สามารถลบรายการนี้ได้');
+			}		
+		redirect('district/admin/district/index');	
+		}
+	}	
 
 	function GetGroupByArea()
 	{

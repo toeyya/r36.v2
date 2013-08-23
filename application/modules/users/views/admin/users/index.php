@@ -185,8 +185,8 @@ var ref1,ref2,ref3,ref4,ref5,ref6;
 </div>
 
 <table  class="list" >
-	  <tr>		
-		<th>แสดง</th>
+	  <tr>	  
+		<th>แสดง</th>		
 		<th>ชื่อ - นามสกุล</th>
 		<th>สิทธิ์การใช้งาน</th>
 		<th>สถานบริการ/หน่วยงาน</th>
@@ -200,9 +200,8 @@ var ref1,ref2,ref3,ref4,ref5,ref6;
 		</th>
 	  </tr>	  
 		<?php foreach($result as $key => $item): ?>
-		<tr>
-				
-				<td><input type="checkbox"  class="list_check" name="active" value="<?php echo $item['uid'] ?>" <?php echo ($item['active']=="1")?'checked="checked"':'' ?>  /></td>				
+		<tr>				
+				<td><input type="checkbox"  class="list_check" name="active" value="<?php echo $item['uid'] ?>" <?php echo ($item['active']=="1")?'checked="checked"':'' ?>  /></td>								
 				<td><?php echo $item['userfirstname'];?> <?php echo $item['usersurname'];?></td>
 				<td><?php echo $item['level_name']; echo (!empty($item['userlevel'])) ? "(เขตที่  ".$item['userlevel'].")" :'';?></td>
 				<td><?php echo (!empty($item['hospital_name'])) ? $item['hospital_name']: $item['agency'] ?></td>

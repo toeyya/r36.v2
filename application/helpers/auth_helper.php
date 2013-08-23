@@ -2,8 +2,7 @@
 
 function login($username=FALSE,$password=FALSE,$admin='') 
 {
-	$CI =& get_instance();
-	//$CI->db->debug=true;		
+	$CI =& get_instance();	
 	if($admin){
 		$admin =" and userposition IN('00','01','02')";
 	}
@@ -51,7 +50,6 @@ function login($username=FALSE,$password=FALSE,$admin='')
 function is_login($admin=FALSE)
 {
 	$CI =& get_instance();
-	$admin ="";
 	if($admin){
 		$admin =" and userposition IN('00','01','02')";
 	}	

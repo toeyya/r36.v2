@@ -67,7 +67,7 @@ $(document).ready(function(){
 });
 </script>
 <h1>สถานพยาบาล(เพิ่ม/แก้ไข)</h1>
-<form name="form1" action="hospital/save"  method="post" id="formm" >
+<form name="form1" action="hospital/admin/hospital/save"  method="post" id="formm" >
 		<table class="form">
                 <tr><th>โค้ดสถานพยาบาล</th>
                 	<td><input type="text" readonly="readonly" value="<?php echo $rs['hospital_code']; ?>"><small> ระบบคำนวณอัตโนมัติ </small></td>

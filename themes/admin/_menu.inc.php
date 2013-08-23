@@ -12,11 +12,22 @@
                 <li><a href="area/index">เขตความรับผิดชอบ</a></li>
                 <li><a href="province/index">จังหวัด</a></li>
                 <li><a href="amphur/index">อำเภอ</a></li>
-				<li><a href="district/index">ตำบล</a></li>
-				<li><a href="hospital/index">สถานพยาบาล</a></li>					
+				<li><a href="district/admin/district/index">ตำบล</a></li>
+				<li><a href="hospital/admin/hospital/index">สถานพยาบาล</a></li>
+									
 		</ul>
 	</li>
 	<?php endif; ?>
+	
+	<?php if($this->session->userdata('R36_LEVEL')=="02"): ?>
+	<li><a href="javascript:void(0)">ตั้งค่าระบบโปรแกรมร.36</a>
+		<ul class="sublist">				
+				<li><a href="hospital/index">สถานพยาบาล</a></li>									
+		</ul>
+	</li>
+	<?php endif; ?>
+	
+	
 	<?php if(permission('abouts', 'act_read')): ?>
 	<li <?php echo menu_active('content','content')?>><a href="content/admin/content/index/1">เกี่ยวกับโรคพิษสุนัขบ้า</a></li>
 	<?php endif; ?>

@@ -39,7 +39,7 @@ $(document).ready(function(){
 </script>
 <h1>สถานพยาบาล</h1>
 <div class="search">
-<form  action="hospital/index" method="get" name="form1">
+<form  action="hospital/admin/hospital/index" method="get" name="form1">
 จังหวัด <?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province ORDER BY province_name ASC'),@$_GET['province_id'],'id="province_id"','-ทั้งหมด-') ?>
 อำเภอ  <span id="input_amphur">
 <?php  $class=' id="amphur_id"';
@@ -62,7 +62,7 @@ $(document).ready(function(){
 										echo form_dropdown('hospitalcode',get_option('hospital_code','hospital_name',"n_hospital_1 where $whhospital ORDER BY hospital_name ASC"),@$_GET['hospitalcode'],'id="hospitalcode"','-โปรดเลือก-');
 					  			 ?>
 						</span> 
-รหัส / ชื่อ สถานพยาบาล <input name="hospital" type="text" id="hospital" size="20"   class="input_box_patient"  value="<?php echo @$_GET['hospital']?>" />
+โค้ด /ชื่อ  สถานพยาบาล <input name="hospital" type="text" id="hospital" size="20"   class="input_box_patient"  value="<?php echo @$_GET['hospital']?>" />
 
 <input  class="btn" type="submit" value="ค้นหา">
 </form>
@@ -77,7 +77,7 @@ $(document).ready(function(){
 			<th width="18%">จังหวัด</th>
 			<th width="14%">
 				<?php if(permission('settings', 'act_create')): ?>
-				<a href="hospital/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+				<a href="hospital/admin/hospital/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
 				<?php endif; ?>
 			</th>
 		  </tr>
@@ -98,12 +98,12 @@ $(document).ready(function(){
 					<td><?php echo $item['province_name'] ?>	</td>			
 					<td>
 					<?php if(permission('settings', 'act_update')): ?> 
-					<a href="hospital/form/<?php echo $item['hospital_id'] ?>" class="btn" title="แก้ไข">แก้ไข</a> 
+					<a href="hospital/admin/hospital/form/<?php echo $item['hospital_id'] ?>" class="btn" title="แก้ไข">แก้ไข</a> 
 					<?php endif; ?>
 					<?php if(permission('settings', 'act_delete')): ?>
 					<?php  if($this->session->userdata('R36_LEVEL')=='00'){?>					 
 					<?php  if($chk_del==0){?>
-							<a href="hospital/delete/<?php echo $item['hospital_id'] ?>"  title="ลบ" class="btn" onClick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a>
+							<a href="hospital/admin/hospital/delete/<?php echo $item['hospital_id'] ?>"  title="ลบ" class="btn" onClick="return confirm('<?php echo NOTICE_CONFIRM_DELETE?>')">ลบ</a>
 					<?php  }else{?>
 							<a href="javascript:void(0);" class="btn" onClick="alert('ไม่สามารถลบข้อมูลได้ เนื่องจากมีคนไข้อยู่ในสถานพยาบาลนี้');">ลบ</a>
 					<?php  }?>

@@ -381,7 +381,9 @@ $(document).ready(function(){
 	  </table>
 <div class="btn_inline">
 	<ul><li><button class="btn_submit cencel" name="btn_submit" type="submit" value="btn_submit"></button></li></ul></div></div>
+<?php if($this->session->userdata('R36_LEVEL')=='00' || $this->session->userdata('R36_LEVEL')=="05"): ?>
 <div id="boxAdd"><button class="btn_add" type="submit" name="btn_add"></button></div>
+<?php endif; ?>
 </form>
 <?php if(empty($result) && !empty($_GET)): ?>
 <div class="alert alert-error" style="width:50%;margin:3% auto;text-align: center;font-weight: bold;">ไม่พบรายการที่ต้องการค้นหา </div>	
@@ -411,7 +413,7 @@ $(document).ready(function(){
                 <td align="center"><p class="syringe<?php echo $rec['total_vaccine'] ?> syringe" title="<?php echo $rec['total_vaccine'] ?> เข็ม"></p></td>
             	<td><a title="ดู" href="inform/form/<?php echo $rec['id'] ?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out'] ?>/view" class="btn_view vtip" target="_blank"></a> 			
 
-				<?php if($this->session->userdata('R36_LEVEL')=='00' || ($this->session->userdata('R36_LEVEL')=='02' && ($this->session->userdata('R36_PROVINCE')==$rec['hospitalprovince']))){?>
+				<?php if($this->session->userdata('R36_LEVEL')=='00'){?>
 					<a title="แก้ไข" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>"  class="btn_edit vtip" target="_blank" ></a>
 					<input type="hidden" name="information_id" value="<?php echo $rec['id'] ?>" /><input type="hidden" name="historyid" value="<?php echo $rec['historyid'] ?>"/>
 					<a title="ลบ"   href="javascript:void(0)" class="btn_delete vtip"></a>	
@@ -419,7 +421,9 @@ $(document).ready(function(){
 				 		if(($this->session->userdata('R36_LEVEL')=='05' || $this->session->userdata('R36_LEVEL')=='03')){ ?>											
 							<a  title="แก้ไข"  href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $in_out; ?>" class="btn_edit vtip" target="_blank"></a>								
 				 <?  } ?>
+				 <?php if($this->session->userdata('R36_LEVEL')=='00' || $this->session->userdata('R36_LEVEL')=='05'): ?>
 					<a title="เพิ่มจำนวนเข็ม" href="inform/form/<?php echo $rec['id']?>/<?php echo $rec['historyid'] ?>/<?php echo $rec['in_out']; ?>/vaccine"  class="btn_syring vtip"  target="_blank"></a>
+				<?php endif; ?>
 				 <?php } ?>
 
 				</td>

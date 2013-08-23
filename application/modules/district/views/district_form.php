@@ -1,5 +1,5 @@
 <h1>ข้อมูลตำบล(แก้ไข)</h1>
-<form action="district/save" method="post" id="formm">
+<form action="district/admin/district/save" method="post" id="formm">
 <table  class="form">
 <tr> 
   <th>โค้ดตำบล</th>

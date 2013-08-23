@@ -15,7 +15,7 @@ $(document).ready(function(){
 </script>
 <h1>ตำบล</h1>
 <div class="search">
-<form action="district/index" method="get" name="form1" >
+<form action="district/admin/district/index" method="get" name="form1" >
 จังหวัด <?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province ORDER BY province_name ASC'),@$_GET['province_id'],'class="input_box_patient " id="province_id"','-ทั้งหมด-') ?></td>
 อำเภอ  <span id="input_amphur"><?php echo form_dropdown('amphur_id',get_option('amphur_id','amphur_name',"n_amphur WHERE province_id='".@$_GET['province_id']."' ORDER BY amphur_name ASC"),@$_GET['amphur_id'],'class="input_box_patient " id="amphur_id"','-ทั้งหมด-'); ?></span>
 ตำบล <input name="district_name" type="text" id="district_name" size="30" maxlength="300"  class="input_box_patient "  value="<?php echo @$_GET['district_name'];?>" /></td>
@@ -49,10 +49,10 @@ $(document).ready(function(){
 			<td><?php echo $item['district_name']?></td>
 			<td>
 				<?php if(permission('settings', 'act_update')):?>
-				<a href="district/form/<?php echo $item['tam_amp_id']?>" class="btn" title="แก้ไข">แก้ไข</a> 
+				<a href="district/admin/district/form/<?php echo $item['tam_amp_id']?>" class="btn" title="แก้ไข">แก้ไข</a> 
 	  			<?php endif; ?>
 	  			<?php if(permission('settings', 'act_delete')):?>
-	  			<a href="district/delete/<?php echo $item['tam_amp_id']?>/<?php echo $item['province_id'] ?>/<?php echo $item['amphur_id'] ?>/<?php echo $item['district_id'] ?>" class="btn" title="ลบ">ลบ</a>
+	  			<a href="district/admin/district/delete/<?php echo $item['tam_amp_id']?>/<?php echo $item['province_id'] ?>/<?php echo $item['amphur_id'] ?>/<?php echo $item['district_id'] ?>" class="btn" title="ลบ">ลบ</a>
 	  			<?php endif; ?>
 	  		</td>
 	  </tr>
