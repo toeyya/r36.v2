@@ -43,8 +43,7 @@ class Dashboards extends Public_Controller
 		//Top 10 visitor operating systems
 		$data['topOs']=$ga->getTopOs($lastmonth,$now,10);
 		$this->template->build("index",$data);
-	}
-	
+	}	
 	function inc_home()
 	{
 		$ga = new ga();

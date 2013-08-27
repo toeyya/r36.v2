@@ -1,7 +1,15 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
-})
+ $('input[name=add]').click(function(){
+ 	var place = $(this).closest('td'); 	
+ 	place.append($(this).next().clone()); 	 		
+ 	$(this).closest('td').children('p:last').append('<input type="button" name="dels" value="ลบ"  class="dels">');
+ });
+ $('.dels').live('click',function(){
+ 	$(this).closest('p').remove();
+ })
+});	
 </script>
 <h1>ข้อมูลอำเภอ(เพิ่ม/แก้ไข)</h1>
 <form action="amphur/save" method="post" id="formm">
@@ -16,6 +24,24 @@ $(document).ready(function(){
 <tr>
 	<th>อำเภอ</th>
 	<td><input type="text" name="amphur_name" value="<?php echo @$rs['amphur_name'] ?>"></td>
+</tr>
+<tr>
+	<th>จำนวนประชากร</th>
+	<td><input type="button" name="add" class="btn" value="เพิ่ม">
+		<?php 
+		
+		foreach($people as $p):?>
+		<p> 
+			<?php echo form_dropdown('years[]',get_year_option(),$p['years']); ?>
+			<input type="text" 	 name="people[]"class="input_box_patient"  value="<?php echo  $p['people']?>"> 
+			<input type="button" name="dels" value="ลบ"  class="dels">			
+		</p>	
+		<?php endforeach; ?>
+		<p> 
+			<?php echo form_dropdown('years[]',get_year_option()); ?>
+			<input type="text" 	 name="people[]"class="input_box_patient"  value=""> 						
+		</p>			
+	</td>
 </tr>
 <tr><th></th>
 	<td><input  class="btn" type="submit" value="ตกลง"></td>

@@ -1,3 +1,17 @@
+<script type="text/javascript">
+$(document).ready(function(){
+
+ $('input[name=add]').click(function(){
+ 	var place = $(this).closest('td'); 
+ 	place.append($(this).next().clone());	
+ 	$(this).closest('td').children('p:last').append('<input type="button" name="dels" value="ลบ"  class="dels">');
+ 	
+ });
+ $('.dels').live('click',function(){
+ 	$(this).closest('p').remove();
+ })
+});	
+</script>
 <h1>ข้อมูลตำบล(แก้ไข)</h1>
 <form action="district/admin/district/save" method="post" id="formm">
 <table  class="form">
@@ -24,8 +38,7 @@
 	if($rs['province_id'] && $rs['amphur_id']){											
 		echo form_dropdown('amphur_id',get_option('amphur_id','amphur_name',"n_amphur",'amphur_name ASC',"province_id='".@$rs['province_id']."' and amphur_id='".@$rs['amphur_id'] ."'"),@$rs['amphur_id'],'id="amphur_id"','-โปรดเลือก-'); 							
 	}
-	?>	
-				
+	?>					
 	</span> 
   </td>
 </tr>
@@ -38,6 +51,22 @@
   <input type="hidden" name="district_id"      value="<?php echo $rs['district_id']?>" />
   <?php echo ($rs['tam_amp_id']) ? form_hidden('updated',time()) : form_hidden('created',time())?>	
   </td>
+</tr>
+<tr>
+	<th>จำนวนประชากร</th>
+	<td><input type="button" name="add" class="btn" value="เพิ่ม">
+		
+		<?php foreach($people as $p):?>
+		<p> 
+			<?php echo form_dropdown('years[]',get_year_option(),$p['years']); ?>
+			<input type="text" 	 name="people[]"class="input_box_patient"  value="<?php echo  $p['people']?>"> 
+			<input type="button" name="dels" value="ลบ"  class="dels">			
+		</p>	
+		<?php endforeach; ?>
+		<p>
+		<?php echo form_dropdown('years[]',get_year_option()); ?>
+		<input type="text" 	 name="people[]"class="input_box_patient"  value=""> </p>		
+	</td>
 </tr>
 <tr>
 	<th></th>

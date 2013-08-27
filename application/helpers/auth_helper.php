@@ -36,6 +36,7 @@ function login($username=FALSE,$password=FALSE,$admin='')
 				$CI->session->set_userdata('R36_HOSPITAL_AMPHUR',$rec_hospital['hospital_amphur_id']);
 				$CI->session->set_userdata('R36_HOSPITAL_DISTRICT',$rec_hospital['hospital_district_id']);
 				$CI->session->set_userdata('schedule','yes');
+				$CI->session->set_userdata('show','yes');
 			}
 		save_log("login");	
 		return true;

@@ -96,7 +96,7 @@
 		<tr class="para1">			
 			<td style="padding-left:10px;"><?php echo $place[$i]; //if($i==5)$i=0;?></td>	
 			<?php  for($j=1;$j<13;$j++): ?>
-			<td><?php echo number_format(${'total_place'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_place'.$i.$j},${'total_m'.$i}); ?></p></td>
+			<td><?php echo number_format(${'total_place'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_place'.$i.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format(${'total_place_all'.$i});?><p class="percentage"><?php echo compute_percent(${'total_place_all'.$i},$total_n); ?></p></td>
 		<?php endfor; ?>
@@ -108,7 +108,7 @@
 		<tr class="para1">			
 			<td style="padding-left:10px;"><?php echo $animal[$i]; //if($i==7)$i=0;?></td>	
 			<?php  for($j=1;$j<13;$j++): ?>
-			<td><?php echo number_format(${'total_animal'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_animal'.$i.$j},${'total_m'.$i}); ?></p></td>
+			<td><?php echo number_format(${'total_animal'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_animal'.$i.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format(${'total_animal_all'.$i});?><p class="percentage"><?php echo compute_percent(${'total_animal_all'.$i},$total_n); ?></p></td>
 		<?php endfor; ?>
@@ -119,7 +119,7 @@
 		<tr class="para1">			
 			<td style="padding-left:10px;"><?php echo $ageanimal[$i];  //if($i==6)$i=0;?></td>	
 			<?php  for($j=1;$j<13;$j++): ?>
-			<td><?php echo number_format(${'total_ageanimal'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_ageanimal'.$i.$j},${'total_m'.$i}); ?></p></td>
+			<td><?php echo number_format(${'total_ageanimal'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_ageanimal'.$i.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format(${'total_ageanimal_all'.$i})?><p class="percentage"><?php echo compute_percent(${'total_ageanimal_all'.$i},$total_n); ?></p></td>
 		<?php endfor; ?>
@@ -259,7 +259,7 @@
 		<tr class="para1">
 			<td class="pad-left2"><?php echo $reason[$i]; ?></td>	
 			<?php  for($j=1;$j<13;$j++): ?>
-			<td><?php echo number_format(${'total_reason2'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_reason2'.$i.$j},${'total_m'.$i}); ?></p></td>
+			<td><?php echo number_format(${'total_reason2'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_reason2'.$i.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format(${'total_reason_all2'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_reason_all2'.$i},$total_n); ?></p></td>
 		</tr>
@@ -546,7 +546,7 @@
 		<tr class="para1">
 			<td style="padding-left:10px;"><?php echo $vaccine[$i]; ?></td>	
 			<?php  for($j=1;$j<13;$j++): ?>
-			<td><?php echo number_format(${'total_means'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_means'.$i.$j},${'total_m'.$i}); ?></p></td>
+			<td><?php echo number_format(${'total_means'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_means'.$i.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format(${'total_means_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_means_all'.$i},$total_n); ?></p></td>		
 		</tr>
@@ -558,7 +558,7 @@
 		<tr class="para1">
 			<td style="padding-left:10px;"><?php echo $vaccine[$i]; ?></td>	
 			<?php  for($j=1;$j<13;$j++): ?>
-			<td><?php echo number_format(${'total_vaccine'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine'.$i.$j},${'total_m'.$i}); ?></p></td>
+			<td><?php echo number_format(${'total_vaccine'.$i.$j}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine'.$i.$j},${'total_m'.$j}); ?></p></td>
 			<?php endfor; ?>
 			<td><?php echo number_format(${'total_vaccine_all'.$i}); ?> <p class="percentage"><?php echo compute_percent(${'total_vaccine_all'.$i},$total_n); ?></p></td>		
 		</tr>

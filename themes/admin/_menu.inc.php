@@ -22,7 +22,7 @@
 	<?php if($this->session->userdata('R36_LEVEL')=="02"): ?>
 	<li><a href="javascript:void(0)">ตั้งค่าระบบโปรแกรมร.36</a>
 		<ul class="sublist">				
-				<li><a href="hospital/index">สถานพยาบาล</a></li>									
+				<li><a href="hospital/admin/hospital/index">สถานพยาบาล</a></li>									
 		</ul>
 	</li>
 	<?php endif; ?>

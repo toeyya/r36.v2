@@ -5,6 +5,7 @@ class District extends Admin_Controller
 	{
 		parent::__construct();
 		$this->load->model('district_model','district');
+		$this->load->model('district_people_model','people');
 		$this->load->model("province/province_model",'province');
 		$this->load->model("amphur/amphur_model",'amphur');
 		$this->load->model('area/area_model','area');		
@@ -31,6 +32,7 @@ class District extends Admin_Controller
 										INNER JOIN n_amphur on n_amphur.amphur_id=n_district.amphur_id 
 										where tam_amp_id =$tam_amp_id 
 										GROUP BY district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id");
+		$data['people'] = $this->people->where("tam_amp_id = $tam_amp_id")->sort("")->order("years desc")->get();
 		
 		$this->template->build('district_form',$data);
 	}
@@ -102,7 +104,14 @@ class District extends Admin_Controller
 		if($_POST)
 		{
 			$this->district->primary_key("tam_amp_id");	
-			$this->district->save($_POST);	
+			$this->district->save($_POST);
+			foreach($_POST['people'] as $key =>$item){
+				if(!empty($item))
+				{											
+					$this->db->Execute("delete from n_district_people where tam_amp_id =  ?  and years = ? ",array($_POST['tam_amp_id'],$_POST['years'][$key]));	
+					$this->people->save(array('tam_amp_id'=>$_POST['tam_amp_id'],'years'=>$_POST['years'][$key],'people'=>$item));
+				}
+			}	
 			set_notify('success', SAVE_DATA_COMPLETE);
 		}
 		

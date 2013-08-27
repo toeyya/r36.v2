@@ -1595,7 +1595,9 @@ $('select[name=prefix_name]').click(disableChkage);
                             <td colspan="2">
 					  		<?php 
 					  			$class=' id="headanimalplace" class="input_box_patient " onChange="show_hide_clear_otherheadanimalplace(this);"';
-					  		 	echo form_dropdown('headanimalplace',get_option('id','name','n_animalplaces'),@$rs['headanimalplace'],$class,'-โปรดเลือก-'); ?>
+					  		 	//echo form_dropdown('headanimalplace',get_option('id','name','n_animalplaces'),@$rs['headanimalplace'],$class,'-โปรดเลือก-'); 
+					  		 	echo form_dropdown('headanimalplace',get_option('id','name','n_identify_detail where identify_id =2'),$rs['headanimalplace'],$class,'-โปรดเลือก-');
+					  		 ?>
 					  		</td>
                             </tr>
                           <tr id="otherheadanimalplacetr" <? if(@$rs['headanimalplace']!='34'){print 'style = "display:none"'; }?>>

@@ -638,7 +638,7 @@ class Report extends R36_Controller
 				## ชนิดวัคซีน(จำนวนครั้งที่ใช้) (โด๊ส)
 				
 				$rs=array();	
-				$sql="select count(historyid) as cnt,vaccine_name FROM n_history
+				$sql="select count(distinct historyid) as cnt,vaccine_name FROM n_history
 				INNER JOIN n_information ON historyid=information_historyid
 				INNER JOIN n_vaccine ON n_information.id = n_vaccine.information_id
 				where $cond1 vaccine_name <>'0' group by vaccine_name order by vaccine_name asc";
@@ -1103,7 +1103,7 @@ class Report extends R36_Controller
 		## ชนิดวัคซีน(จำนวนครั้งที่ใช้) (โด๊ส)
 		
 		$rs=array();	
-		$sql="select count(historyid) as cnt,vaccine_name FROM n_history
+		$sql="select count(distinct historyid) as cnt,vaccine_name FROM n_history
 		INNER JOIN n_information ON historyid=information_historyid
 		INNER JOIN n_vaccine ON n_information.id = n_vaccine.information_id
 		where $cond1 vaccine_name <>'0' group by vaccine_name order by vaccine_name asc";
@@ -1306,14 +1306,14 @@ class Report extends R36_Controller
 		$total1[$item['reasonbite']][$item['causedetail']] = $total1[$item['reasonbite']][$item['causedetail']]+$item['cnt'];	
 		}
 		for($i=0;$i<3;$i++){
-		for($j=0;$j<7;$j++){
-		for($k=1;$k<13;$k++){	
-		$data['total_reason'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
-		}
-		$data['total_reason_all'.$i.$j] = (empty($total1[$i][$j])) ? 0 : $total1[$i][$j];
+			for($j=0;$j<7;$j++){
+				for($k=1;$k<13;$k++){	
+					$data['total_reason'.$i.$j.$k] = (empty($rs[$i][$j][$k])) ? 0:$rs[$i][$j][$k];
+				}
+			$data['total_reason_all'.$i.$j] = (empty($total1[$i][$j])) ? 0 : $total1[$i][$j];
+			}	
 		}	
-		}	
-		
+															
 		## การล้างแผล
 		$rs=array();
 		$array=array_fill(0,5,0);	
@@ -1537,7 +1537,7 @@ class Report extends R36_Controller
 		## ชนิดวัคซีน(จำนวนครั้งที่ใช้) (โด๊ส)
 		
 		$rs=array();	
-		$sql="select month(datetouch) as m ,count(historyid) as cnt,vaccine_name FROM n_history
+		$sql="select month(datetouch) as m ,count(distinct historyid) as cnt,vaccine_name FROM n_history
 		INNER JOIN n_information ON historyid=information_historyid
 		INNER JOIN n_vaccine ON n_information.id = n_vaccine.information_id
 		where $cond1 vaccine_name <>'0' group by month(datetouch),vaccine_name order by month(datetouch),vaccine_name asc";
@@ -1798,10 +1798,10 @@ class Report extends R36_Controller
 		
 		$rs=array();
 		for($i=1;$i<5;$i++){	
-			$sql="select count(historyid) as cnt,vaccine_name FROM n_history
+			$sql="select count(distinct historyid) as cnt,vaccine_name FROM n_history
 			INNER JOIN n_information ON historyid=information_historyid
 			INNER JOIN n_vaccine ON n_information.id = n_vaccine.information_id
-			where $cond1 ".$whmonth[$i]." and vaccine_name <>'0' group by vaccine_name order by vaccine_name asc";
+			where $cond1 ".$whmonth[$i]." and vaccine_name <>'0' group by vaccine_name order by vaccine_name asc";			
 			$result = $this->db->Execute($sql);			
 				if(!empty($result)){
 					foreach($result as $item){
@@ -1927,7 +1927,10 @@ class Report extends R36_Controller
 		$data['total4'] =(empty($total2[2])) ? 0 : $total2[2];	
 		## vaccine_name
 		$total1[1]=0;$total1[2]=0;$total2[1]=0;$total2[2]=0;$total3[0]=0;$total3[1]=0;$total3[2]=0;
-		$sql="SELECT vaccine_name,count(id) as cnt,in_out FROM n_history INNER JOIN n_information on historyid=information_historyid INNER JOIN n_vaccine ON n_information.id=information_id
+		$sql="SELECT vaccine_name,count(distinct historyid) as cnt,in_out 
+		FROM n_history 
+		INNER JOIN n_information on historyid=information_historyid 
+		INNER JOIN n_vaccine ON n_information.id=information_id
 		WHERE $cond1 vaccine_name<>'0' GROUP BY vaccine_name,in_out order by vaccine_name,in_out asc";	
 		$result=$this->db->Execute($sql);	
 		foreach($result as $item){
@@ -2032,8 +2035,9 @@ class Report extends R36_Controller
 			$total5=$this->db->GetOne($sql);	
 			$data['total5'] = (empty($total5)) ? 0:$total5;	
 			## จำนวนเข็มของแต่ละชนิด
-			$sql="SELECT vaccine_name, count(vaccine_name) as cnt 
-				 FROM n_history INNER JOIN n_information ON historyid=information_historyid 
+			$sql="SELECT vaccine_name, count(distinct historyid) as cnt 
+				 FROM n_history 
+				 INNER JOIN n_information ON historyid=information_historyid 
 				 INNER JOIN n_vaccine ON n_information.id=information_id and vaccine_name <>'0'  and total_vaccine<>'0' AND vaccine_date<>''
 				 WHERE  $cond  group by vaccine_name  order by vaccine_name asc";						
 			
@@ -2178,13 +2182,14 @@ class Report extends R36_Controller
 			
 	}
 
-	function schedule($preview=FALSE,$popup=FALSE)
+	function schedule($preview=FALSE)
 	{
 	 ## ต้องมาแก้ ให้  n_vaccine.hospital_id=n_hospital_1.hospital_id ##
 	  ## vaccine_date เปลี่ยน พ.ศ. เป็น ค.ศ. โดยเริ่มจากวันที่เริ่มเปิดให้เทสโปรแกรมใหม่ 	
+		//$this->db->debug=true;
 		$today=date('Y-m-d');
 		$nextday=date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d"))));
-		
+
 		$hospitalcode = $this->session->userdata('R36_HOSPITAL');			
 		$data['hospital'] = $this->db->GetRow("SELECT province_name,amphur_name,district_name,hospital_name FROM n_hospital_1
 								LEFT JOIN n_province on hospital_province_id=n_province.province_id
@@ -2194,7 +2199,7 @@ class Report extends R36_Controller
 		$data['hospital'] = array_walk($data['hospital'],'dbConvert');
 		
 		
-		$sql="SELECT hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,telephone
+		$sql="SELECT $box hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,telephone
 					,REPLACE(CONVERT(VARCHAR(10),vaccine_date, 111), '/', '-') as vaccine_date
 					,REPLACE(CONVERT(VARCHAR(10),datetouch, 111), '/', '-') as datetouch ,idcard
 			FROM n_information
@@ -2203,21 +2208,20 @@ class Report extends R36_Controller
 			WHERE closecase ='1' AND means <> '' AND (vaccine_date BETWEEN '$today' AND '$nextday' AND vaccine_name=0)  
 			and (hospitalcode='".$hospitalcode."' OR byplace='".$data['hospital']['hospital_name']."')
 			ORDER BY  vaccine_date asc";	
-			
-		if($preview){
-			$data['result']=$this->inform->get($sql,true);			
+		$data['preview'] = $preview;	
+		if($preview=="preview"){
+			$data['result']=$this->inform->get($sql,true);
+			$data['pagination']='';			
 			$this->template->set_layout('print');
-			$data['pagination']='';
+			$this->template->build('report_schedule',$data);					
 		}else{
  			$data['result']=$this->inform->get($sql);
-			$data['pagination'] = $this->inform->pagination();				
+			$data['pagination'] = $this->inform->pagination();	
+			$this->template->build('report_schedule',$data);
+						
 		}
-		$this->template->build('report_schedule',$data);
+		
 	}
-
-
-
-
 	
 }
 ?>

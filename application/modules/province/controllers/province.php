@@ -10,6 +10,7 @@ class Province extends Admin_Controller
 		$this->load->model('district/district_model','district');
 		$this->load->model('area/area_detail_model','detail');
 		$this->load->model('hospital/hospital_model','hospital');
+		$this->load->model('province_people_model','people');
 		$this->province->primary_key("province_id");
 	}
 	function index($view=FALSE){
@@ -42,13 +43,19 @@ class Province extends Admin_Controller
 		
 	}
 	function save(){
+		
+		$this->db->debug=true;
 		if($_POST){
 			$this->province->primary_key("province_id");
 			$this->province->save($_POST);
-			$this->detail->save($_POST);
+			$this->detail->save($_POST);						
+			foreach($_POST['people'] as $key=>$item){
+				$this->db->Execute("delete from n_province_people where province_id = ? and year = ? ",array($id,$_POST['year'][$key]));
+				$this->people->save(array('id'=>'','province_id'=>$_POST['province_id'],'year'=>$_POST['year'][$key],'people'=>$item));
+			}
 			set_notify('success', SAVE_DATA_COMPLETE);			
 		}
-		redirect('province/form/'.$_POST['province_id'].'/'.$_POST['area_id']);		
+		//redirect('province/form/'.$_POST['province_id'].'/'.$_POST['area_id']);		
 	}
 
 	function province_new(){

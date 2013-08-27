@@ -29,11 +29,11 @@
         <div class="clr"></div>
         <div id="col1">
 			<?php include('_menu_left.php'); ?>
-			<br>
+			<br/>
 				<?php echo modules::run('users/inc_login'); ?>
-            <br>
+            <br/>
 				<?php echo modules::run('dashboards/inc_home'); ?>
-            <br>
+            <br/>
         </div>
         <div id="cols2" style="position:relative; float:left; top:-39px; margin-left:8px; width:710px;">
         	        <table width="100%" border="0" cellspacing="0" cellpadding="0">

@@ -214,12 +214,19 @@ $(document).ready(function(){
 			})
 		}
 	})
-
+$(window).load(function() {
+	<?php if($this->session->userdata('show')=="yes"): ?>
+		$.colorbox({width:"70%", height:"70%", inline:true,href:"#schedule"});
+	<?php endif; ?>
+	<?php $this->session->set_userdata('show','no');; ?>		
+});	
 	
 });
 </script>
 <div id="title">แบบฟอร์มคนไข้ที่สัมผัสโรค</div>
-
+<div style="display:none;">
+<div id="schedule"><?php echo modules::run('inform/schedule'); ?></div>
+</div>
 <div id="search">
 <form name="form1"  method="get" id="form1" action="inform/index">	
 <?php error_reporting(E_ERROR); 
