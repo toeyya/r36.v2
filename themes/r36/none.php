@@ -6,14 +6,9 @@
 		<title><?php echo $template['title']; ?></title> 
 		<link rel="stylesheet" href="css/reset.css" type="text/css" media="screen" charset="utf-8" /> 
 		<link rel="stylesheet" href="themes/admin/css/layout.css" type="text/css" media="screen" charset="utf-8" /> 
-		<link rel="stylesheet" href="themes/admin/css/style.css" type="text/css" media="screen" charset="utf-8" /> 
-		<link rel="stylesheet" href="css/pagination.css" type="text/css" media="screen" charset="utf-8" />
-		<link rel="stylesheet" href="css/form.css" type="text/css" media="screen" charset="utf-8" />
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js" type="text/javascript"></script>		
-		
-		<script type="text/javascript" src="js/jquery.datepick/jquery.datepick.js"></script>
-		<script type="text/javascript" src="js/jquery.datepick/jquery.datepick-th.js"></script>
-		<link type="text/css"  href="js/jquery.datepick/redmond.datepick.css" rel="stylesheet" />			
+		<link rel="stylesheet" href="themes/admin/css/style.css" type="text/css" media="screen" charset="utf-8" /> 		
+		<script type="text/javascript" src="media/js/jquery-1.6.4.min.js"></script>	
+		<script type="text/javascript" src="media/js/jquery.colorbox.js"></script>	
 		<style type="text/css">
 			img.datepick-trigger {
 			margin:0px 2px;

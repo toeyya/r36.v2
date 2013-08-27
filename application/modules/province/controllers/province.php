@@ -38,24 +38,27 @@ class Province extends Admin_Controller
 			   							  LEFT JOIN n_area on n_area.id=n_area_detail.area_id
 			   							  WHERE n_area_detail.area_id=$area_id and n_area_detail.province_id=$id");				
 			
+		$data['people'] = $this->people->where("province_id = $id")->sort("")->order("years desc")->get();
 		}
 		$this->template->build('province_form',$data);
 		
 	}
 	function save(){
-		
-		$this->db->debug=true;
+				
 		if($_POST){
 			$this->province->primary_key("province_id");
 			$this->province->save($_POST);
 			$this->detail->save($_POST);						
 			foreach($_POST['people'] as $key=>$item){
-				$this->db->Execute("delete from n_province_people where province_id = ? and year = ? ",array($id,$_POST['year'][$key]));
-				$this->people->save(array('id'=>'','province_id'=>$_POST['province_id'],'year'=>$_POST['year'][$key],'people'=>$item));
+				if(!empty($item))
+				{										
+					$this->db->Execute("delete from n_province_people where province_id = ? and years = ? ",array($id,$_POST['years'][$key]));
+					$this->people->save(array('id'=>'','province_id'=>$_POST['province_id'],'years'=>$_POST['years'][$key],'people'=>$item));
+				}
 			}
 			set_notify('success', SAVE_DATA_COMPLETE);			
 		}
-		//redirect('province/form/'.$_POST['province_id'].'/'.$_POST['area_id']);		
+		redirect('province/form/'.$_POST['province_id'].'/'.$_POST['area_id']);		
 	}
 
 	function province_new(){

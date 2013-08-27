@@ -3,7 +3,8 @@ $(document).ready(function(){
 
  $('input[name=add]').click(function(){
  	var place = $(this).closest('td'); 	
- 	place.append($(this).next().clone());
+ 	place.append($(this).next().clone());	
+ 	$(this).closest('td').children('p:last').append('<input type="button" name="dels" value="ลบ"  class="dels">');
  });
  $('.dels').live('click',function(){
  	$(this).closest('p').remove();
@@ -29,9 +30,14 @@ $(document).ready(function(){
 <tr>
 	<th>จำนวนประชากร</th>
 	<td><input type="button" name="add" class="btn" value="เพิ่ม">
-		<p><?php echo form_dropdown('year[]',get_year_option(),@$rs['year']); ?>
-			<input type="text" 	 name="people[]"class="input_box_patient"  value=""> 
+		<?php foreach($people as $item): ?>
+		<p><?php echo form_dropdown('years[]',get_year_option(),$item['years']); ?>
+			<input type="text" 	 name="people[]"class="input_box_patient"  value="<?php echo $item['people'] ?>"> 
 			<input type="button" name="dels" value="ลบ"  class="dels">
+		</p>		
+		<?php endforeach; ?>
+		<p><?php echo form_dropdown('years[]',get_year_option()); ?>
+			<input type="text" 	 name="people[]"class="input_box_patient"  value=""> 			
 		</p>		
 	</td>
 </tr>
