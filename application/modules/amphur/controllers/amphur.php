@@ -24,8 +24,8 @@ class Amphur extends Admin_Controller
 		$data['people'] = $this->people->where("amp_pro_id =  $id")->sort("")->order("years desc")->get();	
 		$this->template->build('amphur_form',$data);
 	}
-	function save(){
-		$this->db->debug=true;
+	function save()
+	{		
 		if($_POST){
 			$this->amphur->save($_POST);
 			foreach($_POST['people'] as $key =>$item){
@@ -36,8 +36,7 @@ class Amphur extends Admin_Controller
 			}
 			set_notify('success', SAVE_DATA_COMPLETE);			
 		}
-		redirect('amphur/index');
-		
+		redirect('amphur/index');		
 	}
 	function delete($id,$amphur_id,$province_id){
 	    if($id){

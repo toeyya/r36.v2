@@ -234,8 +234,8 @@ order by id asc")->get_page();
 	
 	function delete_answer($id)
 	{
-		$webboard_answer = $this->answer->get_row($id);
-		if(login_data("userpositon")=="00" or is_owner($webboard_answer['user_id'])){
+		$webboard_answer = $this->answer->get_row($id);				
+		if(login_data("userposition")=="00" || is_owner($webboard_answer['user_id'])){				
 			if($id){
 				$this->answer->delete($id);
 				set_notify('success', 'ลบคำตอบเรียบร้อย');

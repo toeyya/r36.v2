@@ -27,7 +27,11 @@ $(document).ready(function(){
 		<th width="18%">จังหวัด</th>
 		<th width="20%" >อำเภอ</th>	
 		<th width="27%" >ตำบล</th>		
-		<th width="10%" ></th>	
+		<th width="10%" >
+			<?php if(permission('settings', 'act_create')): ?>
+			<a href="district/admin/district/form" class="btn" title="เพิ่ม" name="btn_add">เพิ่มรายการ</a>
+			<?php endif; ?>
+		</th>	
 	  </tr>
 	  <?
 			foreach($result as $key=>$item){

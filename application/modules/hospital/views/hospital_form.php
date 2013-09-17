@@ -18,6 +18,8 @@ $(document).ready(function(){
 		})
 	});
 		$('#formm').validate({
+			
+			onkeyup: false,
 			rules:{
 				province_id:"required",
 				amphur_id:"required",
@@ -25,31 +27,33 @@ $(document).ready(function(){
 				hospital_type:"required",
 				hospital_code_healthoffice:{
 					required:true,
-					number:true
+					number:true,
+					remote:{url:'<?php echo base_url()?>hospital/admin/hospital/chkHosCode',data:{hospital_id:function(){return $('#hospital_id').val()}}}
 				},
 				hospital_name:{
 					required:true,	
 					remote:{
-						url :"<?php echo base_url() ?>hospital/hospitalExists",
+						url :"<?php echo base_url() ?>hospital/admin/hospital/hospitalExists",
 						type:"get",
 						data: {							
-							province_id: function () {return $('#province_id').val();	},
+							province_id: function () {return $('#province_id').val();},
 							amphur_id: function () {return $('#amphur_id').val();},
 							district_id: function () {return $('#district_id').val();},
-							hospital_id: function () {return $('#hospital_id').val();}				
+							hospital_id: function () {return $('#hospital_id').val();},
+							code:function(){return $('#hospital_code_healthoffice').val();}				
 					   }//close data			
 					}//remote  
 				}//hospital_name		
-						
+					
 			},
 			messages:{
-				province_id:"กรุณาเลือกจังหวัด",
-				amphur_id:"กรุณาเลือกอำเภอ",
-				district_id:"กรุณาเลือกตำบล",
-			   hospital_type:"กรุณาเลือกสังกัด",
-				hospital_code_healthoffice:{
+				province_id:"กรุณาเลือกจังหวัด",amphur_id:"กรุณาเลือกอำเภอ",district_id:"กรุณาเลือกตำบล",
+			    hospital_type:"กรุณาเลือกสังกัด",
+			    hospital_code_healthoffice:{
 					required:"กรุณาระบุโค้ด",
-					number:"ระบุค่าด้วยตัวเลขเท่านั้น"
+					number:"ระบุค่าด้วยตัวเลขเท่านั้น",
+					remote:"มีโค้ดนี้เเล้วในระบบ"
+		
 				},
 			    hospital_name:{
 					required:"กรุณากรอกชื่อสถานพยาบาล",
@@ -68,9 +72,10 @@ $(document).ready(function(){
 </script>
 <h1>สถานพยาบาล(เพิ่ม/แก้ไข)</h1>
 <form name="form1" action="hospital/admin/hospital/save"  method="post" id="formm" >
+	<input name="hospital_id" id="hospital_id" type="hidden" value="<?php echo @$rs['hospital_id']?>" />	
 		<table class="form">
                 <tr><th>โค้ดสถานพยาบาล</th>
-                	<td><input type="text" readonly="readonly" value="<?php echo $rs['hospital_code']; ?>"><small> ระบบคำนวณอัตโนมัติ </small></td>
+                	<td><input type="text" readonly="readonly" value="<?php echo $rs['hospital_code']; ?>" name="hospital_code"><small> ระบบคำนวณอัตโนมัติ </small></td>
                 </tr>
                 <tr> 
                   <th width="110" height="20">จังหวัด :</th>
@@ -100,15 +105,16 @@ $(document).ready(function(){
 					</span> 
 				  </td>
                 </tr>
+                <tr>
+                	<th>โค้ดสถานพยาบาล   7  หลัก :</th>
+                  	<td><input name="hospital_code_healthoffice" type="text" id="hospital_code_healthoffice" size="30" maxlength="300"  class="input_box_patient " value="<?php echo $rs['hospital_code_healthoffice'] ?>"> 
+                  	</td>
+                </tr>                
                 <tr> 
                   <th>สถานพยาบาล:</th>
                   <td> <input name="hospital_name" type="text" id="hospital_name" size="30" maxlength="300"  class="input_box_patient " value="<?php echo $rs['hospital_name']?>"> <span class="alertred">*</span></td>
                 </tr>
-                <tr>
-                	<th>โค้ดสถานพยาบาล   7 หลัก :</th>
-                  	<td><input name="hospital_code_healthoffice" type="text" id="hospital_code_healthoffice" size="30" maxlength="300"  class="input_box_patient " value="<?php echo $rs['hospital_code_healthoffice'] ?>"> 
-                  	</td>
-                </tr>
+
                 <tr> 
                   <th height="33">สังกัด :</th>
                   <td>
@@ -119,12 +125,14 @@ $(document).ready(function(){
                     </select> <span class="alertred">*</span>
 	                   <input type="hidden" name="hospital_id"  id="hospital_id" value="<?php echo $rs['hospital_id'] ?>">
 	                  <input type="hidden" name="hospital_code" value="<?php echo $rs['hospital_code'] ?>">
-	                  <?php echo ($rs['hospital_id']) ? form_hidden('updated',time()) : form_hidden('created',time())?>
+	                  <?php echo ($rs['hospital_id']) ? form_hidden('updated',date('Y-m-d H:i:s')) : form_hidden('created',date('Y-m-d H:i:s'))?>
 					</td>
                 </tr>
                 <tr>
                 	<th></th>
-                	<td>  <input type="submit" class="btn" value="ตกลง" name="btn_submit"></td>
+                	<td>  <input type="submit" class="btn" value="ตกลง" name="btn_submit">
+                		<?php echo form_back('btn_back'); ?>
+                	</td>
                 </tr>
       </table>
 </form>

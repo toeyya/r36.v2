@@ -27,9 +27,11 @@
                      		</ul>
                      </li>                    
                      <li><a href="report/analyze/index/1">วิเคราะห์ตามปัจจัยต่างๆ</a></li>
-                     <li><a href="report/export/export_rabies">ส่งออก ข้อมูลคนไข้ที่สัมผัสโรค</a></li>
-                     <li><a href="javascript:void(0);">ส่งออก ข้อมูลโรงพยาบาล</a></li>
-                     <li><a href="javascript:void(0);">ส่งออก ข้อมูลตำบล</a></li>
+                     <li><a href="report/export/index/information">ส่งออก ข้อมูลคนไข้ที่สัมผัสโรค</a></li>
+                     <li><a href="report/export/index/hospital">ส่งออก ข้อมูลโรงพยาบาล</a></li>
+                     <li><a href="report/export/index/district">ส่งออก ข้อมูลตำบล</a></li>
+                     <li><a href="report/export/index/amphur">ส่งออก ข้อมูลอำเภอ</a></li>
+                      <li><a href="report/export/index/province">ส่งออก ข้อมูลจังหวัด</a></li>
                      <?php if($this->session->userdata('schedule')): ?>
                      <li><a href="report/schedule">ตารางนัดหมายคนไข้</a></li>
                      <?php endif; ?>

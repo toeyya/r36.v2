@@ -16,11 +16,9 @@ class Inform extends R36_Controller
 									
 	}
 	function closecase_person($idcard,$chk=FALSE){
-		if($chk){
-			
-		$sql="SELECT count(id) as cnt FROM n_information 
-			  LEFT JOIN n_history ON historyid=information_historyid 
-			  WHERE closecase=1 and idcard='".$idcard."'";	
+		if($chk)
+		{			
+			$sql="SELECT count(id) as cnt FROM n_information LEFT JOIN n_history ON historyid=information_historyid WHERE closecase=1 and idcard='".$idcard."'";	
 			$result = $this->db->GetOne($sql);	
 			$data['chk']=($result) ?"yes":"no";
 			$data['idcard'] = $idcard;	
@@ -34,9 +32,7 @@ class Inform extends R36_Controller
 		}	
 		$data['pagination']=$this->inform->pagination();
 
-		$this->template->build('view_closecase_person',$data);
-
-		
+		$this->template->build('view_closecase_person',$data);		
 	}
 	function DateDiff()
 	{
@@ -47,9 +43,8 @@ class Inform extends R36_Controller
 	}
 	function closecase($chk=FALSE)
 	{	//เอาที่วันปัจจุบัน ลบ ออกไปเก้าสิบวัน แล้ว  แล้วแปลงเป็นวันที่ เพื่อนหาค่าวันที่น้อยกว่าวันดังกล่าว
+		
 		$hospitalcode =	$this->session->userdata('R36_HOSPITAL');
-		//$hospitalcode ="80090005";
-		$year = date('y')+543;	
 		$dd = $this->DateDiff();
 		$data['chk']="no";	
 		if($this->session->userdata('R36_LEVEL')=="05" ){
@@ -65,20 +60,19 @@ class Inform extends R36_Controller
 				echo json_encode($data);
 				return true;				
 			}else{
-				$sql = "select id,hn,idcard,hn_no,firstname,surname,information_historyid,CONVERT(VARCHAR(10), datetouch, 120) AS [datetouch],total_vaccine   from n_information 
+				//$this->db->debug=true;	
+				$sql = "select distinct information_historyid ,id,hn,idcard,hn_no,firstname,surname,CONVERT(VARCHAR(10), datetouch, 120) AS [datetouch],total_vaccine   from n_information 
 					inner join n_history on n_information.information_historyid=n_history.historyid
 					inner join n_vaccine on n_information.id=n_vaccine.information_id
 					where  hospitalcode = $hospitalcode and  vaccine_date <='$dd' and closecase=1
-					group by id";
-				$result= $this->db->Execute($sql);
-				$data['result'] =dbConvert($result);
+					";
+				$data['result']= $this->inform->get($sql);
 				
-				
+								
 			}			
 		}
 					
 		$data['pagination']=$this->inform->pagination();
-		//$this->template->set_layout('blank');
 		$this->template->build('view_closecase',$data);
 	}
 	function index()
@@ -96,10 +90,11 @@ class Inform extends R36_Controller
 					$where.=" AND hn='".$_GET['hn']."' AND idcard='".$_GET['idcard']."'";
 				}else{
 					if(!empty($_GET['hn'])){
-						$where.=" AND hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."'";					
-						$sql="SELECT  information_historyid FROM n_information WHERE id=(select max(id) from n_information WHERE hospitalcode =?  AND hn= ? )";
+						$where .=" AND hn='".$_GET['hn']."'";	
+						//$where.=" AND hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."'";					
+						//$sql="SELECT  information_historyid FROM n_information WHERE id=(select max(id) from n_information WHERE hospitalcode =?  AND hn= ? )";
 						// ให้มีปุ่มเพิ่มเฉพาะ historyid ล่าสุด
-						$data['historyid']=$this->db->GetOne($sql,array($_GET['hospitalcode'],$_GET['hn']));
+						//$data['historyid']=$this->db->GetOne($sql,array($_GET['hospitalcode'],$_GET['hn']));
 					}elseif(!empty($_GET['idcard'])){
 						$where.=" AND (idcard='".$_GET['idcard']."') AND idcard!='' and hospitalcode<>''";
 					}
@@ -461,7 +456,7 @@ class Inform extends R36_Controller
 		force_download($name, $data); 
 	}
 	function schedule(){
-				$today=date('Y-m-d');
+		$today=date('Y-m-d');
 		$nextday=date("Y-m-d",strtotime("+3 days",strtotime(date ("Y-m-d"))));
 
 		$hospitalcode = $this->session->userdata('R36_HOSPITAL');			
@@ -470,16 +465,16 @@ class Inform extends R36_Controller
 								LEFT JOIN n_amphur on  hospital_amphur_id =n_amphur.amphur_id and n_amphur.province_id=n_province.province_id
 								LEFT JOIN n_district on hospital_district_id = n_district.district_id and  n_district.amphur_id =n_amphur.amphur_id and n_district.province_id=n_province.province_id
 								WHERE hospital_code = '".$hospitalcode."'");
-		$data['hospital'] = array_walk($data['hospital'],'dbConvert');
+		array_walk($data['hospital'],'dbConvert');
 		
 		
-		$sql="SELECT $box hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,telephone
+		$sql="SELECT  hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,telephone
 					,REPLACE(CONVERT(VARCHAR(10),vaccine_date, 111), '/', '-') as vaccine_date
 					,REPLACE(CONVERT(VARCHAR(10),datetouch, 111), '/', '-') as datetouch ,idcard
 			FROM n_information
 			INNER JOIN n_history  ON n_information.information_historyid = n_history.historyid
 			INNER JOIN n_vaccine  ON n_information.id = n_vaccine.information_id		
-			WHERE closecase ='1' AND means <> '' AND (vaccine_date BETWEEN '$today' AND '$nextday' AND vaccine_name=0)  
+			WHERE closecase ='1' AND means <> '' AND (vaccine_date BETWEEN '$today' AND '$nextday' AND (vaccine_name is null OR vaccine_name = 0))  
 			and (hospitalcode='".$hospitalcode."' OR byplace='".$data['hospital']['hospital_name']."')
 			ORDER BY  vaccine_date asc";
 		$data['result'] = $this->inform->get($sql);

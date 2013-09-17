@@ -61,7 +61,7 @@ class Content extends Admin_Controller
 				}
 				set_notify('success', SAVE_DATA_COMPLETE);
 			}
-			
+			redirect('content/admin/content/index/'.$category_id);
 		}				
 			
 		if($_POST)
@@ -86,16 +86,15 @@ class Content extends Admin_Controller
 			if(@$_FILES['file']['name'])
 			{
 				if(file_extension(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION))){
-					$this->content->delete_file($id,'uploads/content','file');
-					$this->content->delete_file($id,'uploads/content/download','file');
-					//$this->content->save(array('id'=>$id,'file'=>$this->content->upload($_FILES['file'],'uploads/content/')));		
-					$this->content->save(array('id'=>$id,'file'=>$this->content->upload($_FILES['file'],'uploads/content')));			
+					$this->content->delete_file($id,'uploads/content','files');
+					$this->content->delete_file($id,'uploads/content/download','files');							
+					$this->content->save(array('id'=>$id,'files'=>$this->content->upload($_FILES['file'],'uploads/content')));			
 				}
 			}
 						
 			set_notify('success', SAVE_DATA_COMPLETE);
 		}
-		redirect('content/admin/content/index/'.$category_id);
+		redirect('content/admin/content/index/'.$_POST['category_id']);
 		
 	}
 	
@@ -126,7 +125,7 @@ class Content extends Admin_Controller
 		$this->content->save(array('id'=>$_POST['id'],'file'=>''));
 	}*/
 	
-		function download($id,$field="[file]")
+		function download($id,$field="files")
 	{   
 		$file = $this->content->get_one($field,"id",$id);
 		$this->load->helper('download');

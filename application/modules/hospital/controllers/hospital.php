@@ -9,13 +9,6 @@ class Hospital extends Public_Controller
 		
 	}
 
-	function hospitalExists()
-	{	
-		$sql="select hospital_id from n_hospital_1 where (hospital_province_id= ?  and hospital_amphur_id= ?  and hospital_name= ? and hospital_district_id = ? ) and hospital_id <> ? ";	
-		$id=$this->db->GetOne($sql,array($_GET['province_id'],$_GET['amphur_id'],$_GET['hospital_name'],$_GET['district_id'],$_GET['hospital_id']));
-		echo ($id)? "false":"true";
-		
-	}
 	function getHospital()
 	{
 		$name=(isset($_GET['name']))?$_GET['name']:'hospital';

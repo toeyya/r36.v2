@@ -1,39 +1,153 @@
+
+
+<ul class="breadcrumb">
+    <li><a href="home">หน้าแรก</a> <span class="divider">/</span></li>
+    <li>ลงทะเบียน</li>
+</ul>
+<h1>ลงทะเบียน</h1>	
+<div id="register">
+<div class="alert alert-info"><strong>ประกาศ !! </strong>เมื่อลงทะเบียนแล้ว กรุณายืนยันการลงทะเบียนจากลิงค์ในอีเมล์ และรอการตรวจสอบก่อน จึงจะใช้งานได้</div>
+<div id="span9">
+<div class="row">
+		<form action="users/signup"  method="post"  class="form-horizontal" id="form1">
+ 			<div class="control-group">
+ 				<label class="control-label" for="inputEmail">สถานบริการ<label class="alertred">*</label></label>
+				<div class="controls">
+				 <?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),'','id="h_province"','--กรุณาเลือกจังหวัด--'); ?>								 											
+				</div>
+				<label class="control-label" for="inputEmail">&nbsp;</label>
+				<div class="controls">
+					 <span id="input_amphur"><select name="amphur_id"><option value="">--กรุณาเลือกอำเภอ--</option></select></span>	
+				</div>
+				<label class="control-label" for="inputEmail">&nbsp;</label>
+				<div class="controls">
+					 <span id="input_district"><select name="district_id"><option value="">--กรุณาเลือกตำบล--</option></select></span>
+				</div>
+				<label class="control-label" for="inputEmail">&nbsp;</label>
+				<div class="controls">
+					 <span id="input_hospital"><select name="userhospital"><option value="">--กรุณาเลือกสถานบริการ--</option></select></span>
+				</div>								
+ 				<label class="control-label" for="inputEmail">อีเมล์<label class="alertred">*</label></label>				
+				<div class="controls">
+					<input type="text"  placeholder="อีเมล์" name="usermail" class="input-large" value=""> 
+				</div>
+ 				<label class="control-label" for="inputEmail">รหัสผ่าน<label class="alertred">*</label></label>
+				<div class="controls">
+					<input type="password"  placeholder="รหัสผ่าน" class="input-large"  name="userpassword" id="userpassword" class="input-large" value="">
+				</div>
+ 				<label class="control-label" for="inputEmail">ยืนยันรหัสผ่าน<label class="alertred">*</label></label> 
+				<div class="controls">
+					<input type="password"  placeholder="ยืนยันรหัสผ่าน" class="input-large"  name="repassword" class="input-large" value="">
+				</div>		
+ 			</div>
+ 			<hr class="hr1">
+ 			<div class="control-group">
+				<label class="control-label" for="idcard">เลขประจำตัวประชาชน<label class="alertred">*</label></label>
+				<div class="controls" id="Show_idcard">
+					<input type="text" id="cardW0"  name="cardW0" style="width:10px;" size="1" maxlength="1" value="">
+					<input type="text" id="cardW1"  name="cardW1" style="width:30px;" size="4" maxlength="4" value="">
+					<input type="text" id="cardW2"  name="cardW2" style="width:40px;" size="5" maxlength="5" value="">
+					<input type="text" id="cardW3"  name="cardW3" style="width:20px;" size="2" maxlength="2" value="">
+					<input type="text" id="cardW4"  name="cardW4" style="width:10px;" size="1" maxlength="1" value="">					
+					
+				</div>			
+				<label class="control-label" for="inputFirstame">ชื่อ -นามสกุล<label class="alertred">*</label></label>
+				<div class="controls">
+					<input type="text" id="userfirstname" class="input-medium" placeholder="ชื่อ" name="userfirstname" value="">
+					<input type="text" id="usersurname" class="input-medium" placeholder="นามสกุล" name="usersurname" value=""> 
+				</div>				
+				<br/>
+				<label class="control-label" for="inputPostion">ตำแหน่ง</label>
+				<div class="controls">					
+					<?php echo form_dropdown('position',get_option('id','name','n_position'),'','','--กรุณาระบุ--') ?>
+				</div>
+
+				<label class="control-label" for="inputEmail">โทรศัพท์มือถือ<label class="alertred">*</label></label>
+				<div class="controls">
+					<span id="mobile">
+					<input type="text" name="mobile0"  maxlength="3"  style="width:40px;" placeholder="08x"> -<input type="text" name="mobile1"  maxlength="3"  style="width:50px;"> -<input type="text" name="mobile2"  id="mobile2"  maxlength="4"  style="width:60px;">										
+					</span>
+				</div>
+				<label class="control-label" for="inputEmail">โทรศัพท์สำนักงาน<label class="alertred">*</label></label>
+				<div class="controls">
+					<span id="tel">
+					<input type="text" name="tel0" maxlength="1"  style="width:15px;"> -<input type="text" name="tel1" maxlength="4" style="width:60px;"> -<input type="text" name="tel2" id="tel2" maxlength="4" style="width:60px;"> 				
+					</span>
+					 ต่อ <input type="text" name="telephone_extend" style="width:30px;"> 
+				</div>
+				<label class="control-label" for="inputEmail">โทรสาร</label>
+				<div class="controls">
+					<span id="fax">
+					<input type="text" name="fax0" maxlength="1"  style="width:15px;"> -<input type="text" name="fax1" maxlength="4" style="width:60px;"> -<input type="text" name="fax2" id="fax2" maxlength="4" style="width:60px;"> 					
+					</span>
+				</div>
+            <div class="control-group">
+ 
+              <label class="control-label" for="inputCaptcha">รหัสลับ <label class="alertred">*</label></label>
+                <div class="controls">
+                  <img src="img.php" /></br/>
+                  <input class="input-small" type="text" name="captcha" id="inputCaptcha" placeholder="รหัสลับ">
+                </div>
+            </div>
+            <div class="control-group">			
+             <label class="control-label" for="inputCaptcha"></label>
+                <div class="controls">
+ 				<?php echo form_hidden('created',date('Y-m-d H:i:s')); ?>
+				<button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
+			</div>	
+			</div>
+			<hr class="hr1">
+			<small><label class="alertred">*</label>รายการที่ต้องกรอก</small>
+		</form>
+</div>
+</div>
+</div><!-- register -->
+<script type="text/javascript" src="media/js/jquery-loadmask/jquery.loadmask.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 var ref1,ref2,ref3;
+ $('.btn-primary').attr("disabled",false);
 	$("#h_province").change(function(){	
 		 ref1=$("#h_province option:selected").val();
-		 $('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
+		$('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
+		$('.btn-primary').attr('disabled',true);
 		$.ajax({
 			url:'<?php echo base_url() ?>users/getAmphur',data:'name=h_amphur&ref1='+ref1,
 			success:function(data)
 			{
 				$("#input_amphur").html(data);
 				$("#hosptal option[value='']").attr('selected','selected');
+				$('.btn-primary').attr('disabled',false);
 			}
 		});
 	});
 
-	$("body").on('change','#h_amphur',function(){
-			
+	$("body").on('change','#h_amphur',function(){			
 	 	ref2=$("#h_amphur option:selected").val();
 	 	$('#input_district').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
-		$.ajax({url:'<?php echo base_url(); ?>users/getDistrict',data:'name=h_district&ref1='+ref1+'&ref2='+ref2,success:function(data){$("#input_district").html(data);}});	
+	 	$('.btn-primary').attr('disabled',true);
+		$.ajax({url:'<?php echo base_url(); ?>users/getDistrict',data:'name=h_district&ref1='+ref1+'&ref2='+ref2,success:function(data){$("#input_district").html(data);$('.btn-primary').attr('disabled',false);}});	
 	});			
 	$('body').on('change','#h_district',function(){
 		ref3=$("#h_district option:selected").val();
 		$('#input_hospital').html('<img src="media/images/loader.gif" width="16px" height="11px"/>');
-		$.ajax({url:'<?php echo base_url(); ?>users/getHospital',data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,success:function(data){$("#input_hospital").html(data);}});	
+		$('.btn-primary').attr('disabled',true);
+		$.ajax({url:'<?php echo base_url(); ?>users/getHospital',
+				data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,
+				success:function(data){$("#input_hospital").html(data);$('.btn-primary').attr('disabled',false);}});	
 	});	
 		
+	
 	 $.validator.setDefaults({
 	 	submitHandler:function(){
-	 	 document.form1.submit();	 	 			 				 	
+		 $('.btn-primary').attr("disabled", true);
+    	 $('.row').mask("Waiting...");	
+	 	 document.getElementById('form1').submit(); 			 				 	
 	 	}
 	 });
 
-	$('#form1').validate({
-		onkeyup:false,
+	$('#form1').validate({	
+		onkeyup:false,		
 		groups:{
 			groupname:'userfirstname usersurname',
 			groupidcard:'cardW0 cardW1 cardW2 cardW3 cardW4',
@@ -51,16 +165,16 @@ var ref1,ref2,ref3;
 		 			remote:{
 		 				url:'<?php echo base_url(); ?>users/chkidcard/register',
 		 				type:'get',
-				        data: {
-				          
+				        data: {				          
 				          idcard: function() { return $('#cardW0').val()+$('#cardW1').val()+$('#cardW2').val()+$('#cardW3').val()+$('#cardW4').val(); },
 				          digit_last:function(){return $('#cardW4').val(); }
-				        }
+				        }				       				        
 		 			}		 		
-		 	},   
-						
+		 	},   						
 			usermail:{required:true,email:true,
-				remote:{url:'<?php echo base_url()?>users/checkEmail'}
+				remote:{
+					url:'<?php echo base_url()?>users/checkEmail'				        			
+					}
 			},
 			userpassword:"required",
 			repassword:{equalTo: "#userpassword"},
@@ -137,106 +251,3 @@ var ref1,ref2,ref3;
 	});
 });
 </script>
-<ul class="breadcrumb">
-    <li><a href="home">หน้าแรก</a> <span class="divider">/</span></li>
-    <li>ลงทะเบียน</li>
-</ul>
-<h1>ลงทะเบียน</h1>	
-<div id="register">
-<div class="alert alert-info"><strong>ประกาศ !! </strong>เมื่อลงทะเบียนแล้ว กรุณายืนยันการลงทะเบียนจากลิงค์ในอีเมล์ และรอการตรวจสอบก่อน จึงจะใช้งานได้</div>
-<div id="span9">
-<div class="row">
-		<form action="users/signup"  method="post"  class="form-horizontal" id="form1">
- 			<div class="control-group">
- 				<label class="control-label" for="inputEmail">สถานบริการ<label class="alertred">*</label></label>
-				<div class="controls">
-				 <?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),'','id="h_province"','--กรุณาเลือกจังหวัด--'); ?>								 											
-				</div>
-				<label class="control-label" for="inputEmail">&nbsp;</label>
-				<div class="controls">
-					 <span id="input_amphur"><select name="amphur_id"><option value="">--กรุณาเลือกอำเภอ--</option></select></span>	
-				</div>
-				<label class="control-label" for="inputEmail">&nbsp;</label>
-				<div class="controls">
-					 <span id="input_district"><select name="district_id"><option value="">--กรุณาเลือกตำบล--</option></select></span>
-				</div>
-				<label class="control-label" for="inputEmail">&nbsp;</label>
-				<div class="controls">
-					 <span id="input_hospital"><select name="userhospital"><option value="">--กรุณาเลือกสถานบริการ--</option></select></span>
-				</div>								
- 				<label class="control-label" for="inputEmail">อีเมล์<label class="alertred">*</label></label>				
-				<div class="controls">
-					<input type="text"  placeholder="อีเมล์" name="usermail" class="input-large" value=""> 
-				</div>
- 				<label class="control-label" for="inputEmail">รหัสผ่าน<label class="alertred">*</label></label>
-				<div class="controls">
-					<input type="password"  placeholder="รหัสผ่าน" class="input-large"  name="userpassword" id="userpassword" class="input-large" value="">
-				</div>
- 				<label class="control-label" for="inputEmail">ยืนยันรหัสผ่าน<label class="alertred">*</label></label> 
-				<div class="controls">
-					<input type="password"  placeholder="ยืนยันรหัสผ่าน" class="input-large"  name="repassword" class="input-large" value="">
-				</div>		
- 			</div>
- 			<hr class="hr1">
- 			<div class="control-group">
-				<label class="control-label" for="idcard">เลขประจำตัวประชาชน<label class="alertred">*</label></label>
-				<div class="controls" id="Show_idcard">
-					<input type="text" id="cardW0"  name="cardW0" style="width:10px;" size="1" maxlength="1" value="">
-					<input type="text" id="cardW1"  name="cardW1" style="width:30px;" size="4" maxlength="4" value="">
-					<input type="text" id="cardW2"  name="cardW2" style="width:40px;" size="5" maxlength="5" value="">
-					<input type="text" id="cardW3"  name="cardW3" style="width:20px;" size="2" maxlength="2" value="">
-					<input type="text" id="cardW4"  name="cardW4" style="width:10px;" size="1" maxlength="1" value="">					
-				
-				</div>			
-				<label class="control-label" for="inputFirstame">ชื่อ -นามสกุล<label class="alertred">*</label></label>
-				<div class="controls">
-					<input type="text" id="userfirstname" class="input-medium" placeholder="ชื่อ" name="userfirstname" value="">
-					<input type="text" id="usersurname" class="input-medium" placeholder="นามสกุล" name="usersurname" value=""> 
-				</div>				
-				<br/>
-				<label class="control-label" for="inputPostion">ตำแหน่ง</label>
-				<div class="controls">					
-					<?php echo form_dropdown('position',get_option('id','name','n_position'),'','','--กรุณาระบุ--') ?>
-				</div>
-
-				<label class="control-label" for="inputEmail">โทรศัพท์มือถือ<label class="alertred">*</label></label>
-				<div class="controls">
-					<span id="mobile">
-					<input type="text" name="mobile0"  maxlength="3"  style="width:40px;" placeholder="08x"> -<input type="text" name="mobile1"  maxlength="3"  style="width:50px;"> -<input type="text" name="mobile2"  id="mobile2"  maxlength="4"  style="width:60px;">										
-					</span>
-				</div>
-				<label class="control-label" for="inputEmail">โทรศัพท์สำนักงาน<label class="alertred">*</label></label>
-				<div class="controls">
-					<span id="tel">
-					<input type="text" name="tel0" maxlength="1"  style="width:15px;"> -<input type="text" name="tel1" maxlength="4" style="width:60px;"> -<input type="text" name="tel2" id="tel2" maxlength="4" style="width:60px;"> 				
-					</span>
-					 ต่อ <input type="text" name="telephone_extend" style="width:30px;"> 
-				</div>
-				<label class="control-label" for="inputEmail">โทรสาร</label>
-				<div class="controls">
-					<span id="fax">
-					<input type="text" name="fax0" maxlength="1"  style="width:15px;"> -<input type="text" name="fax1" maxlength="4" style="width:60px;"> -<input type="text" name="fax2" id="fax2" maxlength="4" style="width:60px;"> 					
-					</span>
-				</div>
-            <div class="control-group">
- 
-              <label class="control-label" for="inputCaptcha">รหัสลับ <span class="alertred">*</span></label>
-                <div class="controls">
-                  <img src="img.php" /></br/>
-                  <input class="input-small" type="text" name="captcha" id="inputCaptcha" placeholder="รหัสลับ">
-                </div>
-            </div>	
-            <div class="control-group">			
-             <label class="control-label" for="inputCaptcha"></label>
-                <div class="controls">
- 				<?php echo form_hidden('created',date('Y-m-d H:i:s')); ?>
-				<button class="btn btn-primary" type="submit">ลงทะเบียน</button></div>
-			</div>	
-			</div>
-			<hr class="hr1">
-			<small><label class="alertred">*</label>รายการที่ต้องกรอก</small>
-		</form>
-</div>
-</div>
-</div><!-- register -->
-

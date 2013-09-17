@@ -4,7 +4,7 @@ $(document).ready(function(){
  $('input[name=add]').click(function(){
  	var place = $(this).closest('td'); 	
  	place.append($(this).next().clone());	
- 	$(this).closest('td').children('p:last').append('<input type="button" name="dels" value="ลบ"  class="dels">');
+ 	place.children('p:last').append('<input type="button" name="dels" value="ลบ"  class="dels">');
  });
  $('.dels').live('click',function(){
  	$(this).closest('p').remove();
@@ -19,7 +19,7 @@ $(document).ready(function(){
 	<td><input type="text" name="province_id" value="<?php echo @$rs['province_id']; ?>" readonly="readonly"></td>
 </tr>
 <tr><th>จังหวัด</th>
-	<td><?php echo form_dropdown('province_id',get_option('province_id','province_name','n_province order by province_name asc'),@$rs['province_id'],'id="province_id"','-โปรดเลือก-') ?></td>
+	<td><input type="text" name="province_name" value="<?php echo ThaiToUtf8($rs['province_name']) ?>"></td>
 </tr>
 <tr><th>รูปแบบเขตความรับผิดชอบ</th>
 	<td><?php echo form_dropdown('area_id',get_option('id','name','n_area order by created desc'),@$rs['area_id'],'','-โปรดเลือก-'); ?></td>
@@ -28,17 +28,23 @@ $(document).ready(function(){
 	<td><?php echo form_dropdown('level',getLevel($rs['area_id'],$rs['total']),$rs['level'],'','-โปรดเลือก-'); ?></td>
 </tr>
 <tr>
-	<th>จำนวนประชากร</th>
-	<td><input type="button" name="add" class="btn" value="เพิ่ม">
-		<?php foreach($people as $item): ?>
-		<p><?php echo form_dropdown('years[]',get_year_option(),$item['years']); ?>
-			<input type="text" 	 name="people[]"class="input_box_patient"  value="<?php echo $item['people'] ?>"> 
+	<th>จำนวนประชากร  <br/><span class="alertred">กรุณาระบุเฉพาะตัวเลข</span></th>
+	<td><input type="button" name="add" class="btn" value="เพิ่ม"> 
+		<?php if(!empty($people)): ?>		
+		<?php foreach($people as $key =>$item): ?>
+		<p>	<?php echo form_dropdown('years[]',get_year_option(),$item['years']); ?>
+		<input type="text" 	 name="people[]"class="input_box_patient"  value="<?php echo $item['people'] ?>"> 
+			<?php if($key>0): ?>
 			<input type="button" name="dels" value="ลบ"  class="dels">
-		</p>		
+			<?php endif; ?>
+		</p>			
 		<?php endforeach; ?>
-		<p><?php echo form_dropdown('years[]',get_year_option()); ?>
-			<input type="text" 	 name="people[]"class="input_box_patient"  value=""> 			
+		<?php else: ?>	
+		<p>	<?php echo form_dropdown('years[]',get_year_option()); ?>
+			<input type="text" 	 name="people[]"class="input_box_patient"  value=""> 
 		</p>		
+		<?php endif; ?>
+		
 	</td>
 </tr>
 
@@ -48,7 +54,7 @@ $(document).ready(function(){
 </tr>
 </table>
 <?php 
-echo (@$rs['id']) ? form_hidden('updated',time()) : form_hidden('created',time());
+echo (@$rs['id']) ? form_hidden('updated',date('Y-m-d H:i:s')) : form_hidden('created',date('Y-m-d H:i:s'));
 echo form_hidden('year',date('Y'));
 echo form_hidden('id',@$rs['detail_id']);
 ?>

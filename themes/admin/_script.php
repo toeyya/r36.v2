@@ -5,11 +5,14 @@
 		<link rel="stylesheet" href="themes/admin/media/css/stylesheet.css" type="text/css" media="screen" charset="utf-8" /> 
 		<link rel="stylesheet" type="text/css" href="media/js/jquery.datepick/redmond.datepick.css"  media="screen"/>
 		<link charset="utf-8" media="screen" type="text/css" href="media/js/tag/jquery.tag.css" rel="stylesheet">
+
+		
 		<script type="text/javascript" src="media/js/jquery-1.6.4.min.js"></script>
 		<script type="text/javascript" src="media/js/jquery.validate.js"></script>
 		<script type="text/javascript" src="media/js/jquery.datepick/jquery.datepick.js"></script>
 		<script type="text/javascript" src="media/js/jquery.datepick/jquery.datepick-th.js"></script>
 		<script type="text/javascript" src="media/js/tag/jquery.tag.editor-min.js"></script>
+
 <script>
 $(function(){  
 	$.datepick.regional['th'] = {

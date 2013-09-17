@@ -68,7 +68,7 @@ $(document).ready(function(){
 <td>
 	<small>อนุญาติเฉพาะ  pdf, xls, xlsx, doc, docx, ppt, pptx, rar และ zip</small>
 	<br /><input type="file" name="file" />
-	<?php if($rs['file']): ?>
+	<?php if($rs['files']): ?>
 	 <span class="option">
 	 	<a href="document/download/<?php echo $rs['id'] ?>">ดาวน์โหลด</a> 
 	 	<a href="#" rel="del">ลบไฟล์</a>

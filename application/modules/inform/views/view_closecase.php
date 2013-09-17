@@ -10,6 +10,7 @@
 	<th></th>
 	</tr>
 	<?php 
+	if(!empty($result)){
 	foreach($result as $item): ?>
 	<tr>
 		<td><?php echo cld_my2date($item['datetouch']); ?></td>
@@ -21,6 +22,6 @@
 		<td><a href="inform/form/<?php echo $item['id'] ?>/<?php echo $item['information_historyid'] ?>"  title="แก้ไข" class="btn_edit vtip" target="_blank"></a>			
 		</td>
 	</tr>
-	<?php endforeach; ?>
+	<?php endforeach;} ?>
 </table>
 <?php echo $pagination; ?>

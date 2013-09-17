@@ -1,1 +1,0 @@
-	<li><button class="btn_cancel" type="button" ></button></li>

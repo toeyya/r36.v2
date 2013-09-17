@@ -10,6 +10,7 @@ class Log extends Admin_Controller
 	function index()
 	{   //$this->db->debug = true;
 		$name="";$where="";
+			
 		if(!empty($_GET['fullname'])){
 			if(preg_match('/\s/',$_GET['fullname'])){
 				list($userfirstname, $usersurname)=explode(' ',$_GET['fullname']);
@@ -34,6 +35,7 @@ class Log extends Admin_Controller
 		$cond =(!empty($_GET['province_id']))? "  and userhospital <>'' and substring(userhospital,1,2) =".$_GET['province_id'] :'';
 		$cond .=(!empty($_GET['amphur_id']))? "  and userhospital <>'' and substring(userhospital,3,2) =".$_GET['amphur_id'] :'';
 		$cond .=(!empty($_GET['userposition'])) ? " and userposition='".$_GET['userposition']."'" :'';
+		
 		if(!empty($_GET['district_id'])){
 			$cond .=" and userhospital in(
 							select hospital_code from n_hospital_1 where  hospital_district_id='".$_GET['district_id']."' 

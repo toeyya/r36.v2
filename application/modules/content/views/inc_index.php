@@ -1,4 +1,4 @@
-<ul class="breadcrumb"> 
+﻿<ul class="breadcrumb" > 
 	<li><a href="home">หน้าแรก</a><span class="divider">/</span></li> 
 	<li><a href="content/index/<?php echo $category['id'] ?>"><?php echo $category['name'] ?></a></li> 
 </ul>
@@ -18,6 +18,16 @@
         		<?php echo $content['intro']; ?>
         	</span> 
         	<span class="dataNew">(<?php echo  db_to_th($content['start_date']); ?>)</span>
+			<?php if( $content['file']): ?>
+			<div class= "download" id="download" >
+				<a href="document/download/<?php echo  $content['id']; ?>">
+					<span class="btn btn-mini">
+					<i class="icon-file"></i> <?php echo  $content['doc'] ?>
+					</span>
+				</a>
+			</div>
+			<?php endif; ?>
+
         </li>
         <div class="clr"></div><hr class="hr1">    
 		<?php endforeach; ?>

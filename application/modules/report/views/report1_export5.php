@@ -26,7 +26,7 @@
 		<tr class="para1">
 			<td style="padding-left:10px;">ไม่ระบุ</td>
 			<td><?php echo number_format($total_rig00);?></td>
-			<td><?php echo number_format($total_rig00);?></td>		
+			<td><?php echo compute_percent($total_rig00,$total_n);?></td>		
 		</tr>				
 		<tr ><td colspan="3"><strong>ชนิดของอิมมูโนโกลบูลิน (RIG) </strong><strong> (n=<? echo $total_rig_all; ?>)</strong>								
 		</td></tr>

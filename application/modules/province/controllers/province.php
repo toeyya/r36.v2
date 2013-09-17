@@ -22,7 +22,7 @@ class Province extends Admin_Controller
 		
 		$data['result']=$this->province->select("n_area_detail.province_id as province_id,province_name,area_id,n_area.name as area_name,level,provincepeople")
 										   ->join("LEFT JOIN n_area_detail on n_area_detail.province_id=n_province.province_id
-										   				LEFT JOIN n_area on n_area.id=n_area_detail.area_id")
+										   		   LEFT JOIN n_area on n_area.id=n_area_detail.area_id")
 										   	->where($where)->sort("")->order("area_id desc,level asc")->get();
 		$data['total']=$this->db->GetOne("select max(total) from n_area");
 		$data['pagination']=$this->province->pagination();
@@ -44,15 +44,17 @@ class Province extends Admin_Controller
 		
 	}
 	function save(){
-				
+		
+		//$this->db->debug=true;	
 		if($_POST){
 			$this->province->primary_key("province_id");
+			//$data = array('province_id'=>$_POST['province_id'],'area_id'=>$_POST['area_id'],'')
 			$this->province->save($_POST);
 			$this->detail->save($_POST);						
 			foreach($_POST['people'] as $key=>$item){
 				if(!empty($item))
 				{										
-					$this->db->Execute("delete from n_province_people where province_id = ? and years = ? ",array($id,$_POST['years'][$key]));
+					$this->db->Execute("delete from n_province_people where province_id = ? and years = ? ",array($_POST['province_id'],$_POST['years'][$key]));
 					$this->people->save(array('id'=>'','province_id'=>$_POST['province_id'],'years'=>$_POST['years'][$key],'people'=>$item));
 				}
 			}
@@ -140,9 +142,7 @@ class Province extends Admin_Controller
 		}//date cutoff
 		redirect('province/province_new');
 	}
-	function inertDB(){
-		
-	}
+
 	function getAmphurNew(){
 		if($_GET){					
 			$result = $this->amphur->where('province_id = '.$_GET['province_id'])->sort("")->order("amphur_name asc")->limit(200)->get();			

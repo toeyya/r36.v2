@@ -15,7 +15,7 @@
 
 .line_topmenu4 { height:17px; border-right:3px solid #e31788;width:120px;}
 .line_topmenu4 a {width:109px;display:block; padding:5px 0px; color:#737272; text-decoration:none;}
-.line_topmenu4 a:hover { color:#e00360;  background:url(../images/bghover4_topmenu.png) no-repeat; background-position: 0px 3px ;}
+.line_topmenu4 a:hover{ color:#e00360; border-radius:0.7em;background-color:#FCE5F2;display:inline-block;width:95%;height:15px;}
 
 .line_topmenu9 { height:17px;}
 .line_topmenu9 a {display:block; padding:5px 0px; width:86px; color:#737272; text-decoration:none;}
@@ -55,7 +55,7 @@
 				 margin-top:-27px;
 				 margin-bottom:10px;
 				 margin-left:70px;
-				 z-index:9;
+				 z-index:0;
 				 }
 			#toplevel > ul ul.submenu4 > li { position: relative;}
 
@@ -65,7 +65,7 @@
 				 -o-transition: background-color .1s;
 					transition: background-color .1s;}
 
-			#toplevel ul ul.submenu4 a:hover {color:white; text-decoration:underline; background-image:none;}
+			#toplevel ul ul.submenu4 a:hover {color:white; text-decoration:underline; background:none;}
 
 
 			/**************************** Submenu ข้อมูลสถานพยาบาล********************/
@@ -138,7 +138,7 @@
 				 -o-transition: background-color .1s;
 					transition: background-color .1s;}
 
-			#toplevel ul ul.submenu8 a:hover {color:white; text-decoration:underline; background-image:none;}
+			#toplevel ul ul.submenu8 a:hover {color:white; text-decoration:underline; background:none;}
 
 			#toplevel > ul > li > ul >li >ul.submenu8-1 { opacity: 0; visibility:hidden; padding: 7px 0 25px 10px; background-color: rgb(227,23,136); text-align: left; position: absolute; top: 55px;
 				left: 178px; width: 358px; height:auto;
@@ -190,4 +190,4 @@
 				 -o-transition: background-color .1s;
 					transition: background-color .1s;}
 
-			#toplevel ul ul.submenu9 a:hover {color:white; text-decoration:underline; background-image:none;}
+			#toplevel ul ul.submenu9 a:hover {color:white; text-decoration:underline; background:none;}

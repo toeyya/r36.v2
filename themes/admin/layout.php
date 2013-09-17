@@ -7,6 +7,7 @@
 		<?php include('_script.php'); ?>
 		<?php echo $template['metadata']; ?>
 	</head>
+	<?php flush(); ?>
 	<body> 
 	<div id="header"><?php include_once('_header.inc.php'); ?></div> 
 		<div id="container">

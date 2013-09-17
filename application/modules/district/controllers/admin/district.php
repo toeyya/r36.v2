@@ -25,15 +25,17 @@ class District extends Admin_Controller
 		$this->template->build('district_index',$data);								
 	}
 	function form($tam_amp_id=FALSE)
-	{
-		$data['rs']=$this->db->GetRow("select district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id 
-										from n_district 
-										INNER JOIN n_province on n_province.province_id=n_district.province_id 
-										INNER JOIN n_amphur on n_amphur.amphur_id=n_district.amphur_id 
-										where tam_amp_id =$tam_amp_id 
-										GROUP BY district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id");
-		$data['people'] = $this->people->where("tam_amp_id = $tam_amp_id")->sort("")->order("years desc")->get();
-		
+	{	//$this->db->debug=true;
+		if($tam_amp_id)
+		{					
+			$data['rs']=$this->db->GetRow("select district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id 
+											from n_district 
+											INNER JOIN n_province on n_province.province_id=n_district.province_id 
+											INNER JOIN n_amphur on n_amphur.amphur_id=n_district.amphur_id 
+											where tam_amp_id =$tam_amp_id 
+											GROUP BY district_name,n_district.province_id,n_district.amphur_id,tam_amp_id,district_id");
+			$data['people'] = $this->people->where("tam_amp_id = $tam_amp_id")->sort("")->order("years desc")->get();
+		}
 		$this->template->build('district_form',$data);
 	}
 	function view($district_name=FALSE,$amphur_name=FALSE,$province_name=FALSE)

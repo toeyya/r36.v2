@@ -76,7 +76,7 @@ function is_owner($id)
 }
 function login_data($field)
 {
-	$CI =& get_instance();
+	$CI =& get_instance();	
 	$sql = 'select '.$field.' from n_user  where uid  = ?';
 	
 	$name = $CI->db->GetOne($sql,$CI->session->userdata('R36_UID'));

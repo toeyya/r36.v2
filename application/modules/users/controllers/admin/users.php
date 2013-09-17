@@ -57,14 +57,14 @@ class Users extends Admin_Controller
 												->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
 														LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
 														LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code and hospital_code <>''")
-												->where($wh)->sort("")->order("uid desc")->get();
+												->where($wh)->sort("")->order("uid desc")->limit(15)->get();
 				
 				$data['pagination']=$this->user->pagination();				
 				$this->template->append_metadata(js_checkbox());
 				$this->template->build('admin/users/index',$data);					
 	}
 	function form($id=FALSE,$profile=FALSE)
-	{		
+	{	
 			$this->template->append_metadata(js_idcard());	
 			$data['disabled'] ='';
 			if($this->session->userdata('R36_LEVEL')!="00"){
@@ -75,12 +75,12 @@ class Users extends Admin_Controller
 			$data['rs']=$this->user->select("n_user.*,level_name, a.province_name as province_name1
 											,b.province_name as province_name2,b.province_id as province_id2,hospital_amphur_id,hospital_district_id,status
 											,hospital_name")
-									->join("LEFT JOIN n_level_user  ON  n_user.userposition=n_level_user.level_code
-											LEFT  JOIN n_province  a   ON  n_user.userprovince=a.province_id
-											LEFT  JOIN n_hospital_1 	     ON  n_user.userhospital =n_hospital_1.hospital_code								
-											LEFT  JOIN n_province  b  ON  n_hospital_1.hospital_province_id=b.province_id 
-											LEFT  JOIN n_district		 ON  n_hospital_1.hospital_amphur_id=n_district.amphur_id  
-													and  n_user.userhospital =n_hospital_1.hospital_code
+									->join("LEFT JOIN n_level_user   ON  n_user.userposition=n_level_user.level_code
+											LEFT JOIN n_province  a  ON  n_user.userprovince=a.province_id
+											LEFT JOIN n_hospital_1   ON  n_user.userhospital =n_hospital_1.hospital_code								
+											LEFT JOIN n_province  b  ON  n_hospital_1.hospital_province_id=b.province_id 
+											LEFT JOIN n_district	 ON  n_hospital_1.hospital_amphur_id=n_district.amphur_id  
+													and n_user.userhospital =n_hospital_1.hospital_code
 													and n_district.province_id=n_hospital_1.hospital_province_id 
 													and n_district.district_id=n_hospital_1.hospital_district_id")
 																->get_row($id);	
@@ -95,7 +95,7 @@ class Users extends Admin_Controller
 			$this->template->build('admin/users/form',$data);					
 	}
 	function save($profile=false)
-	{	//$this->db->debug=true;	
+	{	
 		if($_POST)
 		{			
 			$userposition = $_POST['userposition'];
@@ -103,7 +103,8 @@ class Users extends Admin_Controller
 			// กรณีติ๊กจาก เช็คบ็อค ถ้าไม่ใส่ if จะทำให้ข้อมูลบัตรประชาชนหาย			
 			if(!empty($_POST['cardW0']))$_POST['idcard'] = $_POST['cardW0'].$_POST['cardW1'].$_POST['cardW2'].$_POST['cardW3'].$_POST['cardW4'];								
 			$_POST['agency'] =(!empty($_POST['agency'])) ? $_POST['agency'] : '';		
-			$id = $this->user->save($_POST);			
+			$id = $this->user->save($_POST);
+					
 			$arr_00 = array('uid'=>$id,'userprovince'=>'','userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');		
 			$arr_01 = array('uid'=>$id,'userprovince'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'','agency'=>'');	
 			$arr_02 = array('uid'=>$id,'userlevel'=>'','userhospital'=>'','useramphur'=>'','userdistrict'=>'');	

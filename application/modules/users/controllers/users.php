@@ -27,29 +27,31 @@ class Users extends Public_Controller
         { 
             if(login($_POST['username'], $_POST['password']))
             {
-                set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบค่ะ');
-				if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"){						
-					redirect($_SERVER['HTTP_REFERER']);
-				}else{					
-					redirect('users/r36/users');										
-				}                             
+                //set_notify('success', 'ยินดีต้อนรับเข้าสู่ระบบค่ะ');
+				$data['r36_mail'] =  $this->session->userdata('R36_MAIL');
+				$data['r36_level'] = $this->session->userdata('R36_LEVEL_NAME');
+				$data['cls'] ="success";
+				$data['html']="ยินดีต้อนรับเข้าสู่ระบบค่ะ";	
+				if($this->session->userdata('confirm_email')=="1" && $this->session->userdata('confirm_province')=="1" && $this->session->userdata('confirm_admin')=="1"){									
+					$data['link'] ='inform/index';									
+				}else{
+					$data['link'] ="users/r36/users/index/".$this->session->userdata('R36_UID');
+				}
+				$data['gis1'] = permission('gis','act_read');
+				$data['gis2'] = $this->session->userdata('login_gis');                          
             }
             else
             {
-              set_notify('error', 'ชื่อผู้ใช้หรือรหัสผ่านผิดพลาดค่ะ');
-              redirect($_SERVER['HTTP_REFERER']);
-            }   
-        }
-        else
-        {
-            set_notify('error', 'กรุณาทำการล็อคอินค่ะ');
-            redirect('home');
-        }       
+            	$data['cls'] ="error";
+				$data['html']="ชื่อผู้ใช้ หรือ รหัสผ่านผิดพลาดค่ะ";	
+            } 
+			echo json_encode($data);  
+        }          
     }
-	function logout()
+	function logout($module="home")
 	{
 		logout();
-		redirect('home');
+		redirect('home');		
 	}
 	function register(){
 		
@@ -100,6 +102,7 @@ class Users extends Public_Controller
 	}
 	function signup()
 	{ 
+	
 	   $_POST['telephone'] =$_POST['tel0'].$_POST['tel1'].$_POST['tel2'];
 	   $_POST['mobile'] = $_POST['mobile0'].$_POST['mobile1'].$_POST['mobile2'];
 	   $_POST['fax'] =$_POST['fax0'].$_POST['fax1'].$_POST['fax2'];
@@ -108,22 +111,20 @@ class Users extends Public_Controller
 	   $_POST['hospital_id']=$this->hospital->get_one("hospital_id","hospital_code_healthoffice",$_POST['userhospital']);
 	   $_POST['userposition']="05";
 	   $province = $this->user->where("userposition='02' and userprovince ='".$_POST['province_id']."' and (usermail<>'' or usermail is not null)")->sort("")->order("uid desc")->get();	   	   
-	   $admin ="rabie.r36.rabies@gmail.com";
-	  
-	   $id=$this->user->save($_POST);	   
-	    $subject = "ยืนยันการลงทะเบียน(ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
-	    $message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
-	    $message.='<hr>';
-		$message.='<p>เรียนคุณ'.$_POST['userfirstname'].' '.$_POST['usersurname'].', </p>';
-		$message.='<p>ขอบคุณสำหรับการลงทะเบียนค่ะ  ข้อมูลบัญชีของคุณจะใช้ได้เมื่อ</p>';
-		$message.="<p>1. ยืนยันการลงทะเบียน </p>";		
-		$message.='<p>กรุณาคลิกลิงค์ด้านล่างเพื่อยืนยันการลงทะเบียน</p>';
-		$message.='<a href="'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'">'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'</a>';
-		$message.="<p>2. ผ่านการตรวจสอบและอนุมัติจากผู้ดูแลระบบ </p>";
-		$redirect="users/notice_email";
-		$address=$_POST['usermail'];	
-			
-		phpmail($subject,$address,$message,$redirect,$admin,$province);
+	   $admin ="rabie.r36.rabies@gmail.com";	   
+	   $id = $this->user->save($_POST);	   
+	   $subject = "ยืนยันการลงทะเบียน(ระบบรายงานผู้สัมผัสโรคพิษสุนัขบ้า ร.36)";
+	   $message='<div><img src="'.base_url().'themes/default/media/images/email_head.png" width="711px" height="108px"></di>';
+	   $message.='<hr>';
+	   $message.='<p>เรียนคุณ'.$_POST['userfirstname'].' '.$_POST['usersurname'].', </p>';
+	   $message.='<p>ขอบคุณสำหรับการลงทะเบียนค่ะ  ข้อมูลบัญชีของคุณจะใช้ได้เมื่อ</p>';
+	   $message.="<p>1. ยืนยันการลงทะเบียน </p>";		
+	   $message.='<p>กรุณาคลิกลิงค์ด้านล่างเพื่อยืนยันการลงทะเบียน</p>';
+	   $message.='<a href="'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'">'.base_url().'users/confirm_email/'.$id.'/'.$_POST['gen_id'].'</a>';
+	   $message.="<p>2. ผ่านการตรวจสอบและอนุมัติจากผู้ดูแลระบบ </p>";
+	   $redirect="users/notice_email";
+	   $address=$_POST['usermail'];				
+	   phpmail($subject,$address,$message,$redirect,$admin,$province);
 	}
 	public function chkidcard($register=FALSE)
 	{	// ผู้สัมผัสโรคไม่เช็คการซ้ำกัน

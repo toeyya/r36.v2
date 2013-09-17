@@ -315,7 +315,7 @@ var ref1,ref2,ref3,province_id;
   <tr><th>การเข้าใช้ระบบสารสนเทศ ฯ(GIS)</th>
   	<td><input type="checkbox" name="login_gis" value="1"></td>
   </tr>
-  <tr><th>การยืนยันอีเมล์</th><td><?php echo (!empty($rs['confirm_email']))? img(array('src'=>'media/images/checkmark.png','width'=>'16px','height'=>'')):img(array('src'=>'media/images/crossmark.png','width'=>'16px','height'=>'')); ?></td></tr>
+  <tr><th>การยืนยันอีเมล์</th><td><?php echo (!empty($rs['confirm_email']))? img(array('src'=>'media/images/checkmark.png','width'=>'16px','height'=>'16px')):img(array('src'=>'media/images/crossmark.png','width'=>'16px','height'=>'16px')); ?></td></tr>
   <tr><th>ส่งอีเมล์แจ้งอนุมัติ</th>
   	<td><input type="checkbox" name="send_mail" value="1"></td>
   </tr>

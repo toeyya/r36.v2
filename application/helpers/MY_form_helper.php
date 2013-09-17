@@ -59,7 +59,8 @@
 				}
 				else
 				{
-					$sel = (in_array($key, $selected)) ? ' selected="selected"' : '';					
+					$sel = (in_array($key, $selected)) ? ' selected="selected"' : '';
+	
 					$form .= '<option value="'.$key.'"'.$sel.'>'.(string) $val."</option>\n";
 				}
 			}

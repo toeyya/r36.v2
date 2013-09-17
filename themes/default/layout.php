@@ -11,11 +11,11 @@
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
   ga('create', 'UA-43317447-1', '164.115.32.57/r36');
   ga('send', 'pageview');
 
 </script>
+<?php flush(); ?>
 </head>
 <body>
 
@@ -29,34 +29,18 @@
         <div class="clr"></div>
         <div id="col1">
 			<?php include('_menu_left.php'); ?>
-			<br/>
-				<?php echo modules::run('users/inc_login'); ?>
-            <br/>
-				<?php echo modules::run('dashboards/inc_home'); ?>
-            <br/>
+			<?php echo modules::run('users/inc_login'); ?>
+           	<?php echo modules::run('dashboards/inc_home'); ?>				
+		<div class="clr"></div>	
         </div>
-        <div id="cols2" style="position:relative; float:left; top:-39px; margin-left:8px; width:710px;">
-        	        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td width="22" height="22"><img src="themes/default/media/images/tbCol2_topLeft.png" width="22" height="22" /></td>
-            <td background="themes/default/media/images/tbCol2_top.png">&nbsp;</td>
-            <td width="22" height="22"><img src="themes/default/media/images/tbCol2_topRight.png" width="22" height="22" /></td>
-          </tr>
-          <tr>
-            <td background="themes/default/media/images/tbCol2_left.png">&nbsp;</td>
- 			 <td bgcolor="#FFFFFF">	<?php echo $template['body']; ?></td>          
-            <td background="themes/default/media/images/tbCol2_right.png">&nbsp;</td>
-          </tr>
-          <tr>
-            <td width="22" height="22"><img src="themes/default/media/images/tbCol2_bottomLeft.png" width="22" height="22" /></td>
-            <td background="themes/default/media/images/tbCol2_bottom.png"> </td>
-            <td width="22" height="22"><img src="themes/default/media/images/tbCol2_bottomRight.png" width="22" height="22" /></td>
-          </tr>
-        </table>	
+        <div id="cols2" style="position:relative; float:left; top:-29px; margin-left:5px;min-height:250px;height:auto; width:704px;background-color:#FFFFFF">
+        	<div class="content"><?php echo $template['body']; ?></div>
+        	<div class="clr"></div>
         </div>
          <div class="clr"></div>
-            <?php include('_footer.php'); ?>   
+         <?php include('_footer.php'); ?>   
     </div>
 </div>
 </body>
+
 </html>

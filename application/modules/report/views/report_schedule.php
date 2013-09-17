@@ -40,9 +40,9 @@
 		</tr>
 <?php  endforeach;?>	     
   </table>
-  <?php if($preview=="popup"){ ?>
+  <?php if(!empty($result) && ($preview=="popup")){ ?>
   	<div style="width:100%;text-align:center;padding:5px;"><a href="report/schedule" target="_blank">คลิกดูทั้งหมด</a></div>  
-  <?php }else{ ?>
+  <?php }else if($preview!="popup"){ ?>
   <?php echo $pagination; ?>
 		<div id="btn_printout"><a href="report/schedule/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">

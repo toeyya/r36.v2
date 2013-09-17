@@ -32,7 +32,7 @@ class Document_detail extends Admin_Controller
 		redirect('document/admin/document_detail/index/'.$_GET['document_id']);
 	}
 	function save()
-	{				
+	{		
 		if($_POST)
 		{	
 			$_POST['shw_help'] =(empty($_POST['shw_help'])) ? '0':'1';
@@ -52,8 +52,8 @@ class Document_detail extends Admin_Controller
 			if(!empty($_FILES['file']['name']))
 			{
 				if(file_extension(pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION))){
-					$this->detail->delete_file($id,'uploads/document','file');
-					$this->detail->save(array('id'=>$id,'file'=>$this->detail->upload($_FILES['file'],'uploads/document')));					
+					$this->detail->delete_file($id,'uploads/document','files');				
+					$this->detail->save(array('id'=>$id,'files'=>$this->detail->upload($_FILES['file'],'uploads/document')));					
 				}
 			}					
 			set_notify('success',SAVE_DATA_COMPLETE);

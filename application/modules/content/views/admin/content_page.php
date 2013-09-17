@@ -22,6 +22,7 @@
 			<?php echo form_hidden('id',@$content['id'])?>
 			<?php echo form_hidden('user_id',@$content['user_id'])?>
 			<?php echo form_submit('','ตกลง','class="button"')?>
+			<?php echo form_back('btn_back'); ?>
 		</td></tr>
 </table>
 </form>

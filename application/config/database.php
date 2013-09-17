@@ -38,34 +38,36 @@ $active_group = "default";
 $active_record = TRUE;
 
 
+/*$db['default']['hostname'] ="db2.favouritehosting.com";
+$db['default']['username'] = "c1r36New";
+$db['default']['password'] = "r36@fd";
 
-//$db['default']['hostname'] = "192.168.1.51\R36";
-//$db['default']['hostname'] = "192.168.1.38\R36";
+$db['default']['database'] = "c1r36New";
+$db['default']['dbdriver'] = "mysql";*/
+
 $db['default']['hostname'] = "(local)\R36";
 $db['default']['username'] = "sa";
 $db['default']['password'] = "1234";
 $db['default']['database'] = "c1r36";
 $db['default']['dbdriver'] = "mssqlnative";
 
-
-
-/*$db['default']['hostname'] = "localhost";
-$db['default']['username'] = "root";
-$db['default']['password'] = "";
-$db['default']['database']="c1r36";
-$db['default']['dbdriver'] = "mysql";*/
+/*$db['default']['hostname'] = "ASUS-PC";
+$db['default']['username'] = "sa";
+$db['default']['password'] = "1234";
+$db['default']['database'] = "c1r36";
+$db['default']['dbdriver'] = "mssql";*/
 
 
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = FALSE;
+$db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = "";
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_unicode_ci";
 
-//$db['default']['char_set'] = "Thai_CI_AS";
-//$db['default']['dbcollat'] = "Thai_CI_AS";
+/*$db['default']['char_set'] = "Thai_CI_AS";
+$db['default']['dbcollat'] = "Thai_CI_AS";*/
 
 
 

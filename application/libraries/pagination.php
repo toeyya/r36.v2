@@ -194,8 +194,7 @@ Author URI: http://www.mis-algoritmos.com
 										$this->pagination .= "<a href=\"".$this->get_pagenum_link($next)."\" class=\"next\">$n</a>";
 									else
 										$this->pagination .= "<span class=\"disabled\">$n</span>";
-									
-									if($this->showCounter)$this->pagination .= "<span class=\"data\">จำนวนทั้งหมด  $this->total_pages เรคอร์ด</span>";
+									if($this->showCounter)$this->pagination .= "<span class=\"data\">จำนวนทั้งหมด $this->total_pages เรคอร์ด</span>";
 							}
 					}
 

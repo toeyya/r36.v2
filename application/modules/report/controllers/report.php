@@ -2196,18 +2196,17 @@ class Report extends R36_Controller
 								LEFT JOIN n_amphur on  hospital_amphur_id =n_amphur.amphur_id and n_amphur.province_id=n_province.province_id
 								LEFT JOIN n_district on hospital_district_id = n_district.district_id and  n_district.amphur_id =n_amphur.amphur_id and n_district.province_id=n_province.province_id
 								WHERE hospital_code = '".$hospitalcode."'");
-		$data['hospital'] = array_walk($data['hospital'],'dbConvert');
-		
-		
-		$sql="SELECT $box hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,telephone
+		array_walk($data['hospital'],'dbConvert');
+		$sql="SELECT hn,hn_no,firstname,surname,in_out,means,total_vaccine ,id,historyid,telephone
 					,REPLACE(CONVERT(VARCHAR(10),vaccine_date, 111), '/', '-') as vaccine_date
 					,REPLACE(CONVERT(VARCHAR(10),datetouch, 111), '/', '-') as datetouch ,idcard
 			FROM n_information
 			INNER JOIN n_history  ON n_information.information_historyid = n_history.historyid
 			INNER JOIN n_vaccine  ON n_information.id = n_vaccine.information_id		
-			WHERE closecase ='1' AND means <> '' AND (vaccine_date BETWEEN '$today' AND '$nextday' AND vaccine_name=0)  
+			WHERE closecase ='1' AND means <> '' AND (vaccine_date BETWEEN '$today' AND '$nextday' AND (vaccine_name is null OR vaccine_name = 0))  
 			and (hospitalcode='".$hospitalcode."' OR byplace='".$data['hospital']['hospital_name']."')
-			ORDER BY  vaccine_date asc";	
+			ORDER BY  vaccine_date asc";
+			
 		$data['preview'] = $preview;	
 		if($preview=="preview"){
 			$data['result']=$this->inform->get($sql,true);

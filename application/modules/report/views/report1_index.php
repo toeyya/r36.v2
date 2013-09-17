@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
 $(document).ready(function(){
    
@@ -900,7 +901,7 @@ $(document).ready(function(){
 				<tr class="para1">
 					<td class="pad-left">ไม่ระบุ</td>
 					<td><?php echo number_format($total_rig00);?></td>
-					<td><?php echo number_format($total_rig00);?></td>		
+					<td><?php echo compute_percent($total_rig00,$total_n);?></td>		
 				</tr>
 <tr class="tr-graph">
   	<td colspan="3">
@@ -1065,7 +1066,7 @@ $(document).ready(function(){
 		<?php endfor; ?>
  <tr class="tr-graph">
   	<td colspan="3">
-  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container23"  class="container"></div> 			
   		</div>   		
   	</td>
@@ -1086,7 +1087,7 @@ $(document).ready(function(){
 		<?php endfor; ?>
  <tr class="tr-graph">
   	<td colspan="3">
-  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div  class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container24"  class="container"></div> 			
   		</div>   		
   	</td>
@@ -1109,7 +1110,7 @@ $(document).ready(function(){
 		</tr>
  <tr class="tr-graph">
   	<td colspan="3">
-  		<div  ><button name="close" title="close" value="close" class="btn btn_close">X</button>
+  		<div  class="div_graph"><button name="close" title="close" value="close" class="btn btn_close">X</button>
   			<div id="container25"  class="container"></div> 			
   		</div>   		
   	</td>

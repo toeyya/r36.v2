@@ -1,1 +1,1 @@
-<marquee class="textMarquee" scrollamount="2" ><?php echo (!empty($contents)) ? $contents[0]['detail']: '';?></marquee>
+<marquee class="textMarquee" scrollamount="2" ><span><?php echo (!empty($contents)) ? $contents[0]['detail']: '';?></span></marquee>

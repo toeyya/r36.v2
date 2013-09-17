@@ -5,7 +5,7 @@
 	tiny('detail');
 	
 </script>
-<h1><?php echo $category['name'] ?></h1>
+<h1><?php echo $category['name']; ?></h1>
 <form action="content/admin/content/save/<?php echo @$content['id'] ?>" method="post" enctype="multipart/form-data" >
 <table class="form">
 	<tr>
@@ -21,6 +21,7 @@
 			<?php echo form_hidden('user_id',@$content['user_id'])?>
 			<?php echo form_hidden('id',@$content['id'])?>
 			<?php echo form_submit('','ตกลง','class="button"')?>
+			<?php echo form_back('btn_back'); ?>
 		</td></tr>
 </table>
 </form>

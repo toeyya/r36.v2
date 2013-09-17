@@ -89,7 +89,7 @@ $(document).ready(function(){
 				//chk_c = data.chk;
 				//console.log("chk_c ="+data.chk);
 				if(data.chk=="yes"){
-					$('#loading').hid();		  	
+					$('#loading').hide();		  	
 				  	$.colorbox({width:"50%", height:"30%", inline:true,href:"#closecase"});			  				 						
 				}else{															
 					chk_closecase_person();
@@ -387,7 +387,7 @@ $(window).load(function() {
 			</tr>				
 	  </table>
 <div class="btn_inline">
-	<ul><li><button class="btn_submit cencel" name="btn_submit" type="submit" value="btn_submit"></button></li></ul></div></div>
+	<ul><li><button class="btn_submit" name="btn_submit" type="submit" value="btn_submit"></button></li></ul></div></div>
 <?php if($this->session->userdata('R36_LEVEL')=='00' || $this->session->userdata('R36_LEVEL')=="05"): ?>
 <div id="boxAdd"><button class="btn_add" type="submit" name="btn_add"></button></div>
 <?php endif; ?>

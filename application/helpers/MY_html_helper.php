@@ -254,7 +254,7 @@ function currency_rate($price)
 			return $sum + $val;
 		}
 		
-		function downloadFile($file){
+		function downloadFile($file,$type="application/excel"){
 		    $file_name = $file;
 		    $mime = 'application/force-download';
 		    header('Pragma: public');  // required
@@ -262,7 +262,7 @@ function currency_rate($price)
 		    header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 		    header('Cache-Control: private',false);
 		    header('Content-Type: '.$mime);
-			header("Content-Type: application/excel");
+			header("Content-Type: ".$type);
 		    header('Content-Disposition: attachment; filename="'.basename($file_name).'"');
 		    header('Content-Transfer-Encoding: binary');
 		    header('Connection: close');
@@ -303,7 +303,14 @@ function currency_rate($price)
 			}
 		}
 
-
+		function DeleteFile(){
+			$files = glob('uploads/export/*'); // get all file names
+			foreach($files as $file){ // iterate files
+			  if(is_file($file))
+			    unlink($file); // delete file
+			}
+			return true;
+		}
 
 
 

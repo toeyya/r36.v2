@@ -30,7 +30,7 @@ class Document extends Public_Controller
 		$data['document_name']=$this->res->get_one("name","id",$document_id);
 		$this->template->build('view',$data);
 	}
-	function download($id,$field="[file]")
+	function download($id,$field="files")
 	{   
 		$file = $this->detail->get_one($field,"id",$id);
 		$this->load->helper('download');

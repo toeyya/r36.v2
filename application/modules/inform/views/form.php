@@ -347,7 +347,7 @@ $('select[name=prefix_name]').click(disableChkage);
 		   	submitHandler: function(){		   				   					   	  		   	  																
 		   	  $(":disabled").removeAttr('disabled');
 		   	  $(".btn_save").attr('disabled','disabled');			   	  		
-			  $.colorbox({width:"95%", height:"100%", inline:true,href:"#load",escKey:false,closeButton:false});									
+			  $.colorbox({width:"50%", height:"50%", inline:true,href:"#load",escKey:false,closeButton:false});									
 			  document.form1.submit();			
 			}		
 	});	
@@ -2175,7 +2175,7 @@ $('select[name=prefix_name]').click(disableChkage);
 </div> 
 <?php endif; ?>
 <div style="display:none">
-<div id="load" width="padding-left:300px;"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
+<div id="load" style="text-align:center;margin-top:20%"><img src="media/images/loading2.gif" width="98px" height="20px"></div>
 </div>
 </form>
 

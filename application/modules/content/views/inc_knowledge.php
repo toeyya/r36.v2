@@ -1,6 +1,5 @@
 <img src="themes/default/media/images/title_2.png" width="69" height="25" /><hr class="hr1">
-<div class="pic">
-	
+<div class="pic">	
 	<?php foreach($contents as $item): ?>
      <div class="span4">
      <?php if(!empty($item['image'])){  ?>
@@ -15,5 +14,6 @@
      </div>
     <?php endforeach; ?>
 
-</div>
 <a href="content/view_all/<? echo $category_id ?>" class="btn_readAll"  name="submit" ></a>
+<div class="clr"></div>
+</div>

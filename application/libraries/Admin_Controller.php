@@ -9,6 +9,8 @@ class Admin_Controller extends Controller
 			logout();
 			set_notify('error','กรุณาเข้าสู่ระบบ');
 			redirect('users/admin/auth');
+		}elseif(!is_login()){
+			redirect('home');
 		}
 		// set themes
 		$this->template->set_theme('admin');

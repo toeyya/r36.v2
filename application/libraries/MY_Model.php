@@ -17,7 +17,7 @@ class MY_Model extends Model{
 	public $having = '';
 	public $order = 'asc';
 	public $target = '';
-	public $limit = 20;
+	public $limit = 15;
 	public $pagination = '';
 	public $current_page = '';
 	public $record_count = '';
@@ -137,7 +137,7 @@ class MY_Model extends Model{
 	}
 	
 	function get($sql = FALSE,$noSplitPage = FALSE)
-	{		
+	{	
 		if($sql){
 			$sql=$sql;			
 		}else{
@@ -224,10 +224,12 @@ class MY_Model extends Model{
 		if($fix_import == FALSE)array_walk($data,'dbConvert','TIS-620');
 		$data = array_change_key_case($data,CASE_UPPER);		
 		$data = array_intersect_key($data,$columns);
+		
 		@$mode = ($data[$this->primary_key]) ? 'UPDATE' : 'INSERT';
 		@$where = ($data[$this->primary_key]) ? $this->primary_key.' = '.$data[$this->primary_key] : FALSE;
 		@$pk = $data[$this->primary_key];
 		unset($data[$this->primary_key]);
+		
 		if($mode=='INSERT')
 		{
 			$column = '';
@@ -263,6 +265,7 @@ class MY_Model extends Model{
 		{
 			$column = '';
 			$comma = '';
+			//var_dump($data);
 			foreach($data as $key => $item)
 			{				
 				if($meta[$key]->type=="datetime2" || $meta[$key]->type=="datetimeoffset"){
@@ -402,6 +405,7 @@ class MY_Model extends Model{
 	
 	function delete_file($id,$path,$field = 'image')
 	{
+		
 		$file = $this->get_one($field, $id);
 		@unlink($path.$file);
 	}
