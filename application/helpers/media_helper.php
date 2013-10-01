@@ -169,7 +169,7 @@ if ( ! function_exists('js_idcard')){
 		$CI =& get_instance();
 		return "
 			<script>
-				$(function(){
+				$(document).ready(function(){
 				 	$('#Show_idcard').children().bind('keydown',function(e){											
 						if(e.keyCode != 46 && e.keyCode!=8){														
 							var txtBox=$('#Show_idcard').children();

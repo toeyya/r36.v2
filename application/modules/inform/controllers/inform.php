@@ -91,10 +91,6 @@ class Inform extends R36_Controller
 				}else{
 					if(!empty($_GET['hn'])){
 						$where .=" AND hn='".$_GET['hn']."'";	
-						//$where.=" AND hospitalcode='".$_GET['hospitalcode']."' AND hn='".$_GET['hn']."'";					
-						//$sql="SELECT  information_historyid FROM n_information WHERE id=(select max(id) from n_information WHERE hospitalcode =?  AND hn= ? )";
-						// ให้มีปุ่มเพิ่มเฉพาะ historyid ล่าสุด
-						//$data['historyid']=$this->db->GetOne($sql,array($_GET['hospitalcode'],$_GET['hn']));
 					}elseif(!empty($_GET['idcard'])){
 						$where.=" AND (idcard='".$_GET['idcard']."') AND idcard!='' and hospitalcode<>''";
 					}

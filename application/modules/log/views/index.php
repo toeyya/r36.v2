@@ -1,55 +1,3 @@
-
-<script type="text/javascript">
-$(document).ready(function(){
-   var ref1,ref2;
-   function change_prv(){
-		$('#amphur_id option[value=""]').attr("selected",true);
-		$('#district_id option[value=""]').attr("selected",true);
-		$('#hospital option[value=""]').attr("selected",true);
-		ref1=$('select[name=province_id] option:selected').val();
-		$('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px">');
-		$.ajax({
-			url:'<?php echo base_url() ?>district/getAmphur',
-			data:'name=amphur_id&ref1='+ref1,
-			success:function(data)
-			{
-				$("#input_amphur").html(data);
-			}
-		});   	
-   }
-   function change_amphur(){
-		ref2=$('select[name=amphur_id] option:selected').val();
-		$("#input_district").html('<img src="media/images/loader.gif" width="16px" height="11px">');
-		$.ajax({
-			url:'<?php echo base_url() ?>district/getDistrict',
-			data:'name=district_id&ref1='+ref1+'&ref2='+ref2,			
-			success:function(data)
-			{
-				$("#input_district").html(data);
-			}
-		});   	
-   }
-   function change_district(){
-		ref3=$('select[name=district_id] option:selected').val();
-			$("#input_hospital").html('<img src="media/images/loader.gif" width="16px" height="11px">');
-		$.ajax({
-			url:'<?php echo base_url() ?>hospital/getHospital',
-			data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,		
-			success:function(data){
-				$('#input_hospital').html(data);
-			}
-		})   	
-   }
-
-	 $('.input_box_patient').css('width','140px');
- 	 $('select[name=province_id]').change(change_prv).click(change_prv);
- 	 $("select[name=amphur_id]").live('change',change_amphur).click(change_amphur);
- 	 $('select[name=district_id]').live('change',change_district).click(change_district);
- 
- 
- });// document
-</script>
- 
 <h1>ประวัติเข้าใช้ระบบ</h1>
 <div class="search">
 <form name="formm" method="get" action="log/admin/log/index">
@@ -95,9 +43,9 @@ $(document).ready(function(){
 												$class=' id="hospital" style="width:130px;"';?>	
 							</td>								
 							<th>โรงพยาบาล</th>
-							<td><span id="input_hospital"><? if(!empty($_GET['hospital'])){
+							<td><span id="input_hospital"><? if(!empty($_GET['userhospital'])){
 										$wh=" WHERE hospital_province_id='".@$_GET['province_id']."' AND   hospital_amphur_id='".@$_GET['amphur_id']."' 
-											  AND hospital_district_id='".@$_GET['district_id']."' AND hospital_code='".$_GET['hospital_code']."'";
+											  AND hospital_district_id='".@$_GET['district_id']."' AND hospital_code='".$_GET['userhospital']."'";
 									}else{$wh="";}
 							    ?>
 							    <?php if($wh){ ?>
@@ -110,12 +58,14 @@ $(document).ready(function(){
 				<tr><th>สิทธิ์การใช้งาน</th>
 					<td>
 						<?php 
-						$position=array('00'=>'ผู้ดูแลระบบระดับกรม(สำนักโรคติดต่อทั่วไป)','01'=>'ผู้ดูแลระบบระดับเขต','02'=>'ผู้ดูแลระบบระดับจังหวัด'
-													,'03'=>'ผู้ดูแลระบบระดับอำเภอ','04'=>'ผู้ดูแลระบบระดับตำบล','05'=>'Staff','06'=>'ผู้ใช้ระบบทั่วไป');
+
 						echo form_dropdown('userposition',$position,@$_GET['userposition'],'class="styled-select"','-ทั้งหมด-'); ?>
 					</td>
 				</tr>
-				<tr><th></th><td  colspan="7" style="text-align:center;"><button class="btn" type="submit" name="btn_submit">ค้นหา</button></td></tr>
+				<tr><th></th><td  colspan="7" style="text-align:center;">
+					<button class="btn" type="submit" name="btn_submit">ค้นหา</button>
+					<a href="log/admin/log/index<?php echo '?'.$_SERVER['QUERY_STRING'].'&act=preview' ?>" class="btn" target="_blank">พิมพ์รายงาน</a>
+				</td></tr>
 			</table>					
 </form>
 </div>				
@@ -125,11 +75,11 @@ $(document).ready(function(){
 			<th width="12%">การกระทำ</th>
 		    <th width="30%">รายละเอียด</th>
 			<th width="18%">โดย</th>
-			<th width="17%">สิทธิืการใช้งาน</th>
+			<th width="17%">สิทธิ์การใช้งาน</th>
 			<th width="10%">IP address</th>
 			<th width="18%">วันที่</th>
 		  </tr>
-	 	<?php $i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 20)-20)+1:1;?>
+	 	<?php $i=(@$_GET['page'] > 1)? (((@$_GET['page'])* 15)-15)+1:1;?>
 	 	
 	 	<?php 
 	 	
@@ -140,11 +90,61 @@ $(document).ready(function(){
 				  <td><?php echo $item['detail'] ?></td>
 				  <td><?php echo $item['userfirstname'].' '.$item['usersurname'] ?> </td>
 				  <td><?php echo (!empty($item['userposition']))? $position[$item['userposition']]:"";?></td>
-				  <td><?php echo  $item['ipaddress']?></td>
-				  <td><?php echo  DB2date($item['created'],true) ?>
+				  <td><?php echo $item['ipaddress']?></td>
+				  <td><?php echo DB2date($item['created'],true) ?>
 				  <input type="hidden" name="uid"  value="<?php echo $item['uid']  ?>"/></td>
 				  </tr>
 		<?php $i++; endforeach;
 		?>
-		 </table>
+</table>
 <?php  echo $pagination;?>
+
+<script type="text/javascript">
+$(document).ready(function(){
+   var ref1,ref2;
+   function change_prv(){
+		$('#amphur_id option[value=""]').attr("selected",true);
+		$('#district_id option[value=""]').attr("selected",true);
+		$('#hospital option[value=""]').attr("selected",true);
+		ref1=$('select[name=province_id] option:selected').val();
+		$('#input_amphur').html('<img src="media/images/loader.gif" width="16px" height="11px">');
+		$.ajax({
+			url:'<?php echo base_url() ?>district/getAmphur',
+			data:'name=amphur_id&ref1='+ref1,
+			success:function(data)
+			{
+				$("#input_amphur").html(data);
+			}
+		});   	
+   }
+   function change_amphur(){
+		ref2=$('select[name=amphur_id] option:selected').val();
+		$("#input_district").html('<img src="media/images/loader.gif" width="16px" height="11px">');
+		$.ajax({
+			url:'<?php echo base_url() ?>district/getDistrict',
+			data:'name=district_id&ref1='+ref1+'&ref2='+ref2,			
+			success:function(data)
+			{
+				$("#input_district").html(data);
+			}
+		});   	
+   }
+   function change_district(){
+		ref3=$('select[name=district_id] option:selected').val();
+			$("#input_hospital").html('<img src="media/images/loader.gif" width="16px" height="11px">');
+		$.ajax({
+			url:'<?php echo base_url() ?>hospital/getHospital',
+			data:'name=userhospital&ref1='+ref1+'&ref2='+ref2+'&ref3='+ref3,		
+			success:function(data){
+				$('#input_hospital').html(data);
+			}
+		})   	
+   }
+	 $('.input_box_patient').css('width','140px');
+ 	 $('select[name=province_id]').change(change_prv).click(change_prv);
+ 	 $("select[name=amphur_id]").live('change',change_amphur).click(change_amphur);
+ 	 $('select[name=district_id]').live('change',change_district).click(change_district);
+ 
+ 
+ });// document
+</script>

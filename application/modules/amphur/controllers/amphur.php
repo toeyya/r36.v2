@@ -30,7 +30,7 @@ class Amphur extends Admin_Controller
 			$this->amphur->save($_POST);
 			foreach($_POST['people'] as $key =>$item){
 				if(!empty($item)){
-					$this->db->Execute("delete from n_amphur_people where amp_pro_id =  ?  and years = ? ",array($_POST['amp_pro_id'],$_POST['years'][$key]));	
+					$this->db->Execute("delete from n_amphur_people where amp_pro_id =  ?  ",$_POST['amp_pro_id']);	
 					$this->people->save(array('amp_pro_id'=>$_POST['amp_pro_id'],'years'=>$_POST['years'][$key],'people'=>$item));
 				}
 			}

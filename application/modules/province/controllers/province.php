@@ -54,13 +54,14 @@ class Province extends Admin_Controller
 			foreach($_POST['people'] as $key=>$item){
 				if(!empty($item))
 				{										
-					$this->db->Execute("delete from n_province_people where province_id = ? and years = ? ",array($_POST['province_id'],$_POST['years'][$key]));
+					$this->db->Execute("delete from n_province_people where province_id = ? ",$_POST['province_id']);
 					$this->people->save(array('id'=>'','province_id'=>$_POST['province_id'],'years'=>$_POST['years'][$key],'people'=>$item));
 				}
 			}
 			set_notify('success', SAVE_DATA_COMPLETE);			
 		}
-		redirect('province/form/'.$_POST['province_id'].'/'.$_POST['area_id']);		
+		//redirect('province/form/'.$_POST['province_id'].'/'.$_POST['area_id']);
+		redirect('province');		
 	}
 
 	function province_new(){

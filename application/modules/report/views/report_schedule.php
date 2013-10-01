@@ -44,6 +44,8 @@
   	<div style="width:100%;text-align:center;padding:5px;"><a href="report/schedule" target="_blank">คลิกดูทั้งหมด</a></div>  
   <?php }else if($preview!="popup"){ ?>
   <?php echo $pagination; ?>
+		<hr class="hr1">		
+		<div id="reference"><?php echo $reference?></div>	  
 		<div id="btn_printout"><a href="report/schedule/preview"  ><img src="images/printer.gif" width="16" height="16" align="absmiddle" style="border:none" />&nbsp;พิมพ์รายงาน</a></div>
 		<div id="area_btn_print">
 			<input type="button" name="printreport" value="พิมพ์รายงาน" onClick="window.print();" class="Submit">

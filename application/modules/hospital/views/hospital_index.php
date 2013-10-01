@@ -1,42 +1,3 @@
-<script type="text/javascript">
-$(document).ready(function(){
-	var ref1,ref2;
-	$('select[name=province_id]').change(function(){
-		ref1=$('select[name=province_id] option:selected').val();
-		$.ajax({
-			type:'get',
-			url:'<?php echo base_url() ?>district/getAmphur',
-			data:'ref1='+ref1,
-			success:function(data)
-			{
-				$("#input_amphur").html(data);
-				$('#input_district').html('<select name="district_id" id="distrcit_id"><option value="">-ทั้งหมด-</option></select>');
-				$('#input_hospital').html('<select name="hospitalcode" id="hospitalcode"><option value="">-ทั้งหมด-</option></select>');
-			}
-		});
-	});	//select name=province
-	$('select[name=amphur_id]').live('change',function(){
-		ref2=$('select[name=amphur_id] option:selected').val();
-		$.ajax({
-			url:'<?php echo base_url()?>district/getDistrict',
-			data:'ref1='+ref1+'&ref2='+ref2,
-			success:function(data){
-				$('#input_district').html(data);
-			}
-		})
-	});// select  name=amphur_id
-	$('select[name=district_id]').live('change',function(){
-		district_id =$('select[name=district_id] option:selected').val();
-		$.ajax({
-			url:'<?php echo base_url()?>hospital/getHospital',
-			data:'name=hospitalcode&ref1='+ref1+'&ref2='+ref2+'&ref3='+district_id,
-			success:function(data){
-					$('#input_hospital').html(data);
-			}
-		});
-	});
-});//document
-</script>
 <h1>สถานพยาบาล</h1>
 <div class="search">
 <form  action="hospital/admin/hospital/index" method="get" name="form1">
@@ -64,7 +25,8 @@ $(document).ready(function(){
 						</span> 
 โค้ด /ชื่อ  สถานพยาบาล <input name="hospital" type="text" id="hospital" size="20"   class="input_box_patient"  value="<?php echo @$_GET['hospital']?>" />
 
-<input  class="btn" type="submit" value="ค้นหา">
+<button class="btn" type="submit">ค้นหา</button>
+<a href="hospital/admin/hospital/index<?php echo '?'.$_SERVER['QUERY_STRING'].'&act=preview' ?>" class="btn" target="_blank">พิมพ์รายงาน</a>
 </form>
 </div>	  
 <div id="boxAdd"></div>
@@ -116,3 +78,42 @@ $(document).ready(function(){
 			  <?php endforeach; ?>
 	  </table>
 	<?php echo  $pagination; ?>
+<script type="text/javascript">
+$(document).ready(function(){
+	var ref1,ref2;
+	$('select[name=province_id]').change(function(){
+		ref1=$('select[name=province_id] option:selected').val();
+		$.ajax({
+			type:'get',
+			url:'<?php echo base_url() ?>district/getAmphur',
+			data:'ref1='+ref1,
+			success:function(data)
+			{
+				$("#input_amphur").html(data);
+				$('#input_district').html('<select name="district_id" id="distrcit_id"><option value="">-ทั้งหมด-</option></select>');
+				$('#input_hospital').html('<select name="hospitalcode" id="hospitalcode"><option value="">-ทั้งหมด-</option></select>');
+			}
+		});
+	});	//select name=province
+	$('select[name=amphur_id]').live('change',function(){
+		ref2=$('select[name=amphur_id] option:selected').val();
+		$.ajax({
+			url:'<?php echo base_url()?>district/getDistrict',
+			data:'ref1='+ref1+'&ref2='+ref2,
+			success:function(data){
+				$('#input_district').html(data);
+			}
+		})
+	});// select  name=amphur_id
+	$('select[name=district_id]').live('change',function(){
+		district_id =$('select[name=district_id] option:selected').val();
+		$.ajax({
+			url:'<?php echo base_url()?>hospital/getHospital',
+			data:'name=hospitalcode&ref1='+ref1+'&ref2='+ref2+'&ref3='+district_id,
+			success:function(data){
+					$('#input_hospital').html(data);
+			}
+		});
+	});
+});//document
+</script>

@@ -1,4 +1,3 @@
-
 <h1>ผู้ใช้ระบบ</h1>
 <div class="search">
 <form name="form1"  action="users/admin/users" >
@@ -51,7 +50,8 @@
 		</td>		
 	</tr>	
 </table>
-<button type="submit" name="search"  class="btn">ค้นหา</button>	
+<button type="submit" name="search"  class="btn">ค้นหา</button>
+<a href="users/admin/users/index<?php echo '?'.$_SERVER['QUERY_STRING'].'&act=preview' ?>" class="btn" target="_blank">พิมพ์รายงาน</a>	
 </form>
 </div>
 
@@ -62,8 +62,8 @@
 		<th>สิทธิ์การใช้งาน</th>
 		<th>สถานบริการ/หน่วยงาน</th>
 		<th>จังหวัด</th>
+		<th>วันลงทะเบียน</th>
 		<th style="width:20%;text-align:center;">การอนุมัติ</th>
-		
 		<th width="90">
 			<?php if(permission('users', 'act_create')):?>
 			<a href="users/admin/users/form" name="btn_add" class="btn">เพิ่มรายการ</a>
@@ -82,6 +82,7 @@
 						echo ($item['userposition']=="02") ? $item['province_name'] : ThaitoUtf8($province_name);
 					?>				
 				</td>
+				<td><?php echo DB2DateTime($item['created']); ?></td>
 				<td>
 					<div class="format">
 						<?php if($this->session->userdata('R36_LEVEL')=='00' || $this->session->userdata('R36_LEVEL')=="02"): ?>
@@ -96,7 +97,7 @@
 				</td>
 				
 				<td><?php if(permission('users', 'act_update')):?>
-					<a href="users/admin/users/form/<?php echo  $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn">แก้ไข</a>
+					<a href="users/admin/users/form/<?php echo  $item['uid'] ?>" alt="แก้ไขข้อมูลผู้ใช้" name="editForm"  class="btn" target="_blank">แก้ไข</a>
 				    <?php endif; ?>
 				    <?php if(permission('users', 'act_delete')):?>
 				    <a href="users/admin/users/delete/<?php echo $item['uid'] ?>" alt="ลบข้อมูลผู้ใช้" onclick=" return confirm('ยืนบันการลยข้อมูล')"  class="btn">ลบ</a>

@@ -110,7 +110,7 @@ class District extends Admin_Controller
 			foreach($_POST['people'] as $key =>$item){
 				if(!empty($item))
 				{											
-					$this->db->Execute("delete from n_district_people where tam_amp_id =  ?  and years = ? ",array($_POST['tam_amp_id'],$_POST['years'][$key]));	
+					$this->db->Execute("delete from n_district_people where tam_amp_id =  ? ",$_POST['tam_amp_id']);	
 					$this->people->save(array('tam_amp_id'=>$_POST['tam_amp_id'],'years'=>$_POST['years'][$key],'people'=>$item));
 				}
 			}	

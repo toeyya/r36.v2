@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
 <title><?php echo $template['title']; ?></title> 
   <?php include_once('_css.php'); ?>
+  <?php include '_script.php'; ?> 
   <?php echo $template['metadata']; ?>	  
 </head>
 <?php flush(); ?>
@@ -21,7 +22,7 @@
  <div class="clr"></div>	
 	<div id="bg_dog1">
 	<?php include '_header.php'?>
-	<?php include '_script.php'; ?>      
+	     
 		<div id="content">	
 		<?php echo $template['body']; ?>	
 		</div> 	

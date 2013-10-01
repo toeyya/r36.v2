@@ -45,7 +45,7 @@ class Dashboards extends Public_Controller
 		$this->template->build("index",$data);
 	}
 	
-	function inc_home()
+	 function inc_home()
 	{
 		$ga = new ga();
 		$ga->authen('favouritedesign@gmail.com','F@vourite','ga:75710162');

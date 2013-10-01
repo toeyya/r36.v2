@@ -6,6 +6,8 @@ a{content: " (" attr(href) ")";color:#000000;}
 h3{font-size:13px;margin-bottom:-26px;color:#2A2A2A;padding:0px;margin:0px;}
 
 #title,#search,.img,.excel,.btn_close,#topmenu,.userlogedin,#footer,.tr-graph,.tr-graph2{display:none;}
+#title p span{color:#444444}
+#report #title p.head{color:#000000;font-size:16px;font-weight:bolder;margin-top:10px;margin-bottom:-9px;}
 .svg-to-img{display:block;}
 div#report{width:842px;}
 #report{width:842px;padding:10px;margin:0 auto;}

@@ -4,25 +4,16 @@
 <base href="<?php echo base_url(); ?>" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title><?php echo $template['title']; ?></title>
-<?php include('_script.php'); ?>
- <?php echo $template['metadata']; ?>
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-43317447-1', '164.115.32.57/r36');
-  ga('send', 'pageview');
+<script type="text/javascript" src="media/js/jquery-1.7.2.min.js"></script>
+<?php include('_css.php'); ?>
+<?php echo $template['metadata']; ?>
 
-</script>
-<?php flush(); ?>
 </head>
+<?php flush(); ?>
 <body>
-
 <div id="wrap">
     <div class="main">
     	<div class="logo"></div>
-        <div class="name"></div>
         <div class="clr"></div>
 		<?php include('_menu_top.php'); ?>
         <div class="animal"></div>
@@ -41,6 +32,6 @@
          <?php include('_footer.php'); ?>   
     </div>
 </div>
+<?php include('_script.php'); ?>
 </body>
-
 </html>

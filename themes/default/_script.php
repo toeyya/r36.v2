@@ -1,8 +1,14 @@
-<link rel="stylesheet" type="text/css" href="media/css/bootstrap.min.css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="themes/default/media/css/style.css" media="screen"/>
-<link rel="stylesheet" type="text/css" href="media/js/jquery.notifyBar.css"  media="screen" />
-<link rel="stylesheet" type="text/css" href="media/js/jquery-loadmask/jquery.loadmask.css"   media="screen" />
-<script type="text/javascript" src="media/js/jquery-1.7.2.min.js"></script>
+
+
 <script type="text/javascript" src="media/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="media/js/jquery.validate.min.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-43317447-1', '164.115.32.57');
+  ga('send', 'pageview');
+
+</script>

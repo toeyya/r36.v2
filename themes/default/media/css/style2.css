@@ -9,11 +9,12 @@ a:hover {color:#0190fe;}
 *:focus {outline: none;}
 .right{float:right;}
 #wrap{position:relative; padding:0; margin:0 auto; width:100%; height:auto;clear:both;}
-.main {position:relative; padding:0; margin:0 auto; width:1016px;height:192px;background: url("../images/bg-header4_1.png") no-repeat;}
-.logo{float:left; margin-top:21px; width:1px; height:104px; background: url(../images/tran1.png) no-repeat;}
+.main {clear:both;position:relative; padding:0; margin:0 auto; width:1016px; height:192px; background: url("../images/bg-header4.png") no-repeat;}
+.logo{float:left; margin-top:3px; width:104px; height:104px; background: url(../images/logo.png); background-repeat:no-repeat;}
+.name{float:left; margin-left:5px; margin-top:15px; width:616px; height:91px; background: url(../images/name.png) no-repeat;}
 .animal{position:relative; float:right;  margin-right:105px;  margin-left:-20px; margin-top:-17px; width:200px; height:107px; background: url(../images/animal1.png); background-repeat:no-repeat; z-index:1;}
 /* menutop */
-#topmenu {width:70%;  padding-top:5px; margin-left:8px;}
+#topmenu { float:left; width:70%;  padding-top:5px; margin-left:8px;}
 #topmenu ul {  clear:left; float:left; list-style:none; margin:0; padding:0;  text-align:center; height:35px;}
 #topmenu ul li {display:inline-block;height:41px;padding-left:30px; padding-right:30px; padding-top:10px; float:left; background:url(../images/topMenu_bg.png) repeat-x;}
 #topmenu ul li:first-child{background:url(../images/topMenuLeft.png) no-repeat;width:17px; height:41px;margin:0;padding:0;}

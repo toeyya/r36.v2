@@ -11,6 +11,7 @@
 			 <? }
   			?>	                
   	<?php endforeach; ?>
+  	
   </ul>
  <a href="content/view_all/<?php echo $category_id ?>" class="btn_readAll"  name="submit" ></a>
  <span class="clear"></span>

@@ -11,6 +11,7 @@ class Users extends Admin_Controller
 		$this->user->primary_key("uid");	
 	}
 	public $level;
+	public $reference= "แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข";
 	function index($show="search",$id=FALSE)
 	{
 				$this->level=$this->session->userdata('R36_LEVEL');				
@@ -51,17 +52,33 @@ class Users extends Admin_Controller
 							$wh.=" and userhospital IN(select hospital_code from n_hospital_1 where ".$col.")";													
 					}
 				//**********************************
-				$data['result'] = $this->user->select("uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition
-									 				 ,province_name,hospital_name,active,confirm_province,confirm_admin
-									 				 ,userlevel,useramphur,userdistrict,agency")
-												->join("INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
-														LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
-														LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code and hospital_code <>''")
-												->where($wh)->sort("")->order("uid desc")->limit(15)->get();
+		
+		$sql = "SELECT uid, username, userfirstname, usersurname,level_name,userprovince,userhospital,userposition
+					  ,province_name,hospital_name,active,confirm_province,confirm_admin,CONVERT(VARCHAR(10), n_user.created, 120) AS [created]
+					  ,userlevel,useramphur,userdistrict,agency 
+				FROM n_user
+				INNER JOIN n_level_user  	ON  n_user.userposition=n_level_user.level_code
+				LEFT  JOIN n_province     	ON  n_user.userprovince=n_province.province_id
+				LEFT  JOIN n_hospital_1 	ON  userhospital =n_hospital_1.hospital_code and hospital_code <>'' WHERE $wh ORDER BY uid desc,userfirstname";
+		
+		if(!empty($_GET['act'])){			
+			$data['province'] = (!empty($_GET['userprovince']))? province($_GET['userprovince']):'ทั้งหมด';
+			$data['amphur']   = (!empty($_GET['useramphur'])) ? amphur($_GET['userprovince'],$_GET['useramphur']):'ทั้งหมด';
+			$data['district'] = (!empty($_GET['userdistrict'])) ? district($_GET['userprovince'],$_GET['useramphur'],$_GET['district_id']):'ทั้งหมด';
+			$data['position_name']  = (!empty($_GET['userposition'])) ? getPosition($_GET['userposition']):'ทั้งหมด';
+			$data['hospital'] 		= (!empty($_GET['userhospital'])) ? hospital($_GET['userhospital']):'ทั้งหมด';
+			$data['name'] =(!empty($_GET['name'])) ? $_GET['name'] : 'ทั้งหมด';
+			$data['result']=$this->user->get($sql,true);
+			$data['pagination']='';	
+			$data['reference'] = $this->reference;
+			$this->template->set_layout('print')->build('admin/users/print',$data);
+		}else{
+			$data['result']=$this->user->get($sql);	
+			$data['pagination']=$this->user->pagination();
+			$this->template->append_metadata(js_checkbox());
+		    $this->template->build('admin/users/index',$data);	
+		}				
 				
-				$data['pagination']=$this->user->pagination();				
-				$this->template->append_metadata(js_checkbox());
-				$this->template->build('admin/users/index',$data);					
 	}
 	function form($id=FALSE,$profile=FALSE)
 	{	

@@ -45,17 +45,18 @@ $db['default']['password'] = "r36@fd";
 $db['default']['database'] = "c1r36New";
 $db['default']['dbdriver'] = "mysql";*/
 
-$db['default']['hostname'] = "(local)\R36";
+
+/*$db['default']['hostname'] = "DDC-01";
+$db['default']['username'] = "sa";
+$db['default']['password'] = "ddcqwER1234!@#$";
+$db['default']['database'] = "c1r36";
+$db['default']['dbdriver'] = "mssqlnative";*/
+
+$db['default']['hostname'] = "(local)\r36";
 $db['default']['username'] = "sa";
 $db['default']['password'] = "1234";
 $db['default']['database'] = "c1r36";
 $db['default']['dbdriver'] = "mssqlnative";
-
-/*$db['default']['hostname'] = "ASUS-PC";
-$db['default']['username'] = "sa";
-$db['default']['password'] = "1234";
-$db['default']['database'] = "c1r36";
-$db['default']['dbdriver'] = "mssql";*/
 
 
 $db['default']['dbprefix'] = "";

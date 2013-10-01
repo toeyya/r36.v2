@@ -5,15 +5,13 @@ class Hospital extends Admin_Controller
 	{
 		parent::__construct();
 		$this->load->model('hospital_model','hospital');
-		$this->load->model('code_healthoffice_model','office');
-
-		
+		$this->load->model('code_healthoffice_model','office');		
 	}
+	public $reference= "แหล่งข้อมูล: โปรแกรมรายงานผู้สัมผัสโรคพิษสุนัขบ้า (ร.36) กลุ่มโรคติดต่อระหว่างสัตว์และคน สำนักโรคติดต่อทั่วไป กรมควบคุมโรค กระทรวงสาธารณสุข";
 	function index(){
 		$wh='';
 		if($this->session->userdata('R36_LEVEL')=="02"){
-			$wh.= " AND substring(hospital_code,1,2) = '".$this->session->userdata('R36_PROVINCE')."'";
-			
+			$wh.= " AND substring(hospital_code,1,2) = '".$this->session->userdata('R36_PROVINCE')."'";			
 		}	
 		 if(!empty($_GET['amphur_id'])){	$wh=" AND  hospital_amphur_id = '".$_GET['amphur_id']."' AND hospital_province_id ='".$_GET['province_id']."'";
 		  }else if(!empty($_GET['province_id'])){$wh=" AND hospital_province_id ='".$_GET['province_id']."'"; }
@@ -21,15 +19,29 @@ class Hospital extends Admin_Controller
 		  if(!empty($_GET['hospital_name'])){$wh .=" AND hospital_name LIKE'%".$_GET['hospital_name']."%'";}	
 		  if(!empty($_GET['hospital'])){$wh.=" AND hospital_code_healthoffice LIKE'".$_GET['hospital']."%' OR hospital_name like'%".$_GET['hospital']."%'";}  		 		  
 		  $data['wh']=$wh;		  		 
-		  $data['result']=$this->hospital->select("n_hospital_1.*,province_name,amphur_name,province_level_old,province_level_new,hospital_code_healthoffice ")
-		  								 ->join("INNER JOIN n_province on n_hospital_1.hospital_province_id=n_province.province_id
-												 LEFT JOIN n_amphur on n_hospital_1.hospital_amphur_id=n_amphur.amphur_id 
-												                     and n_amphur.province_id=n_hospital_1.hospital_province_id
-												")
-										 ->where("hospital_id <>'' $wh ")->sort("")
-		  								 ->order("hospital_province_id,hospital_amphur_id,hospital_name ASC")->limit(20)->get();	
-		  $data['pagination']=$this->hospital->pagination();			
-		  $this->template->build('hospital_index',$data);		 		 
+	
+		  $sql = "SELECT n_hospital_1.*,province_name,amphur_name,province_level_old,province_level_new,hospital_code_healthoffice
+		  		  FROM n_hospital_1
+		  		  INNER JOIN n_province on n_hospital_1.hospital_province_id=n_province.province_id
+				  LEFT JOIN n_amphur on n_hospital_1.hospital_amphur_id=n_amphur.amphur_id 
+									and n_amphur.province_id=n_hospital_1.hospital_province_id
+				  WHERE hospital_id <>'' $wh ORDER BY hospital_province_id,hospital_amphur_id,hospital_name ASC";
+		
+		if(!empty($_GET['act'])){			
+			$data['province'] = (!empty($_GET['province_id']))? province($_GET['province_id']):'ทั้งหมด';
+			$data['amphur']   = (!empty($_GET['amphur_id'])) ? amphur($_GET['amphur_id'],$_GET['amphur_id']):'ทั้งหมด';
+			$data['district'] = (!empty($_GET['district_id'])) ? district($_GET['province_id'],$_GET['amphur_id'],$_GET['district_id']):'ทั้งหมด';			
+			$data['hospital'] 		= (!empty($_GET['userhospital'])) ? hospital($_GET['userhospital']):'ทั้งหมด';
+			$data['name'] =(!empty($_GET['hospital_name'])) ? $_GET['hospital_name'] : '';
+			$data['result']=$this->hospital->get($sql,true);
+			$data['pagination']='';	
+			$data['reference'] = $this->reference;
+			$this->template->set_layout('print')->build('print',$data);
+		}else{
+			$data['result']=$this->hospital->get($sql);	
+		  	$data['pagination']=$this->hospital->pagination();			
+		  	$this->template->build('hospital_index',$data);
+		}			 		 
 	}
 	function form($id=FALSE){
 		$data['rs']=$this->hospital->get_row("hospital_id",$id);	
@@ -108,7 +120,7 @@ class Hospital extends Admin_Controller
 			$id=$this->hospital->save($_POST);
 			set_notify('success', SAVE_DATA_COMPLETE);
 		}
-		redirect('hospital/admin/hospital/index');
+		redirect('hospital/admin/hospital/index?'.$_SERVER['QUERY_STRING']);
 	}
 	function GetClearHospital(){
 		$output = '<select name="hospital" class="styled-select" id="hospital">';

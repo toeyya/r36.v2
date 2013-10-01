@@ -311,7 +311,35 @@ function currency_rate($price)
 			}
 			return true;
 		}
-
+		function province($province_id=FALSE){
+			$CI =& get_instance();
+			$name = $CI->db->GetOne("select province_name from n_province where province_id= ? ",$province_id);
+			return ThaiToUtf8($name);
+		}
+		function amphur($province_id =FALSE,$amphur_id= FALSE)
+		{
+			$CI =& get_instance();					
+			$name = $CI->db->GetOne("select amphur_name from n_amphur where province_id = ? and amphur_id = ? ",array($province_id,$amphur_id));						
+			return ThaiToUtf8($name);
+		}
+		function district($province_id = FALSE,$amphur_id = FALSE,$district_id = FALSE)
+		{
+			$CI =& get_instance();
+			$name = $CI->db->GetOne("select district_name from n_district where province_id= ? and amphur_id = ? and district_id = ? ",array($province_id,$amphur_id,$district_id));
+			return ThaiToUtf8($name);
+		}
+		function hospital($hospital_code = FALSE)
+		{
+			$CI =& get_instance();
+			$name = $CI->db->GetOne("select hospital_name from n_hospital_1 where hospital_code = ? ",$hospital_code);
+			return ThaiToUtf8($name);
+		}
+		function getPosition($position=FALSE){
+			$CI  =& get_instance();
+			$arr =array('00'=>'ผู้ดูแลระบบระดับกรม(สำนักโรคติดต่อทั่วไป)','01'=>'ผู้ดูแลระบบระดับเขต','02'=>'ผู้ดูแลระบบระดับจังหวัด','03'=>'ผู้ดูแลระบบระดับอำเภอ'
+					   ,'04'=>'ผู้ดูแลระบบระดับตำบล','05'=>'Staff','06'=>'ผู้ใช้ระบบทั่วไป',''=>'');
+		    return $arr[$position];
+		}
 
 
 
